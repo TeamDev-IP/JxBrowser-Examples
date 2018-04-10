@@ -1,0 +1,95 @@
+/*
+ *  Copyright 2018, TeamDev. All rights reserved.
+ *
+ *  Redistribution and use in source and/or binary forms, with or without
+ *  modification, must retain the above copyright notice and the following
+ *  disclaimer.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    // The version of JxBrowser used in all the examples.
+    jxBrowserVersion = '6.19'
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+}
+
+subprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        jcenter()
+        maven { url = 'http://maven.teamdev.com/repository/products' }
+    }
+
+    dependencies {
+        // Cross-platform dependency
+        compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:${jxBrowserVersion}"
+
+        /*
+           For having only platform-dependent dependency:
+           1. comment out the cross-platform dependency above;
+           2. uncomment the dependency for your platform.
+        */
+
+        // Windows-only dependency
+        // compile "com.teamdev.jxbrowser:jxbrowser-win:${jxBrowserVersion}"
+
+        // macOS-only dependency
+        // compile "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
+
+        // Linux 64-bit
+        // compile "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
+
+
+        /*
+           Dependency on the JxBrowser license file.
+
+           To get free JxBrowser 30-days evaluation license please fill the form:
+
+                https://www.teamdev.com/jxbrowser#evaluate
+
+           You will receive an email with a link that you can use to download evaluation license file — license.jar.
+           Please put the file into the root directory of the project.
+        */
+         compile files('license.jar')
+    }
+}
+
+// IDEA project configuration.
+idea {
+    project {
+        ipr {
+            beforeMerged { final project ->
+                project.modulePaths.clear()
+            }
+            withXml { final provider ->
+                provider.node.component
+                        .find { it.@name == 'VcsDirectoryMappings' }
+                        .mapping.@vcs = 'Git'
+            }
+        }
+    }
+}
+
