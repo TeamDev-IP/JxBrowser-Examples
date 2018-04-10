@@ -18,8 +18,5 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'HelloWorld'
-    }
-}
+apply plugin: 'application'
+mainClassName = 'HelloWorld'
