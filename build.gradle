@@ -45,6 +45,7 @@ subprojects {
 
     dependencies {
         // Cross-platform dependency
+        //-------------------------
         compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:${jxBrowserVersion}"
 
         /*
@@ -54,26 +55,29 @@ subprojects {
         */
 
         // Windows-only dependency
+        //-------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-win:${jxBrowserVersion}"
 
         // macOS-only dependency
+        //-------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
 
         // Linux 64-bit
+        //-------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
 
-
         /*
-           Dependency on the JxBrowser license file.
-
+           Dependency on the JxBrowser license file
+           -----------------------------------------
            To get free JxBrowser 30-days evaluation license please fill the form:
 
                 https://www.teamdev.com/jxbrowser#evaluate
 
            You will receive an email with a link that you can use to download evaluation license file — license.jar.
            Please put the file into the root directory of the project.
+           
         */
-         compile files('license.jar')
+        compile files("$rootDir/license.jar")
     }
 }
 
