@@ -1,0 +1,22 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ConstantConditions" enabled="true" level="TYPO" enabled_by_default="true">
+      <scope name="Production" level="WARNING" enabled="true">
+        <option name="SUGGEST_NULLABLE_ANNOTATIONS" value="false" />
+        <option name="DONT_REPORT_TRUE_ASSERT_STATEMENTS" value="false" />
+      </scope>
+      <option name="SUGGEST_NULLABLE_ANNOTATIONS" value="false" />
+      <option name="DONT_REPORT_TRUE_ASSERT_STATEMENTS" value="false" />
+    </inspection_tool>
+    <inspection_tool class="UnnecessaryLocalVariable" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="m_ignoreImmediatelyReturnedVariables" value="true" />
+      <option name="m_ignoreAnnotatedVariables" value="false" />
+    </inspection_tool>
+    <inspection_tool class="WeakerAccess" enabled="true" level="TYPO" enabled_by_default="true">
+      <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="true" />
+      <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />
+      <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
+    </inspection_tool>
+  </profile>
+</component>
