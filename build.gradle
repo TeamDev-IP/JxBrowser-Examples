@@ -29,12 +29,10 @@ ext {
     jxBrowserVersion = '6.19'
 }
 
-allprojects {
+subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
-}
 
-subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
