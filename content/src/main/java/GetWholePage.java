@@ -30,7 +30,7 @@ import java.awt.*;
  * This example shows how to obtain HTML code of a page.
  *
  * <p>The page is loaded via a URL.
- * When the page is fully loaded its HTML code is printed to console.
+ * When the page is fully loaded, its HTML code is printed to console.
  */
 public class GetWholePage {
 
