@@ -19,42 +19,39 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * This example shows how to obtain HTML code of a page.
- *
- * <p>The page is loaded via a URL.
- * When the page is fully loaded, its HTML code is printed to the console.
+ * The example demonstrates how to get selected HTML from the loaded web page.
  */
-public class GetWholePage {
+public class SelectedText {
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        final Browser browser = new Browser();
+        final BrowserView view = new BrowserView(browser);
+
+        JButton button = new JButton("Get Selected HTML");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String html = browser.getSelectedHTML();
+                JOptionPane.showMessageDialog(view,
+                        html, "Selected HTML", JOptionPane.PLAIN_MESSAGE);
+            }
+        });
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
+        frame.add(button, BorderLayout.NORTH);
+        frame.add(view, BorderLayout.CENTER);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
-        // Add the callback for waiting till the page is loaded.
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                // Make sure it's the page itself, not one of its frames.
-                if (event.isMainFrame()) {
-                    System.out.println("HTML = " + event.getBrowser().getHTML());
-                }
-            }
-        });
 
         browser.loadURL("https://www.teamdev.com/jxbrowser#features");
     }
