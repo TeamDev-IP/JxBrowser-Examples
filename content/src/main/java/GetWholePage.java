@@ -27,7 +27,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example shows how to obtain HTML code of a page (loaded via a URL) when the page is fully loaded.
+ * This example shows how to obtain HTML code of a page.
+ *
+ * <p>The page is loaded via a URL.
+ * When the page is fully loaded its HTML code is printed to console.
  */
 public class GetWholePage {
 
@@ -42,14 +45,17 @@ public class GetWholePage {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        // Add the callback for waiting till the page is loaded.
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
+                // Make sure it's the page itself, not one of its frames.
                 if (event.isMainFrame()) {
                     System.out.println("HTML = " + event.getBrowser().getHTML());
                 }
             }
         });
+
         browser.loadURL("https://www.teamdev.com/jxbrowser#features");
     }
 }
