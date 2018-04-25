@@ -32,4 +32,4 @@ module ('quickstart-swing',  './quickstart/swing')
 module ('quickstart-javafx', './quickstart/javafx')
 
 include 'content'
-
+include 'printing'
