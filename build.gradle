@@ -50,9 +50,7 @@ subprojects {
     dependencies {
         // Cross-platform dependency
         //-------------------------
-        compile("com.teamdev.jxbrowser:jxbrowser-cross-platform:${jxBrowserVersion}@pom") {
-            transitive = true
-        }
+        compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:${jxBrowserVersion}"
 
         /*
            For having only platform-dependent dependency:
