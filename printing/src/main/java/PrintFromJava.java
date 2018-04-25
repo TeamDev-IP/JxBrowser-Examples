@@ -35,7 +35,7 @@ import java.util.List;
  * The example shows how to print a loaded web page
  * with custom print settings.
  */
-public class CustomPrintSettings {
+public class PrintFromJava {
 
     public static void main(String[] args) {
         final Browser browser = new Browser();
