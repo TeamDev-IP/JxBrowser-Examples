@@ -18,5 +18,18 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-include 'quickstart-swing'
-include 'quickstart-javafx'
+rootProject.name = 'JxBrowser Examples'
+
+/**
+ * Includes a module and sets custom project directory to it.
+ */
+final def module = { final String name, final String path ->
+    include name
+    project(":$name").projectDir = new File("$path")
+}
+
+module ('quickstart-swing',  './quickstart/swing')
+module ('quickstart-javafx', './quickstart/javafx')
+
+include 'content'
+include 'printing'
