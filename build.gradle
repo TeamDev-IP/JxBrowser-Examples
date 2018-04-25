@@ -38,6 +38,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
 
+    // Set the language level to 1.8 since some of the examples are for JavaFX.
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
