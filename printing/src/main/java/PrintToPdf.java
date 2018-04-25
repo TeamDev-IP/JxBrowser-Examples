@@ -20,70 +20,52 @@
 
 import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.PrintJob;
-import com.teamdev.jxbrowser.chromium.events.PrintJobEvent;
-import com.teamdev.jxbrowser.chromium.events.PrintJobListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * The example shows how to print a loaded web page
- * with custom print settings.
+ * The example shows how to print a web page to a PDF file
+ * using custom print settings.
  */
-public class CustomPrintSettings {
+public class PrintToPdf {
 
     public static void main(String[] args) {
         final Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JButton print = new JButton("Print");
+        // Add custom PrintHandler for PDF output.
+        browser.setPrintHandler(new PrintHandler() {
+            @Override
+            public PrintStatus onPrint(PrintJob printJob) {
+                PrintSettings settings = printJob.getPrintSettings();
+                settings.setPrintToPDF(true);
+                settings.setPDFFilePath("web_page.pdf");
+                settings.setPrintBackgrounds(true);
+                return PrintStatus.CONTINUE;
+            }
+        });
+
+        // Add the button that would call Browser.print().
+        final JButton print = new JButton("Print to PDF");
         print.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 browser.print();
             }
         });
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(print, BorderLayout.NORTH);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.setPrintHandler(new PrintHandler() {
-            @Override
-            public PrintStatus onPrint(PrintJob printJob) {
-                PrintSettings printSettings = printJob.getPrintSettings();
-                printSettings.setPrinterName("Microsoft XPS Document Writer");
-                printSettings.setLandscape(false);
-                printSettings.setPrintBackgrounds(false);
-                printSettings.setColorModel(ColorModel.COLOR);
-                printSettings.setDuplexMode(DuplexMode.SIMPLEX);
-                printSettings.setDisplayHeaderFooter(true);
-                printSettings.setCopies(1);
-                printSettings.setPaperSize(PaperSize.ISO_A4);
-
-                List<PageRange> ranges = new ArrayList<PageRange>();
-                ranges.add(new PageRange(0, 3));
-                printSettings.setPageRanges(ranges);
-
-                printJob.addPrintJobListener(new PrintJobListener() {
-                    @Override
-                    public void onPrintingDone(PrintJobEvent event) {
-                        System.out.println("Printing is finished successfully: " +
-                                event.isSuccess());
-                    }
-                });
-                return PrintStatus.CONTINUE;
-            }
-        });
-
-        browser.loadURL("http://www.teamdev.com/jxbrowser");
+        browser.loadURL("http://teamdev.com/jxbrowser");
     }
 }
