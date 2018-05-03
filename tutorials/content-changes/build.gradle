@@ -18,8 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 dependencies {
-    // Depend on Guava for the Resources utility class.
+    // Depend on Guava for the Resources utility class used for loading resource files into strings.
     compile 'com.google.guava:guava:25.0-jre'
 }
