@@ -5,7 +5,7 @@ function createObserver() {
             mutations.forEach(
                 function (mutation) {
                     for (var node of mutation.addedNodes) {
-                        if (node.className == 'class_name') {
+                        if (node.className === 'countdown') {
                             window.java.onDomChanged()
                         }
                     }

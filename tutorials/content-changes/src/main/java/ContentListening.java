@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
+ * This example shows how to listen to DOM changes from a Java object.
  */
 public class ContentListening {
 
@@ -73,6 +74,9 @@ public class ContentListening {
         }
     }
 
+    /**
+     * Loads a resource content as a string.
+     */
     private static String load(String resourceFile) {
         URL url = Resources.getResource(resourceFile);
         String result;
