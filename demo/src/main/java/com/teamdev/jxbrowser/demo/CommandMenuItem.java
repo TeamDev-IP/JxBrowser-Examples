@@ -26,16 +26,16 @@ import javax.swing.JMenuItem;
 /**
  * @author Artem Trofimov
  */
-public class CommandMenuItem extends JMenuItem {
+class CommandMenuItem extends JMenuItem {
 
     private final EditorCommand command;
 
-    public CommandMenuItem(String commandName, EditorCommand command) {
+    CommandMenuItem(String commandName, EditorCommand command) {
         super(commandName);
         this.command = command;
     }
 
-    public EditorCommand getCommand() {
+    EditorCommand getCommand() {
         return command;
     }
 }

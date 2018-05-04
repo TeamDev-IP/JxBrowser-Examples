@@ -20,23 +20,14 @@
 
 package com.teamdev.jxbrowser.demo;
 
-import com.teamdev.jxbrowser.demo.resources.Resources;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.teamdev.jxbrowser.demo.resources.Resources;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 
-/**
- * @author TeamDev Ltd.
- */
 public class JxBrowserDemo {
 
     private static void initEnvironment() throws Exception {
@@ -49,11 +40,7 @@ public class JxBrowserDemo {
 
     public static void main(String[] args) throws Exception {
         initEnvironment();
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                initAndDisplayUI();
-            }
-        });
+        SwingUtilities.invokeLater(JxBrowserDemo::initAndDisplayUI);
     }
 
     private static void initAndDisplayUI() {
@@ -64,7 +51,7 @@ public class JxBrowserDemo {
         JFrame frame = new JFrame("JxBrowser Demo");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
-            @SuppressWarnings("CallToSystemExit")
+            @SuppressWarnings("CallToSystemExit") // This is what we do on closing the window.
             @Override
             public void windowClosing(WindowEvent e) {
                 tabbedPane.disposeAllTabs();
@@ -82,11 +69,7 @@ public class JxBrowserDemo {
 
     private static void insertNewTabButton(final TabbedPane tabbedPane) {
         TabButton button = new TabButton(Resources.getIcon("new-tab.png"), "New tab");
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
-                insertTab(tabbedPane, TabFactory.createTab());
-            }
-        });
+        button.addActionListener(e -> insertTab(tabbedPane, TabFactory.createTab()));
         tabbedPane.addTabButton(button);
     }
 

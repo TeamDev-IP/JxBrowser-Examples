@@ -26,17 +26,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-/**
- * @author TeamDev Ltd.
- */
-public class TabCaptions extends JPanel {
+class TabCaptions extends JPanel {
 
     private TabCaption selectedTab;
 
     private JPanel tabsPane;
     private JPanel buttonsPane;
 
-    public TabCaptions() {
+    TabCaptions() {
         createUI();
     }
 
@@ -62,23 +59,23 @@ public class TabCaptions extends JPanel {
         return buttonsPane;
     }
 
-    public void addTab(TabCaption item) {
+    void addTab(TabCaption item) {
         tabsPane.add(item);
     }
 
-    public void removeTab(TabCaption item) {
+    void removeTab(TabCaption item) {
         tabsPane.remove(item);
     }
 
-    public void addTabButton(TabButton button) {
+    void addTabButton(TabButton button) {
         buttonsPane.add(button);
     }
 
-    public TabCaption getSelectedTab() {
+    TabCaption getSelectedTab() {
         return selectedTab;
     }
 
-    public void setSelectedTab(TabCaption selectedTab) {
+    void setSelectedTab(TabCaption selectedTab) {
         this.selectedTab = selectedTab;
         this.selectedTab.setSelected(true);
     }

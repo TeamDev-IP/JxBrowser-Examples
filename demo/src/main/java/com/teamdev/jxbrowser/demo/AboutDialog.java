@@ -38,12 +38,9 @@ import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-/**
- * @author TeamDev Ltd.
- */
-public class AboutDialog extends JDialog {
+class AboutDialog extends JDialog {
 
-    public AboutDialog(Frame owner) {
+    AboutDialog(Frame owner) {
         super(owner, "About JxBrowser Demo", true);
         initContent();
         initKeyStroke();

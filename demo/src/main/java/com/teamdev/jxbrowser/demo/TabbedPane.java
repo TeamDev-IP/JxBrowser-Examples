@@ -30,18 +30,15 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-/**
- * @author TeamDev Ltd.
- */
-public class TabbedPane extends JPanel {
+class TabbedPane extends JPanel {
 
     private final List<Tab> tabs;
     private final TabCaptions captions;
     private final JComponent contentContainer;
 
-    public TabbedPane() {
+    TabbedPane() {
         this.captions = new TabCaptions();
-        this.tabs = new ArrayList<Tab>();
+        this.tabs = new ArrayList<>();
         this.contentContainer = new JPanel(new BorderLayout());
 
         setLayout(new BorderLayout());
@@ -49,7 +46,7 @@ public class TabbedPane extends JPanel {
         add(contentContainer, BorderLayout.CENTER);
     }
 
-    public void disposeAllTabs() {
+    void disposeAllTabs() {
         for (Tab tab : getTabs()) {
             disposeTab(tab);
         }
@@ -80,7 +77,7 @@ public class TabbedPane extends JPanel {
         return null;
     }
 
-    public void addTab(final Tab tab) {
+    void addTab(final Tab tab) {
         TabCaption caption = tab.getCaption();
         caption.addPropertyChangeListener("CloseButtonPressed", new TabCaptionCloseTabListener());
         caption.addPropertyChangeListener("TabSelected", new SelectTabListener());
@@ -114,11 +111,11 @@ public class TabbedPane extends JPanel {
         repaint();
     }
 
-    public void addTabButton(TabButton button) {
+    void addTabButton(TabButton button) {
         captions.addTabButton(button);
     }
 
-    public void selectTab(Tab tab) {
+    void selectTab(Tab tab) {
         TabCaption tabCaption = tab.getCaption();
         TabCaption selectedTab = captions.getSelectedTab();
         if (selectedTab != null && !selectedTab.equals(tabCaption)) {
@@ -157,6 +154,7 @@ public class TabbedPane extends JPanel {
     }
 
     private class TabContentCloseTabListener implements PropertyChangeListener {
+
         public void propertyChange(PropertyChangeEvent evt) {
             TabContent content = (TabContent) evt.getSource();
             Tab tab = findTab(content);

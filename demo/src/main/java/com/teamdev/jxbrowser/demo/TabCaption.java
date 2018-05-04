@@ -21,36 +21,18 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.demo.resources.Resources;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-/**
- * @author TeamDev Ltd.
- */
-public class TabCaption extends JPanel {
+class TabCaption extends JPanel {
 
     private boolean selected;
     private TabCaptionComponent component;
 
-    public TabCaption() {
+    TabCaption() {
         setLayout(new BorderLayout());
         setOpaque(false);
         add(createComponent(), BorderLayout.CENTER);
@@ -59,16 +41,14 @@ public class TabCaption extends JPanel {
 
     private JComponent createComponent() {
         component = new TabCaptionComponent();
-        component.addPropertyChangeListener("CloseButtonPressed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                firePropertyChange("CloseButtonPressed", evt.getOldValue(), evt.getNewValue());
-            }
-        });
-        component.addPropertyChangeListener("TabClicked", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                setSelected(true);
-            }
-        });
+        component.addPropertyChangeListener(
+                "CloseButtonPressed",
+                evt -> firePropertyChange("CloseButtonPressed", evt.getOldValue(), evt.getNewValue())
+        );
+        component.addPropertyChangeListener(
+                "TabClicked",
+                evt -> setSelected(true)
+        );
         return component;
     }
 
@@ -87,11 +67,11 @@ public class TabCaption extends JPanel {
         return getPreferredSize();
     }
 
-    public void setTitle(String title) {
+    void setTitle(String title) {
         component.setTitle(title);
     }
 
-    public boolean isSelected() {
+    boolean isSelected() {
         return selected;
     }
 
@@ -142,24 +122,18 @@ public class TabCaption extends JPanel {
             closeButton.setIcon(Resources.getIcon("close.png"));
             closeButton.setContentAreaFilled(false);
             closeButton.setFocusable(false);
-            closeButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    firePropertyChange("CloseButtonPressed", false, true);
-                }
-            });
+            closeButton.addActionListener(e -> firePropertyChange("CloseButtonPressed", false, true));
             return closeButton;
         }
 
-        public void setTitle(final String title) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    label.setText(title);
-                    label.setToolTipText(title);
-                }
+        void setTitle(final String title) {
+            SwingUtilities.invokeLater(() -> {
+                label.setText(title);
+                label.setToolTipText(title);
             });
         }
 
-        public void setSelected(boolean selected) {
+        void setSelected(boolean selected) {
             setBackground(selected ? defaultBackground : new Color(150, 150, 150));
             repaint();
         }

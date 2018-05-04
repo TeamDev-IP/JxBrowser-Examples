@@ -20,23 +20,17 @@
 
 package com.teamdev.jxbrowser.demo;
 
+import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.events.TitleEvent;
-import com.teamdev.jxbrowser.chromium.events.TitleListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
-/**
- * @author TeamDev Ltd.
- */
-public class TabContent extends JPanel {
+class TabContent extends JPanel {
 
     private final BrowserView browserView;
     private final ToolBar toolBar;
@@ -44,9 +38,10 @@ public class TabContent extends JPanel {
     private final JComponent container;
     private final JComponent browserContainer;
 
-    public TabContent(final BrowserView browserView) {
+    TabContent(final BrowserView browserView) {
         this.browserView = browserView;
-        this.browserView.getBrowser().addLoadListener(new LoadAdapter() {
+        final Browser browser = this.browserView.getBrowser();
+        browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
@@ -56,12 +51,9 @@ public class TabContent extends JPanel {
             }
         });
 
-        this.browserView.getBrowser().addTitleListener(new TitleListener() {
-            @Override
-            public void onTitleChange(TitleEvent event) {
-                firePropertyChange("PageTitleChanged", null, event.getTitle());
-            }
-        });
+        browser.addTitleListener(
+            event -> firePropertyChange("PageTitleChanged", null, event.getTitle())
+        );
 
         browserContainer = createBrowserContainer();
         jsConsole = createConsole();
@@ -77,21 +69,18 @@ public class TabContent extends JPanel {
 
     private ToolBar createToolBar(BrowserView browserView) {
         ToolBar toolBar = new ToolBar(browserView);
-        toolBar.addPropertyChangeListener("TabClosed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                firePropertyChange("TabClosed", false, true);
-            }
-        });
-        toolBar.addPropertyChangeListener("JSConsoleDisplayed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                showConsole();
-            }
-        });
-        toolBar.addPropertyChangeListener("JSConsoleClosed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                hideConsole();
-            }
-        });
+        toolBar.addPropertyChangeListener(
+            "TabClosed",
+            evt -> firePropertyChange("TabClosed", false, true)
+        );
+        toolBar.addPropertyChangeListener(
+            "JSConsoleDisplayed",
+            evt -> showConsole()
+        );
+        toolBar.addPropertyChangeListener(
+            "JSConsoleClosed",
+            evt -> hideConsole()
+        );
         return toolBar;
     }
 
@@ -131,7 +120,7 @@ public class TabContent extends JPanel {
         return container;
     }
 
-    public void dispose() {
+    void dispose() {
         browserView.getBrowser().dispose();
     }
 }

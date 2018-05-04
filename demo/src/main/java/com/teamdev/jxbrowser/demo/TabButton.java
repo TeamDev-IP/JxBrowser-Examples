@@ -24,12 +24,9 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-/**
- * @author TeamDev Ltd.
- */
-public class TabButton extends JButton {
+class TabButton extends JButton {
 
-    public TabButton(Icon icon, String toolTipText) {
+    TabButton(Icon icon, String toolTipText) {
         setIcon(icon);
         setToolTipText(toolTipText);
         setOpaque(false);
@@ -37,5 +34,4 @@ public class TabButton extends JButton {
         setContentAreaFilled(false);
         setFocusable(false);
     }
-
 }

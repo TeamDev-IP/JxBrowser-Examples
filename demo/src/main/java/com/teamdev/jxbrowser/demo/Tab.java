@@ -20,24 +20,21 @@
 
 package com.teamdev.jxbrowser.demo;
 
-/**
- * @author TeamDev Ltd.
- */
-public class Tab {
+class Tab {
 
     private final TabCaption caption;
     private final TabContent content;
 
-    public Tab(TabCaption caption, TabContent content) {
+    Tab(TabCaption caption, TabContent content) {
         this.caption = caption;
         this.content = content;
     }
 
-    public TabCaption getCaption() {
+    TabCaption getCaption() {
         return caption;
     }
 
-    public TabContent getContent() {
+    TabContent getContent() {
         return content;
     }
 }

@@ -43,7 +43,7 @@ import javax.swing.SwingUtilities;
 /**
  * @author TeamDev Ltd.
  */
-public class JsConsole extends JPanel {
+class JsConsole extends JPanel {
 
     private static final String NEW_LINE = "\n";
     private static final String QUERY_LINE_START = ">> ";

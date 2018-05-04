@@ -25,23 +25,18 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
 import com.teamdev.jxbrowser.chromium.swing.DefaultDownloadHandler;
 import com.teamdev.jxbrowser.chromium.swing.DefaultPopupHandler;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-/**
- * @author TeamDev Ltd.
- */
-public final class TabFactory {
+final class TabFactory {
 
-    public static Tab createFirstTab() {
+    static Tab createFirstTab() {
         return createTab("https://www.teamdev.com/jxbrowser");
     }
 
-    public static Tab createTab() {
+    static Tab createTab() {
         return createTab("about:blank");
     }
 
-    public static Tab createTab(String url) {
+    private static Tab createTab(String url) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
         TabContent tabContent = new TabContent(browserView);
@@ -53,11 +48,10 @@ public final class TabFactory {
         final TabCaption tabCaption = new TabCaption();
         tabCaption.setTitle("about:blank");
 
-        tabContent.addPropertyChangeListener("PageTitleChanged", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                tabCaption.setTitle((String) evt.getNewValue());
-            }
-        });
+        tabContent.addPropertyChangeListener(
+            "PageTitleChanged",
+            evt -> tabCaption.setTitle((String) evt.getNewValue())
+        );
 
         browser.loadURL(url);
         return new Tab(tabCaption, tabContent);
