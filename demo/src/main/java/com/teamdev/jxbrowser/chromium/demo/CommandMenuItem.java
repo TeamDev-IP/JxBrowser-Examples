@@ -18,20 +18,24 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser Examples'
+package com.teamdev.jxbrowser.chromium.demo;
+
+import com.teamdev.jxbrowser.chromium.EditorCommand;
+import javax.swing.JMenuItem;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * @author Artem Trofimov
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class CommandMenuItem extends JMenuItem {
+
+    private final EditorCommand command;
+
+    public CommandMenuItem(String commandName, EditorCommand command) {
+        super(commandName);
+        this.command = command;
+    }
+
+    public EditorCommand getCommand() {
+        return command;
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'demo'
-

@@ -18,20 +18,24 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser Examples'
+package com.teamdev.jxbrowser.chromium.demo;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * @author TeamDev Ltd.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class TabButton extends JButton {
+
+    public TabButton(Icon icon, String toolTipText) {
+        setIcon(icon);
+        setToolTipText(toolTipText);
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        setContentAreaFilled(false);
+        setFocusable(false);
+    }
+
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'demo'
-
