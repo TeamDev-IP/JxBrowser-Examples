@@ -1,18 +1,9 @@
-function createObserver() {
-    var element = document.body;
-    var observer = new MutationObserver(
-        function (mutations) {
-            mutations.forEach(
-                function (mutation) {
-                    for (var node of mutation.addedNodes) {
-                        if (node.className === 'countdown') {
-                            window.java.onDomChanged()
-                        }
-                    }
-                })
-        });
-    var config = {childList: !0};
-    observer.observe(element, config)
-}
-createObserver();
+var element = document.getElementById('counter');
+var observer = new MutationObserver(
+    function(mutations) {
+        window.java.onDomChanged(element.innerHTML);
+    });
+var config = {childList: true};
+observer.observe(element, config);
+
 

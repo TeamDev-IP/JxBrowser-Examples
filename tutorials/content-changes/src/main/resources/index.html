@@ -6,13 +6,13 @@
 </head>
 <body>
 <div>
-    <span class="countdown" id="countdown"></span>
+    <span class="counter" id="counter"></span>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var counter = 1;
-        setInterval(function() { $(".countdown").text(counter++); }, 1000);
+        setInterval(function() { $(".counter").text(counter++); }, 1000);
     });
 </script>
 </body>

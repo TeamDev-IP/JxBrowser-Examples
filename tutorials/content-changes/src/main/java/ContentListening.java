@@ -22,8 +22,8 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.JSObject;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.events.LoadEvent;
+import com.teamdev.jxbrowser.chromium.events.ScriptContextAdapter;
+import com.teamdev.jxbrowser.chromium.events.ScriptContextEvent;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
@@ -47,9 +47,9 @@ public class ContentListening {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.addLoadListener(new LoadAdapter() {
+        browser.addScriptContextListener(new ScriptContextAdapter() {
             @Override
-            public void onDocumentLoadedInMainFrame(LoadEvent event) {
+            public void onScriptContextCreated(ScriptContextEvent event) {
                 Browser browser = event.getBrowser();
                 JSObject window = browser.executeJavaScriptAndReturnValue("window")
                                          .asObject();
@@ -65,12 +65,14 @@ public class ContentListening {
 
     /**
      * The object observing DOM changes.
+     *
+     * <p>The class and methods that are invoked from JavaScript code must be public.
      */
-    private static class JavaObject {
+    public static class JavaObject {
 
         @SuppressWarnings("unused") // invoked by callback processing code.
-        void onDomChanged() {
-            System.out.println("DOM node changed");
+        public void onDomChanged(String innerHtml) {
+            System.out.println("DOM node changed: " + innerHtml);
         }
     }
 
