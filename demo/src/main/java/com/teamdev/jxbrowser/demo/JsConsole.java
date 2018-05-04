@@ -43,7 +43,7 @@ import javax.swing.SwingUtilities;
 /**
  * @author TeamDev Ltd.
  */
-public class JSConsole extends JPanel {
+public class JsConsole extends JPanel {
 
     private static final String NEW_LINE = "\n";
     private static final String QUERY_LINE_START = ">> ";
@@ -51,7 +51,7 @@ public class JSConsole extends JPanel {
     private final ExecutorService executor;
     private JTextArea console;
 
-    public JSConsole(Browser browser) {
+    public JsConsole(Browser browser) {
         this.browser = browser;
         this.executor = Executors.newCachedThreadPool();
         setLayout(new BorderLayout());

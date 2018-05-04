@@ -115,7 +115,7 @@ public class TabContent extends JPanel {
     }
 
     private JComponent createConsole() {
-        JSConsole result = new JSConsole(browserView.getBrowser());
+        JsConsole result = new JsConsole(browserView.getBrowser());
         result.addPropertyChangeListener("JSConsoleClosed", new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 hideConsole();
