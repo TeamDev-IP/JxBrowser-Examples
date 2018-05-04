@@ -223,43 +223,44 @@ class ToolBar extends JPanel {
 
     private Component createPreferencesSubMenu() {
         JMenu menu = new JMenu("Preferences");
-        BrowserPreferences preferences = browserView.getBrowser().getPreferences();
+        final Browser browser = browserView.getBrowser();
+        BrowserPreferences preferences = browser.getPreferences();
         menu.add(createCheckBoxMenuItem("JavaScript Enabled", preferences.isJavaScriptEnabled(),
                 selected -> {
-                    BrowserPreferences preferences1 = browserView.getBrowser().getPreferences();
+                    BrowserPreferences preferences1 = browser.getPreferences();
                     preferences1.setJavaScriptEnabled(selected);
-                    browserView.getBrowser().setPreferences(preferences1);
-                    browserView.getBrowser().reloadIgnoringCache();
+                    browser.setPreferences(preferences1);
+                    browser.reloadIgnoringCache();
                 }));
         menu.add(createCheckBoxMenuItem("Images Enabled", preferences.isImagesEnabled(),
                 selected -> {
-                    BrowserPreferences preferences12 = browserView.getBrowser().getPreferences();
+                    BrowserPreferences preferences12 = browser.getPreferences();
                     preferences12.setImagesEnabled(selected);
-                    browserView.getBrowser().setPreferences(preferences12);
-                    browserView.getBrowser().reloadIgnoringCache();
+                    browser.setPreferences(preferences12);
+                    browser.reloadIgnoringCache();
                 }));
         menu.add(createCheckBoxMenuItem("Plugins Enabled", preferences.isPluginsEnabled(),
                 selected -> {
-                    BrowserPreferences preferences13 = browserView.getBrowser().getPreferences();
+                    BrowserPreferences preferences13 = browser.getPreferences();
                     preferences13.setPluginsEnabled(selected);
-                    browserView.getBrowser().setPreferences(preferences13);
-                    browserView.getBrowser().reloadIgnoringCache();
+                    browser.setPreferences(preferences13);
+                    browser.reloadIgnoringCache();
                 }));
         menu.add(createCheckBoxMenuItem("JavaScript Can Access Clipboard",
                 preferences.isJavaScriptCanAccessClipboard(),
                 selected -> {
-                    BrowserPreferences preferences14 = browserView.getBrowser().getPreferences();
+                    BrowserPreferences preferences14 = browser.getPreferences();
                     preferences14.setJavaScriptCanAccessClipboard(selected);
-                    browserView.getBrowser().setPreferences(preferences14);
-                    browserView.getBrowser().reloadIgnoringCache();
+                    browser.setPreferences(preferences14);
+                    browser.reloadIgnoringCache();
                 }));
         menu.add(createCheckBoxMenuItem("JavaScript Can Open Windows",
                 preferences.isJavaScriptCanOpenWindowsAutomatically(),
                 selected -> {
-                    BrowserPreferences preferences15 = browserView.getBrowser().getPreferences();
+                    BrowserPreferences preferences15 = browser.getPreferences();
                     preferences15.setJavaScriptCanOpenWindowsAutomatically(selected);
-                    browserView.getBrowser().setPreferences(preferences15);
-                    browserView.getBrowser().reloadIgnoringCache();
+                    browser.setPreferences(preferences15);
+                    browser.reloadIgnoringCache();
                 }));
         return menu;
     }
