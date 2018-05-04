@@ -18,24 +18,26 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.chromium.demo;
-
-import com.teamdev.jxbrowser.chromium.EditorCommand;
-import javax.swing.JMenuItem;
+package com.teamdev.jxbrowser.demo;
 
 /**
- * @author Artem Trofimov
+ * @author TeamDev Ltd.
  */
-public class CommandMenuItem extends JMenuItem {
+public class Tab {
 
-    private final EditorCommand command;
+    private final TabCaption caption;
+    private final TabContent content;
 
-    public CommandMenuItem(String commandName, EditorCommand command) {
-        super(commandName);
-        this.command = command;
+    public Tab(TabCaption caption, TabContent content) {
+        this.caption = caption;
+        this.content = content;
     }
 
-    public EditorCommand getCommand() {
-        return command;
+    public TabCaption getCaption() {
+        return caption;
+    }
+
+    public TabContent getContent() {
+        return content;
     }
 }

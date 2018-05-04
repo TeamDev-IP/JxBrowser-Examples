@@ -18,9 +18,9 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.chromium.demo;
+package com.teamdev.jxbrowser.demo;
 
-import com.teamdev.jxbrowser.chromium.demo.resources.Resources;
+import com.teamdev.jxbrowser.demo.resources.Resources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

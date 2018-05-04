@@ -4,7 +4,7 @@
  * Use is subject to license terms.
  */
 
-package com.teamdev.jxbrowser.chromium.demo.resources;
+package com.teamdev.jxbrowser.demo.resources;
 
 import javax.swing.ImageIcon;
 

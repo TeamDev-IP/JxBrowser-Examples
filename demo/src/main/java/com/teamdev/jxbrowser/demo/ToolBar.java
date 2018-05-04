@@ -18,13 +18,13 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.chromium.demo;
+package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserPreferences;
 import com.teamdev.jxbrowser.chromium.EditorCommand;
 import com.teamdev.jxbrowser.chromium.SavePageType;
-import com.teamdev.jxbrowser.chromium.demo.resources.Resources;
+import com.teamdev.jxbrowser.demo.resources.Resources;
 import com.teamdev.jxbrowser.chromium.events.Callback;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
