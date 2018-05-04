@@ -18,23 +18,23 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser Examples'
+package com.teamdev.jxbrowser.demo;
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+class Tab {
+
+    private final TabCaption caption;
+    private final TabContent content;
+
+    Tab(TabCaption caption, TabContent content) {
+        this.caption = caption;
+        this.content = content;
+    }
+
+    TabCaption getCaption() {
+        return caption;
+    }
+
+    TabContent getContent() {
+        return content;
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
-
