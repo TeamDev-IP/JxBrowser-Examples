@@ -25,7 +25,7 @@ buildscript {
 }
 
 ext {
-    jxBrowserVersion = '6.19.1' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '6.20' // The version of JxBrowser used in the examples.
 }
 
 allprojects {
