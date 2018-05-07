@@ -37,7 +37,7 @@ import java.net.URL;
 public class ContentListening {
 
     public static void main(String[] args) {
-        final Browser browser = new Browser();
+        Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
         JFrame frame = new JFrame();
