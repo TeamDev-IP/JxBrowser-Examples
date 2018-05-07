@@ -5,5 +5,3 @@ const observer = new MutationObserver(
     });
 const config = {childList: true};
 observer.observe(element, config);
-
-
