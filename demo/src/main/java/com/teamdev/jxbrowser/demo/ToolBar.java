@@ -141,9 +141,9 @@ final class ToolBar extends JPanel {
 
     private JTextField createAddressBar() {
         final JTextField result = new JTextField(DEFAULT_URL);
-        result.addActionListener(e -> browserView.getBrowser().loadURL(result.getText()));
+        result.addActionListener(e -> browser.loadURL(result.getText()));
 
-        browserView.getBrowser().addLoadListener(new LoadAdapter() {
+        browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onStartLoadingFrame(StartLoadingEvent event) {
                 if (event.isMainFrame()) {
@@ -206,7 +206,7 @@ final class ToolBar extends JPanel {
         popupMenu.addSeparator();
         popupMenu.add(createAboutMenuItem());
 
-        final ActionButton button = new ActionButton("Preferences", null);
+        final ActionButton button = new ActionButton("Menu", null);
         button.setIcon(loadIcon("gear.png"));
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -222,18 +222,25 @@ final class ToolBar extends JPanel {
 
     private Component createPrintMenuItem() {
         JMenuItem menuItem = new JMenuItem("Print...");
-        menuItem.addActionListener(e -> browserView.getBrowser().print());
+        menuItem.addActionListener(e -> browser.print());
         return menuItem;
     }
 
     private Component createPreferencesSubMenu() {
         JMenu menu = new JMenu("Preferences");
         BrowserPreferences preferences = browser.getPreferences();
+        //TODO:2018-05-08:alexander.yevsyukov: Refactor to have
+        // browser.getPreferences()
+        // browser.setPreferences()
+        // browser.reloadIgnoringCache()
+        // called in the common base.
+        // The callback should only define the "meat" of the call. For example something like:
+        // selected -> { BrowserPreferences::setJavaScriptEnabled(selected) }
         menu.add(createCheckBoxMenuItem("JavaScript Enabled", preferences.isJavaScriptEnabled(),
                 selected -> {
-                    BrowserPreferences preferences1 = browser.getPreferences();
-                    preferences1.setJavaScriptEnabled(selected);
-                    browser.setPreferences(preferences1);
+                    BrowserPreferences newPrefs = browser.getPreferences();
+                    newPrefs.setJavaScriptEnabled(selected);
+                    browser.setPreferences(newPrefs);
                     browser.reloadIgnoringCache();
                 }));
         menu.add(createCheckBoxMenuItem("Images Enabled", preferences.isImagesEnabled(),
@@ -264,7 +271,7 @@ final class ToolBar extends JPanel {
     private Component createClearCacheMenuItem() {
         JMenuItem menuItem = new JMenuItem("Clear Cache");
         menuItem.addActionListener(
-            e -> browserView.getBrowser().getCacheStorage().clearCache(
+            e -> browser.getCacheStorage().clearCache(
                     () -> showMessageDialog(browserView, "Cache is cleared successfully.",
                             "Clear Cache", INFORMATION_MESSAGE))
         );
