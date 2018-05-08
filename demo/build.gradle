@@ -19,4 +19,4 @@
  */
 
 apply plugin: 'application'
-mainClassName = 'Application'
+mainClassName = 'com.teamdev.jxbrowser.demo.Application'
