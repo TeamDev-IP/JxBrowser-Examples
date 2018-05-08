@@ -40,8 +40,11 @@ final class Tab {
 
     static class Event {
 
+        static final String CLICKED = "TabClicked";
+        static final String SELECTED = "TabSelected";
         static final String CLOSED = "TabClosed";
         static final String PAGE_TITLE_CHANGED = "PageTitleChanged";
+        static final String CLOSE_BUTTON_PRESSED = "CloseButtonPressed";
 
         /** Prevents instantiation of this constant holder class. */
         private Event() {

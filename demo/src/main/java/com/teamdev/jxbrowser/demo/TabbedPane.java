@@ -20,6 +20,8 @@
 
 package com.teamdev.jxbrowser.demo;
 
+import com.google.common.collect.ImmutableList;
+
 import java.awt.BorderLayout;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
@@ -74,16 +76,19 @@ final class TabbedPane extends JPanel {
                 return tab;
             }
         }
-        return null;
+        throw new IllegalStateException("Unable to find tab with caption: " + item);
     }
 
     void addTab(Tab tab) {
         TabCaption caption = tab.getCaption();
-        caption.addPropertyChangeListener("CloseButtonPressed", new TabCaptionCloseTabListener());
-        caption.addPropertyChangeListener("TabSelected", new SelectTabListener());
+        caption.addPropertyChangeListener(
+            Tab.Event.CLOSE_BUTTON_PRESSED,
+            new TabCaptionCloseTabListener()
+        );
+        caption.addPropertyChangeListener(Tab.Event.SELECTED, new SelectTabListener());
 
         TabContent content = tab.getContent();
-        content.addPropertyChangeListener("TabClosed", new TabContentCloseTabListener());
+        content.addPropertyChangeListener(Tab.Event.CLOSED, new TabContentCloseTabListener());
 
         captions.addTab(caption);
         tabs.add(tab);
@@ -100,7 +105,7 @@ final class TabbedPane extends JPanel {
     }
 
     private List<Tab> getTabs() {
-        return new ArrayList<Tab>(tabs);
+        return ImmutableList.copyOf(tabs);
     }
 
     private void removeTab(Tab tab) {
@@ -167,7 +172,7 @@ final class TabbedPane extends JPanel {
                     return tab;
                 }
             }
-            return null;
+            throw new IllegalStateException("Unable to find tab with content: " + content);
         }
     }
 }

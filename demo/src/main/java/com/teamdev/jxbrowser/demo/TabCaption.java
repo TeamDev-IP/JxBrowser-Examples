@@ -42,11 +42,13 @@ final class TabCaption extends JPanel {
     private JComponent createComponent() {
         component = new TabCaptionComponent();
         component.addPropertyChangeListener(
-                "CloseButtonPressed",
-                evt -> firePropertyChange("CloseButtonPressed", evt.getOldValue(), evt.getNewValue())
+            Tab.Event.CLOSE_BUTTON_PRESSED,
+                evt -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED,
+                        evt.getOldValue(),
+                        evt.getNewValue())
         );
         component.addPropertyChangeListener(
-                "TabClicked",
+                Tab.Event.CLICKED,
                 evt -> setSelected(true)
         );
         return component;
@@ -104,10 +106,10 @@ final class TabCaption extends JPanel {
                 public void mousePressed(MouseEvent e) {
                     int button = e.getButton();
                     if (button == MouseEvent.BUTTON1) {
-                        firePropertyChange("TabClicked", false, true);
+                        firePropertyChange(Tab.Event.CLICKED, false, true);
                     }
                     if (button == MouseEvent.BUTTON2) {
-                        firePropertyChange("CloseButtonPressed", false, true);
+                        firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED, false, true);
                     }
                 }
             });
@@ -123,7 +125,9 @@ final class TabCaption extends JPanel {
             closeButton.setIcon(loadIcon("close.png"));
             closeButton.setContentAreaFilled(false);
             closeButton.setFocusable(false);
-            closeButton.addActionListener(e -> firePropertyChange("CloseButtonPressed", false, true));
+            closeButton.addActionListener(
+                    e -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED, false, true)
+            );
             return closeButton;
         }
 
