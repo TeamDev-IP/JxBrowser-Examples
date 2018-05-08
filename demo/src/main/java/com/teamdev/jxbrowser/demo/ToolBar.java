@@ -184,7 +184,7 @@ final class ToolBar extends JPanel {
     private JComponent createMenuButton() {
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.add(createConsoleMenuItem());
-        popupMenu.add(createGetHTMLMenuItem());
+        popupMenu.add(createGetHtmlMenuItem());
         popupMenu.add(createPopupsMenuItem());
         popupMenu.add(createUploadFileMenuItem());
         popupMenu.add(createDownloadFileMenuItem());
@@ -350,7 +350,7 @@ final class ToolBar extends JPanel {
         return menuItem;
     }
 
-    private Component createGetHTMLMenuItem() {
+    private Component createGetHtmlMenuItem() {
         JMenuItem menuItem = new JMenuItem("Get HTML");
         menuItem.addActionListener(e -> {
             String html = browser.getHTML();
