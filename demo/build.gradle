@@ -20,3 +20,8 @@
 
 apply plugin: 'application'
 mainClassName = 'com.teamdev.jxbrowser.demo.Application'
+
+dependencies {
+    // Depend on Guava for the Resources utility class used for loading resource files into strings.
+    compile "com.google.guava:guava:$guavaVersion"
+}

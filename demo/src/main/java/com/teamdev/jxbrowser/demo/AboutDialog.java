@@ -84,17 +84,13 @@ final class AboutDialog extends JDialog {
                 "style='text-decoration:none'>LGPL v.2.1</a></font></html>");
         aboutText.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         aboutText.setEditable(false);
-        aboutText.addHyperlinkListener(new HyperlinkListener() {
-            @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent event) {
-                if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-                    try {
-                        Desktop desktop = java.awt.Desktop.getDesktop();
-                        desktop.browse(event.getURL().toURI());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+        aboutText.addHyperlinkListener(event -> {
+            if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+                try {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.browse(event.getURL().toURI());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
