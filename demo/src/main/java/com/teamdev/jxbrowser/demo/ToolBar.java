@@ -261,14 +261,6 @@ final class ToolBar extends JPanel {
                     browser.setPreferences(preferences14);
                     browser.reloadIgnoringCache();
                 }));
-        menu.add(createCheckBoxMenuItem("JavaScript Can Open Windows",
-                preferences.isJavaScriptCanOpenWindowsAutomatically(),
-                selected -> {
-                    BrowserPreferences prefs = browser.getPreferences();
-                    prefs.setJavaScriptCanOpenWindowsAutomatically(selected);
-                    browser.setPreferences(prefs);
-                    browser.reloadIgnoringCache();
-                }));
         return menu;
     }
 
