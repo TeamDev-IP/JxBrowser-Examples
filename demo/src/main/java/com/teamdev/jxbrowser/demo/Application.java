@@ -28,22 +28,24 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class JxBrowserDemo {
+public class Application {
 
-    private static void initEnvironment() throws Exception {
+    private void initEnvironment() {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "JxBrowser Demo");
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            throw new IllegalStateException("Unable to set look and feel", e);
+        }
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
     }
 
-    public static void main(String[] args) throws Exception {
-        initEnvironment();
-        SwingUtilities.invokeLater(JxBrowserDemo::initAndDisplayUI);
-    }
-
-    private static void initAndDisplayUI() {
+    private void initAndDisplayUI() {
         final TabbedPane tabbedPane = new TabbedPane();
         insertTab(tabbedPane, TabFactory.createFirstTab());
         insertNewTabButton(tabbedPane);
@@ -76,5 +78,11 @@ public class JxBrowserDemo {
     private static void insertTab(TabbedPane tabbedPane, Tab tab) {
         tabbedPane.addTab(tab);
         tabbedPane.selectTab(tab);
+    }
+
+    public static void main(String[] args) {
+        Application app = new Application();
+        app.initEnvironment();
+        SwingUtilities.invokeLater(app::initAndDisplayUI);
     }
 }
