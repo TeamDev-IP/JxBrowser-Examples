@@ -24,18 +24,25 @@ import com.teamdev.jxbrowser.chromium.ProductInfo;
 import com.teamdev.jxbrowser.demo.resources.Resources;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.Year;
 
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+import static javax.swing.BorderFactory.createEmptyBorder;
+import static javax.swing.KeyStroke.getKeyStroke;
+import static javax.swing.event.HyperlinkEvent.EventType.ACTIVATED;
+
 /**
  * Displays copyright and licensing information.
  */
 final class AboutDialog extends JDialog {
 
+    /**
+     * Creates a new instance of the dialog associated with the passed frame.
+     */
     AboutDialog(Frame owner) {
         super(owner, "About JxBrowser Demo", true);
         initContent();
@@ -43,7 +50,7 @@ final class AboutDialog extends JDialog {
         setResizable(false);
         pack();
         setLocationRelativeTo(owner);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void initContent() {
@@ -52,10 +59,10 @@ final class AboutDialog extends JDialog {
         String aboutHtml = loadHtml();
         aboutText.setText(aboutHtml);
 
-        aboutText.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        aboutText.setBorder(createEmptyBorder(20, 20, 20, 20));
         aboutText.setEditable(false);
         aboutText.addHyperlinkListener(event -> {
-            if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+            if (event.getEventType().equals(ACTIVATED)) {
                 try {
                     Desktop desktop = Desktop.getDesktop();
                     desktop.browse(event.getURL().toURI());
@@ -80,13 +87,13 @@ final class AboutDialog extends JDialog {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == VK_ESCAPE) {
                     dispose();
                 }
             }
         });
         JRootPane rootPane = getRootPane();
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+        KeyStroke keyStroke = getKeyStroke(VK_ESCAPE, 0, false);
         final String actionKey = "ESCAPE";
         rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, actionKey);
         rootPane.getActionMap().put(actionKey, new AbstractAction() {
