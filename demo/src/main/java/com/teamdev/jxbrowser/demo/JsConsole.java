@@ -28,7 +28,7 @@ import java.awt.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 
 final class JsConsole extends JPanel {
 
@@ -108,8 +108,8 @@ final class JsConsole extends JPanel {
         closeButton.setOpaque(false);
         closeButton.setToolTipText("Close JavaScript Console");
         closeButton.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        closeButton.setPressedIcon(getIcon("close-pressed.png"));
-        closeButton.setIcon(getIcon("close.png"));
+        closeButton.setPressedIcon(loadIcon("close-pressed.png"));
+        closeButton.setIcon(loadIcon("close.png"));
         closeButton.setContentAreaFilled(false);
         closeButton.setFocusable(false);
         closeButton.addActionListener(e -> firePropertyChange("JSConsoleClosed", false, true));

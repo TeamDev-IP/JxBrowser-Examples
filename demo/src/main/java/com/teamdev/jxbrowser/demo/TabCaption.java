@@ -25,7 +25,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 
 final class TabCaption extends JPanel {
 
@@ -119,8 +119,8 @@ final class TabCaption extends JPanel {
             closeButton.setOpaque(false);
             closeButton.setToolTipText("Close");
             closeButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-            closeButton.setPressedIcon(getIcon("close-pressed.png"));
-            closeButton.setIcon(getIcon("close.png"));
+            closeButton.setPressedIcon(loadIcon("close-pressed.png"));
+            closeButton.setIcon(loadIcon("close.png"));
             closeButton.setContentAreaFilled(false);
             closeButton.setFocusable(false);
             closeButton.addActionListener(e -> firePropertyChange("CloseButtonPressed", false, true));

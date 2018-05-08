@@ -37,7 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -109,8 +109,8 @@ final class ToolBar extends JPanel {
     private static JButton createButton(String caption, Action action) {
         ActionButton button = new ActionButton(caption, action);
         String imageName = caption.toLowerCase();
-        button.setIcon(getIcon(imageName + ".png"));
-        button.setRolloverIcon(getIcon(imageName + "-selected.png"));
+        button.setIcon(loadIcon(imageName + ".png"));
+        button.setRolloverIcon(loadIcon(imageName + "-selected.png"));
         return button;
     }
 
@@ -207,7 +207,7 @@ final class ToolBar extends JPanel {
         popupMenu.add(createAboutMenuItem());
 
         final ActionButton button = new ActionButton("Preferences", null);
-        button.setIcon(getIcon("gear.png"));
+        button.setIcon(loadIcon("gear.png"));
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {

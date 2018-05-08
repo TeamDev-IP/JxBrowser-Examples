@@ -27,7 +27,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 
 final public class Application {
 
@@ -64,12 +64,12 @@ final public class Application {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setSize(1024, 700);
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(getIcon("jxbrowser16x16.png").getImage());
+        frame.setIconImage(loadIcon("jxbrowser16x16.png").getImage());
         frame.setVisible(true);
     }
 
     private static void insertNewTabButton(final TabbedPane tabbedPane) {
-        TabButton button = new TabButton(getIcon("new-tab.png"), "New tab");
+        TabButton button = new TabButton(loadIcon("new-tab.png"), "New tab");
         button.addActionListener(e -> insertTab(tabbedPane, TabFactory.createTab()));
         tabbedPane.addTabButton(button);
     }

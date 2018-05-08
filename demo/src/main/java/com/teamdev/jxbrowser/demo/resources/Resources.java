@@ -22,17 +22,19 @@ public class Resources {
     }
 
     /**
-     * Loads an {@code ImageIcon} from a resource file.
+     * Loads an {@code ImageIcon} from the resource file.
      *
-     * <p>Assumes that all icons are stored under the {@code icon} sub-directory.
+     * <p>Assumes that all icons are stored under the {@code icon/} sub-directory.
      */
-    public static ImageIcon getIcon(String fileName) {
+    public static ImageIcon loadIcon(String fileName) {
         URL resource = Resources.class.getResource("icon/" + fileName);
         return new ImageIcon(resource);
     }
 
     /**
      * Loads a text file from resources.
+     *
+     * <p>The file must have UTF-8 encoding.
      */
     public static String load(String fileName) {
         URL url = Resources.class.getResource(fileName);
