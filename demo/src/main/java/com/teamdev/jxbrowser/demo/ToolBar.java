@@ -40,15 +40,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+import static com.teamdev.jxbrowser.chromium.EditorCommand.*;
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
-import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.*;
 
 final class ToolBar extends JPanel {
+
     private static final String RUN_JAVASCRIPT = "Run JavaScript...";
     private static final String CLOSE_JAVASCRIPT = "Close JavaScript Console";
     private static final String DEFAULT_URL = "about:blank";
-    private final JTextField addressBar;
+
     private final BrowserView browserView;
+    private final Browser browser;
+
+    private final JTextField addressBar;
+
     private JButton backwardButton;
     private JButton forwardButton;
     private JButton refreshButton;
@@ -57,7 +63,9 @@ final class ToolBar extends JPanel {
 
     ToolBar(BrowserView browserView) {
         this.browserView = browserView;
-        addressBar = createAddressBar();
+        this.browser = browserView.getBrowser();
+
+        this.addressBar = createAddressBar();
         setLayout(new GridBagLayout());
         add(createActionsPane(),
                 new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
@@ -121,10 +129,10 @@ final class ToolBar extends JPanel {
     }
 
     private JPanel createActionsPane() {
-        backwardButton = createBackwardButton(browserView.getBrowser());
-        forwardButton = createForwardButton(browserView.getBrowser());
-        refreshButton = createRefreshButton(browserView.getBrowser());
-        stopButton = createStopButton(browserView.getBrowser());
+        backwardButton = createBackwardButton(browser);
+        forwardButton = createForwardButton(browser);
+        refreshButton = createRefreshButton(browser);
+        stopButton = createStopButton(browser);
 
         JPanel actionsPanel = new JPanel();
         actionsPanel.add(backwardButton);
@@ -223,7 +231,6 @@ final class ToolBar extends JPanel {
 
     private Component createPreferencesSubMenu() {
         JMenu menu = new JMenu("Preferences");
-        final Browser browser = browserView.getBrowser();
         BrowserPreferences preferences = browser.getPreferences();
         menu.add(createCheckBoxMenuItem("JavaScript Enabled", preferences.isJavaScriptEnabled(),
                 selected -> {
@@ -257,9 +264,9 @@ final class ToolBar extends JPanel {
         menu.add(createCheckBoxMenuItem("JavaScript Can Open Windows",
                 preferences.isJavaScriptCanOpenWindowsAutomatically(),
                 selected -> {
-                    BrowserPreferences preferences15 = browser.getPreferences();
-                    preferences15.setJavaScriptCanOpenWindowsAutomatically(selected);
-                    browser.setPreferences(preferences15);
+                    BrowserPreferences prefs = browser.getPreferences();
+                    prefs.setJavaScriptCanOpenWindowsAutomatically(selected);
+                    browser.setPreferences(prefs);
                     browser.reloadIgnoringCache();
                 }));
         return menu;
@@ -269,8 +276,8 @@ final class ToolBar extends JPanel {
         JMenuItem menuItem = new JMenuItem("Clear Cache");
         menuItem.addActionListener(
             e -> browserView.getBrowser().getCacheStorage().clearCache(
-                    () -> JOptionPane.showMessageDialog(browserView, "Cache is cleared successfully.",
-                            "Clear Cache", JOptionPane.INFORMATION_MESSAGE))
+                    () -> showMessageDialog(browserView, "Cache is cleared successfully.",
+                            "Clear Cache", INFORMATION_MESSAGE))
         );
         return menuItem;
     }
@@ -281,8 +288,8 @@ final class ToolBar extends JPanel {
             public void menuSelected(MenuEvent e) {
                 Component[] menuItems = menu.getMenuComponents();
                 for (Component menuItem : menuItems) {
-                    menuItem.setEnabled(browserView.getBrowser()
-                            .isCommandEnabled(((CommandMenuItem) menuItem).getCommand()));
+                    EditorCommand command = ((CommandMenuItem) menuItem).getCommand();
+                    menuItem.setEnabled(browser.isCommandEnabled(command));
                 }
             }
 
@@ -293,22 +300,22 @@ final class ToolBar extends JPanel {
             }
         });
 
-        menu.add(createExecuteCommandSubMenuItem("Cut", EditorCommand.CUT));
-        menu.add(createExecuteCommandSubMenuItem("Copy", EditorCommand.COPY));
-        menu.add(createExecuteCommandSubMenuItem("Paste", EditorCommand.PASTE));
-        menu.add(createExecuteCommandSubMenuItem("Select All", EditorCommand.SELECT_ALL));
-        menu.add(createExecuteCommandSubMenuItem("Unselect", EditorCommand.UNSELECT));
-        menu.add(createExecuteCommandSubMenuItem("Undo", EditorCommand.UNDO));
-        menu.add(createExecuteCommandSubMenuItem("Redo", EditorCommand.REDO));
-        menu.add(createExecuteCommandSubMenuItem("Insert Text...", "Insert Text", EditorCommand.INSERT_TEXT));
-        menu.add(createExecuteCommandSubMenuItem("Find Text...", "Find Text", EditorCommand.FIND_STRING));
+        menu.add(createExecuteCommandSubMenuItem("Cut", CUT));
+        menu.add(createExecuteCommandSubMenuItem("Copy", COPY));
+        menu.add(createExecuteCommandSubMenuItem("Paste", PASTE));
+        menu.add(createExecuteCommandSubMenuItem("Select All", SELECT_ALL));
+        menu.add(createExecuteCommandSubMenuItem("Unselect", UNSELECT));
+        menu.add(createExecuteCommandSubMenuItem("Undo", UNDO));
+        menu.add(createExecuteCommandSubMenuItem("Redo", REDO));
+        menu.add(createExecuteCommandSubMenuItem("Insert Text...", "Insert Text", INSERT_TEXT));
+        menu.add(createExecuteCommandSubMenuItem("Find Text...", "Find Text", FIND_STRING));
         return menu;
     }
 
     private Component createExecuteCommandSubMenuItem(final String commandName,
             final EditorCommand command) {
         final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
-        menuItem.addActionListener(e -> browserView.getBrowser().executeCommand(command));
+        menuItem.addActionListener(e -> browser.executeCommand(command));
         return menuItem;
     }
 
@@ -316,8 +323,9 @@ final class ToolBar extends JPanel {
             final String dialogTitle, final EditorCommand command) {
         final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
         menuItem.addActionListener(e -> {
-            String value = JOptionPane.showInputDialog(browserView, "Command value:", dialogTitle, PLAIN_MESSAGE);
-            browserView.getBrowser().executeCommand(command, value);
+            String value = showInputDialog(browserView, "Command value:",
+                    dialogTitle, PLAIN_MESSAGE);
+            browser.executeCommand(command, value);
         });
         return menuItem;
     }
@@ -325,8 +333,7 @@ final class ToolBar extends JPanel {
     private Component createMoreMenuItem() {
         JMenuItem menuItem = new JMenuItem("More Features...");
         menuItem.addActionListener(
-                e -> browserView.getBrowser().loadURL(
-                        "https://jxbrowser.support.teamdev.com/support/solutions/9000049010")
+                e -> browser.loadURL("https://jxbrowser.support.teamdev.com/support/solutions/9000049010")
         );
         return menuItem;
     }
@@ -341,7 +348,8 @@ final class ToolBar extends JPanel {
                 File selectedFile = fileChooser.getSelectedFile();
                 String dirPath = new File(selectedFile.getParent(), "resources")
                         .getAbsolutePath();
-                browserView.getBrowser().saveWebPage(selectedFile.getAbsolutePath(), dirPath,
+                browser.saveWebPage(selectedFile.getAbsolutePath(),
+                        dirPath,
                         SavePageType.COMPLETE_HTML);
             }
         });
@@ -350,41 +358,40 @@ final class ToolBar extends JPanel {
 
     private Component createActualSizeMenuItem() {
         JMenuItem menuItem = new JMenuItem("Actual Size");
-        menuItem.addActionListener(e -> browserView.getBrowser().zoomReset());
+        menuItem.addActionListener(e -> browser.zoomReset());
         return menuItem;
     }
 
     private Component createZoomOutMenuItem() {
         JMenuItem menuItem = new JMenuItem("Zoom Out");
-        menuItem.addActionListener(e -> browserView.getBrowser().zoomOut());
+        menuItem.addActionListener(e -> browser.zoomOut());
         return menuItem;
     }
 
     private Component createZoomInMenuItem() {
         JMenuItem menuItem = new JMenuItem("Zoom In");
-        menuItem.addActionListener(e -> browserView.getBrowser().zoomIn());
+        menuItem.addActionListener(e -> browser.zoomIn());
         return menuItem;
     }
 
     private Component createHTML5VideoMenuItem() {
         JMenuItem menuItem = new JMenuItem("HTML5 Video");
         menuItem.addActionListener(
-                e -> browserView.getBrowser()
-                                .loadURL("http://www.w3.org/2010/05/video/mediaevents.html")
+                e -> browser.loadURL("http://www.w3.org/2010/05/video/mediaevents.html")
         );
         return menuItem;
     }
 
     private Component createGoogleMapsMenuItem() {
         JMenuItem menuItem = new JMenuItem("Google Maps");
-        menuItem.addActionListener(e -> browserView.getBrowser().loadURL("https://maps.google.com/"));
+        menuItem.addActionListener(e -> browser.loadURL("https://maps.google.com/"));
         return menuItem;
     }
 
     private Component createJavaScriptDialogsMenuItem() {
         JMenuItem menuItem = new JMenuItem("JavaScript Dialogs");
         menuItem.addActionListener(
-                e -> browserView.getBrowser().loadURL("http://www.javascripter.net/faq/alert.htm")
+                e -> browser.loadURL("http://www.javascripter.net/faq/alert.htm")
         );
         return menuItem;
     }
@@ -392,8 +399,7 @@ final class ToolBar extends JPanel {
     private Component createDownloadFileMenuItem() {
         JMenuItem menuItem = new JMenuItem("Download File");
         menuItem.addActionListener(
-                e -> browserView.getBrowser()
-                                .loadURL("https://s3.amazonaws.com/cloud.teamdev.com/downloads/demo/jxbrowserdemo.jnlp")
+                e -> browser.loadURL("https://s3.amazonaws.com/cloud.teamdev.com/downloads/demo/jxbrowserdemo.jnlp")
         );
         return menuItem;
     }
@@ -401,7 +407,7 @@ final class ToolBar extends JPanel {
     private Component createGetHTMLMenuItem() {
         JMenuItem menuItem = new JMenuItem("Get HTML");
         menuItem.addActionListener(e -> {
-            String html = browserView.getBrowser().getHTML();
+            String html = browser.getHTML();
             Window window = SwingUtilities.getWindowAncestor(browserView);
             JDialog dialog = new JDialog(window);
             dialog.setModal(true);
@@ -431,27 +437,26 @@ final class ToolBar extends JPanel {
     private JMenuItem createUploadFileMenuItem() {
         JMenuItem menuItem = new JMenuItem("Upload File");
         menuItem.addActionListener(
-                e -> browserView.getBrowser()
-                                .loadURL("http://www.cs.tut.fi/~jkorpela/forms/file.html#example")
+                e -> browser.loadURL("http://www.cs.tut.fi/~jkorpela/forms/file.html#example")
         );
         return menuItem;
     }
 
     private JMenuItem createPopupsMenuItem() {
         JMenuItem menuItem = new JMenuItem("Popup Windows");
-        menuItem.addActionListener(e -> browserView.getBrowser().loadURL("http://www.popuptest.com"));
+        menuItem.addActionListener(e -> browser.loadURL("http://www.popuptest.com"));
         return menuItem;
     }
 
     private JMenuItem createPDFViewerMenuItem() {
         JMenuItem menuItem = new JMenuItem("PDF Viewer");
-        menuItem.addActionListener(e -> browserView.getBrowser().loadURL("http://www.orimi.com/pdf-test.pdf"));
+        menuItem.addActionListener(e -> browser.loadURL("http://www.orimi.com/pdf-test.pdf"));
         return menuItem;
     }
 
     private JMenuItem createFlashMenuItem() {
         JMenuItem menuItem = new JMenuItem("Adobe Flash");
-        menuItem.addActionListener(e -> browserView.getBrowser().loadURL("http://helpx.adobe.com/flash-player.html"));
+        menuItem.addActionListener(e -> browser.loadURL("http://helpx.adobe.com/flash-player.html"));
         return menuItem;
     }
 

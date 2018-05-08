@@ -31,6 +31,7 @@ import java.awt.*;
 final class TabContent extends JPanel {
 
     private final BrowserView browserView;
+    private final Browser browser;
     private final ToolBar toolBar;
     private final JComponent jsConsole;
     private final JComponent container;
@@ -38,13 +39,13 @@ final class TabContent extends JPanel {
 
     TabContent(final BrowserView browserView) {
         this.browserView = browserView;
-        final Browser browser = this.browserView.getBrowser();
+        this.browser = browserView.getBrowser();
+
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    firePropertyChange("PageTitleChanged", null,
-                            TabContent.this.browserView.getBrowser().getTitle());
+                    firePropertyChange("PageTitleChanged", null, browser.getTitle());
                 }
             }
         });
@@ -102,7 +103,7 @@ final class TabContent extends JPanel {
     }
 
     private JComponent createConsole() {
-        JsConsole result = new JsConsole(browserView.getBrowser());
+        JsConsole result = new JsConsole(browser);
         result.addPropertyChangeListener("JSConsoleClosed", evt -> {
             hideConsole();
             toolBar.didJsConsoleClose();
@@ -117,6 +118,6 @@ final class TabContent extends JPanel {
     }
 
     void dispose() {
-        browserView.getBrowser().dispose();
+        browser.dispose();
     }
 }
