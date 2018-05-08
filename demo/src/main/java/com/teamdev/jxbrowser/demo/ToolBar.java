@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.EditorCommand;
 import com.teamdev.jxbrowser.chromium.SavePageType;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
@@ -31,8 +30,6 @@ import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -40,9 +37,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import static com.teamdev.jxbrowser.chromium.EditorCommand.*;
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 final class ToolBar extends JPanel {
 
@@ -275,51 +272,8 @@ final class ToolBar extends JPanel {
     }
 
     private Component createEditMenu() {
-        final JMenu menu = new JMenu("Edit");
-        menu.addMenuListener(new MenuListener() {
-            public void menuSelected(MenuEvent e) {
-                Component[] menuItems = menu.getMenuComponents();
-                for (Component menuItem : menuItems) {
-                    EditorCommand command = ((CommandMenuItem) menuItem).getCommand();
-                    menuItem.setEnabled(browser.isCommandEnabled(command));
-                }
-            }
-
-            public void menuDeselected(MenuEvent e) {
-            }
-
-            public void menuCanceled(MenuEvent e) {
-            }
-        });
-
-        menu.add(createEditorMenuItem("Cut", CUT));
-        menu.add(createEditorMenuItem("Copy", COPY));
-        menu.add(createEditorMenuItem("Paste", PASTE));
-        menu.add(createEditorMenuItem("Select All", SELECT_ALL));
-        menu.add(createEditorMenuItem("Unselect", UNSELECT));
-        menu.add(createEditorMenuItem("Undo", UNDO));
-        menu.add(createEditorMenuItem("Redo", REDO));
-        menu.add(createEditorMenuItem("Insert Text...", "Insert Text", INSERT_TEXT));
-        menu.add(createEditorMenuItem("Find Text...", "Find Text", FIND_STRING));
-        return menu;
-    }
-
-    private Component createEditorMenuItem(final String commandName,
-                                           final EditorCommand command) {
-        final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
-        menuItem.addActionListener(e -> browser.executeCommand(command));
-        return menuItem;
-    }
-
-    private Component createEditorMenuItem(final String commandName,
-                                           final String dialogTitle, final EditorCommand command) {
-        final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
-        menuItem.addActionListener(e -> {
-            String value = showInputDialog(browserView, "Command value:",
-                    dialogTitle, PLAIN_MESSAGE);
-            browser.executeCommand(command, value);
-        });
-        return menuItem;
+        EditMenu menu = new EditMenu(browserView);
+        return menu.getComponent();
     }
 
     private Component createMoreMenuItem() {
