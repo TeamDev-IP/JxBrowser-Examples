@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-class TabbedPane extends JPanel {
+final class TabbedPane extends JPanel {
 
     private final List<Tab> tabs;
     private final TabCaptions captions;
@@ -77,7 +77,7 @@ class TabbedPane extends JPanel {
         return null;
     }
 
-    void addTab(final Tab tab) {
+    void addTab(Tab tab) {
         TabCaption caption = tab.getCaption();
         caption.addPropertyChangeListener("CloseButtonPressed", new TabCaptionCloseTabListener());
         caption.addPropertyChangeListener("TabSelected", new SelectTabListener());
@@ -103,7 +103,7 @@ class TabbedPane extends JPanel {
         return new ArrayList<Tab>(tabs);
     }
 
-    public void removeTab(Tab tab) {
+    private void removeTab(Tab tab) {
         TabCaption tabCaption = tab.getCaption();
         captions.removeTab(tabCaption);
         tabs.remove(tab);

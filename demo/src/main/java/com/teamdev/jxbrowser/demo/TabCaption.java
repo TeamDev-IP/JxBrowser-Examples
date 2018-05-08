@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 
-class TabCaption extends JPanel {
+final class TabCaption extends JPanel {
 
     private boolean selected;
     private TabCaptionComponent component;
@@ -75,7 +75,7 @@ class TabCaption extends JPanel {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    void setSelected(boolean selected) {
         boolean oldValue = this.selected;
         this.selected = selected;
         component.setSelected(selected);
@@ -102,10 +102,11 @@ class TabCaption extends JPanel {
             label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
+                    int button = e.getButton();
+                    if (button == MouseEvent.BUTTON1) {
                         firePropertyChange("TabClicked", false, true);
                     }
-                    if (e.getButton() == MouseEvent.BUTTON2) {
+                    if (button == MouseEvent.BUTTON2) {
                         firePropertyChange("CloseButtonPressed", false, true);
                     }
                 }

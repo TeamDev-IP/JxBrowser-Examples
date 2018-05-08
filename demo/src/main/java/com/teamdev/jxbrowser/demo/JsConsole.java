@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 
-class JsConsole extends JPanel {
+final class JsConsole extends JPanel {
 
     private static final String QUERY_LINE_START = ">> ";
 

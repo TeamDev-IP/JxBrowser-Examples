@@ -43,7 +43,7 @@ import java.io.File;
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
-class ToolBar extends JPanel {
+final class ToolBar extends JPanel {
     private static final String RUN_JAVASCRIPT = "Run JavaScript...";
     private static final String CLOSE_JAVASCRIPT = "Close JavaScript Console";
     private static final String DEFAULT_URL = "about:blank";
@@ -116,7 +116,7 @@ class ToolBar extends JPanel {
         return menuItem;
     }
 
-    public void didJSConsoleClose() {
+    void didJsConsoleClose() {
         consoleMenuItem.setText(RUN_JAVASCRIPT);
     }
 

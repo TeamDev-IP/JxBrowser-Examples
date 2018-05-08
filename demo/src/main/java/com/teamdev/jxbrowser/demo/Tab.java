@@ -20,7 +20,7 @@
 
 package com.teamdev.jxbrowser.demo;
 
-class Tab {
+final class Tab {
 
     private final TabCaption caption;
     private final TabContent content;

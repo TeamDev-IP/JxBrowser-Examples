@@ -27,10 +27,8 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-class TabContent extends JPanel {
+final class TabContent extends JPanel {
 
     private final BrowserView browserView;
     private final ToolBar toolBar;
@@ -105,11 +103,9 @@ class TabContent extends JPanel {
 
     private JComponent createConsole() {
         JsConsole result = new JsConsole(browserView.getBrowser());
-        result.addPropertyChangeListener("JSConsoleClosed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                hideConsole();
-                toolBar.didJSConsoleClose();
-            }
+        result.addPropertyChangeListener("JSConsoleClosed", evt -> {
+            hideConsole();
+            toolBar.didJsConsoleClose();
         });
         return result;
     }

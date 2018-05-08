@@ -29,7 +29,7 @@ import java.awt.event.WindowEvent;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 
-public class Application {
+final public class Application {
 
     private Application() {
         System.setProperty("apple.laf.useScreenMenuBar", "true");

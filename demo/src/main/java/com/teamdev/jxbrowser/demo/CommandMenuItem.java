@@ -26,7 +26,7 @@ import javax.swing.JMenuItem;
 /**
  * @author Artem Trofimov
  */
-class CommandMenuItem extends JMenuItem {
+final class CommandMenuItem extends JMenuItem {
 
     private final EditorCommand command;
 
