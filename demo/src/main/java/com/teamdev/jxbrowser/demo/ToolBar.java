@@ -202,7 +202,7 @@ final class ToolBar extends JPanel {
         popupMenu.add(createSaveWebPageMenuItem());
         popupMenu.add(createClearCacheMenuItem());
         popupMenu.add(createPreferencesSubMenu());
-        popupMenu.add(createExecuteCommandSubMenu());
+        popupMenu.add(createEditMenu());
         popupMenu.add(createPrintMenuItem());
         popupMenu.addSeparator();
         popupMenu.add(createMoreMenuItem());
@@ -274,8 +274,8 @@ final class ToolBar extends JPanel {
         return menuItem;
     }
 
-    private Component createExecuteCommandSubMenu() {
-        final JMenu menu = new JMenu("Execute Command");
+    private Component createEditMenu() {
+        final JMenu menu = new JMenu("Edit");
         menu.addMenuListener(new MenuListener() {
             public void menuSelected(MenuEvent e) {
                 Component[] menuItems = menu.getMenuComponents();
@@ -292,27 +292,27 @@ final class ToolBar extends JPanel {
             }
         });
 
-        menu.add(createExecuteCommandSubMenuItem("Cut", CUT));
-        menu.add(createExecuteCommandSubMenuItem("Copy", COPY));
-        menu.add(createExecuteCommandSubMenuItem("Paste", PASTE));
-        menu.add(createExecuteCommandSubMenuItem("Select All", SELECT_ALL));
-        menu.add(createExecuteCommandSubMenuItem("Unselect", UNSELECT));
-        menu.add(createExecuteCommandSubMenuItem("Undo", UNDO));
-        menu.add(createExecuteCommandSubMenuItem("Redo", REDO));
-        menu.add(createExecuteCommandSubMenuItem("Insert Text...", "Insert Text", INSERT_TEXT));
-        menu.add(createExecuteCommandSubMenuItem("Find Text...", "Find Text", FIND_STRING));
+        menu.add(createEditorMenuItem("Cut", CUT));
+        menu.add(createEditorMenuItem("Copy", COPY));
+        menu.add(createEditorMenuItem("Paste", PASTE));
+        menu.add(createEditorMenuItem("Select All", SELECT_ALL));
+        menu.add(createEditorMenuItem("Unselect", UNSELECT));
+        menu.add(createEditorMenuItem("Undo", UNDO));
+        menu.add(createEditorMenuItem("Redo", REDO));
+        menu.add(createEditorMenuItem("Insert Text...", "Insert Text", INSERT_TEXT));
+        menu.add(createEditorMenuItem("Find Text...", "Find Text", FIND_STRING));
         return menu;
     }
 
-    private Component createExecuteCommandSubMenuItem(final String commandName,
-            final EditorCommand command) {
+    private Component createEditorMenuItem(final String commandName,
+                                           final EditorCommand command) {
         final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
         menuItem.addActionListener(e -> browser.executeCommand(command));
         return menuItem;
     }
 
-    private Component createExecuteCommandSubMenuItem(final String commandName,
-            final String dialogTitle, final EditorCommand command) {
+    private Component createEditorMenuItem(final String commandName,
+                                           final String dialogTitle, final EditorCommand command) {
         final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
         menuItem.addActionListener(e -> {
             String value = showInputDialog(browserView, "Command value:",
