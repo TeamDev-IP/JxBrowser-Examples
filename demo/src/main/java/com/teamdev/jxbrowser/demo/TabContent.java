@@ -41,17 +41,18 @@ final class TabContent extends JPanel {
         this.browserView = browserView;
         this.browser = browserView.getBrowser();
 
+        final String pageTitleChanged = Tab.Event.PAGE_TITLE_CHANGED;
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    firePropertyChange("PageTitleChanged", null, browser.getTitle());
+                    firePropertyChange(pageTitleChanged, null, browser.getTitle());
                 }
             }
         });
 
         browser.addTitleListener(
-            event -> firePropertyChange("PageTitleChanged", null, event.getTitle())
+            event -> firePropertyChange(pageTitleChanged, null, event.getTitle())
         );
 
         browserContainer = createBrowserContainer();
@@ -68,17 +69,12 @@ final class TabContent extends JPanel {
 
     private ToolBar createToolBar(BrowserView browserView) {
         ToolBar toolBar = new ToolBar(browserView);
-        toolBar.addPropertyChangeListener(
-            "TabClosed",
-            evt -> firePropertyChange("TabClosed", false, true)
+        toolBar.addPropertyChangeListener(Tab.Event.CLOSED,
+            evt -> firePropertyChange(Tab.Event.CLOSED, false, true)
         );
-        toolBar.addPropertyChangeListener(
-            "JSConsoleDisplayed",
-            evt -> showConsole()
+        toolBar.addPropertyChangeListener(JsConsole.Event.DISPLAYED, evt -> showConsole()
         );
-        toolBar.addPropertyChangeListener(
-            "JSConsoleClosed",
-            evt -> hideConsole()
+        toolBar.addPropertyChangeListener(JsConsole.Event.CLOSED, evt -> hideConsole()
         );
         return toolBar;
     }
@@ -104,7 +100,7 @@ final class TabContent extends JPanel {
 
     private JComponent createConsole() {
         JsConsole result = new JsConsole(browser);
-        result.addPropertyChangeListener("JSConsoleClosed", evt -> {
+        result.addPropertyChangeListener(JsConsole.Event.CLOSED, evt -> {
             hideConsole();
             toolBar.didJsConsoleClose();
         });

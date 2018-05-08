@@ -37,4 +37,14 @@ final class Tab {
     TabContent getContent() {
         return content;
     }
+
+    static class Event {
+
+        static final String CLOSED = "TabClosed";
+        static final String PAGE_TITLE_CHANGED = "PageTitleChanged";
+
+        /** Prevents instantiation of this constant holder class. */
+        private Event() {
+        }
+    }
 }

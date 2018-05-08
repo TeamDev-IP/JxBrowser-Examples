@@ -112,7 +112,7 @@ final class JsConsole extends JPanel {
         closeButton.setIcon(loadIcon("close.png"));
         closeButton.setContentAreaFilled(false);
         closeButton.setFocusable(false);
-        closeButton.addActionListener(e -> firePropertyChange("JSConsoleClosed", false, true));
+        closeButton.addActionListener(e -> firePropertyChange(Event.CLOSED, false, true));
         return closeButton;
     }
 
@@ -135,5 +135,14 @@ final class JsConsole extends JPanel {
 
     private void newLine() {
         console.append("\n");
+    }
+
+    static class Event {
+        static final String DISPLAYED = "JSConsoleDisplayed";
+        static final String CLOSED = "JSConsoleClosed";
+
+        /** Prevents instantiation of this constant holder class. */
+        private Event() {
+        }
     }
 }

@@ -49,7 +49,7 @@ final class TabFactory {
         tabCaption.setTitle("about:blank");
 
         tabContent.addPropertyChangeListener(
-            "PageTitleChanged",
+                Tab.Event.PAGE_TITLE_CHANGED,
             evt -> tabCaption.setTitle((String) evt.getNewValue())
         );
 
