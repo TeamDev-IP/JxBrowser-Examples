@@ -84,7 +84,7 @@ class EditMenu {
      * Creates a menu item for an editor command.
      */
     private Component createItem(String commandName, EditorCommand command) {
-        final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
+        final EditorCommandItem menuItem = new EditorCommandItem(commandName, command);
         menuItem.addActionListener(e -> browser.executeCommand(command));
         return menuItem;
     }
@@ -93,7 +93,7 @@ class EditMenu {
      * Creates a menu item for an editor command which requires a dialog input.
      */
     private Component createItem(String commandName, String dialogTitle, EditorCommand command) {
-        final CommandMenuItem menuItem = new CommandMenuItem(commandName, command);
+        final EditorCommandItem menuItem = new EditorCommandItem(commandName, command);
         menuItem.addActionListener(e -> {
             String value = showInputDialog(browserView, "", dialogTitle, PLAIN_MESSAGE);
             browser.executeCommand(command, value);
@@ -109,7 +109,7 @@ class EditMenu {
 
         public void menuSelected(MenuEvent e) {
             for (Component menuItem : menu.getMenuComponents()) {
-                EditorCommand command = ((CommandMenuItem) menuItem).getCommand();
+                EditorCommand command = ((EditorCommandItem) menuItem).getCommand();
                 menuItem.setEnabled(browser.isCommandEnabled(command));
             }
         }

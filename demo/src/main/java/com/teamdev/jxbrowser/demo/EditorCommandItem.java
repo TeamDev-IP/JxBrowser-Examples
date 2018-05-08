@@ -24,13 +24,15 @@ import com.teamdev.jxbrowser.chromium.EditorCommand;
 import javax.swing.JMenuItem;
 
 /**
+ * A menu item with associated {@code EditorCommand}.
+ *
  * @author Artem Trofimov
  */
-final class CommandMenuItem extends JMenuItem {
+final class EditorCommandItem extends JMenuItem {
 
     private final EditorCommand command;
 
-    CommandMenuItem(String commandName, EditorCommand command) {
+    EditorCommandItem(String commandName, EditorCommand command) {
         super(commandName);
         this.command = command;
     }
