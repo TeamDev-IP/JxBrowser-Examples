@@ -32,8 +32,6 @@ import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 final public class Application {
 
     private Application() {
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "JxBrowser Demo");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException

@@ -20,6 +20,8 @@
 
 apply plugin: 'application'
 mainClassName = 'com.teamdev.jxbrowser.demo.Application'
+// Make macOS display the app name in the menu.
+applicationDefaultJvmArgs = ['-Xdock:name=JxBrowser Demo']
 
 dependencies {
     // Depend on Guava for the Resources utility class used for loading resource files into strings.

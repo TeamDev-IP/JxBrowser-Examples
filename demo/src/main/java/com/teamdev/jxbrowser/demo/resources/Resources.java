@@ -6,7 +6,10 @@
 
 package com.teamdev.jxbrowser.demo.resources;
 
+import com.google.common.base.Charsets;
+
 import javax.swing.ImageIcon;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -20,9 +23,25 @@ public class Resources {
 
     /**
      * Loads an {@code ImageIcon} from a resource file.
+     *
+     * <p>Assumes that all icons are stored under the {@code icon} sub-directory.
      */
     public static ImageIcon getIcon(String fileName) {
-        URL resource = Resources.class.getResource(fileName);
+        URL resource = Resources.class.getResource("icon/" + fileName);
         return new ImageIcon(resource);
+    }
+
+    /**
+     * Loads a text file from resources.
+     */
+    public static String load(String fileName) {
+        URL url = Resources.class.getResource(fileName);
+        String result;
+        try {
+            result = com.google.common.io.Resources.toString(url, Charsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load resource " + fileName, e);
+        }
+        return result;
     }
 }

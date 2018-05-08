@@ -21,22 +21,15 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.ProductInfo;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Frame;
+import com.teamdev.jxbrowser.demo.resources.Resources;
+
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JRootPane;
-import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
-import javax.swing.WindowConstants;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
+import java.time.Year;
 
 final class AboutDialog extends JDialog {
 
@@ -53,35 +46,10 @@ final class AboutDialog extends JDialog {
     private void initContent() {
         JTextPane aboutText = new JTextPane();
         aboutText.setContentType("text/html");
-        aboutText.setText("<html><font face='Arial' size='3'>" +
-                "<font size='6'>JxBrowser Demo</font><br><br>" +
-                "<b>Version " + ProductInfo.getVersion() + "</b><br><br>" +
+        String fmtString = Resources.load("about.html");
+        String aboutHtml = String.format(fmtString, ProductInfo.getVersion(), Year.now());
+        aboutText.setText(aboutHtml);
 
-                "This application is created for demonstration purposes only.<br>" +
-                "&copy; 2017 TeamDev Ltd. All rights reserved.<br><br>" +
-
-                "Powered by <a color='#3d82f8' href='https://www.teamdev.com/jxbrowser' " +
-                "style='text-decoration:none'>JxBrowser</a>. See " +
-                "<a color='#3d82f8' href='https://www.teamdev.com/jxbrowser-licence-agreement' " +
-                "style='text-decoration:none'>terms of use.</a><br>" +
-
-                "Based on <a color='#3d82f8' href='http://www.chromium.org/' " +
-                "style='text-decoration:none'>Chromium project</a>. " +
-                "See <a color='#3d82f8' " +
-                "href='https://jxbrowser.support.teamdev.com/support/solutions/articles/9000033244' "
-                +
-                "style='text-decoration:none'>full list</a> of Chromium<br>components, " +
-                "used in the current JxBrowser version.<br><br>" +
-
-                "This demo uses WebKit and FFMpeg projects under LGPL.<br>" +
-
-                "See licence text " +
-                "<a color='#3d82f8' href='https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html' "
-                +
-                "style='text-decoration:none'>LGPL v.2</a> and " +
-                "<a color='#3d82f8' href='https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html' "
-                +
-                "style='text-decoration:none'>LGPL v.2.1</a></font></html>");
         aboutText.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         aboutText.setEditable(false);
         aboutText.addHyperlinkListener(event -> {
