@@ -29,7 +29,6 @@ import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.events.ProvisionalLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import com.teamdev.jxbrowser.demo.resources.Resources;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -41,6 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 class ToolBar extends JPanel {
@@ -104,8 +104,8 @@ class ToolBar extends JPanel {
     private static JButton createButton(String caption, Action action) {
         ActionButton button = new ActionButton(caption, action);
         String imageName = caption.toLowerCase();
-        button.setIcon(Resources.getIcon(imageName + ".png"));
-        button.setRolloverIcon(Resources.getIcon(imageName + "-selected.png"));
+        button.setIcon(getIcon(imageName + ".png"));
+        button.setRolloverIcon(getIcon(imageName + "-selected.png"));
         return button;
     }
 
@@ -202,7 +202,7 @@ class ToolBar extends JPanel {
         popupMenu.add(createAboutMenuItem());
 
         final ActionButton button = new ActionButton("Preferences", null);
-        button.setIcon(Resources.getIcon("gear.png"));
+        button.setIcon(getIcon("gear.png"));
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {

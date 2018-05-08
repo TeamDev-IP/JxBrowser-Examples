@@ -21,16 +21,17 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.demo.resources.Resources;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static com.teamdev.jxbrowser.demo.resources.Resources.getIcon;
+
 public class Application {
 
-    private void initEnvironment() {
+    private Application() {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "JxBrowser Demo");
         try {
@@ -65,12 +66,12 @@ public class Application {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setSize(1024, 700);
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(Resources.getIcon("jxbrowser16x16.png").getImage());
+        frame.setIconImage(getIcon("jxbrowser16x16.png").getImage());
         frame.setVisible(true);
     }
 
     private static void insertNewTabButton(final TabbedPane tabbedPane) {
-        TabButton button = new TabButton(Resources.getIcon("new-tab.png"), "New tab");
+        TabButton button = new TabButton(getIcon("new-tab.png"), "New tab");
         button.addActionListener(e -> insertTab(tabbedPane, TabFactory.createTab()));
         tabbedPane.addTabButton(button);
     }
@@ -82,7 +83,6 @@ public class Application {
 
     public static void main(String[] args) {
         Application app = new Application();
-        app.initEnvironment();
         SwingUtilities.invokeLater(app::initAndDisplayUI);
     }
 }
