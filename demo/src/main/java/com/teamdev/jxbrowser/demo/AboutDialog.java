@@ -31,6 +31,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.Year;
 
+/**
+ * Displays copyright and licensing information.
+ */
 final class AboutDialog extends JDialog {
 
     AboutDialog(Frame owner) {
@@ -46,8 +49,7 @@ final class AboutDialog extends JDialog {
     private void initContent() {
         JTextPane aboutText = new JTextPane();
         aboutText.setContentType("text/html");
-        String fmtString = Resources.load("about.html");
-        String aboutHtml = String.format(fmtString, ProductInfo.getVersion(), Year.now());
+        String aboutHtml = loadHtml();
         aboutText.setText(aboutHtml);
 
         aboutText.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -65,6 +67,15 @@ final class AboutDialog extends JDialog {
         add(aboutText, BorderLayout.CENTER);
     }
 
+    /**
+     * Loads the content from resources and puts current product version and
+     * year into copyright statement.
+     */
+    private String loadHtml() {
+        String fmtString = Resources.load("about.html");
+        return String.format(fmtString, ProductInfo.getVersion(), Year.now());
+    }
+
     private void initKeyStroke() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -76,10 +87,9 @@ final class AboutDialog extends JDialog {
         });
         JRootPane rootPane = getRootPane();
         KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
-        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", new AbstractAction() {
-            private static final long serialVersionUID = 6693635607417495802L;
-
+        final String actionKey = "ESCAPE";
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, actionKey);
+        rootPane.getActionMap().put(actionKey, new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
