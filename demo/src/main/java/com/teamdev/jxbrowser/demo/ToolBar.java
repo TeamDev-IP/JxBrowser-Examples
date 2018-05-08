@@ -192,7 +192,7 @@ final class ToolBar extends JPanel {
         popupMenu.add(createPDFViewerMenuItem());
         popupMenu.add(createFlashMenuItem());
         popupMenu.add(createGoogleMapsMenuItem());
-        popupMenu.add(createHTML5VideoMenuItem());
+        popupMenu.add(createHtml5VideoMenuItem());
         popupMenu.add(createZoomInMenuItem());
         popupMenu.add(createZoomOutMenuItem());
         popupMenu.add(createActualSizeMenuItem());
@@ -320,7 +320,7 @@ final class ToolBar extends JPanel {
         return menuItem;
     }
 
-    private Component createHTML5VideoMenuItem() {
+    private Component createHtml5VideoMenuItem() {
         JMenuItem menuItem = new JMenuItem("HTML5 Video");
         menuItem.addActionListener(
                 e -> browser.loadURL("http://www.w3.org/2010/05/video/mediaevents.html")
