@@ -29,10 +29,14 @@ import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+/**
+ * A tab caption displays text, has a button for closing a tab, and changes its color
+ * if a tab is selected.
+ */
 final class TabCaption extends JPanel {
 
     private boolean selected;
-    private TabCaptionComponent component;
+    private CaptionComponent component;
 
     TabCaption() {
         setLayout(new BorderLayout());
@@ -42,7 +46,7 @@ final class TabCaption extends JPanel {
     }
 
     private JComponent createComponent() {
-        component = new TabCaptionComponent();
+        component = new CaptionComponent();
         component.addPropertyChangeListener(
             Tab.Event.CLOSE_BUTTON_PRESSED,
                 evt -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED,
@@ -86,13 +90,16 @@ final class TabCaption extends JPanel {
         firePropertyChange("TabSelected", oldValue, selected);
     }
 
-    private static class TabCaptionComponent extends JPanel {
+    /**
+     * A component with a label and a button for closing a tab.
+     */
+    private static class CaptionComponent extends JPanel {
 
         static final Color UNSELECTED_BACKGROUND = new Color(150, 150, 150);
         private final Color defaultBackground;
         private JLabel label;
 
-        private TabCaptionComponent() {
+        private CaptionComponent() {
             defaultBackground = getBackground();
             setLayout(new BorderLayout());
             setOpaque(false);
