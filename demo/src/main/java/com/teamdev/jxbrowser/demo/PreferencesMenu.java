@@ -85,9 +85,7 @@ class PreferencesMenu {
         return this.menu;
     }
 
-    private void addItem(String title,
-                         boolean currentState,
-                         PreferencesSwitch action) {
+    private void addItem(String title, boolean currentState, PreferencesSwitch action) {
         JCheckBoxMenuItem item = new JCheckBoxMenuItem(title, currentState);
         item.addActionListener(e -> action.perform(item.isSelected()));
         menu.add(item);
