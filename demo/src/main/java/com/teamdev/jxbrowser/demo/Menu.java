@@ -166,8 +166,7 @@ final class Menu {
     private Component createMoreMenuItem() {
         JMenuItem menuItem = new JMenuItem("More Features...");
         menuItem.addActionListener(
-                //TODO:2018-05-09:alexander.yevsyukov: Point to new Help Center.
-                e -> browser.loadURL("https://jxbrowser.support.teamdev.com/support/solutions/9000049010")
+                e -> browser.loadURL("https://jxbrowser-support.teamdev.com/docs/guides/")
         );
         return menuItem;
     }
