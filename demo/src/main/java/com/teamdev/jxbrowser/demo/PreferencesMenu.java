@@ -42,58 +42,85 @@ class PreferencesMenu {
         this.browser = browserView.getBrowser();
 
         this.menu = new JMenu("Preferences");
-        BrowserPreferences preferences = browser.getPreferences();
-        //TODO:2018-05-08:alexander.yevsyukov: Refactor to have
-        // browser.getPreferences()
-        // browser.setPreferences()
-        // browser.reloadIgnoringCache()
-        // called in the common base.
-        // The callback should only define the "meat" of the call. For example something like:
-        // selected -> { BrowserPreferences::setJavaScriptEnabled(selected) }
-        menu.add(checkBoxItem("JavaScript Enabled", preferences.isJavaScriptEnabled(),
-                selected -> {
-                    BrowserPreferences newPrefs = browser.getPreferences();
-                    newPrefs.setJavaScriptEnabled(selected);
-                    browser.setPreferences(newPrefs);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("Images Enabled", preferences.isImagesEnabled(),
-                selected -> {
-                    BrowserPreferences preferences12 = browser.getPreferences();
-                    preferences12.setImagesEnabled(selected);
-                    browser.setPreferences(preferences12);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("Plugins Enabled", preferences.isPluginsEnabled(),
-                selected -> {
-                    BrowserPreferences preferences13 = browser.getPreferences();
-                    preferences13.setPluginsEnabled(selected);
-                    browser.setPreferences(preferences13);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("JavaScript Can Access Clipboard",
-                preferences.isJavaScriptCanAccessClipboard(),
-                selected -> {
-                    BrowserPreferences preferences14 = browser.getPreferences();
-                    preferences14.setJavaScriptCanAccessClipboard(selected);
-                    browser.setPreferences(preferences14);
-                    browser.reloadIgnoringCache();
-                }));
+        BrowserPreferences prefs = browser.getPreferences();
+
+        addItem("JavaScript Enabled",
+                prefs.isJavaScriptEnabled(),
+                new PreferencesSwitch() {
+                    @Override
+                    void set(boolean selected) {
+                        preferences().setJavaScriptEnabled(selected);
+                    }
+                });
+
+        addItem("Images Enabled",
+                prefs.isImagesEnabled(),
+                new PreferencesSwitch() {
+                    @Override
+                    void set(boolean selected) {
+                        preferences().setImagesEnabled(selected);
+                    }
+                });
+
+        addItem("Plugins Enabled",
+                prefs.isPluginsEnabled(),
+                new PreferencesSwitch() {
+                    @Override
+                    void set(boolean selected) {
+                        preferences().setPluginsEnabled(selected);
+                    }
+                });
+
+        addItem("JavaScript Can Access Clipboard",
+                prefs.isJavaScriptCanAccessClipboard(),
+                new PreferencesSwitch() {
+                    @Override
+                    void set(boolean selected) {
+                        preferences().setJavaScriptCanAccessClipboard(selected);
+                    }
+                });
     }
 
     Component getComponent() {
         return this.menu;
     }
 
-    private static JCheckBoxMenuItem checkBoxItem(String title,
-                                                  boolean selected,
-                                                  CheckBoxMenuItemCallback action) {
-        JCheckBoxMenuItem item = new JCheckBoxMenuItem(title, selected);
-        item.addActionListener(e -> action.call(item.isSelected()));
-        return item;
+    private void addItem(String title,
+                         boolean currentState,
+                         PreferencesSwitch action) {
+        JCheckBoxMenuItem item = new JCheckBoxMenuItem(title, currentState);
+        item.addActionListener(e -> action.perform(item.isSelected()));
+        menu.add(item);
     }
 
-    interface CheckBoxMenuItemCallback {
-        void call(boolean selected);
+    /**
+     * Abstract base for operations on {@code BrowserPreferences} that
+     * set a passed value of a preference and then reload the {@code Browser}.
+     */
+    private abstract class PreferencesSwitch {
+
+        /**
+         * The current preferences set in a browser on which we perform the switch.
+         */
+        private BrowserPreferences preferences;
+
+        /**
+         * Sets preference item to the passed value.
+         */
+        abstract void set(boolean selected);
+
+        /**
+         * Sets the value of a preference setting and reloads the browser.
+         */
+        void perform(boolean value) {
+            preferences = browser.getPreferences();
+            set(value);
+            browser.setPreferences(preferences);
+            browser.reloadIgnoringCache();
+        }
+
+        BrowserPreferences preferences() {
+            return this.preferences;
+        }
     }
 }
