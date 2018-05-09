@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -58,15 +59,29 @@ final class TabbedPane extends JPanel {
         tab.getCaption().setSelected(false);
         tab.getContent().dispose();
         removeTab(tab);
-        if (hasTabs()) {
-            Tab firstTab = getFirstTab();
-            firstTab.getCaption().setSelected(true);
+
+        Optional<Tab> tabToSelect = getLastTab();
+        if (tabToSelect.isPresent()) {
+            Tab previous = tabToSelect.get();
+            previous.getCaption().setSelected(true);
         } else {
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.setVisible(false);
-                window.dispose();
-            }
+            disposeWindow();
+        }
+    }
+
+    private Optional<Tab> getLastTab() {
+        if (!tabs.isEmpty()) {
+            final Tab result = tabs.get(tabs.size() - 1);
+            return Optional.of(result);
+        }
+        return Optional.empty();
+    }
+
+    private void disposeWindow() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.setVisible(false);
+            window.dispose();
         }
     }
 
@@ -77,14 +92,6 @@ final class TabbedPane extends JPanel {
             }
         }
         throw new IllegalStateException("Unable to find tab with caption: " + item);
-    }
-
-    private boolean hasTabs() {
-        return !tabs.isEmpty();
-    }
-
-    private Tab getFirstTab() {
-        return tabs.get(0);
     }
 
     private List<Tab> getTabs() {
