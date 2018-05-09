@@ -31,6 +31,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Optional;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -164,6 +165,7 @@ final class Menu {
     private Component createMoreMenuItem() {
         JMenuItem menuItem = new JMenuItem("More Features...");
         menuItem.addActionListener(
+                //TODO:2018-05-09:alexander.yevsyukov: Point to new Help Center.
                 e -> browser.loadURL("https://jxbrowser.support.teamdev.com/support/solutions/9000049010")
         );
         return menuItem;
@@ -172,19 +174,33 @@ final class Menu {
     private Component createSaveWebPageMenuItem() {
         JMenuItem menuItem = new JMenuItem("Save Web Page...");
         menuItem.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setSelectedFile(new File("my-web-page.html"));
-            int result = fileChooser.showSaveDialog(browserView);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                String dirPath = new File(selectedFile.getParent(), "resources")
+            Optional<File> fileSelected = selectFile();
+            if (fileSelected.isPresent()) {
+                File selectedFile = fileSelected.get();
+                String pageResourcesDir = new File(selectedFile.getParent(), "resources")
                         .getAbsolutePath();
                 browser.saveWebPage(selectedFile.getAbsolutePath(),
-                        dirPath,
+                        pageResourcesDir,
                         SavePageType.COMPLETE_HTML);
             }
         });
         return menuItem;
+    }
+
+    /**
+     * Displays file selection dialog and returns the name of the selected file
+     * or empty {@code Optional} if the operation was not approved.
+     */
+    private Optional<File> selectFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        //TODO:2018-05-09:alexander.yevsyukov: Get the name of the page from the browser.
+        fileChooser.setSelectedFile(new File("my-web-page.html"));
+        int result = fileChooser.showSaveDialog(browserView);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            return Optional.of(selectedFile);
+        }
+        return Optional.empty();
     }
 
     private Component createActualSizeMenuItem() {
