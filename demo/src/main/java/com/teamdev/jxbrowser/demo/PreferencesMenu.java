@@ -42,41 +42,41 @@ class PreferencesMenu {
         this.browser = browserView.getBrowser();
 
         this.menu = new JMenu("Preferences");
-        BrowserPreferences prefs = browser.getPreferences();
+        BrowserPreferences p = browser.getPreferences();
 
         addItem("JavaScript Enabled",
-                prefs.isJavaScriptEnabled(),
+                p.isJavaScriptEnabled(),
                 new PreferencesSwitch() {
                     @Override
-                    void set(boolean selected) {
-                        preferences().setJavaScriptEnabled(selected);
+                    void set(boolean value) {
+                        preferences().setJavaScriptEnabled(value);
                     }
                 });
 
         addItem("Images Enabled",
-                prefs.isImagesEnabled(),
+                p.isImagesEnabled(),
                 new PreferencesSwitch() {
                     @Override
-                    void set(boolean selected) {
-                        preferences().setImagesEnabled(selected);
+                    void set(boolean value) {
+                        preferences().setImagesEnabled(value);
                     }
                 });
 
         addItem("Plugins Enabled",
-                prefs.isPluginsEnabled(),
+                p.isPluginsEnabled(),
                 new PreferencesSwitch() {
                     @Override
-                    void set(boolean selected) {
-                        preferences().setPluginsEnabled(selected);
+                    void set(boolean value) {
+                        preferences().setPluginsEnabled(value);
                     }
                 });
 
         addItem("JavaScript Can Access Clipboard",
-                prefs.isJavaScriptCanAccessClipboard(),
+                p.isJavaScriptCanAccessClipboard(),
                 new PreferencesSwitch() {
                     @Override
-                    void set(boolean selected) {
-                        preferences().setJavaScriptCanAccessClipboard(selected);
+                    void set(boolean value) {
+                        preferences().setJavaScriptCanAccessClipboard(value);
                     }
                 });
     }
@@ -105,7 +105,7 @@ class PreferencesMenu {
         /**
          * Sets preference item to the passed value.
          */
-        abstract void set(boolean selected);
+        abstract void set(boolean value);
 
         /**
          * Sets the value of a preference setting and reloads the browser.
