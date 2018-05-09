@@ -24,6 +24,9 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+/**
+ * A button with an image glyph and a tooltip text.
+ */
 final class TabButton extends JButton {
 
     TabButton(Icon icon, String toolTipText) {

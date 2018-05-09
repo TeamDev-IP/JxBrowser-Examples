@@ -107,16 +107,16 @@ final class TabbedPane extends JPanel {
     }
 
     void addTabButton(TabButton button) {
-        captions.addTabButton(button);
+        captions.addButton(button);
     }
 
     void selectTab(Tab tab) {
         TabCaption tabCaption = tab.getCaption();
-        TabCaption selectedTab = captions.getSelectedTab();
+        TabCaption selectedTab = captions.getSelected();
         if (selectedTab != null && !selectedTab.equals(tabCaption)) {
             selectedTab.setSelected(false);
         }
-        captions.setSelectedTab(tabCaption);
+        captions.select(tabCaption);
     }
 
     void addTab(Tab tab) {

@@ -123,7 +123,7 @@ final class FileMenu {
      */
     private Optional<File> selectFile() {
         JFileChooser fileChooser = new JFileChooser();
-        //TODO:2018-05-09:alexander.yevsyukov: Get the name of the page from the browser.
+        //TODO:2018-05-09:alexander.yevsyukov: Get the name of the page file from the browser.
         fileChooser.setSelectedFile(new File("my-web-page.html"));
         int result = fileChooser.showSaveDialog(browserView);
         if (result == JFileChooser.APPROVE_OPTION) {
