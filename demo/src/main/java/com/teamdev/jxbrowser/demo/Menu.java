@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.SavePageType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
@@ -30,8 +29,6 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.Optional;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -60,11 +57,10 @@ final class Menu {
         this.browser = browserView.getBrowser();
 
         final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(createFileMenu());
         popupMenu.add(createConsoleMenuItem(toolbar));
         popupMenu.add(createGetHtmlMenuItem());
         popupMenu.add(createPopupsMenuItem());
-        popupMenu.add(createUploadFileMenuItem());
-        popupMenu.add(createDownloadFileMenuItem());
         popupMenu.add(createJavaScriptDialogsMenuItem());
         popupMenu.add(createPDFViewerMenuItem());
         popupMenu.add(createFlashMenuItem());
@@ -73,11 +69,10 @@ final class Menu {
         popupMenu.add(createZoomInMenuItem());
         popupMenu.add(createZoomOutMenuItem());
         popupMenu.add(createActualSizeMenuItem());
-        popupMenu.add(createSaveWebPageMenuItem());
-        popupMenu.add(createClearCacheMenuItem());
-        popupMenu.add(createPreferencesSubMenu());
         popupMenu.add(createEditMenu());
-        popupMenu.add(createPrintMenuItem());
+        popupMenu.add(createPreferencesSubMenu());
+        popupMenu.addSeparator();
+        popupMenu.add(createClearCacheMenuItem());
         popupMenu.addSeparator();
         popupMenu.add(createMoreMenuItem());
         popupMenu.addSeparator();
@@ -99,10 +94,14 @@ final class Menu {
         return button;
     }
 
-    private Component createPrintMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Print...");
-        menuItem.addActionListener(e -> browser.print());
-        return menuItem;
+    private Component createFileMenu() {
+        FileMenu menu = new FileMenu(browserView);
+        return menu.getComponent();
+    }
+
+    private Component createEditMenu() {
+        EditMenu menu = new EditMenu(browserView);
+        return menu.getComponent();
     }
 
     private Component createPreferencesSubMenu() {
@@ -157,11 +156,6 @@ final class Menu {
         return menuItem;
     }
 
-    private Component createEditMenu() {
-        EditMenu menu = new EditMenu(browserView);
-        return menu.getComponent();
-    }
-
     private Component createMoreMenuItem() {
         JMenuItem menuItem = new JMenuItem("More Features...");
         menuItem.addActionListener(
@@ -169,38 +163,6 @@ final class Menu {
                 e -> browser.loadURL("https://jxbrowser.support.teamdev.com/support/solutions/9000049010")
         );
         return menuItem;
-    }
-
-    private Component createSaveWebPageMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Save Web Page...");
-        menuItem.addActionListener(e -> {
-            Optional<File> fileSelected = selectFile();
-            if (fileSelected.isPresent()) {
-                File selectedFile = fileSelected.get();
-                String pageResourcesDir = new File(selectedFile.getParent(), "resources")
-                        .getAbsolutePath();
-                browser.saveWebPage(selectedFile.getAbsolutePath(),
-                        pageResourcesDir,
-                        SavePageType.COMPLETE_HTML);
-            }
-        });
-        return menuItem;
-    }
-
-    /**
-     * Displays file selection dialog and returns the name of the selected file
-     * or empty {@code Optional} if the operation was not approved.
-     */
-    private Optional<File> selectFile() {
-        JFileChooser fileChooser = new JFileChooser();
-        //TODO:2018-05-09:alexander.yevsyukov: Get the name of the page from the browser.
-        fileChooser.setSelectedFile(new File("my-web-page.html"));
-        int result = fileChooser.showSaveDialog(browserView);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return Optional.of(selectedFile);
-        }
-        return Optional.empty();
     }
 
     private Component createActualSizeMenuItem() {
@@ -243,14 +205,6 @@ final class Menu {
         return menuItem;
     }
 
-    private Component createDownloadFileMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Download File");
-        menuItem.addActionListener(
-                e -> browser.loadURL("https://s3.amazonaws.com/cloud.teamdev.com/downloads/demo/jxbrowserdemo.jnlp")
-        );
-        return menuItem;
-    }
-
     private Component createGetHtmlMenuItem() {
         JMenuItem menuItem = new JMenuItem("Get HTML");
         menuItem.addActionListener(e -> {
@@ -279,14 +233,6 @@ final class Menu {
             }
         });
         return consoleMenuItem;
-    }
-
-    private JMenuItem createUploadFileMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Upload File");
-        menuItem.addActionListener(
-                e -> browser.loadURL("http://www.cs.tut.fi/~jkorpela/forms/file.html#example")
-        );
-        return menuItem;
     }
 
     private JMenuItem createPopupsMenuItem() {
