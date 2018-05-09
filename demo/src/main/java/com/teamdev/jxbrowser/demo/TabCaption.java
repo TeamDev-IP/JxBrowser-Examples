@@ -26,6 +26,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 final class TabCaption extends JPanel {
 
@@ -86,6 +88,7 @@ final class TabCaption extends JPanel {
 
     private static class TabCaptionComponent extends JPanel {
 
+        static final Color UNSELECTED_BACKGROUND = new Color(150, 150, 150);
         private final Color defaultBackground;
         private JLabel label;
 
@@ -139,18 +142,19 @@ final class TabCaption extends JPanel {
         }
 
         void setSelected(boolean selected) {
-            setBackground(selected ? defaultBackground : new Color(150, 150, 150));
+            setBackground(selected ? defaultBackground : UNSELECTED_BACKGROUND);
             repaint();
         }
 
         @Override
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setPaint(
-                    new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, getHeight(), getBackground()));
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+            final int width = getWidth();
+            final int height = getHeight();
+            final Color background = getBackground();
+            g2d.setPaint(new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, height, background));
+            g2d.fillRect(0, 0, width, height);
             g2d.dispose();
             super.paint(g);
         }
