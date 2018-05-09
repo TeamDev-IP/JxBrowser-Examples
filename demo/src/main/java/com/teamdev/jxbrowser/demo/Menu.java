@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
@@ -112,45 +111,8 @@ final class Menu {
     }
 
     private Component createPreferencesSubMenu() {
-        JMenu menu = new JMenu("Preferences");
-        BrowserPreferences preferences = browser.getPreferences();
-        //TODO:2018-05-08:alexander.yevsyukov: Refactor to have
-        // browser.getPreferences()
-        // browser.setPreferences()
-        // browser.reloadIgnoringCache()
-        // called in the common base.
-        // The callback should only define the "meat" of the call. For example something like:
-        // selected -> { BrowserPreferences::setJavaScriptEnabled(selected) }
-        menu.add(checkBoxItem("JavaScript Enabled", preferences.isJavaScriptEnabled(),
-                selected -> {
-                    BrowserPreferences newPrefs = browser.getPreferences();
-                    newPrefs.setJavaScriptEnabled(selected);
-                    browser.setPreferences(newPrefs);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("Images Enabled", preferences.isImagesEnabled(),
-                selected -> {
-                    BrowserPreferences preferences12 = browser.getPreferences();
-                    preferences12.setImagesEnabled(selected);
-                    browser.setPreferences(preferences12);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("Plugins Enabled", preferences.isPluginsEnabled(),
-                selected -> {
-                    BrowserPreferences preferences13 = browser.getPreferences();
-                    preferences13.setPluginsEnabled(selected);
-                    browser.setPreferences(preferences13);
-                    browser.reloadIgnoringCache();
-                }));
-        menu.add(checkBoxItem("JavaScript Can Access Clipboard",
-                preferences.isJavaScriptCanAccessClipboard(),
-                selected -> {
-                    BrowserPreferences preferences14 = browser.getPreferences();
-                    preferences14.setJavaScriptCanAccessClipboard(selected);
-                    browser.setPreferences(preferences14);
-                    browser.reloadIgnoringCache();
-                }));
-        return menu;
+        PreferencesMenu menu = new PreferencesMenu(browserView);
+        return menu.getComponent();
     }
 
     private Component createClearCacheMenuItem() {
@@ -235,18 +197,8 @@ final class Menu {
         return menuItem;
     }
 
-    private static JCheckBoxMenuItem checkBoxItem(String title, boolean selected,
-                                                  final CheckBoxMenuItemCallback action) {
-        final JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(title, selected);
-        menuItem.addActionListener(e -> action.call(menuItem.isSelected()));
-        return menuItem;
-    }
 
     JMenuItem getConsoleMenuItem() {
         return consoleMenuItem;
-    }
-
-    interface CheckBoxMenuItemCallback {
-        void call(boolean selected);
     }
 }
