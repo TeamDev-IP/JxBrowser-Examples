@@ -56,35 +56,37 @@ final class Menu {
         this.browserView = browserView;
         this.browser = browserView.getBrowser();
 
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.add(createFileMenu());
-        popupMenu.add(createConsoleMenuItem(toolbar));
-        popupMenu.add(createGetHtmlMenuItem());
-        popupMenu.add(createPopupsMenuItem());
-        popupMenu.add(createJavaScriptDialogsMenuItem());
-        popupMenu.add(createPDFViewerMenuItem());
-        popupMenu.add(createFlashMenuItem());
-        popupMenu.add(createGoogleMapsMenuItem());
-        popupMenu.add(createHtml5VideoMenuItem());
-        popupMenu.add(createZoomInMenuItem());
-        popupMenu.add(createZoomOutMenuItem());
-        popupMenu.add(createActualSizeMenuItem());
-        popupMenu.add(createEditMenu());
-        popupMenu.add(createPreferencesSubMenu());
-        popupMenu.addSeparator();
-        popupMenu.add(createClearCacheMenuItem());
-        popupMenu.addSeparator();
-        popupMenu.add(createMoreMenuItem());
-        popupMenu.addSeparator();
-        popupMenu.add(createAboutMenuItem());
+        final JPopupMenu menu = new JPopupMenu();
+        menu.add(createFileMenu());
+        menu.add(createViewMenu());
+        menu.add(createEditMenu());
+        menu.add(createPreferencesSubMenu());
+        menu.addSeparator();
+
+        menu.add(createClearCacheMenuItem());
+        menu.addSeparator();
+
+        menu.add(createConsoleMenuItem(toolbar));
+        menu.add(createPopupsMenuItem());
+        menu.add(createJavaScriptDialogsMenuItem());
+        menu.add(createPDFViewerMenuItem());
+        menu.add(createFlashMenuItem());
+        menu.add(createGoogleMapsMenuItem());
+        menu.add(createHtml5VideoMenuItem());
+        menu.addSeparator();
+
+        menu.add(createMoreMenuItem());
+        menu.addSeparator();
+
+        menu.add(createAboutMenuItem());
 
         this.button = new ActionButton("Menu", null);
         button.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
-                    popupMenu.show(e.getComponent(), 0, button.getHeight());
+                    menu.show(e.getComponent(), 0, button.getHeight());
                 } else {
-                    popupMenu.setVisible(false);
+                    menu.setVisible(false);
                 }
             }
         });
@@ -96,6 +98,11 @@ final class Menu {
 
     private Component createFileMenu() {
         FileMenu menu = new FileMenu(browserView);
+        return menu.getComponent();
+    }
+
+    private Component createViewMenu() {
+        ViewMenu menu = new ViewMenu(browserView);
         return menu.getComponent();
     }
 
@@ -165,24 +172,6 @@ final class Menu {
         return menuItem;
     }
 
-    private Component createActualSizeMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Actual Size");
-        menuItem.addActionListener(e -> browser.zoomReset());
-        return menuItem;
-    }
-
-    private Component createZoomOutMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Zoom Out");
-        menuItem.addActionListener(e -> browser.zoomOut());
-        return menuItem;
-    }
-
-    private Component createZoomInMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Zoom In");
-        menuItem.addActionListener(e -> browser.zoomIn());
-        return menuItem;
-    }
-
     private Component createHtml5VideoMenuItem() {
         JMenuItem menuItem = new JMenuItem("HTML5 Video");
         menuItem.addActionListener(
@@ -202,22 +191,6 @@ final class Menu {
         menuItem.addActionListener(
                 e -> browser.loadURL("http://www.javascripter.net/faq/alert.htm")
         );
-        return menuItem;
-    }
-
-    private Component createGetHtmlMenuItem() {
-        JMenuItem menuItem = new JMenuItem("Get HTML");
-        menuItem.addActionListener(e -> {
-            String html = browser.getHTML();
-            Window window = SwingUtilities.getWindowAncestor(browserView);
-            JDialog dialog = new JDialog(window);
-            dialog.setModal(true);
-            dialog.setContentPane(new JScrollPane(new JTextArea(html)));
-            dialog.setSize(700, 500);
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-
-        });
         return menuItem;
     }
 
