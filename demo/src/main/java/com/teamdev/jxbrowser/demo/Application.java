@@ -29,7 +29,7 @@ import java.awt.event.WindowEvent;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 
-final public class Application {
+public final class Application {
 
     private Application() {
         try {

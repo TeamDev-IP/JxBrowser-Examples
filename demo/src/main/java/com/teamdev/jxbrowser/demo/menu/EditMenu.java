@@ -43,8 +43,6 @@ import static javax.swing.JOptionPane.showInputDialog;
 
 /**
  * The menu with some of the Edit commands supported by JxBrowser.
- *
- * @author Alexander Yevsyukov
  */
 final class EditMenu {
 

@@ -137,7 +137,7 @@ final class JsConsole extends JPanel {
         console.append("\n");
     }
 
-    static class Event {
+    final static class Event {
         static final String DISPLAYED = "JSConsoleDisplayed";
         static final String CLOSED = "JSConsoleClosed";
 

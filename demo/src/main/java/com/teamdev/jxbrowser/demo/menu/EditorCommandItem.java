@@ -25,8 +25,6 @@ import javax.swing.JMenuItem;
 
 /**
  * A menu item with associated {@code EditorCommand}.
- *
- * @author Artem Trofimov
  */
 final class EditorCommandItem extends JMenuItem {
 
