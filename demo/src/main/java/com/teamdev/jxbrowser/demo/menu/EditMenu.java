@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.demo;
+package com.teamdev.jxbrowser.demo.menu;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.EditorCommand;
@@ -46,7 +46,7 @@ import static javax.swing.JOptionPane.showInputDialog;
  *
  * @author Alexander Yevsyukov
  */
-class EditMenu {
+final class EditMenu {
 
     private final BrowserView browserView;
     private final Browser browser;

@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.demo;
+package com.teamdev.jxbrowser.demo.menu;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserPreferences;
@@ -33,7 +33,7 @@ import java.awt.*;
  * @author unascribed
  * @author Alexander Yevsyukov
  */
-class PreferencesMenu {
+final class PreferencesMenu {
 
     private final Browser browser;
     private final JMenu menu;

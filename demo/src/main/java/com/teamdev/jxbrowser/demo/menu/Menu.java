@@ -18,10 +18,13 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.demo;
+package com.teamdev.jxbrowser.demo.menu;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.demo.AboutDialog;
+import com.teamdev.jxbrowser.demo.ActionButton;
+import com.teamdev.jxbrowser.demo.ToolBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,9 +41,9 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * @author unascribed
  * @author Alexander Yevsyukov
  */
-final class Menu {
+public final class Menu {
 
-    static final String RUN_JAVASCRIPT = "Run JavaScript...";
+    public static final String RUN_JAVASCRIPT = "Run JavaScript...";
     private static final String CLOSE_JAVASCRIPT = "Close JavaScript Console";
 
     private final ToolBar toolbar;
@@ -50,7 +53,7 @@ final class Menu {
 
     private JMenuItem consoleMenuItem;
 
-    Menu(ToolBar toolbar, BrowserView browserView) {
+    public Menu(ToolBar toolbar, BrowserView browserView) {
         this.toolbar = toolbar;
         this.browserView = browserView;
         this.browser = browserView.getBrowser();
@@ -91,7 +94,7 @@ final class Menu {
         });
     }
 
-    JComponent getButton() {
+    public JComponent getButton() {
         return button;
     }
 
@@ -198,7 +201,7 @@ final class Menu {
     }
 
 
-    JMenuItem getConsoleMenuItem() {
+    public JMenuItem getConsoleMenuItem() {
         return consoleMenuItem;
     }
 }

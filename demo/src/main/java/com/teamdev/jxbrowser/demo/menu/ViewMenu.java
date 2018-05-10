@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.demo;
+package com.teamdev.jxbrowser.demo.menu;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
@@ -32,7 +32,7 @@ import java.awt.*;
  * @author unascribed
  * @author Alexander Yevsyukov
  */
-class ViewMenu {
+final class ViewMenu {
 
     private final BrowserView browserView;
     private final Browser browser;

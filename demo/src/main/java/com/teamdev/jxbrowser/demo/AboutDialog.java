@@ -38,12 +38,12 @@ import static javax.swing.event.HyperlinkEvent.EventType.ACTIVATED;
 /**
  * Displays copyright and licensing information.
  */
-final class AboutDialog extends JDialog {
+public final class AboutDialog extends JDialog {
 
     /**
      * Creates a new instance of the dialog associated with the passed frame.
      */
-    AboutDialog(Frame owner) {
+    public AboutDialog(Frame owner) {
         super(owner, "About JxBrowser Demo", true);
         initContent();
         initKeyStroke();
