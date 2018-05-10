@@ -37,9 +37,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Application menu shown from a drop-down button.
- *
- * @author unascribed
- * @author Alexander Yevsyukov
  */
 final class Menu {
 
