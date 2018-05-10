@@ -1,0 +1,39 @@
+language: java
+#  Run each build in a container on a shared host via Docker.
+sudo: false
+
+# Environments for testing:
+matrix:
+  include:
+    # Ubuntu 14.04 with Java 8
+    - os: linux
+      jdk: oraclejdk8
+    # Ubuntu 14.04 with Java 9
+    - os: linux
+      jdk: oraclejdk9
+    # Mac OSX 10.13
+    - os: osx
+      osx_image: xcode9.3
+
+# Before executing the build script:
+before_script:
+  # Initialize virtual display for Linux environments
+  - if [[ "$TRAVIS_OS_NAME" == "linux"     ]]; then export DISPLAY=:99.0    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux"     ]]; then sh -e /etc/init.d/xvfb start    ; fi
+  # Make gradlew script executable
+  - chmod +x gradlew
+
+# The build script.
+script:
+  - ./gradlew build
+
+# Clean up before caching the Gradle data.
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+# Gradle caching settings (stores Gradle dependencies between builds).
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
