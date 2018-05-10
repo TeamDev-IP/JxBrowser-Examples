@@ -26,7 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-class TabCaptions extends JPanel {
+final class TabCaptions extends JPanel {
 
     private TabCaption selectedTab;
 

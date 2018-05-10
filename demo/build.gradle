@@ -18,24 +18,12 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.demo;
+apply plugin: 'application'
+mainClassName = 'com.teamdev.jxbrowser.demo.Application'
+// Make macOS display the app name in the menu.
+applicationDefaultJvmArgs = ['-Xdock:name=JxBrowser Demo']
 
-import com.teamdev.jxbrowser.chromium.EditorCommand;
-import javax.swing.JMenuItem;
-
-/**
- * @author Artem Trofimov
- */
-class CommandMenuItem extends JMenuItem {
-
-    private final EditorCommand command;
-
-    CommandMenuItem(String commandName, EditorCommand command) {
-        super(commandName);
-        this.command = command;
-    }
-
-    EditorCommand getCommand() {
-        return command;
-    }
+dependencies {
+    // Depend on Guava for the Resources utility class used for loading resource files into strings.
+    compile "com.google.guava:guava:$guavaVersion"
 }

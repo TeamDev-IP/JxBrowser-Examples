@@ -21,25 +21,28 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.ProductInfo;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Frame;
+import com.teamdev.jxbrowser.demo.resources.Resources;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JRootPane;
-import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
-import javax.swing.WindowConstants;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
+import java.time.Year;
 
-class AboutDialog extends JDialog {
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+import static javax.swing.BorderFactory.createEmptyBorder;
+import static javax.swing.KeyStroke.getKeyStroke;
+import static javax.swing.event.HyperlinkEvent.EventType.ACTIVATED;
 
+/**
+ * Displays copyright and licensing information.
+ */
+final class AboutDialog extends JDialog {
+
+    /**
+     * Creates a new instance of the dialog associated with the passed frame.
+     */
     AboutDialog(Frame owner) {
         super(owner, "About JxBrowser Demo", true);
         initContent();
@@ -47,75 +50,53 @@ class AboutDialog extends JDialog {
         setResizable(false);
         pack();
         setLocationRelativeTo(owner);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void initContent() {
         JTextPane aboutText = new JTextPane();
         aboutText.setContentType("text/html");
-        aboutText.setText("<html><font face='Arial' size='3'>" +
-                "<font size='6'>JxBrowser Demo</font><br><br>" +
-                "<b>Version " + ProductInfo.getVersion() + "</b><br><br>" +
+        String aboutHtml = loadHtml();
+        aboutText.setText(aboutHtml);
 
-                "This application is created for demonstration purposes only.<br>" +
-                "&copy; 2017 TeamDev Ltd. All rights reserved.<br><br>" +
-
-                "Powered by <a color='#3d82f8' href='https://www.teamdev.com/jxbrowser' " +
-                "style='text-decoration:none'>JxBrowser</a>. See " +
-                "<a color='#3d82f8' href='https://www.teamdev.com/jxbrowser-licence-agreement' " +
-                "style='text-decoration:none'>terms of use.</a><br>" +
-
-                "Based on <a color='#3d82f8' href='http://www.chromium.org/' " +
-                "style='text-decoration:none'>Chromium project</a>. " +
-                "See <a color='#3d82f8' " +
-                "href='https://jxbrowser.support.teamdev.com/support/solutions/articles/9000033244' "
-                +
-                "style='text-decoration:none'>full list</a> of Chromium<br>components, " +
-                "used in the current JxBrowser version.<br><br>" +
-
-                "This demo uses WebKit and FFMpeg projects under LGPL.<br>" +
-
-                "See licence text " +
-                "<a color='#3d82f8' href='https://www.gnu.org/licenses/old-licenses/lgpl-2.0.html' "
-                +
-                "style='text-decoration:none'>LGPL v.2</a> and " +
-                "<a color='#3d82f8' href='https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html' "
-                +
-                "style='text-decoration:none'>LGPL v.2.1</a></font></html>");
-        aboutText.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        aboutText.setBorder(createEmptyBorder(20, 20, 20, 20));
         aboutText.setEditable(false);
-        aboutText.addHyperlinkListener(new HyperlinkListener() {
-            @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent event) {
-                if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-                    try {
-                        Desktop desktop = java.awt.Desktop.getDesktop();
-                        desktop.browse(event.getURL().toURI());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+        aboutText.addHyperlinkListener(event -> {
+            if (event.getEventType().equals(ACTIVATED)) {
+                try {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.browse(event.getURL().toURI());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
         add(aboutText, BorderLayout.CENTER);
     }
 
+    /**
+     * Loads the content from resources and puts current product version and
+     * year into copyright statement.
+     */
+    private String loadHtml() {
+        String fmtString = Resources.load("about.html");
+        return String.format(fmtString, ProductInfo.getVersion(), Year.now());
+    }
+
     private void initKeyStroke() {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == VK_ESCAPE) {
                     dispose();
                 }
             }
         });
         JRootPane rootPane = getRootPane();
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
-        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", new AbstractAction() {
-            private static final long serialVersionUID = 6693635607417495802L;
-
+        KeyStroke keyStroke = getKeyStroke(VK_ESCAPE, 0, false);
+        final String actionKey = "ESCAPE";
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, actionKey);
+        rootPane.getActionMap().put(actionKey, new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }

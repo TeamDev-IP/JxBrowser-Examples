@@ -20,34 +20,36 @@
 
 package com.teamdev.jxbrowser.demo;
 
-final class Tab {
+import javax.swing.*;
 
-    private final TabCaption caption;
-    private final TabContent content;
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
+import static javax.swing.BorderFactory.createEmptyBorder;
 
-    Tab(TabCaption caption, TabContent content) {
-        this.caption = caption;
-        this.content = content;
-    }
+/**
+ * A button with an image icon and associated {@code Action}.
+ */
+class ActionButton extends JButton {
 
-    TabCaption getCaption() {
-        return caption;
-    }
+    /**
+     * Creates a new button and associates it with the passed action.
+     *
+     * <p>The button is created with an image icon and rollover image
+     * icon loaded from resource images corresponding to the hint
+     * of the button.
+     */
+    ActionButton(String hint, Action action) {
+        super(action);
+        setContentAreaFilled(false);
+        setBorder(createEmptyBorder());
+        setBorderPainted(false);
+        setRolloverEnabled(true);
+        setToolTipText(hint);
+        setText(null);
+        setFocusable(false);
+        setDefaultCapable(false);
 
-    TabContent getContent() {
-        return content;
-    }
-
-    final static class Event {
-
-        static final String CLICKED = "TabClicked";
-        static final String SELECTED = "TabSelected";
-        static final String CLOSED = "TabClosed";
-        static final String PAGE_TITLE_CHANGED = "PageTitleChanged";
-        static final String CLOSE_BUTTON_PRESSED = "CloseButtonPressed";
-
-        /** Prevents instantiation of this constant holder class. */
-        private Event() {
-        }
+        String imageName = hint.toLowerCase();
+        setIcon(loadIcon(imageName + ".png"));
+        setRolloverIcon(loadIcon(imageName + "-selected.png"));
     }
 }

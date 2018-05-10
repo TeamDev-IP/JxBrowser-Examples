@@ -24,7 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-class TabButton extends JButton {
+final class TabButton extends JButton {
 
     TabButton(Icon icon, String toolTipText) {
         setIcon(icon);

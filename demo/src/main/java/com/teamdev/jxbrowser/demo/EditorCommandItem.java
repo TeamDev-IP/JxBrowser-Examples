@@ -20,34 +20,22 @@
 
 package com.teamdev.jxbrowser.demo;
 
-final class Tab {
+import com.teamdev.jxbrowser.chromium.EditorCommand;
+import javax.swing.JMenuItem;
 
-    private final TabCaption caption;
-    private final TabContent content;
+/**
+ * A menu item with associated {@code EditorCommand}.
+ */
+final class EditorCommandItem extends JMenuItem {
 
-    Tab(TabCaption caption, TabContent content) {
-        this.caption = caption;
-        this.content = content;
+    private final EditorCommand command;
+
+    EditorCommandItem(String commandName, EditorCommand command) {
+        super(commandName);
+        this.command = command;
     }
 
-    TabCaption getCaption() {
-        return caption;
-    }
-
-    TabContent getContent() {
-        return content;
-    }
-
-    final static class Event {
-
-        static final String CLICKED = "TabClicked";
-        static final String SELECTED = "TabSelected";
-        static final String CLOSED = "TabClosed";
-        static final String PAGE_TITLE_CHANGED = "PageTitleChanged";
-        static final String CLOSE_BUTTON_PRESSED = "CloseButtonPressed";
-
-        /** Prevents instantiation of this constant holder class. */
-        private Event() {
-        }
+    EditorCommand getCommand() {
+        return command;
     }
 }

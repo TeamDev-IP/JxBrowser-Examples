@@ -27,12 +27,11 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-class TabContent extends JPanel {
+final class TabContent extends JPanel {
 
     private final BrowserView browserView;
+    private final Browser browser;
     private final ToolBar toolBar;
     private final JComponent jsConsole;
     private final JComponent container;
@@ -40,19 +39,20 @@ class TabContent extends JPanel {
 
     TabContent(final BrowserView browserView) {
         this.browserView = browserView;
-        final Browser browser = this.browserView.getBrowser();
+        this.browser = browserView.getBrowser();
+
+        final String pageTitleChanged = Tab.Event.PAGE_TITLE_CHANGED;
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    firePropertyChange("PageTitleChanged", null,
-                            TabContent.this.browserView.getBrowser().getTitle());
+                    firePropertyChange(pageTitleChanged, null, browser.getTitle());
                 }
             }
         });
 
         browser.addTitleListener(
-            event -> firePropertyChange("PageTitleChanged", null, event.getTitle())
+            event -> firePropertyChange(pageTitleChanged, null, event.getTitle())
         );
 
         browserContainer = createBrowserContainer();
@@ -69,17 +69,12 @@ class TabContent extends JPanel {
 
     private ToolBar createToolBar(BrowserView browserView) {
         ToolBar toolBar = new ToolBar(browserView);
-        toolBar.addPropertyChangeListener(
-            "TabClosed",
-            evt -> firePropertyChange("TabClosed", false, true)
+        toolBar.addPropertyChangeListener(Tab.Event.CLOSED,
+            evt -> firePropertyChange(Tab.Event.CLOSED, false, true)
         );
-        toolBar.addPropertyChangeListener(
-            "JSConsoleDisplayed",
-            evt -> showConsole()
+        toolBar.addPropertyChangeListener(JsConsole.Event.DISPLAYED, evt -> showConsole()
         );
-        toolBar.addPropertyChangeListener(
-            "JSConsoleClosed",
-            evt -> hideConsole()
+        toolBar.addPropertyChangeListener(JsConsole.Event.CLOSED, evt -> hideConsole()
         );
         return toolBar;
     }
@@ -104,12 +99,10 @@ class TabContent extends JPanel {
     }
 
     private JComponent createConsole() {
-        JsConsole result = new JsConsole(browserView.getBrowser());
-        result.addPropertyChangeListener("JSConsoleClosed", new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                hideConsole();
-                toolBar.didJSConsoleClose();
-            }
+        JsConsole result = new JsConsole(browser);
+        result.addPropertyChangeListener(JsConsole.Event.CLOSED, evt -> {
+            hideConsole();
+            toolBar.didJsConsoleClose();
         });
         return result;
     }
@@ -121,6 +114,6 @@ class TabContent extends JPanel {
     }
 
     void dispose() {
-        browserView.getBrowser().dispose();
+        browser.dispose();
     }
 }

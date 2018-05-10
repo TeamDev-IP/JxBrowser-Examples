@@ -21,29 +21,30 @@
 package com.teamdev.jxbrowser.demo;
 
 import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.demo.resources.Resources;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class JxBrowserDemo {
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
 
-    private static void initEnvironment() throws Exception {
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "JxBrowser Demo");
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+public final class Application {
+
+    private Application() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            throw new IllegalStateException("Unable to set look and feel", e);
+        }
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
     }
 
-    public static void main(String[] args) throws Exception {
-        initEnvironment();
-        SwingUtilities.invokeLater(JxBrowserDemo::initAndDisplayUI);
-    }
-
-    private static void initAndDisplayUI() {
+    private void initAndDisplayUI() {
         final TabbedPane tabbedPane = new TabbedPane();
         insertTab(tabbedPane, TabFactory.createFirstTab());
         insertNewTabButton(tabbedPane);
@@ -63,12 +64,12 @@ public class JxBrowserDemo {
         frame.add(tabbedPane, BorderLayout.CENTER);
         frame.setSize(1024, 700);
         frame.setLocationRelativeTo(null);
-        frame.setIconImage(Resources.getIcon("jxbrowser16x16.png").getImage());
+        frame.setIconImage(loadIcon("jxbrowser16x16.png").getImage());
         frame.setVisible(true);
     }
 
     private static void insertNewTabButton(final TabbedPane tabbedPane) {
-        TabButton button = new TabButton(Resources.getIcon("new-tab.png"), "New tab");
+        TabButton button = new TabButton(loadIcon("new-tab.png"), "New tab");
         button.addActionListener(e -> insertTab(tabbedPane, TabFactory.createTab()));
         tabbedPane.addTabButton(button);
     }
@@ -76,5 +77,10 @@ public class JxBrowserDemo {
     private static void insertTab(TabbedPane tabbedPane, Tab tab) {
         tabbedPane.addTab(tab);
         tabbedPane.selectTab(tab);
+    }
+
+    public static void main(String[] args) {
+        Application app = new Application();
+        SwingUtilities.invokeLater(app::initAndDisplayUI);
     }
 }

@@ -20,14 +20,14 @@
 
 package com.teamdev.jxbrowser.demo;
 
-import com.teamdev.jxbrowser.demo.resources.Resources;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-class TabCaption extends JPanel {
+import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
+
+final class TabCaption extends JPanel {
 
     private boolean selected;
     private TabCaptionComponent component;
@@ -42,11 +42,13 @@ class TabCaption extends JPanel {
     private JComponent createComponent() {
         component = new TabCaptionComponent();
         component.addPropertyChangeListener(
-                "CloseButtonPressed",
-                evt -> firePropertyChange("CloseButtonPressed", evt.getOldValue(), evt.getNewValue())
+            Tab.Event.CLOSE_BUTTON_PRESSED,
+                evt -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED,
+                        evt.getOldValue(),
+                        evt.getNewValue())
         );
         component.addPropertyChangeListener(
-                "TabClicked",
+                Tab.Event.CLICKED,
                 evt -> setSelected(true)
         );
         return component;
@@ -75,7 +77,7 @@ class TabCaption extends JPanel {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    void setSelected(boolean selected) {
         boolean oldValue = this.selected;
         this.selected = selected;
         component.setSelected(selected);
@@ -102,11 +104,12 @@ class TabCaption extends JPanel {
             label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        firePropertyChange("TabClicked", false, true);
+                    int button = e.getButton();
+                    if (button == MouseEvent.BUTTON1) {
+                        firePropertyChange(Tab.Event.CLICKED, false, true);
                     }
-                    if (e.getButton() == MouseEvent.BUTTON2) {
-                        firePropertyChange("CloseButtonPressed", false, true);
+                    if (button == MouseEvent.BUTTON2) {
+                        firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED, false, true);
                     }
                 }
             });
@@ -118,11 +121,13 @@ class TabCaption extends JPanel {
             closeButton.setOpaque(false);
             closeButton.setToolTipText("Close");
             closeButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-            closeButton.setPressedIcon(Resources.getIcon("close-pressed.png"));
-            closeButton.setIcon(Resources.getIcon("close.png"));
+            closeButton.setPressedIcon(loadIcon("close-pressed.png"));
+            closeButton.setIcon(loadIcon("close.png"));
             closeButton.setContentAreaFilled(false);
             closeButton.setFocusable(false);
-            closeButton.addActionListener(e -> firePropertyChange("CloseButtonPressed", false, true));
+            closeButton.addActionListener(
+                    e -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED, false, true)
+            );
             return closeButton;
         }
 
