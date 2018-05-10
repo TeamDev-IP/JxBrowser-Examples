@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/TeamDev-Ltd/JxBrowser-Examples.svg?branch=master)](https://travis-ci.com/TeamDev-Ltd/JxBrowser-Examples)
+
 This repository contains examples of using [JxBrowser library](https://www.teamdev.com/jxbrowser).
 To learn about the library please visit the [product page](https://www.teamdev.com/jxbrowser).
 
