@@ -20,6 +20,7 @@
 
 package com.teamdev.jxbrowser.demo;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
@@ -37,7 +38,7 @@ final public class ActionButton extends JButton {
      * icon loaded from resource images corresponding to the hint
      * of the button.
      */
-    public ActionButton(String hint, Action action) {
+    public ActionButton(String hint, @Nullable Action action) {
         super(action);
         setContentAreaFilled(false);
         setBorder(createEmptyBorder());
