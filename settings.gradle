@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser Examples'
+rootProject.name = 'JxBrowser-Examples'
 
 /**
  * Includes a module and sets custom project directory to it.
