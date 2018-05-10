@@ -38,7 +38,7 @@ final class Tab {
         return content;
     }
 
-    static class Event {
+    final static class Event {
 
         static final String CLICKED = "TabClicked";
         static final String SELECTED = "TabSelected";
