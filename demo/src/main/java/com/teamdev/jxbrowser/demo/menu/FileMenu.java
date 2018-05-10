@@ -31,9 +31,6 @@ import java.util.Optional;
 
 /**
  * A menu with file-related operations of the demo.
- *
- * @author unascribed
- * @author Alexander Yevsyukov
  */
 final class FileMenu {
 

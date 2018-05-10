@@ -28,9 +28,6 @@ import java.awt.*;
 
 /**
  * The menu with some view-related operations in a browser.
- *
- * @author unascribed
- * @author Alexander Yevsyukov
  */
 final class ViewMenu {
 

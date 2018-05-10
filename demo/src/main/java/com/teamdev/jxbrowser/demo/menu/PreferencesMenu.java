@@ -29,9 +29,6 @@ import java.awt.*;
 
 /**
  * A menu with switches for tuning preferences used by a {@code Browser}.
- *
- * @author unascribed
- * @author Alexander Yevsyukov
  */
 final class PreferencesMenu {
 
