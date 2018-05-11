@@ -20,6 +20,7 @@
 
 package com.teamdev.jxbrowser.demo;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
@@ -28,7 +29,7 @@ import static javax.swing.BorderFactory.createEmptyBorder;
 /**
  * A button with an image icon and associated {@code Action}.
  */
-class ActionButton extends JButton {
+final public class ActionButton extends JButton {
 
     /**
      * Creates a new button and associates it with the passed action.
@@ -37,7 +38,7 @@ class ActionButton extends JButton {
      * icon loaded from resource images corresponding to the hint
      * of the button.
      */
-    ActionButton(String hint, Action action) {
+    public ActionButton(String hint, @Nullable Action action) {
         super(action);
         setContentAreaFilled(false);
         setBorder(createEmptyBorder());

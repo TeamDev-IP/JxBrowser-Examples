@@ -22,6 +22,8 @@ package com.teamdev.jxbrowser.demo;
 
 final class Tab {
 
+    static final String DEFAULT_URL = "about:blank";
+
     private final TabCaption caption;
     private final TabContent content;
 

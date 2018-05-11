@@ -8,16 +8,18 @@ package com.teamdev.jxbrowser.demo.resources;
 
 import com.google.common.base.Charsets;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 
 /**
  * Utility class for accessing program resources.
  */
-public class Resources {
+final public class Resources {
 
-    /** Prevents instantiation of this  utility class. */
+    /**
+     * Prevents instantiation of this  utility class.
+     */
     private Resources() {
     }
 

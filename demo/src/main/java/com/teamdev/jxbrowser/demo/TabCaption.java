@@ -26,11 +26,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.teamdev.jxbrowser.demo.resources.Resources.loadIcon;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+/**
+ * A tab caption displays text, has a button for closing a tab, and changes its color
+ * if a tab is selected.
+ */
 final class TabCaption extends JPanel {
 
     private boolean selected;
-    private TabCaptionComponent component;
+    private CaptionComponent component;
 
     TabCaption() {
         setLayout(new BorderLayout());
@@ -40,7 +46,7 @@ final class TabCaption extends JPanel {
     }
 
     private JComponent createComponent() {
-        component = new TabCaptionComponent();
+        component = new CaptionComponent();
         component.addPropertyChangeListener(
             Tab.Event.CLOSE_BUTTON_PRESSED,
                 evt -> firePropertyChange(Tab.Event.CLOSE_BUTTON_PRESSED,
@@ -84,12 +90,16 @@ final class TabCaption extends JPanel {
         firePropertyChange("TabSelected", oldValue, selected);
     }
 
-    private static class TabCaptionComponent extends JPanel {
+    /**
+     * A component with a label and a button for closing a tab.
+     */
+    private static class CaptionComponent extends JPanel {
 
+        static final Color UNSELECTED_BACKGROUND = new Color(150, 150, 150);
         private final Color defaultBackground;
         private JLabel label;
 
-        private TabCaptionComponent() {
+        private CaptionComponent() {
             defaultBackground = getBackground();
             setLayout(new BorderLayout());
             setOpaque(false);
@@ -139,18 +149,19 @@ final class TabCaption extends JPanel {
         }
 
         void setSelected(boolean selected) {
-            setBackground(selected ? defaultBackground : new Color(150, 150, 150));
+            setBackground(selected ? defaultBackground : UNSELECTED_BACKGROUND);
             repaint();
         }
 
         @Override
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setPaint(
-                    new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, getHeight(), getBackground()));
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+            g2d.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+            final int width = getWidth();
+            final int height = getHeight();
+            final Color background = getBackground();
+            g2d.setPaint(new GradientPaint(0, 0, Color.LIGHT_GRAY, 0, height, background));
+            g2d.fillRect(0, 0, width, height);
             g2d.dispose();
             super.paint(g);
         }

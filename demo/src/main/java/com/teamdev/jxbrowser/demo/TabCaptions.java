@@ -23,60 +23,60 @@ package com.teamdev.jxbrowser.demo;
 import java.awt.Color;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import static javax.swing.BoxLayout.*;
 
 final class TabCaptions extends JPanel {
 
-    private TabCaption selectedTab;
+    private final JPanel tabs;
+    private final JPanel buttons;
 
-    private JPanel tabsPane;
-    private JPanel buttonsPane;
+    private TabCaption selected;
 
     TabCaptions() {
-        createUI();
-    }
-
-    private void createUI() {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BoxLayout(this, X_AXIS));
         setBackground(Color.DARK_GRAY);
-        add(createItemsPane());
-        add(createButtonsPane());
+
+        this.tabs = createItemsPanel();
+        add(tabs);
+        this.buttons = createButtonsPanel();
+        add(buttons);
         add(Box.createHorizontalGlue());
     }
 
-    private JComponent createItemsPane() {
-        tabsPane = new JPanel();
-        tabsPane.setOpaque(false);
-        tabsPane.setLayout(new BoxLayout(tabsPane, BoxLayout.X_AXIS));
-        return tabsPane;
+    private JPanel createItemsPanel() {
+        JPanel tabs = new JPanel();
+        tabs.setOpaque(false);
+        tabs.setLayout(new BoxLayout(tabs, X_AXIS));
+        return tabs;
     }
 
-    private JComponent createButtonsPane() {
-        buttonsPane = new JPanel();
-        buttonsPane.setOpaque(false);
-        buttonsPane.setLayout(new BoxLayout(buttonsPane, BoxLayout.X_AXIS));
-        return buttonsPane;
+    private JPanel createButtonsPanel() {
+        JPanel buttons = new JPanel();
+        buttons.setOpaque(false);
+        buttons.setLayout(new BoxLayout(buttons, X_AXIS));
+        return buttons;
     }
 
     void addTab(TabCaption item) {
-        tabsPane.add(item);
+        tabs.add(item);
     }
 
     void removeTab(TabCaption item) {
-        tabsPane.remove(item);
+        tabs.remove(item);
     }
 
-    void addTabButton(TabButton button) {
-        buttonsPane.add(button);
+    void addButton(TabButton button) {
+        buttons.add(button);
     }
 
-    TabCaption getSelectedTab() {
-        return selectedTab;
+    TabCaption getSelected() {
+        return selected;
     }
 
-    void setSelectedTab(TabCaption selectedTab) {
-        this.selectedTab = selectedTab;
-        this.selectedTab.setSelected(true);
+    void select(TabCaption tab) {
+        this.selected = tab;
+        this.selected.setSelected(true);
     }
 }

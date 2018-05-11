@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -58,15 +59,29 @@ final class TabbedPane extends JPanel {
         tab.getCaption().setSelected(false);
         tab.getContent().dispose();
         removeTab(tab);
-        if (hasTabs()) {
-            Tab firstTab = getFirstTab();
-            firstTab.getCaption().setSelected(true);
+
+        Optional<Tab> tabToSelect = getLastTab();
+        if (tabToSelect.isPresent()) {
+            Tab previous = tabToSelect.get();
+            previous.getCaption().setSelected(true);
         } else {
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.setVisible(false);
-                window.dispose();
-            }
+            disposeWindow();
+        }
+    }
+
+    private Optional<Tab> getLastTab() {
+        if (!tabs.isEmpty()) {
+            final Tab result = tabs.get(tabs.size() - 1);
+            return Optional.of(result);
+        }
+        return Optional.empty();
+    }
+
+    private void disposeWindow() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.setVisible(false);
+            window.dispose();
         }
     }
 
@@ -77,31 +92,6 @@ final class TabbedPane extends JPanel {
             }
         }
         throw new IllegalStateException("Unable to find tab with caption: " + item);
-    }
-
-    void addTab(Tab tab) {
-        TabCaption caption = tab.getCaption();
-        caption.addPropertyChangeListener(
-            Tab.Event.CLOSE_BUTTON_PRESSED,
-            new TabCaptionCloseTabListener()
-        );
-        caption.addPropertyChangeListener(Tab.Event.SELECTED, new SelectTabListener());
-
-        TabContent content = tab.getContent();
-        content.addPropertyChangeListener(Tab.Event.CLOSED, new TabContentCloseTabListener());
-
-        captions.addTab(caption);
-        tabs.add(tab);
-        validate();
-        repaint();
-    }
-
-    private boolean hasTabs() {
-        return !tabs.isEmpty();
-    }
-
-    private Tab getFirstTab() {
-        return tabs.get(0);
     }
 
     private List<Tab> getTabs() {
@@ -117,48 +107,67 @@ final class TabbedPane extends JPanel {
     }
 
     void addTabButton(TabButton button) {
-        captions.addTabButton(button);
+        captions.addButton(button);
     }
 
     void selectTab(Tab tab) {
         TabCaption tabCaption = tab.getCaption();
-        TabCaption selectedTab = captions.getSelectedTab();
+        TabCaption selectedTab = captions.getSelected();
         if (selectedTab != null && !selectedTab.equals(tabCaption)) {
             selectedTab.setSelected(false);
         }
-        captions.setSelectedTab(tabCaption);
+        captions.select(tabCaption);
     }
 
-    private class TabCaptionCloseTabListener implements PropertyChangeListener {
-        public void propertyChange(PropertyChangeEvent evt) {
-            TabCaption caption = (TabCaption) evt.getSource();
-            Tab tab = findTab(caption);
-            disposeTab(tab);
-        }
+    void addTab(Tab tab) {
+        TabCaption caption = createCaption(tab);
+        setCloseListener(tab);
+
+        captions.addTab(caption);
+        tabs.add(tab);
+        validate();
+        repaint();
+    }
+
+    private TabCaption createCaption(Tab tab) {
+        TabCaption caption = tab.getCaption();
+        caption.addPropertyChangeListener(
+            Tab.Event.CLOSE_BUTTON_PRESSED,
+                evt -> {
+                    TabCaption c = (TabCaption) evt.getSource();
+                    Tab tabToClose = findTab(c);
+                    disposeTab(tabToClose);
+                }
+        );
+        caption.addPropertyChangeListener(Tab.Event.SELECTED, new SelectTabListener());
+        return caption;
+    }
+
+    private void setCloseListener(Tab tab) {
+        TabContent content = tab.getContent();
+        content.addPropertyChangeListener(Tab.Event.CLOSED, new TabContentCloseListener());
     }
 
     private class SelectTabListener implements PropertyChangeListener {
+
         public void propertyChange(PropertyChangeEvent evt) {
             TabCaption caption = (TabCaption) evt.getSource();
             Tab tab = findTab(caption);
             if (caption.isSelected()) {
                 selectTab(tab);
             }
+            TabContent content = tab.getContent();
             if (!caption.isSelected()) {
-                TabContent content = tab.getContent();
                 contentContainer.remove(content);
-                contentContainer.validate();
-                contentContainer.repaint();
             } else {
-                final TabContent content = tab.getContent();
                 contentContainer.add(content, BorderLayout.CENTER);
-                contentContainer.validate();
-                contentContainer.repaint();
             }
+            contentContainer.validate();
+            contentContainer.repaint();
         }
     }
 
-    private class TabContentCloseTabListener implements PropertyChangeListener {
+    private class TabContentCloseListener implements PropertyChangeListener {
 
         public void propertyChange(PropertyChangeEvent evt) {
             TabContent content = (TabContent) evt.getSource();

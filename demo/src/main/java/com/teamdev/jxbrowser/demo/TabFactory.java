@@ -33,7 +33,7 @@ final class TabFactory {
     }
 
     static Tab createTab() {
-        return createTab("about:blank");
+        return createTab(Tab.DEFAULT_URL);
     }
 
     private static Tab createTab(String url) {
@@ -46,7 +46,7 @@ final class TabFactory {
         browser.setPopupHandler(new DefaultPopupHandler());
 
         final TabCaption tabCaption = new TabCaption();
-        tabCaption.setTitle("about:blank");
+        tabCaption.setTitle(Tab.DEFAULT_URL);
 
         tabContent.addPropertyChangeListener(
                 Tab.Event.PAGE_TITLE_CHANGED,

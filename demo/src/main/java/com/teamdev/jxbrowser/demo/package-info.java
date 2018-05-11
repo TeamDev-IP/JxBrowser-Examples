@@ -18,23 +18,11 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
-
 /**
- * Includes a module and sets custom project directory to it.
+ * JxBrowser Demo is a simple browser-like application that allows opening
+ * several web pages in a tab-based interface.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
-}
+@ParametersAreNonnullByDefault
+package com.teamdev.jxbrowser.demo;
 
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
-
+import javax.annotation.ParametersAreNonnullByDefault;

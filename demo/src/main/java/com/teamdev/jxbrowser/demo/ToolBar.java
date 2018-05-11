@@ -26,14 +26,13 @@ import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.events.ProvisionalLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.demo.menu.Menu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-final class ToolBar extends JPanel {
-
-    private static final String DEFAULT_URL = "about:blank";
+public final class ToolBar extends JPanel {
 
     private final BrowserView browserView;
     private final Browser browser;
@@ -112,7 +111,7 @@ final class ToolBar extends JPanel {
     }
 
     private JTextField createAddressBar() {
-        final JTextField result = new JTextField(DEFAULT_URL);
+        final JTextField result = new JTextField(Tab.DEFAULT_URL);
         result.addActionListener(e -> browser.loadURL(result.getText()));
 
         browser.addLoadListener(new LoadAdapter() {
@@ -165,7 +164,7 @@ final class ToolBar extends JPanel {
 
     private boolean isFocusRequired() {
         String url = addressBar.getText();
-        return url.isEmpty() || url.equals(DEFAULT_URL);
+        return url.isEmpty() || url.equals(Tab.DEFAULT_URL);
     }
 
     @Override
