@@ -1,1 +1,0 @@
-Browser browser = new Browser(BrowserContext.defaultContext());
