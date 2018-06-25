@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * This example loads a web page with simple Flash content.
  */
-public class FlashExample {
+public class EmbeddingFlash {
     public static void main(String[] args) {
         BrowserPreferences.setChromiumSwitches(
                 "--ppapi-flash-path=/usr/lib/flash/libpepflashplayer.so",
