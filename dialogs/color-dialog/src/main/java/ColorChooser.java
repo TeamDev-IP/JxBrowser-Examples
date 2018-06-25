@@ -31,7 +31,7 @@ import java.awt.*;
  * This example demonstrates how to override behaviour of standard
  * color chooser dialog for HTML5 input color element.
  */
-public class ColorChooserExample {
+public class ColorChooser {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);

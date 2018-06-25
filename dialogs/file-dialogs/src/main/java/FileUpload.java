@@ -18,7 +18,7 @@ import javax.swing.WindowConstants;
  * override the functionality that displays file chooser when
  * user uploads file using INPUT TYPE="file" HTML element on a web page.
  */
-public class FileUploadExample {
+public class FileUpload {
     public static void main(String[] args) {
         Browser browser = new Browser();
         final BrowserView view = new BrowserView(browser);

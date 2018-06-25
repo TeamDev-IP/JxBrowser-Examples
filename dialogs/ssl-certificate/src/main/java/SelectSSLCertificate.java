@@ -10,7 +10,7 @@ import java.util.List;
  * The example demonstrates how to display Select SSL Certificate dialog where
  * the user must select required SSL certificate to continue loading web page.
  */
-public class SelectSSLCertificateExample {
+public class SelectSSLCertificate {
     public static void main(String[] args) {
         Browser browser = new Browser();
         final BrowserView view = new BrowserView(browser);

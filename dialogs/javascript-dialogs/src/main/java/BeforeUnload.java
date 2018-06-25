@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * The example demonstrates how to catch onbeforeunload dialog.
  */
-public class BeforeUnloadExample {
+public class BeforeUnload {
 
     public static void main(String[] args) {
         Browser browser = new Browser();
