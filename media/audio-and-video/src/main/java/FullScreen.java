@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
 /**
  * Demonstrates how to switch between fullscreen mode and window mode.
  */
-public class FullScreenExample {
+public class FullScreen {
     public static void main(String[] args) {
         Browser browser = new Browser(BrowserType.LIGHTWEIGHT);
         BrowserView view = new BrowserView(browser);
