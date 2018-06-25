@@ -30,7 +30,7 @@ import java.awt.*;
  * The example demonstrates how to listen to console messages including
  * JavaScript errors.
  */
-public class ConsoleListenerExample {
+public class ConsoleListener {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
