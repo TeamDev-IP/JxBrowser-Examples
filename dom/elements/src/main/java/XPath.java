@@ -19,24 +19,21 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.dom.By;
+import com.teamdev.jxbrowser.chromium.XPathResult;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.dom.DOMElement;
-import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
- * This example demonstrates how to use querySelector DOM API.
+ * This example demonstrates how to evaluate the XPath expression and work with the result.
  */
-public class DOMQuerySelectorExample {
+public class XPath {
     public static void main(String[] args) {
-        Browser browser = new Browser();
+        final Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
@@ -48,22 +45,23 @@ public class DOMQuerySelectorExample {
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                DOMDocument document = event.getBrowser().getDocument();
-                // Get the div with id = "root".
-                DOMNode divRoot = document.findElement(By.cssSelector("#root"));
-                // Get all paragraphs.
-                List<DOMElement> paragraphs = divRoot.findElements(By.cssSelector("p"));
-                for (DOMElement paragraph : paragraphs) {
-                    System.out.println("paragraph.getNodeValue() = " +
-                            paragraph.getNodeValue());
+                if (event.isMainFrame()) {
+                    DOMDocument document = browser.getDocument();
+                    XPathResult result = document.evaluate("count(//div)");
+                    // If the expression is not a valid XPath expression or the document
+                    // element is not available, we'll get an error.
+                    if (result.isError()) {
+                        System.out.println("Error: " + result.getErrorMessage());
+                        return;
+                    }
+
+                    // Make sure that result is a number.
+                    if (result.isNumber()) {
+                        System.out.println("Result: " + result.getNumber());
+                    }
                 }
             }
         });
-        browser.loadHTML(
-                "<html><body><div id='root'>" +
-                        "<p>paragraph1</p>" +
-                        "<p>paragraph2</p>" +
-                        "<p>paragraph3</p>" +
-                        "</div></body></html>");
+        browser.loadURL("http://www.teamdev.com/jxbrowser");
     }
 }

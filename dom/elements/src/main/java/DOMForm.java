@@ -32,7 +32,7 @@ import java.awt.*;
 /**
  * The example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
  */
-public class DOMFormExample {
+public class DOMForm {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);

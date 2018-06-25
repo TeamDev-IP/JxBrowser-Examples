@@ -19,26 +19,30 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.XPathResult;
+import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMOptionElement;
+import com.teamdev.jxbrowser.chromium.dom.DOMSelectElement;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
- * This example demonstrates how to evaluate the XPath expression and work with the result.
+ * This example demonstrates how to programatically select an option item in SELECT tag.
  */
-public class XPathExample {
+public class DOMSelectOption {
     public static void main(String[] args) {
-        final Browser browser = new Browser();
+        Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
-        frame.getContentPane().add(browserView, BorderLayout.CENTER);
-        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -46,22 +50,23 @@ public class XPathExample {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
+                    Browser browser = event.getBrowser();
                     DOMDocument document = browser.getDocument();
-                    XPathResult result = document.evaluate("count(//div)");
-                    // If the expression is not a valid XPath expression or the document
-                    // element is not available, we'll get an error.
-                    if (result.isError()) {
-                        System.out.println("Error: " + result.getErrorMessage());
-                        return;
-                    }
-
-                    // Make sure that result is a number.
-                    if (result.isNumber()) {
-                        System.out.println("Result: " + result.getNumber());
-                    }
+                    DOMSelectElement select = (DOMSelectElement) document.findElement(By.id("select-tag"));
+                    selectOptionByIndex(select, 2);
                 }
             }
         });
-        browser.loadURL("http://www.teamdev.com/jxbrowser");
+        browser.loadHTML("<html><body><select id='select-tag'>\n" +
+                "  <option value=\"volvo\">Volvo</option>\n" +
+                "  <option value=\"saab\">Saab</option>\n" +
+                "  <option value=\"opel\">Opel</option>\n" +
+                "  <option value=\"audi\">Audi</option>\n" +
+                "</select></body></html>");
+    }
+
+    private static void selectOptionByIndex(DOMSelectElement select, int index) {
+        List<DOMOptionElement> options = select.getOptions();
+        options.get(2).setSelected(true);
     }
 }
