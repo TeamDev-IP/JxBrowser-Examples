@@ -19,27 +19,34 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
+import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BrowserExample {
+/**
+ * The example demonstrates how to handle navigation on Backspace and
+ * Shift+Backspace.
+ */
+public class DisableBackspaceNavigation {
     public static void main(String[] args) {
-        // Disables back/forward on left/right swipe on touch screens.
-        BrowserPreferences.setChromiumSwitches("--overscroll-history-navigation=0");
-
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        BrowserView browserView = new BrowserView(browser);
+        browser.setLoadHandler(new DefaultLoadHandler() {
+            @Override
+            public boolean canNavigateOnBackspace() {
+                return false;
+            }
+        });
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.loadURL("http://google.com");
+        browser.loadURL("http://www.google.com");
     }
 }

@@ -18,19 +18,19 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
+import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example demonstrates how to handle all resources such as
- * HTML, PNG, JavaScript, CSS files and decide whether web browser
- * engine should load them from web server or not. For example, in
- * this sample we cancel loading of all Images.
+ * This example demonstrates how to load custom HTML string into
+ * Browser component and display it.
  */
-public class ResourceHandlerExample {
+public class LoadHTML {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
@@ -42,21 +42,14 @@ public class ResourceHandlerExample {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        NetworkService networkService = browser.getContext().getNetworkService();
-        networkService.setResourceHandler(new ResourceHandler() {
+        browser.addLoadListener(new LoadAdapter() {
             @Override
-            public boolean canLoadResource(ResourceParams params) {
-                System.out.println("URL: " + params.getURL());
-                System.out.println("Type: " + params.getResourceType());
-                boolean isNotImageType =
-                        params.getResourceType() != ResourceType.IMAGE;
-                if (isNotImageType) {
-                    return true;    // Cancel loading of all images
+            public void onFinishLoadingFrame(FinishLoadingEvent event) {
+                if (event.isMainFrame()) {
+                    System.out.println("HTML is loaded.");
                 }
-                return false;
             }
         });
-
-        browser.loadURL("http://www.google.com");
+        browser.loadHTML("<html><body><h1>Load HTML Sample</h1></body></html>");
     }
 }

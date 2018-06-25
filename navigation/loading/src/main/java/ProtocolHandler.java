@@ -27,7 +27,7 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-public class ProtocolHandlerExample {
+public class ProtocolHandler {
     public static void main(String[] args) {
         final Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
@@ -61,7 +61,7 @@ public class ProtocolHandlerExample {
         });
 
         // Assume that we need to load a resource related to this class in the JAR file
-        browser.loadURL(ProtocolHandlerExample.class.getResource("index.html").toString());
+        browser.loadURL(ProtocolHandler.class.getResource("index.html").toString());
     }
 
     private static String getMimeType(String path) {

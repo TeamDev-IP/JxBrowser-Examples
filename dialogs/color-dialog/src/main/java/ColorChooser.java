@@ -19,28 +19,38 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.CloseStatus;
+import com.teamdev.jxbrowser.chromium.ColorChooserParams;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example demonstrates how to create Browser instance,
- * embed it into Swing BrowserView container, display it in JFrame and
- * navigate to the "www.google.com" web site.
+ * This example demonstrates how to override behaviour of standard
+ * color chooser dialog for HTML5 input color element.
  */
-public class BrowserExample {
+public class ColorChooser {
     public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        BrowserView view = new BrowserView(browser);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
+        frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.loadURL("http://www.google.com");
+        browser.setDialogHandler(new DefaultDialogHandler(view) {
+            @Override
+            public CloseStatus onColorChooser(ColorChooserParams params) {
+                params.setColor(Color.BLUE);
+                return CloseStatus.OK;
+            }
+        });
+
+        browser.loadHTML("<html><body><input type='color' value='#ff000'></body></html>");
     }
 }

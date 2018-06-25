@@ -19,37 +19,34 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
+import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
+import com.teamdev.jxbrowser.chromium.LoadParams;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example demonstrates how to load custom HTML string into
- * Browser component and display it.
+ * This example demonstrates how to cancel loading of a specific URL.
  */
-public class LoadHTMLExample {
+public class LoadHandler {
     public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        BrowserView view = new BrowserView(browser);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
+        frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    System.out.println("HTML is loaded.");
-                }
+        browser.setLoadHandler(new DefaultLoadHandler() {
+            public boolean onLoad(LoadParams params) {
+                // Cancel loading URL that starts with http://www.google
+                return params.getURL().startsWith("http://www.google");
             }
         });
-        browser.loadHTML("<html><body><h1>Load HTML Sample</h1></body></html>");
+        browser.loadURL("http://www.google.com");
     }
 }
