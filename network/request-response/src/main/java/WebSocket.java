@@ -28,7 +28,7 @@ import java.awt.*;
  * The example loads web page that uses WebSockets API to demonstrate that
  * such web pages are supported in JxBrowser.
  */
-public class WebSocketExample {
+public class WebSocket {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);

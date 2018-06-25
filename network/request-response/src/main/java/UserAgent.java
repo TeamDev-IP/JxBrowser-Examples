@@ -29,7 +29,7 @@
   * The example demonstrates how to configure user-agent string
   * for all Browser instances.
   */
- public class UserAgentExample {
+ public class UserAgent {
      public static void main(String[] args) {
          // It's very important to configure user-agent string
          // before any Browser instance is created.

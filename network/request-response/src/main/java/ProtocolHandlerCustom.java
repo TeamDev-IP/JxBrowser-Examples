@@ -24,26 +24,10 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The example demonstrates how to accept/reject SSL certificates using
- * custom SSL certificate verifier.
- */
-public class CertificateVerifierExample {
+public class ProtocolHandler {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
-
-        NetworkService networkService = browser.getContext().getNetworkService();
-        networkService.setCertificateVerifier(new CertificateVerifier() {
-            @Override
-            public CertificateVerifyResult verify(CertificateVerifyParams params) {
-                // Reject SSL certificate for all "google.com" hosts.
-                if (params.getHostName().contains("google.com")) {
-                    return CertificateVerifyResult.INVALID;
-                }
-                return CertificateVerifyResult.OK;
-            }
-        });
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -52,6 +36,19 @@ public class CertificateVerifierExample {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.loadURL("http://google.com");
+        BrowserContext browserContext = browser.getContext();
+        ProtocolService protocolService = browserContext.getProtocolService();
+        protocolService.setProtocolHandler("teamdev", new ProtocolHandler() {
+            @Override
+            public URLResponse onRequest(URLRequest request) {
+                URLResponse response = new URLResponse();
+                String html = "<html><body><p>Hello there!</p></body></html>";
+                response.setData(html.getBytes());
+                response.getHeaders().setHeader("Content-Type", "text/html");
+                return response;
+            }
+        });
+
+        browser.loadURL("teamdev://custom-request/");
     }
 }

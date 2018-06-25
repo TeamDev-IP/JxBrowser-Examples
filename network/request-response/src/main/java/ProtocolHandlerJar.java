@@ -23,10 +23,13 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.InputStream;
+import java.net.URL;
 
-public class ProtocolHandlerExample {
+public class ProtocolHandler {
     public static void main(String[] args) {
-        Browser browser = new Browser();
+        final Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
         JFrame frame = new JFrame();
@@ -38,17 +41,39 @@ public class ProtocolHandlerExample {
 
         BrowserContext browserContext = browser.getContext();
         ProtocolService protocolService = browserContext.getProtocolService();
-        protocolService.setProtocolHandler("teamdev", new ProtocolHandler() {
+        protocolService.setProtocolHandler("jar", new ProtocolHandler() {
             @Override
             public URLResponse onRequest(URLRequest request) {
-                URLResponse response = new URLResponse();
-                String html = "<html><body><p>Hello there!</p></body></html>";
-                response.setData(html.getBytes());
-                response.getHeaders().setHeader("Content-Type", "text/html");
-                return response;
+                try {
+                    URLResponse response = new URLResponse();
+                    URL path = new URL(request.getURL());
+                    InputStream inputStream = path.openStream();
+                    DataInputStream stream = new DataInputStream(inputStream);
+                    byte[] data = new byte[stream.available()];
+                    stream.readFully(data);
+                    response.setData(data);
+                    String mimeType = getMimeType(path.toString());
+                    response.getHeaders().setHeader("Content-Type", mimeType);
+                    return response;
+                } catch (Exception ignored) {}
+                return null;
             }
         });
 
-        browser.loadURL("teamdev://custom-request/");
+        // Assume that we need to load a resource related to this class in the JAR file
+        browser.loadURL(ProtocolHandler.class.getResource("index.html").toString());
+    }
+
+    private static String getMimeType(String path) {
+        if (path.endsWith(".html")) {
+            return "text/html";
+        }
+        if (path.endsWith(".css")) {
+            return "text/css";
+        }
+        if (path.endsWith(".js")) {
+            return "text/javascript";
+        }
+        return "text/html";
     }
 }

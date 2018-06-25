@@ -18,37 +18,42 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.Certificate;
+import com.teamdev.jxbrowser.chromium.CertificateErrorParams;
+import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ProtocolHandlerExample {
+/**
+ * Demonstrates how to handle SSL certificate errors.
+ */
+public class CertificateError {
     public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
+        frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        BrowserContext browserContext = browser.getContext();
-        ProtocolService protocolService = browserContext.getProtocolService();
-        protocolService.setProtocolHandler("https", new ProtocolHandler() {
+        browser.setLoadHandler(new DefaultLoadHandler() {
             @Override
-            public URLResponse onRequest(URLRequest request) {
-                URLResponse response = new URLResponse();
-                String html = "<html><body><p>Hello there!</p></body></html>";
-                response.setData(html.getBytes());
-                response.getHeaders().setHeader("Content-Type", "text/html");
-                return response;
+            public boolean onCertificateError(CertificateErrorParams params) {
+                Certificate certificate = params.getCertificate();
+                System.out.println("subjectName = " + certificate.getSubjectName());
+                System.out.println("issuerName = " + certificate.getIssuerName());
+                System.out.println("hasExpired = " + certificate.hasExpired());
+                System.out.println("errorCode = " + params.getCertificateError());
+                // Return false to ignore certificate error.
+                return false;
             }
         });
-
-        browser.loadURL("https://google.com/");
+        browser.loadURL("<https-url-with-invalid-ssl-certificate>");
     }
 }
