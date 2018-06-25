@@ -34,7 +34,7 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
  * The example demonstrates how to use JxBrowser Swing control in
  * SWT application using SWT_AWT bridge.
  */
-public class JxBrowserInSwingSWTExample {
+public class JxBrowserInSwingSWT {
     public static void main(String[] arguments) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);

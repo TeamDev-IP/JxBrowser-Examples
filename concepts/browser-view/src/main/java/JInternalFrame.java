@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * The example demonstrates how to use Browser in JInternalFrame components.
  */
-public class JInternalFrameExample {
+public class JInternalFrame {
     public static void main(String[] args) {
         JDesktopPane desktopPane = new JDesktopPane();
         desktopPane.add(createInternalFrame("Browser One", "http://www.teamdev.com", 0));

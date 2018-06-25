@@ -19,40 +19,28 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Demonstrates how to embed Browser instance into JavaFX application.
+ * This example demonstrates how to create Browser instance,
+ * embed it into Swing BrowserView container, display it in JFrame and
+ * navigate to the "www.google.com" web site.
  */
-public class JxBrowserInJavaFXExample extends Application {
-
-    @Override
-    public void init() throws Exception {
-        // On Mac OS X Chromium engine must be initialized in non-UI thread.
-        if (Environment.isMac()) {
-            BrowserCore.initialize();
-        }
-    }
-
-    @Override
-    public void start(final Stage primaryStage) {
+public class JxBrowserInSwing {
+    public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        BrowserView browserView = new BrowserView(browser);
 
-        Scene scene = new Scene(new BorderPane(view), 700, 500);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(700, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
         browser.loadURL("http://www.google.com");
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

@@ -27,7 +27,7 @@ import java.awt.*;
 /**
  * The example demonstrates how to use Browser in JTabbedPane.
  */
-public class TabbedPaneExample {
+public class TabbedPane {
     public static void main(String[] args) {
         Browser browserOne = new Browser();
         Browser browserTwo = new Browser();
