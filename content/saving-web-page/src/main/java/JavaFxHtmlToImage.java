@@ -41,7 +41,7 @@ import javax.imageio.ImageIO;
  * The example demonstrates how to get screen shot of the web page
  * and save it as PNG image file.
  */
-public class JavaFXHTMLToImageExample extends Application {
+public class JavaFXHTMLToImage extends Application {
     public static void main(String[] args) {
         launch(args);
     }

@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * This example demonstrates how to get screen shot of the web page
  * and save it as PNG image file.
  */
-public class HTMLToImageExample {
+public class HTMLToImage {
     public static void main(String[] args) throws Exception {
         final int viewWidth = 1024;
         final int viewHeight = 20000;
