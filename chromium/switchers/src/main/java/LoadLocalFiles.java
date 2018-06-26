@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * The example demonstrates how to enable access to local files from a web page.
  */
-public class LoadLocalFilesExample {
+public class LoadLocalFiles {
     public static void main(String[] args) {
         BrowserPreferences.setChromiumSwitches(
             "--disable-web-security",
@@ -48,4 +48,4 @@ public class LoadLocalFilesExample {
         browser.loadHTML("<html><body>Image:<img src='file:///C:\\image.jpg'></body></html>");
     }
 }
-```
+

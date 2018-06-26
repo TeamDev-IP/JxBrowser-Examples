@@ -30,7 +30,7 @@ import java.awt.*;
  * engine. By default, voice recognition functionality is disabled. To enable it you must
  * provide your Google API Keys to Chromium engine as shown in the example.
  */
-public class VoiceRecognitionExample {
+public class VoiceRecognition {
     public static void main(String[] args) {
         BrowserPreferences.setChromiumVariable("GOOGLE_API_KEY", "My API Key");
         BrowserPreferences.setChromiumVariable("GOOGLE_DEFAULT_CLIENT_ID", "My Client ID");
