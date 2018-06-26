@@ -33,6 +33,10 @@ module ('quickstart-javafx', './quickstart/javafx')
 
 include 'content'
 include 'printing'
+include 'dialogs/color-dialog'
+include 'dialogs/file-dialogs'
+include 'dialogs/javascript-dialogs'
+include 'dialogs/ssl-certificate'
 
 module ('content-changes', './tutorials/content-changes')
 
