@@ -23,20 +23,24 @@ import com.teamdev.jxbrowser.chromium.CloseStatus;
 import com.teamdev.jxbrowser.chromium.ColorChooserParams;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to override behaviour of standard
- * color chooser dialog for HTML5 input color element.
+ * This example demonstrates how to change the default behavior when clicking
+ * the INPUT element with the "color" type. By default, a standard Java Swing
+ * JColorChooser dialog is displayed. In this example, we suppress the dialog
+ * and programmatically select the color.
  */
 public class ColorChooser {
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser Example – Color Chooser");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
@@ -46,11 +50,14 @@ public class ColorChooser {
         browser.setDialogHandler(new DefaultDialogHandler(view) {
             @Override
             public CloseStatus onColorChooser(ColorChooserParams params) {
+                // Suppress the dialog and programmatically select color.
                 params.setColor(Color.BLUE);
+                // Notify the web page that the dialog has been closed by clicking the OK button.
                 return CloseStatus.OK;
             }
         });
 
-        browser.loadHTML("<html><body><input type='color' value='#ff000'></body></html>");
+        browser.loadHTML("<html><body>Select color: "
+                + "<input type='color' value='#ff000'></body></html>");
     }
 }
