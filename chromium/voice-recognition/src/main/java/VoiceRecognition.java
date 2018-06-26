@@ -49,7 +49,7 @@ public class VoiceRecognition {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame("JxBrowser Examples: Voice Recognition");
+        JFrame frame = new JFrame("JxBrowser Example – Voice Recognition");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
