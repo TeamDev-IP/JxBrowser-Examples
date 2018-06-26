@@ -42,7 +42,7 @@ public class BeforeUnload {
         Browser browser = new Browser();
         final BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser Example – BeforeUnload Dialog");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
