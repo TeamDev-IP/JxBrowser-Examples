@@ -57,3 +57,4 @@ public class JxBrowserInJavaFXSWT {
         display.dispose();
     }
 }
+

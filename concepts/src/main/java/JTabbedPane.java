@@ -19,39 +19,30 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * The example demonstrates how to use Browser in JInternalFrame components.
+ * The example demonstrates how to use Browser in JTabbedPane.
  */
-public class JInternalFrame {
+public class TabbedPane {
     public static void main(String[] args) {
-        JDesktopPane desktopPane = new JDesktopPane();
-        desktopPane.add(createInternalFrame("Browser One", "http://www.teamdev.com", 0));
-        desktopPane.add(createInternalFrame("Browser Two", "http://www.google.com", 100));
+        Browser browserOne = new Browser();
+        Browser browserTwo = new Browser();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Browser One", new BrowserView(browserOne));
+        tabbedPane.addTab("Browser Two", new BrowserView(browserTwo));
 
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(desktopPane, BorderLayout.CENTER);
-        frame.setSize(800, 800);
+        frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
 
-    private static JInternalFrame createInternalFrame(String title, String url, int offset) {
-        Browser browser = new Browser(BrowserType.LIGHTWEIGHT);
-        BrowserView view = new BrowserView(browser);
-        browser.loadURL(url);
-
-        JInternalFrame internalFrame = new JInternalFrame(title, true);
-        internalFrame.setContentPane(view);
-        internalFrame.setLocation(100 + offset, 100 + offset);
-        internalFrame.setSize(400, 400);
-        internalFrame.setVisible(true);
-        return internalFrame;
+        browserOne.loadURL("http://www.google.com");
+        browserTwo.loadURL("http://www.teamdev.com");
     }
 }
