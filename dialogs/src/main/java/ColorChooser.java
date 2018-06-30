@@ -54,3 +54,4 @@ public class ColorChooser {
         browser.loadHTML("<html><body><input type='color' value='#ff000'></body></html>");
     }
 }
+
