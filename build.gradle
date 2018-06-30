@@ -25,7 +25,7 @@ buildscript {
 }
 
 ext {
-    jxBrowserVersion = '6.20' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '6.21' // The version of JxBrowser used in the examples.
     guavaVersion = '25.0-jre' // Some of the examples use Guava.
 }
 
@@ -59,11 +59,15 @@ subprojects {
            2. uncomment the dependency for your platform.
         */
 
-        // Windows-only dependency
+        // Windows 32-bit
         //-------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-win:${jxBrowserVersion}"
+        // compile "com.teamdev.jxbrowser:jxbrowser-win32:${jxBrowserVersion}"
 
-        // macOS-only dependency
+        // Windows 64-bit
+        //-------------------------
+        // compile "com.teamdev.jxbrowser:jxbrowser-win64:${jxBrowserVersion}"
+
+        // macOS 64-bit
         //-------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
 
