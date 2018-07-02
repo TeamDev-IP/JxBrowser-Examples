@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 /**
  * Demonstrates how to embed Browser instance into JavaFX application.
  */
-public class JxBrowserInJavaFX extends Application {
+public class JxBrowserInJavaFx extends Application {
 
     @Override
     public void init() throws Exception {

@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
  * The example demonstrates how to use JxBrowser JavaFX
  * control in SWT application using FXCanvas.
  */
-public class JxBrowserInJavaFXSWT {
+public class JxBrowserInJavaFxSwt {
     public static void main(String[] arguments) {
         Display display = new Display();
         Shell shell = new Shell(display);
