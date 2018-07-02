@@ -22,23 +22,24 @@ import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
 import com.teamdev.jxbrowser.chromium.dom.DOMElement;
+import com.teamdev.jxbrowser.chromium.dom.DOMNode;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
- * The example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
+ * This example demonstrates how to use querySelector DOM API.
  */
-public class DOMForm {
+public class DomQuerySelector {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(browserView, BorderLayout.CENTER);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
@@ -47,20 +48,23 @@ public class DOMForm {
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    Browser browser = event.getBrowser();
-                    DOMDocument document = browser.getDocument();
-                    DOMElement firstName = document.findElement(By.name("firstName"));
-                    firstName.setAttribute("value", "John");
-                    DOMElement lastName = document.findElement(By.name("lastName"));
-                    lastName.setAttribute("value", "Doe");
+                DOMDocument document = event.getBrowser().getDocument();
+                // Get the div with id = "root".
+                DOMNode divRoot = document.findElement(By.cssSelector("#root"));
+                // Get all paragraphs.
+                List<DOMElement> paragraphs = divRoot.findElements(By.cssSelector("p"));
+                for (DOMElement paragraph : paragraphs) {
+                    System.out.println("paragraph.getNodeValue() = " +
+                            paragraph.getNodeValue());
                 }
             }
         });
-        browser.loadHTML("<html><body><form name=\"myForm\">" +
-                "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
-                "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
-                "<input type=\"button\" value=\"Save\"/>" +
-                "</form></body></html>");
+        browser.loadHTML(
+                "<html><body><div id='root'>" +
+                        "<p>paragraph1</p>" +
+                        "<p>paragraph2</p>" +
+                        "<p>paragraph3</p>" +
+                        "</div></body></html>");
     }
 }
+

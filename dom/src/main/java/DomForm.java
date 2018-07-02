@@ -19,8 +19,9 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.XPathResult;
+import com.teamdev.jxbrowser.chromium.dom.By;
 import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
@@ -29,14 +30,15 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example demonstrates how to evaluate the XPath expression and work with the result.
+ * The example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
  */
-public class XPath {
+public class DomForm {
     public static void main(String[] args) {
-        final Browser browser = new Browser();
+        Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(browserView, BorderLayout.CENTER);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
@@ -46,22 +48,20 @@ public class XPath {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
+                    Browser browser = event.getBrowser();
                     DOMDocument document = browser.getDocument();
-                    XPathResult result = document.evaluate("count(//div)");
-                    // If the expression is not a valid XPath expression or the document
-                    // element is not available, we'll get an error.
-                    if (result.isError()) {
-                        System.out.println("Error: " + result.getErrorMessage());
-                        return;
-                    }
-
-                    // Make sure that result is a number.
-                    if (result.isNumber()) {
-                        System.out.println("Result: " + result.getNumber());
-                    }
+                    DOMElement firstName = document.findElement(By.name("firstName"));
+                    firstName.setAttribute("value", "John");
+                    DOMElement lastName = document.findElement(By.name("lastName"));
+                    lastName.setAttribute("value", "Doe");
                 }
             }
         });
-        browser.loadURL("http://www.teamdev.com/jxbrowser");
+        browser.loadHTML("<html><body><form name=\"myForm\">" +
+                "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
+                "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
+                "<input type=\"button\" value=\"Save\"/>" +
+                "</form></body></html>");
     }
 }
+

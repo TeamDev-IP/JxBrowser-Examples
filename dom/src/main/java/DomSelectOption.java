@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * This example demonstrates how to programatically select an option item in SELECT tag.
  */
-public class DOMSelectOption {
+public class DomSelectOption {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);

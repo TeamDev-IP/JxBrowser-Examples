@@ -24,7 +24,7 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import javax.swing.*;
 import java.awt.*;
 
-public class CustomCSS {
+public class CustomCss {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
