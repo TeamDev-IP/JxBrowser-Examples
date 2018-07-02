@@ -46,8 +46,8 @@ public class SaveWebPage {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    String filePath = "D:\\Test\\index.html";
-                    String dirPath = "D:\\Test\\resources";
+                    String filePath = new File("index_dir").getAbsolutePath()
+                    String dirPath = new File("resources_dir").getAbsolutePath()
                     event.getBrowser().saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML);
                 }
             }
