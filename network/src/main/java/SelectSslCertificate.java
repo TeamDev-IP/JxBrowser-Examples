@@ -20,14 +20,20 @@
 
 import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-public class ProtocolHandler {
+/**
+ * The example demonstrates how to display Select SSL Certificate dialog where
+ * user must select required SSL certificate to continue loading web page.
+ */
+public class SelectSslCertificate {
     public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        final BrowserView view = new BrowserView(browser);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,19 +42,23 @@ public class ProtocolHandler {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        BrowserContext browserContext = browser.getContext();
-        ProtocolService protocolService = browserContext.getProtocolService();
-        protocolService.setProtocolHandler("teamdev", new ProtocolHandler() {
+        browser.setDialogHandler(new DefaultDialogHandler(view) {
             @Override
-            public URLResponse onRequest(URLRequest request) {
-                URLResponse response = new URLResponse();
-                String html = "<html><body><p>Hello there!</p></body></html>";
-                response.setData(html.getBytes());
-                response.getHeaders().setHeader("Content-Type", "text/html");
-                return response;
+            public CloseStatus onSelectCertificate(CertificatesDialogParams params) {
+                String message = "Select a certificate to authenticate yourself to " + params.getHostPortPair().getHostPort();
+                List<Certificate> certificates = params.getCertificates();
+                if (!certificates.isEmpty()) {
+                    Object[] selectionValues = certificates.toArray();
+                    Object selectedValue = JOptionPane.showInputDialog(view, message, "Select a certificate",
+                            JOptionPane.PLAIN_MESSAGE, null, selectionValues, selectionValues[0]);
+                    if (selectedValue != null) {
+                        params.setSelectedCertificate((Certificate) selectedValue);
+                        return CloseStatus.OK;
+                    }
+                }
+                return CloseStatus.CANCEL;
             }
         });
-
-        browser.loadURL("teamdev://custom-request/");
+        browser.loadURL("<URL that causes Select SSL Certificate dialog>");
     }
 }
