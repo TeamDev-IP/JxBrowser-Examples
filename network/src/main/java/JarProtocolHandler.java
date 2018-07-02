@@ -27,7 +27,7 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-public class ProtocolHandler {
+public class JarProtocolHandler {
     public static void main(String[] args) {
         final Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
