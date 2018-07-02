@@ -18,35 +18,45 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
-import com.teamdev.jxbrowser.chromium.LoadParams;
+import com.teamdev.jxbrowser.chromium.*;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This example demonstrates how to cancel loading of a specific URL.
+ * This example demonstrates how to handle all resources such as
+ * HTML, PNG, JavaScript, CSS files and decide whether web browser
+ * engine should load them from web server or not. For example, in
+ * this sample we cancel loading of all Images.
  */
-public class LoadHandler {
+public class ResourceHandler {
     public static void main(String[] args) {
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
+        frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.setLoadHandler(new DefaultLoadHandler() {
-            public boolean onLoad(LoadParams params) {
-                // Cancel loading URL that starts with http://www.google
-                return params.getURL().startsWith("http://www.google");
+        NetworkService networkService = browser.getContext().getNetworkService();
+        networkService.setResourceHandler(new ResourceHandler() {
+            @Override
+            public boolean canLoadResource(ResourceParams params) {
+                System.out.println("URL: " + params.getURL());
+                System.out.println("Type: " + params.getResourceType());
+                boolean isNotImageType =
+                        params.getResourceType() != ResourceType.IMAGE;
+                if (isNotImageType) {
+                    return true;    // Cancel loading of all images
+                }
+                return false;
             }
         });
+
         browser.loadURL("http://www.google.com");
     }
 }

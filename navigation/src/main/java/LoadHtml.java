@@ -30,7 +30,7 @@ import java.awt.*;
  * This example demonstrates how to load custom HTML string into
  * Browser component and display it.
  */
-public class LoadHTML {
+public class LoadHtml {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
