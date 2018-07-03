@@ -8,9 +8,6 @@ matrix:
     # Ubuntu 14.04 with Java 8
     - os: linux
       jdk: oraclejdk8
-    # Ubuntu 14.04 with Java 9
-    - os: linux
-      jdk: oraclejdk9
     # Mac OSX 10.13
     - os: osx
       osx_image: xcode9.3

@@ -18,26 +18,32 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * The example demonstrates how to use Browser in JTabbedPane.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class BrowserViewInJTabbedPane {
+
+    public static void main(String[] args) {
+        Browser browserOne = new Browser();
+        Browser browserTwo = new Browser();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Google", new BrowserView(browserOne));
+        tabbedPane.addTab("TeamDev", new BrowserView(browserTwo));
+
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        browserOne.loadURL("https://www.google.com");
+        browserTwo.loadURL("https://www.teamdev.com");
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
-
