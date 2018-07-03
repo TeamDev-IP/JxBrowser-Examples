@@ -19,8 +19,6 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.events.ConsoleEvent;
-import com.teamdev.jxbrowser.chromium.events.ConsoleListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
@@ -30,7 +28,7 @@ import java.awt.*;
  * The example demonstrates how to listen to console messages including
  * JavaScript errors.
  */
-public class ConsoleListener {
+public class JsConsoleListener {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
@@ -42,11 +40,9 @@ public class ConsoleListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.addConsoleListener(new ConsoleListener() {
-            public void onMessage(ConsoleEvent event) {
-                System.out.println("Level: " + event.getLevel());
-                System.out.println("Message: " + event.getMessage());
-            }
+        browser.addConsoleListener(event -> {
+            System.out.println("Level: " + event.getLevel());
+            System.out.println("Message: " + event.getMessage());
         });
         browser.executeJavaScript("console.error(\"Error message\");");
     }
