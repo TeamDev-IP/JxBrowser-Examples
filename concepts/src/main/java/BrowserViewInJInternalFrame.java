@@ -21,18 +21,21 @@
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.WindowConstants;
 
 /**
  * The example demonstrates how to use Browser in JInternalFrame components.
  */
-public class JInternalFrame {
+public class BrowserViewInJInternalFrame {
+
     public static void main(String[] args) {
         JDesktopPane desktopPane = new JDesktopPane();
-        desktopPane.add(createInternalFrame("Browser One", "http://www.teamdev.com", 0));
-        desktopPane.add(createInternalFrame("Browser Two", "http://www.google.com", 100));
+        desktopPane.add(createInternalFrame("TeamDev", "http://www.teamdev.com", 0));
+        desktopPane.add(createInternalFrame("Google", "http://www.google.com", 100));
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

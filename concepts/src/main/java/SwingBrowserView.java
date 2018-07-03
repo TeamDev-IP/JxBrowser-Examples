@@ -20,29 +20,28 @@
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * The example demonstrates how to use Browser in JTabbedPane.
+ * This example demonstrates how to create Browser instance,
+ * embed it into Swing BrowserView container, display it in JFrame and
+ * navigate to the "www.google.com" web site.
  */
-public class JTabbedPane {
-    public static void main(String[] args) {
-        Browser browserOne = new Browser();
-        Browser browserTwo = new Browser();
+public class SwingBrowserView {
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Browser One", new BrowserView(browserOne));
-        tabbedPane.addTab("Browser Two", new BrowserView(browserTwo));
+    public static void main(String[] args) {
+        Browser browser = new Browser();
+        BrowserView browserView = new BrowserView(browser);
 
         JFrame frame = new JFrame();
-        frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browserOne.loadURL("http://www.google.com");
-        browserTwo.loadURL("http://www.teamdev.com");
+        browser.loadURL("http://www.google.com");
     }
 }

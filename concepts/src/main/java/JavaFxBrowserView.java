@@ -18,43 +18,41 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javafx.embed.swt.FXCanvas;
-import javafx.scene.Scene;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserCore;
+import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
- * The example demonstrates how to use JxBrowser JavaFX
- * control in SWT application using FXCanvas.
+ * Demonstrates how to embed Browser instance into JavaFX application.
  */
-public class JxBrowserInJavaFxSwt {
-    public static void main(String[] arguments) {
-        Display display = new Display();
-        Shell shell = new Shell(display);
-        shell.setLayout(new FillLayout());
+public class JavaFxBrowserView extends Application {
 
-        Browser browser = new Browser();
-        FXCanvas canvas = new FXCanvas(shell, SWT.NONE);
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-        // BrowserView instance must be initialized after FXCanvas.
-        BrowserView view = new BrowserView(browser);
-        canvas.setScene(new Scene(view));
-
-        browser.loadURL("http://google.com");
-
-        shell.open();
-        while (!shell.isDisposed()) {
-               if (!display.readAndDispatch()) {
-                     display.sleep();
-               }
+    @Override
+    public void init() {
+        // On Mac OS X Chromium engine must be initialized in non-UI thread.
+        if (Environment.isMac()) {
+            BrowserCore.initialize();
         }
-        display.dispose();
+    }
+
+    @Override
+    public void start(final Stage primaryStage) {
+        Browser browser = new Browser();
+        BrowserView view = new BrowserView(browser);
+
+        Scene scene = new Scene(new BorderPane(view), 700, 500);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        browser.loadURL("http://www.google.com");
     }
 }
-

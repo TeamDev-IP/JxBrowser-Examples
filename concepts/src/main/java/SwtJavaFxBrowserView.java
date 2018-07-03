@@ -19,28 +19,41 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import javafx.embed.swt.FXCanvas;
+import javafx.scene.Scene;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * This example demonstrates how to create Browser instance,
- * embed it into Swing BrowserView container, display it in JFrame and
- * navigate to the "www.google.com" web site.
+ * The example demonstrates how to use JxBrowser JavaFX
+ * control in SWT application using FXCanvas.
  */
-public class JxBrowserInSwing {
-    public static void main(String[] args) {
+public class SwtJavaFxBrowserView {
+
+    public static void main(String[] arguments) {
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        shell.setLayout(new FillLayout());
+
         Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        FXCanvas canvas = new FXCanvas(shell, SWT.NONE);
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // BrowserView instance must be initialized after FXCanvas.
+        BrowserView view = new BrowserView(browser);
+        canvas.setScene(new Scene(view));
 
-        browser.loadURL("http://www.google.com");
+        browser.loadURL("http://google.com");
+
+        shell.open();
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+        display.dispose();
     }
 }
+

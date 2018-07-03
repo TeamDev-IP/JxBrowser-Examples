@@ -18,45 +18,32 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.Frame;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 /**
- * The example demonstrates how to use JxBrowser Swing control in
- * SWT application using SWT_AWT bridge.
+ * The example demonstrates how to use Browser in JTabbedPane.
  */
-public class JxBrowserInSwingSwt {
-    public static void main(String[] arguments) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+public class BrowserViewInJTabbedPane {
 
-        Display display = new Display();
-        Shell shell = new Shell(display);
-        shell.setLayout(new FillLayout());
+    public static void main(String[] args) {
+        Browser browserOne = new Browser();
+        Browser browserTwo = new Browser();
 
-        Composite composite = new Composite(shell,
-                SWT.EMBEDDED | SWT.NO_BACKGROUND);
-        Frame frame = SWT_AWT.new_Frame(composite);
-        frame.add(view);
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Google", new BrowserView(browserOne));
+        tabbedPane.addTab("TeamDev", new BrowserView(browserTwo));
 
-        browser.loadURL("http://google.com");
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-        shell.open();
-
-        while (!shell.isDisposed()) {
-            if (!display.readAndDispatch()) {
-                display.sleep();
-            }
-        }
-        display.dispose();
+        browserOne.loadURL("https://www.google.com");
+        browserTwo.loadURL("https://www.teamdev.com");
     }
 }

@@ -19,40 +19,43 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.Frame;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * Demonstrates how to embed Browser instance into JavaFX application.
+ * The example demonstrates how to use JxBrowser Swing control in
+ * SWT application using SWT_AWT bridge.
  */
-public class JxBrowserInJavaFx extends Application {
+public class SwtSwingBrowserView {
 
-    @Override
-    public void init() throws Exception {
-        // On Mac OS X Chromium engine must be initialized in non-UI thread.
-        if (Environment.isMac()) {
-            BrowserCore.initialize();
-        }
-    }
-
-    @Override
-    public void start(final Stage primaryStage) {
+    public static void main(String[] arguments) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        Scene scene = new Scene(new BorderPane(view), 700, 500);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        shell.setLayout(new FillLayout());
 
-        browser.loadURL("http://www.google.com");
-    }
+        Composite composite = new Composite(shell,
+                SWT.EMBEDDED | SWT.NO_BACKGROUND);
+        Frame frame = SWT_AWT.new_Frame(composite);
+        frame.add(view);
 
-    public static void main(String[] args) {
-        launch(args);
+        browser.loadURL("http://google.com");
+
+        shell.open();
+
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+        display.dispose();
     }
 }
