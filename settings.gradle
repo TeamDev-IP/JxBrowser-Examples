@@ -33,6 +33,8 @@ module ('quickstart-javafx', './quickstart/javafx')
 
 include 'content'
 include 'printing'
+include 'chromium/switchers'
+include 'chromium/voice-recognition'
 
 module ('content-changes', './tutorials/content-changes')
 
