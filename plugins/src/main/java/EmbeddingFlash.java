@@ -18,30 +18,31 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserPreferences;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * This example loads a web page with simple Flash content.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class EmbeddingFlash {
+    public static void main(String[] args) {
+        BrowserPreferences.setChromiumSwitches(
+                "--ppapi-flash-path=/usr/lib/flash/libpepflashplayer.so",
+                "--ppapi-flash-version=20.0.0.270");
+        Browser browser = new Browser();
+        BrowserView view = new BrowserView(browser);
+
+        JFrame frame = new JFrame("Flash Example");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(view, BorderLayout.CENTER);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        browser.loadURL("http://www.webthrower.com/portfolio/narnia.htm");
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-include 'javascript'
-include 'dialogs'
-include 'media'
-include 'navigation'
-include 'plugins'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
