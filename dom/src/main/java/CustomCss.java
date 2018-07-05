@@ -18,29 +18,25 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+import javax.swing.*;
+import java.awt.*;
+
+public class CustomCss {
+    public static void main(String[] args) {
+        Browser browser = new Browser();
+        BrowserView view = new BrowserView(browser);
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(view, BorderLayout.CENTER);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        browser.setCustomStyleSheet("body { background-color: orange; }");
+        browser.loadURL("about:blank");
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-include 'javascript'
-include 'dialogs'
-include 'plugins'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
-
