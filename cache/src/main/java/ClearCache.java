@@ -18,31 +18,28 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * This example demonstrates how to clear the Browser cache.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class ClearCache {
+    public static void main(String[] args) {
+        BrowserContext context1 = new BrowserContext("C:\\my-data1");
+        Browser browser1 = new Browser(context1);
+        Browser browser2 = new Browser(context1);
+
+        BrowserContext context2 = new BrowserContext("C:\\my-data2");
+        Browser browser3 = new Browser(context2);
+
+        // Clears cache of browser1 and browser2 instances because they
+        // use the same user data and cache "C:\\my-data1" directory.
+        //
+        // It does not clear the cache of browser3, because browser3
+        // uses a different directory for storing
+        // cache data - "C:\\my-data2".
+
+        browser1.getCacheStorage().clearCache();
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-include 'javascript'
-include 'dialogs'
-include 'media'
-include 'navigation'
-include 'plugins'
-include 'cache'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
