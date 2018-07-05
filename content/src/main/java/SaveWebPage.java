@@ -26,6 +26,7 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 /**
  * This example demonstrates how to save the loaded web page.
@@ -46,9 +47,9 @@ public class SaveWebPage {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    String filePath = new File("index_dir").getAbsolutePath()
-                    String dirPath = new File("resources_dir").getAbsolutePath()
-                    event.getBrowser().saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML);
+                    String filePath = new File("index.html").getAbsolutePath();
+                    String dirPath = new File("resources_dir").getAbsolutePath();
+                    browser.saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML);
                 }
             }
         });
