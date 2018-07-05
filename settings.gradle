@@ -37,9 +37,9 @@ include 'chromium'
 include 'dom'
 include 'concepts'
 include 'javascript'
+include 'dialogs'
 include 'media'
 
 module ('content-changes', './tutorials/content-changes')
 
 include 'demo'
-
