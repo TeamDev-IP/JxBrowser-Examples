@@ -28,7 +28,7 @@ import java.awt.*;
  * The example demonstrates how to accept/reject SSL certificates using
  * custom SSL certificate verifier.
  */
-public class CertificateVerifier {
+public class SslCertificateVerifier {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
