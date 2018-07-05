@@ -29,7 +29,7 @@ import java.awt.*;
  * embed it into Swing BrowserView container, display it in JFrame and
  * navigate to the "www.google.com" web site.
  */
-public class LoadURL {
+public class LoadUrl {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);

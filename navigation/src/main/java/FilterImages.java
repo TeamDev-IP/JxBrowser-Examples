@@ -30,7 +30,7 @@ import java.awt.*;
  * engine should load them from web server or not. For example, in
  * this sample we cancel loading of all Images.
  */
-public class ResourceHandler {
+public class FilterImages {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
