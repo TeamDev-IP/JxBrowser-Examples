@@ -41,6 +41,7 @@ include 'dialogs'
 include 'media'
 include 'navigation'
 include 'plugins'
+include 'download'
 
 module ('content-changes', './tutorials/content-changes')
 
