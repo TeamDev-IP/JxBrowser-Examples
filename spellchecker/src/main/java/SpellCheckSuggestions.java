@@ -23,15 +23,13 @@ import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * The example demonstrates how to work with spellchecker API.
  */
-public class SpellChecker {
-    public static void main(String[] args) throws Exception {
+public class SpellCheckSuggestions {
+    public static void main(String[] args) {
         // Enable heavyweight popup menu for heavyweight (default) BrowserView component.
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
@@ -47,9 +45,9 @@ public class SpellChecker {
 
         BrowserContext context = browser.getContext();
         SpellCheckerService spellCheckerService = context.getSpellCheckerService();
-        // Enable SpellChecker service.
+        // Enable SpellCheckSuggestions service.
         spellCheckerService.setEnabled(true);
-        // Configure SpellChecker's language.
+        // Configure SpellCheckSuggestions's language.
         spellCheckerService.setLanguage("en-US");
 
         browser.setContextMenuHandler(new MyContextMenuHandler(view, browser));
@@ -68,12 +66,10 @@ public class SpellChecker {
         }
 
         public void showContextMenu(final ContextMenuParams params) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    JPopupMenu popupMenu = createPopupMenu(params);
-                    Point location = params.getLocation();
-                    popupMenu.show(component, location.x, location.y);
-                }
+            SwingUtilities.invokeLater(() -> {
+                JPopupMenu popupMenu = createPopupMenu(params);
+                Point location = params.getLocation();
+                popupMenu.show(component, location.x, location.y);
             });
         }
 
@@ -82,20 +78,15 @@ public class SpellChecker {
             // Add suggestions menu items.
             List<String> suggestions = params.getDictionarySuggestions();
             for (final String suggestion : suggestions) {
-                result.add(createMenuItem(suggestion, new Runnable() {
-                    public void run() {
-                        browser.replaceMisspelledWord(suggestion);
-                    }
-                }));
+                result.add(createMenuItem(suggestion, () ->
+                        browser.replaceMisspelledWord(suggestion)));
             }
             if (!suggestions.isEmpty()) {
                 // Add the "Add to Dictionary" menu item.
                 result.addSeparator();
-                result.add(createMenuItem("Add to Dictionary", new Runnable() {
-                    public void run() {
-                        String misspelledWord = params.getMisspelledWord();
-                        browser.addWordToSpellCheckerDictionary(misspelledWord);
-                    }
+                result.add(createMenuItem("Add to Dictionary", () -> {
+                    String misspelledWord = params.getMisspelledWord();
+                    browser.addWordToSpellCheckerDictionary(misspelledWord);
                 }));
             }
             return result;
@@ -103,11 +94,7 @@ public class SpellChecker {
 
         private static JMenuItem createMenuItem(String title, final Runnable action) {
             JMenuItem result = new JMenuItem(title);
-            result.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    action.run();
-                }
-            });
+            result.addActionListener(e -> action.run());
             return result;
         }
     }

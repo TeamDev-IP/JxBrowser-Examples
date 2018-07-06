@@ -18,7 +18,9 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.SpellCheckResult;
+import com.teamdev.jxbrowser.chromium.SpellCheckerService;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 import javax.swing.*;
@@ -26,7 +28,7 @@ import java.awt.*;
 import java.util.List;
 
 public class SpellCheck {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
@@ -39,15 +41,13 @@ public class SpellCheck {
 
         SpellCheckerService spellCheckerService =
                 browser.getContext().getSpellCheckerService();
-        spellCheckerService.addSpellCheckListener(new SpellCheck() {
-            @Override
-            public void onSpellCheckCompleted(SpellCheckCompletedParams params) {
-                String text = params.getText();
-                List<SpellCheckResult> checkResults = params.getResults();
-                for (SpellCheckResult checkResult : checkResults) {
-                    int errorStartIndex = checkResult.getStartIndex();
-                    int errorLength = checkResult.getLength();
-                }
+        spellCheckerService.addSpellCheckListener(params -> {
+            List<SpellCheckResult> checkResults = params.getResults();
+            for (SpellCheckResult checkResult : checkResults) {
+                int errorStartIndex = checkResult.getStartIndex();
+                int errorLength = checkResult.getLength();
+                System.out.println("errorStartIndex = " + errorStartIndex);
+                System.out.println("errorLength = " + errorLength);
             }
         });
 
