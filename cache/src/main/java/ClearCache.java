@@ -20,25 +20,30 @@
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserContext;
+import com.teamdev.jxbrowser.chromium.BrowserContextParams;
+
+import java.io.File;
 
 /**
  * This example demonstrates how to clear the Browser cache.
  */
 public class ClearCache {
     public static void main(String[] args) {
-        BrowserContext context1 = new BrowserContext("C:\\my-data1");
+        BrowserContext context1 = new BrowserContext(new BrowserContextParams(
+                new File("user_data_dir1").getAbsolutePath()));
         Browser browser1 = new Browser(context1);
         Browser browser2 = new Browser(context1);
 
-        BrowserContext context2 = new BrowserContext("C:\\my-data2");
+        BrowserContext context2 = new BrowserContext(new BrowserContextParams(
+                new File("user_data_dir2").getAbsolutePath()));
         Browser browser3 = new Browser(context2);
 
         // Clears cache of browser1 and browser2 instances because they
-        // use the same user data and cache "C:\\my-data1" directory.
+        // use the same user data and cache "user_data_dir1" directory.
         //
         // It does not clear the cache of browser3, because browser3
         // uses a different directory for storing
-        // cache data - "C:\\my-data2".
+        // cache data - "user_data_dir2".
 
         browser1.getCacheStorage().clearCache();
     }
