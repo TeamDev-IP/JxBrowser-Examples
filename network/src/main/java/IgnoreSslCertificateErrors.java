@@ -23,19 +23,21 @@ import com.teamdev.jxbrowser.chromium.Certificate;
 import com.teamdev.jxbrowser.chromium.CertificateErrorParams;
 import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * Demonstrates how to handle SSL certificate errors.
+ * The example demonstrates how to ignore SSL certificate errors and
+ * continue loading a website with invalid SSL certificate.
  */
-public class CertificateError {
+public class IgnoreSslCertificateErrors {
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser - Ignore SSL Certificate Errors");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(700, 500);
@@ -45,16 +47,22 @@ public class CertificateError {
         browser.setLoadHandler(new DefaultLoadHandler() {
             @Override
             public boolean onCertificateError(CertificateErrorParams params) {
+                // Get the invalid SSL certificate details.
                 Certificate certificate = params.getCertificate();
-                System.out.println("subjectName = " + certificate.getSubjectName());
-                System.out.println("issuerName = " + certificate.getIssuerName());
-                System.out.println("hasExpired = " + certificate.hasExpired());
-                System.out.println("errorCode = " + params.getCertificateError());
-                // Return false to ignore certificate error.
+                System.out.println("Subject name: " + certificate.getSubjectName());
+                System.out.println("Issuer name: " + certificate.getIssuerName());
+                System.out.println("Certificate expired? " + certificate.hasExpired());
+
+                // Get the NetError code (e.g. CERT_AUTHORITY_INVALID).
+                System.out.println("Error code: " + params.getCertificateError());
+
+                // Return false to ignore the SSL certificate error and
+                // continue loading the web page.
                 return false;
             }
         });
-        browser.loadURL("<https-url-with-invalid-ssl-certificate>");
+        // Load HTTPS website with invalid SSL certificate.
+        browser.loadURL("https://self-signed.badssl.com/");
     }
 }
 
