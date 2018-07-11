@@ -19,50 +19,45 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.DownloadHandler;
 import com.teamdev.jxbrowser.chromium.DownloadItem;
-import com.teamdev.jxbrowser.chromium.events.DownloadEvent;
-import com.teamdev.jxbrowser.chromium.events.DownloadListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * The example demonstrates how to handle file download. To cancel download
- * you must return {@code false} from the
- * {@link DownloadHandler#allowDownload(com.teamdev.jxbrowser.chromium.DownloadItem)}
- * method. To listed for download update events you can register your own
- * {@link com.teamdev.jxbrowser.chromium.events.DownloadListener}.
+ * The example demonstrates how to allow/disallow downloading a file, track
+ * download progress and get notification when downloading has been completed.
  */
 public class Download {
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Download File");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.setDownloadHandler(new DownloadHandler() {
-            public boolean allowDownload(DownloadItem download) {
-                download.addDownloadListener(new DownloadListener() {
-                    public void onDownloadUpdated(DownloadEvent event) {
-                        DownloadItem download = event.getDownloadItem();
-                        if (download.isCompleted()) {
-                            System.out.println("Download is completed!");
-                        }
-                    }
-                });
-                System.out.println("Destination file: " +
-                        download.getDestinationFile().getAbsolutePath());
-                return true;
-            }
+        browser.setDownloadHandler(download -> {
+            download.addDownloadListener(event -> {
+                DownloadItem downloadItem = event.getDownloadItem();
+                if (downloadItem.isCompleted()) {
+                    System.out.println("Download is completed");
+                } else {
+                    System.out.println("Downloading " +
+                            downloadItem.getPercentComplete() + "%...");
+                }
+            });
+            System.out.println("Destination file: " +
+                    download.getDestinationFile().getAbsolutePath());
+            // Return true to allow file download.
+            return true;
         });
 
-        browser.loadURL("ftp://ftp.teamdev.com/updates/jxbrowser-4.0-beta.zip");
+        browser.loadURL("http://cloud.teamdev.com/downloads/demo/jxbrowserdemo.jnlp");
     }
 }
