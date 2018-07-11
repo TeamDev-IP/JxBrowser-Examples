@@ -19,40 +19,52 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
 import com.teamdev.jxbrowser.chromium.Cookie;
+import com.teamdev.jxbrowser.chromium.NetworkService;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.teamdev.jxbrowser.chromium.swing.DefaultNetworkDelegate;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * The example demonstrates how to suppress/filter incoming and outgoing cookies.
+ * The example demonstrates how to suppress/filter all
+ * the incoming and outgoing cookies.
  */
 public class CookieFilter {
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
-        // Suppress/filter all incoming and outgoing cookies.
-        browser.getContext().getNetworkService().setNetworkDelegate(new DefaultNetworkDelegate() {
+        // Suppress/filter all the incoming and outgoing cookies.
+        BrowserContext browserContext = browser.getContext();
+        NetworkService networkService = browserContext.getNetworkService();
+        networkService.setNetworkDelegate(new DefaultNetworkDelegate() {
             @Override
             public boolean onCanSetCookies(String url, List<Cookie> cookies) {
+                System.out.println("Disallow accepting cookies for: " + url);
+                // Return false to disallow accepting and saving the cookies.
                 return false;
             }
 
             @Override
             public boolean onCanGetCookies(String url, List<Cookie> cookies) {
+                System.out.println("Disallow sending cookies for: " + url);
+                // Return false to disallow sending the cookies to a web server.
                 return false;
             }
         });
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Filter Cookies");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        browser.loadURL("https://www.google.com");
     }
 }
