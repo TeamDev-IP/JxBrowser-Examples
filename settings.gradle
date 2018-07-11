@@ -45,6 +45,7 @@ include 'spellchecker'
 include 'download'
 include 'zoom'
 include 'troubleshooting'
+include 'cache'
 
 module ('content-changes', './tutorials/content-changes')
 
