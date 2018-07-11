@@ -19,35 +19,42 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
 import com.teamdev.jxbrowser.chromium.SpellCheckResult;
 import com.teamdev.jxbrowser.chromium.SpellCheckerService;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-public class SpellCheck {
+/**
+ * The example demonstrates how to get notifications when spell
+ * checking has been completed on a web page.
+ */
+public class SpellCheckEvents {
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Spell Check Events");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        BrowserContext browserContext = browser.getContext();
         SpellCheckerService spellCheckerService =
-                browser.getContext().getSpellCheckerService();
+                browserContext.getSpellCheckerService();
         spellCheckerService.addSpellCheckListener(params -> {
             List<SpellCheckResult> checkResults = params.getResults();
             for (SpellCheckResult checkResult : checkResults) {
                 int errorStartIndex = checkResult.getStartIndex();
                 int errorLength = checkResult.getLength();
-                System.out.println("errorStartIndex = " + errorStartIndex);
-                System.out.println("errorLength = " + errorLength);
+                System.out.println("Error start index: " + errorStartIndex);
+                System.out.println("Error length: " + errorLength);
             }
         });
 
