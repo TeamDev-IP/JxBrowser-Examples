@@ -18,49 +18,52 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.chromium.Browser.invokeAndWaitFinishLoadingMainFrame;
+
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserPreferences;
 import com.teamdev.jxbrowser.chromium.BrowserType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.teamdev.jxbrowser.chromium.swing.internal.LightWeightWidget;
-
-import javax.imageio.ImageIO;
+import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import javax.imageio.ImageIO;
 
 /**
  * This example demonstrates how to get screen shot of the web page
  * and save it as PNG image file.
  */
 public class HtmlToImage {
-    public static void main(String[] args) throws Exception {
-        final int viewWidth = 1024;
-        final int viewHeight = 20000;
-        // Disables GPU process and changes maximum texture size
-        // value from default 16384 to viewHeight. The maximum texture size value
-        // indicates the maximum height of the canvas where Chromium
-        // renders web page's content. If the web page's height
-        // exceeds the maximum texture size, the part of outsize the
-        // texture size will not be drawn and will be filled with
-        // black color.
-        String[] switches = {
-                "--disable-gpu",
-                "--max-texture-size=" + viewHeight
-        };
-        BrowserPreferences.setChromiumSwitches(switches);
 
-        // #1 Create LIGHTWEIGHT Browser instance.
+    private static final int IMAGE_WIDTH = 1_024;
+    private static final int IMAGE_HEIGHT = 1_280;
+    private static final int MAX_IMAGE_HEIGHT = 20_000;
+
+    public static void main(String[] args) throws Exception {
+        // Disables GPU process and changes maximum texture size
+        // value from the default 16384 to the required image height.
+        //
+        // The maximum texture size value indicates the maximum height
+        // of the canvas where Chromium renders web page's content.
+        // If the web page's height exceeds the maximum texture size,
+        // the part of outsize the texture size will not be drawn and
+        // be filled with the black color.
+        BrowserPreferences.setChromiumSwitches(
+                "--disable-gpu",
+                "--max-texture-size=" + MAX_IMAGE_HEIGHT);
+
         Browser browser = new Browser(BrowserType.LIGHTWEIGHT);
         BrowserView view = new BrowserView(browser);
 
-        // #2 Register LightWeightWidgetListener.onRepaint() to get
+        // Register LightWeightWidgetListener.onRepaint() to get
         // notifications about paint events. We expect that web page
         // will be completely rendered twice:
-        // 1. When its size is updated to viewWidth x viewHeight.
+        // 1. When its size is updated to the required image width/height.
         // 2. When HTML content is loaded and displayed.
-        final CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch latch = new CountDownLatch(2);
         LightWeightWidget widget = (LightWeightWidget) view.getComponent(0);
         widget.addLightWeightWidgetListener((updatedRect, viewSize) -> {
             // Make sure that all view content has been repainted.
@@ -69,21 +72,24 @@ public class HtmlToImage {
             }
         });
 
-        // #3 Set the required view size.
-        browser.setSize(viewWidth, viewHeight);
+        // Set the required view size.
+        view.getBrowser().setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
 
-        // #4 Load web page and wait until web page is loaded completely.
-        Browser.invokeAndWaitFinishLoadingMainFrame(browser, targetBrowser ->
-                targetBrowser.loadURL("https://teamdev.com/jxbrowser"));
+        // Load web page and wait until it's loaded completely.
+        invokeAndWaitFinishLoadingMainFrame(view.getBrowser(), targetBrowser ->
+                targetBrowser.loadURL("https://www.google.com"));
 
-        // #5 Wait until Chromium renders web page content.
+        // Wait until the web page is rendered.
         latch.await(45, TimeUnit.SECONDS);
 
-        // #6 Save java.awt.Image of the loaded web page into a PNG file.
-        ImageIO.write((RenderedImage) widget.getImage(), "PNG",
-                new File("teamdev.com.png"));
+        // Get the image of the loaded web page
+        Image image = widget.getImage();
 
-        // #7 Dispose Browser instance.
+        // Save the image of the loaded web page into a PNG file.
+        ImageIO.write((RenderedImage) image, "PNG",
+                new File("google.com.png"));
+
+        // Dispose the Browser instance.
         browser.dispose();
     }
 }
