@@ -19,32 +19,38 @@
  */
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.BrowserContextParams;
-
-import java.io.File;
+import com.teamdev.jxbrowser.chromium.CacheStorage;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to clear the Browser cache.
+ * This example demonstrates how to clear the cache.
  */
 public class ClearCache {
+
     public static void main(String[] args) {
-        BrowserContext context1 = new BrowserContext(new BrowserContextParams(
-                new File("user_data_dir1").getAbsolutePath()));
-        Browser browser1 = new Browser(context1);
-        Browser browser2 = new Browser(context1);
+        Browser browser = new Browser();
+        BrowserView view = new BrowserView(browser);
 
-        BrowserContext context2 = new BrowserContext(new BrowserContextParams(
-                new File("user_data_dir2").getAbsolutePath()));
-        Browser browser3 = new Browser(context2);
+        JButton clearCacheButton = new JButton("Clear Cache");
+        clearCacheButton.addActionListener(e -> {
+            // Clear the cache through the CacheStorage.
+            CacheStorage cacheStorage = browser.getCacheStorage();
+            cacheStorage.clearCache(() ->
+                    System.out.println("Cache has been cleared"));
+        });
 
-        // Clears cache of browser1 and browser2 instances because they
-        // use the same user data and cache "user_data_dir1" directory.
-        //
-        // It does not clear the cache of browser3, because browser3
-        // uses a different directory for storing
-        // cache data - "user_data_dir2".
+        JFrame frame = new JFrame("JxBrowser – Clear Cache");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(clearCacheButton, BorderLayout.NORTH);
+        frame.add(view, BorderLayout.CENTER);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-        browser1.getCacheStorage().clearCache();
+        browser.loadURL("https://www.google.com");
     }
 }
