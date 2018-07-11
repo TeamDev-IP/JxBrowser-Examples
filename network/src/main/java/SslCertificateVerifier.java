@@ -26,32 +26,32 @@ import java.awt.*;
 
 /**
  * The example demonstrates how to accept/reject SSL certificates using
- * custom SSL certificate verifier.
+ * a custom SSL certificate verifier.
  */
 public class SslCertificateVerifier {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        NetworkService networkService = browser.getContext().getNetworkService();
-        networkService.setCertificateVerifier(new CertificateVerifier() {
-            @Override
-            public CertificateVerifyResult verify(CertificateVerifyParams params) {
-                // Reject SSL certificate for all "google.com" hosts.
-                if (params.getHostName().contains("google.com")) {
-                    return CertificateVerifyResult.INVALID;
-                }
-                return CertificateVerifyResult.OK;
+        BrowserContext browserContext = browser.getContext();
+        NetworkService networkService = browserContext.getNetworkService();
+        networkService.setCertificateVerifier(params -> {
+            String host = params.getHostName();
+            System.out.println("Verifying certificate for " + host + "...");
+            // Reject SSL certificate for all "google.com" hosts.
+            if (host.contains("google.com")) {
+                return CertificateVerifyResult.INVALID;
             }
+            return CertificateVerifyResult.DEFAULT;
         });
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – SSL Certificate Verifier");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        browser.loadURL("http://google.com");
+        browser.loadURL("https://www.google.com");
     }
 }
