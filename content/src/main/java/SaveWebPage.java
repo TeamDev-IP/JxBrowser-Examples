@@ -49,11 +49,15 @@ public class SaveWebPage {
                 if (event.isMainFrame()) {
                     String filePath = new File("index.html").getAbsolutePath();
                     String dirPath = new File("resources_dir").getAbsolutePath();
-                    browser.saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML);
+                    if (browser.saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML)) {
+                        System.out.println("The web page has been saved to " + filePath);
+                    } else {
+                        System.err.println("Failed to save the web page to " + filePath);
+                    }
                 }
             }
         });
 
-        browser.loadURL("http://www.google.com");
+        browser.loadURL("https://www.google.com");
     }
 }
