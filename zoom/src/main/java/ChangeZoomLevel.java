@@ -23,12 +23,10 @@ import com.teamdev.jxbrowser.chromium.BrowserContext;
 import com.teamdev.jxbrowser.chromium.ZoomService;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.events.ZoomEvent;
-import com.teamdev.jxbrowser.chromium.events.ZoomListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to modify zoom level for a
@@ -37,37 +35,38 @@ import java.awt.*;
  * a different domain, its zoom level will be 100% until you
  * modify it.
  */
-public class Zoom {
+public class ChangeZoomLevel {
+
+    private static final double ZOOM_LEVEL = 2.0;
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Zoom Level");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Listen to zoom changed events
+        // Listen to the zoom changed events.
         BrowserContext context = browser.getContext();
         ZoomService zoomService = context.getZoomService();
-        zoomService.addZoomListener(new ZoomListener() {
-            public void onZoomChanged(ZoomEvent event) {
-                System.out.println("event.getURL() = " + event.getURL());
-                System.out.println("event.getZoomLevel() = " + event.getZoomLevel());
-            }
+        zoomService.addZoomListener(event -> {
+            System.out.println("Url: " + event.getURL());
+            System.out.println("Zoom level: " + event.getZoomLevel());
         });
 
-        // Modify zoom level every time when main frame is loaded.
+        // Modify zoom level every time when the main frame is loaded.
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    event.getBrowser().setZoomLevel(2.0);
+                    event.getBrowser().setZoomLevel(ZOOM_LEVEL);
                 }
             }
         });
-        browser.loadURL("http://www.teamdev.com");
+        browser.loadURL("https://www.google.com");
     }
 }

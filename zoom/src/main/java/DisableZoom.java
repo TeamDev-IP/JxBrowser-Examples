@@ -20,25 +20,29 @@
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-import javax.swing.*;
-import java.awt.*;
+/**
+ * The example demonstrates how to disable zoom on a web page.
+ */
+public class DisableZoom {
 
-public class ZoomEnabled {
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Disable Zoom");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Disabling zoom for the browser instance.
+        // Disabling zoom for the Browser instance.
         browser.setZoomEnabled(false);
 
-        browser.loadURL("https://google.com");
+        browser.loadURL("https://www.google.com");
     }
 }
