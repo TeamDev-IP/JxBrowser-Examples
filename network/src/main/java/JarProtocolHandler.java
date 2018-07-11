@@ -18,62 +18,111 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
+import com.teamdev.jxbrowser.chromium.ProtocolHandler;
+import com.teamdev.jxbrowser.chromium.ProtocolService;
+import com.teamdev.jxbrowser.chromium.URLRequest;
+import com.teamdev.jxbrowser.chromium.URLResponse;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.DataInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
+/**
+ * The example demonstrates how to register a JAR protocol handler to load
+ * the files located inside a JAR archive.
+ */
 public class JarProtocolHandler {
-    public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+    private static final String JAR_PROTOCOL = "jar";
+
+    private static final String EXTENSION_HTML = ".html";
+    private static final String EXTENSION_CSS = ".css";
+    private static final String EXTENSION_JS = ".js";
+
+    private static final String CONTENT_TYPE = "Content-Type";
+
+    private static final String MIME_TYPE_TEXT_HTML = "text/html";
+    private static final String MIME_TYPE_TEXT_CSS = "text/css";
+    private static final String MIME_TYPE_TEXT_JS = "text/javascript";
+
+    private static final String ERROR_PAGE_HTML = "<html><title>Error Page</title>"
+            + "<body>Oops! Something went wrong:</br>Error message: %s</body></html>";
+
+    public static void main(String[] args) {
+        // Create and initialize a new BrowserView instance.
+        BrowserView view = new BrowserView();
+
+        // Create and display a window with the BrowserView component.
+        JFrame frame = new JFrame("JxBrowser – JAR Protocol Handler");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        // Register a custom ProtocolHandler for the "jar" protocol.
+        Browser browser = view.getBrowser();
         BrowserContext browserContext = browser.getContext();
         ProtocolService protocolService = browserContext.getProtocolService();
-        protocolService.setProtocolHandler("jar", new ProtocolHandler() {
+        protocolService.setProtocolHandler(JAR_PROTOCOL, new ProtocolHandler() {
             @Override
             public URLResponse onRequest(URLRequest request) {
+                URLResponse response = new URLResponse();
                 try {
-                    URLResponse response = new URLResponse();
-                    URL path = new URL(request.getURL());
-                    InputStream inputStream = path.openStream();
-                    DataInputStream stream = new DataInputStream(inputStream);
-                    byte[] data = new byte[stream.available()];
-                    stream.readFully(data);
+                    // Find the requested file by URL.
+                    URL url = new URL(request.getURL());
+                    System.out.println("url = " + url);
+                    // Read the file's bytes.
+                    DataInputStream dataInputStream = new DataInputStream(url.openStream());
+                    byte[] data = new byte[dataInputStream.available()];
+                    dataInputStream.readFully(data);
+                    dataInputStream.close();
+                    // Put the file's bytes in the URLResponse.
                     response.setData(data);
-                    String mimeType = getMimeType(path.toString());
-                    response.getHeaders().setHeader("Content-Type", mimeType);
-                    return response;
-                } catch (Exception ignored) {}
-                return null;
+                    // Detect the MIME type of the requested file and put it to
+                    // the "Content-Type" header of the URLResponse.
+                    response.getHeaders().setHeader(CONTENT_TYPE, getMIMEType(url));
+                } catch (MalformedURLException e) {
+                    sendErrorPage(response, "Failed to parse URL: " + request.getURL());
+                } catch (IOException e) {
+                    sendErrorPage(response, "Failed to read file: " + e.getMessage());
+                } catch (Exception e) {
+                    sendErrorPage(response, e.getMessage());
+                }
+                return response;
+            }
+
+            private void sendErrorPage(URLResponse response, String errorMessage) {
+                // Send an error page with the given error message.
+                response.setData(String.format(ERROR_PAGE_HTML, errorMessage).getBytes());
+                response.getHeaders().setHeader(CONTENT_TYPE, MIME_TYPE_TEXT_HTML);
+            }
+
+            private String getMIMEType(URL url) {
+                // Return "text/html" for the ".html" file extensions.
+                if (url.toString().endsWith(EXTENSION_HTML)) {
+                    return MIME_TYPE_TEXT_HTML;
+                }
+                // Return "text/css" for the ".css" file extensions.
+                if (url.toString().endsWith(EXTENSION_CSS)) {
+                    return MIME_TYPE_TEXT_CSS;
+                }
+                // Return "text/javascript" for the ".js" file extensions.
+                if (url.toString().endsWith(EXTENSION_JS)) {
+                    return MIME_TYPE_TEXT_JS;
+                }
+                // Throw an exception in case of unsupported file extension.
+                throw new IllegalArgumentException("Unsupported file format: " + url);
             }
         });
 
-        // Assume that we need to load a resource related to this class in the JAR file
-        browser.loadURL(ProtocolHandler.class.getResource("index.html").toString());
-    }
-
-    private static String getMimeType(String path) {
-        if (path.endsWith(".html")) {
-            return "text/html";
-        }
-        if (path.endsWith(".css")) {
-            return "text/css";
-        }
-        if (path.endsWith(".js")) {
-            return "text/javascript";
-        }
-        return "text/html";
+        // Load the index.html file located inside a JAR archive added to this Java app classpath.
+        browser.loadURL(JarProtocolHandler.class.getResource("index.html").toString());
     }
 }
