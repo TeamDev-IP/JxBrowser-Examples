@@ -25,8 +25,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * The example loads web page that uses WebSockets API to demonstrate that
- * such web pages are supported in JxBrowser.
+ * The example loads the web page that uses WebSockets API to
+ * demonstrate that such web pages are supported in JxBrowser.
  */
 public class WebSocket {
     public static void main(String[] args) {
