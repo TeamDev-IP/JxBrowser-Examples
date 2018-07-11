@@ -20,23 +20,27 @@
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.SearchParams;
-import com.teamdev.jxbrowser.chromium.SearchResult;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates, how to find text on a loaded web page.
  */
 public class FindText {
+
+    private static final String SEARCH_TEXT = "Hello";
+    private static final String HTML = String.format(
+            "<html><body><p>Say %s to the web.</p></body></html>", SEARCH_TEXT);
+
     public static void main(String[] args) {
         final Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Find Text");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(browserView, BorderLayout.CENTER);
         frame.setSize(700, 500);
@@ -47,18 +51,22 @@ public class FindText {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 if (event.isMainFrame()) {
-                    SearchParams request = new SearchParams("find me");
-                    // Find text from the beginning of the loaded web page.
-                    SearchResult result = browser.findText(request);
-                    System.out.println(result.indexOfSelectedMatch() + "/" +
-                            result.getNumberOfMatches());
-                    // Find the same text again from the currently selected match.
-                    result = browser.findText(request);
-                    System.out.println(result.indexOfSelectedMatch() + "/" +
-                            result.getNumberOfMatches());
+                    // Find the text from the beginning of the loaded web page.
+                    findText();
                 }
             }
+
+            private void findText() {
+                SearchParams request = new SearchParams(SEARCH_TEXT);
+                browser.findText(request, searchResult -> {
+                    if (searchResult.isCompleted()) {
+                        System.out.println(
+                                searchResult.indexOfSelectedMatch() + "/" +
+                                        searchResult.getNumberOfMatches());
+                    }
+                });
+            }
         });
-        browser.loadHTML("<html><body><p>Find me</p><p>Find me</p></body></html>");
+        browser.loadHTML(HTML);
     }
 }
