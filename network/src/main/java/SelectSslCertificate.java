@@ -18,24 +18,36 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.Certificate;
+import com.teamdev.jxbrowser.chromium.CertificatesDialogParams;
+import com.teamdev.jxbrowser.chromium.CloseStatus;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
- * The example demonstrates how to display Select SSL Certificate dialog where
- * user must select required SSL certificate to continue loading web page.
+ * The example demonstrates how to display the "Select Client SSL Certificate"
+ * dialog where you must select a required SSL certificate to continue loading web page.
+ *
+ * Important: before you run this example, please follow the instruction at
+ * https://badssl.com/download/ and install the required custom SSL certificate.
  */
 public class SelectSslCertificate {
+
+    private static final String DIALOG_TITLE = "Select a certificate";
+    private static final String DIALOG_MESSAGE =
+            "Select a certificate to authenticate yourself to %s";
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         final BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – Select Client SSL Certificate");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
@@ -43,15 +55,22 @@ public class SelectSslCertificate {
         frame.setVisible(true);
 
         browser.setDialogHandler(new DefaultDialogHandler(view) {
+
             @Override
             public CloseStatus onSelectCertificate(CertificatesDialogParams params) {
-                String message = "Select a certificate to authenticate yourself to " + params.getHostPortPair().getHostPort();
+                // Get a list of the installed client SSL certificates.
                 List<Certificate> certificates = params.getCertificates();
                 if (!certificates.isEmpty()) {
+                    // Display a dialog where the user must select
+                    // a client SSL certificate.
                     Object[] selectionValues = certificates.toArray();
-                    Object selectedValue = JOptionPane.showInputDialog(view, message, "Select a certificate",
-                            JOptionPane.PLAIN_MESSAGE, null, selectionValues, selectionValues[0]);
+                    Object selectedValue = JOptionPane.showInputDialog(
+                            view, String.format(DIALOG_MESSAGE,
+                                    params.getHostPortPair().getHostPort()),
+                            DIALOG_TITLE, JOptionPane.PLAIN_MESSAGE,
+                            null, selectionValues, selectionValues[0]);
                     if (selectedValue != null) {
+                        // Tell the engine which SSL certificate has been selected.
                         params.setSelectedCertificate((Certificate) selectedValue);
                         return CloseStatus.OK;
                     }
@@ -59,6 +78,7 @@ public class SelectSslCertificate {
                 return CloseStatus.CANCEL;
             }
         });
-        browser.loadURL("<URL that causes Select SSL Certificate dialog>");
+
+        browser.loadURL("https://client.badssl.com/");
     }
 }
