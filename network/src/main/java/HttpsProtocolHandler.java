@@ -18,18 +18,32 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserContext;
+import com.teamdev.jxbrowser.chromium.ProtocolService;
+import com.teamdev.jxbrowser.chromium.URLResponse;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
-import javax.swing.*;
-import java.awt.*;
+/**
+ * The example demonstrates a technique of overriding the standard
+ * protocol handlers such as HTTP, HTTPS, etc. and registers a custom
+ * HTTPS protocol handler that handles all HTTPS requests and
+ * "imitates" web server response.
+ */
+public class HttpsProtocolHandler {
 
-public class CustomProtocolHandler {
+    private static final String HTTPS_PROTOCOL = "https";
+    private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "text/html";
+
     public static void main(String[] args) {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("JxBrowser – HTTPS Protocol Handler");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         frame.setSize(700, 500);
@@ -38,17 +52,17 @@ public class CustomProtocolHandler {
 
         BrowserContext browserContext = browser.getContext();
         ProtocolService protocolService = browserContext.getProtocolService();
-        protocolService.setProtocolHandler("https", new ProtocolHandler() {
-            @Override
-            public URLResponse onRequest(URLRequest request) {
-                URLResponse response = new URLResponse();
-                String html = "<html><body><p>Hello there!</p></body></html>";
-                response.setData(html.getBytes());
-                response.getHeaders().setHeader("Content-Type", "text/html");
-                return response;
-            }
+        protocolService.setProtocolHandler(HTTPS_PROTOCOL, request -> {
+            // On every HTTPS request we create and send the following URL response
+            // with a simple HTML and the "Content-Type: text/html" header.
+            URLResponse response = new URLResponse();
+            String html = "<html><body><p>Hello there!</p></body></html>";
+            response.setData(html.getBytes());
+            response.getHeaders().setHeader(CONTENT_TYPE_HEADER_NAME,
+                    CONTENT_TYPE_HEADER_VALUE);
+            return response;
         });
 
-        browser.loadURL("https://google.com/");
+        browser.loadURL("https://www.google.com");
     }
 }
