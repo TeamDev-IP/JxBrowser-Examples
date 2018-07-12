@@ -18,36 +18,33 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserPreferences;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * The example demonstrates how to configure user-agent string
+ * for all Browser instances.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public class UserAgent {
+    public static void main(String[] args) {
+        // It's very important to configure user-agent string
+        // before any Browser instance is created.
+        BrowserPreferences.setUserAgent("My User Agent String");
+
+        Browser browser = new Browser();
+        BrowserView browserView = new BrowserView(browser);
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(browserView, BorderLayout.CENTER);
+        frame.setSize(700, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        browser.loadURL("http://whatsmyuseragent.com/");
+    }
 }
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-include 'javascript'
-include 'dialogs'
-include 'media'
-include 'navigation'
-include 'plugins'
-include 'spellchecker'
-include 'download'
-include 'zoom'
-include 'troubleshooting'
-include 'network'
-include 'cache'
-
-module ('content-changes', './tutorials/content-changes')
-
-include 'demo'
