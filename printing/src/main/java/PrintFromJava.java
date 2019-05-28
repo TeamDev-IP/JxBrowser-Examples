@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,72 +18,48 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
-import com.teamdev.jxbrowser.chromium.PrintJob;
-import com.teamdev.jxbrowser.chromium.events.PrintJobEvent;
-import com.teamdev.jxbrowser.chromium.events.PrintJobListener;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.PrintCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.frame.Frame;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example shows how to print a loaded web page
- * with custom print settings.
+ * This example demonstrates how to show the Print Preview dialog
+ * where you can select the required printing options and print the
+ * currently loaded web page.
  */
-public class PrintFromJava {
+public final class PrintFromJava {
 
     public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JButton print = new JButton("Print");
-        print.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                browser.print();
-            }
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
+
+            JButton print = new JButton("Print");
+            print.addActionListener(e ->
+                    browser.mainFrame().ifPresent(Frame::print));
+
+            JFrame frame = new JFrame("Print From Java");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.add(print, BorderLayout.NORTH);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        frame.add(print, BorderLayout.NORTH);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        browser.set(PrintCallback.class, (params, tell) ->
+                tell.showPrintPreview());
 
-        browser.setPrintHandler(new PrintHandler() {
-            @Override
-            public PrintStatus onPrint(PrintJob printJob) {
-                PrintSettings printSettings = printJob.getPrintSettings();
-                printSettings.setPrinterName("Microsoft XPS Document Writer");
-                printSettings.setLandscape(false);
-                printSettings.setPrintBackgrounds(false);
-                printSettings.setColorModel(ColorModel.COLOR);
-                printSettings.setDuplexMode(DuplexMode.SIMPLEX);
-                printSettings.setDisplayHeaderFooter(true);
-                printSettings.setCopies(1);
-                printSettings.setPaperSize(PaperSize.ISO_A4);
-
-                List<PageRange> ranges = new ArrayList<PageRange>();
-                ranges.add(new PageRange(0, 3));
-                printSettings.setPageRanges(ranges);
-
-                printJob.addPrintJobListener(new PrintJobListener() {
-                    @Override
-                    public void onPrintingDone(PrintJobEvent event) {
-                        System.out.println("Printing is finished successfully: " +
-                                event.isSuccess());
-                    }
-                });
-                return PrintStatus.CONTINUE;
-            }
-        });
-
-        browser.loadURL("http://www.teamdev.com/jxbrowser");
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

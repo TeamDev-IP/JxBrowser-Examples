@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,31 +18,42 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Paths;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example loads a web page with simple Flash content.
+ * This example demonstrates how to configure the engine to use
+ * the required version of the Flash player on the Linux platforms.
  */
-public class EmbeddingFlash {
+public final class EmbeddingFlash {
+
     public static void main(String[] args) {
-        BrowserPreferences.setChromiumSwitches(
-                "--ppapi-flash-path=/usr/lib/flash/libpepflashplayer.so",
-                "--ppapi-flash-version=20.0.0.270");
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+                        .ppapiFlashPath(Paths.get("/usr/lib/flash/libpepflashplayer.so"))
+                        .ppapiFlashVersion("20.0.0.270")
+                        .build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("Flash Example");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.loadURL("http://www.webthrower.com/portfolio/narnia.htm");
+            JFrame frame = new JFrame("Embedding Flash");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        browser.navigation().loadUrl("http://www.webthrower.com/portfolio/narnia.htm");
     }
 }

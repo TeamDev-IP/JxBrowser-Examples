@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -19,48 +19,66 @@
  */
 
 import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.JSObject;
-import com.teamdev.jxbrowser.chromium.events.ScriptContextAdapter;
-import com.teamdev.jxbrowser.chromium.events.ScriptContextEvent;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
+import com.teamdev.jxbrowser.browser.callback.InjectJsCallback.Response;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.frame.Frame;
+import com.teamdev.jxbrowser.js.JsAccessible;
+import com.teamdev.jxbrowser.js.JsObject;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Scanner;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
 
 /**
- * This example shows how to listen to DOM changes from a Java object.
+ * This example demonstrates how to listen to DOM changes from a Java object.
  */
-public class ContentListening {
+public final class ContentListening {
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addScriptContextListener(new ScriptContextAdapter() {
-            @Override
-            public void onScriptContextCreated(ScriptContextEvent event) {
-                Browser browser = event.getBrowser();
-                JSObject window = browser.executeJavaScriptAndReturnValue("window")
-                                         .asObject();
-                window.setProperty("java", new JavaObject());
-                String javaScript = load("observer.js");
-                browser.executeJavaScript(javaScript);
+            JFrame frame = new JFrame("Content Listening");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        browser.set(InjectJsCallback.class, params -> {
+            Frame frame = params.frame();
+            String window = "window";
+            JsObject jsObject = frame.executeJavaScript(window);
+            if (jsObject == null) {
+                throw new IllegalStateException(
+                        format("'%s' JS object not found", window));
             }
+            jsObject.putProperty("java", new JavaObject());
+            return Response.proceed();
+        });
+
+        browser.navigation().on(FrameLoadFinished.class, event -> {
+            String javaScript = load("observer.js");
+            event.frame().executeJavaScript(javaScript);
         });
 
         String html = load("index.html");
-        browser.loadHTML(html);
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml(html));
     }
 
     /**
@@ -71,6 +89,7 @@ public class ContentListening {
     public static class JavaObject {
 
         @SuppressWarnings("unused") // invoked by callback processing code.
+        @JsAccessible
         public void onDomChanged(String innerHtml) {
             System.out.println("DOM node changed: " + innerHtml);
         }
@@ -80,13 +99,14 @@ public class ContentListening {
      * Loads a resource content as a string.
      */
     private static String load(String resourceFile) {
-        URL url = Resources.getResource(resourceFile);
-        String result;
-        try {
-            result = Resources.toString(url, Charsets.UTF_8);
+        URL url = ContentListening.class.getResource(resourceFile);
+        try (Scanner scanner = new Scanner(url.openStream(),
+                Charsets.UTF_8.toString())) {
+            scanner.useDelimiter("\\A");
+            return scanner.hasNext() ? scanner.next() : "";
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to load resource " + resourceFile, e);
+            throw new IllegalStateException("Unable to load resource " +
+                    resourceFile, e);
         }
-        return result;
     }
 }

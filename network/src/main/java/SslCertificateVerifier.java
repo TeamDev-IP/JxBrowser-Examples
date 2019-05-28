@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,40 +18,52 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.callback.VerifyCertificateCallback;
+import com.teamdev.jxbrowser.net.callback.VerifyCertificateCallback.Response;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.net.tls.CertVerificationStatus.AUTHORITY_INVALID;
+
 /**
- * The example demonstrates how to accept/reject SSL certificates using
+ * This example demonstrates how to accept/reject SSL certificates using
  * a custom SSL certificate verifier.
  */
-public class SslCertificateVerifier {
-    public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+public final class SslCertificateVerifier {
 
-        BrowserContext browserContext = browser.getContext();
-        NetworkService networkService = browserContext.getNetworkService();
-        networkService.setCertificateVerifier(params -> {
-            String host = params.getHostName();
+    public static void main(String[] args) {
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
+
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
+
+            JFrame frame = new JFrame("SSL Certificate Verifier");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        engine.network().set(VerifyCertificateCallback.class, params -> {
+            String host = params.host().value();
             System.out.println("Verifying certificate for " + host + "...");
             // Reject SSL certificate for all "google.com" hosts.
             if (host.contains("google.com")) {
-                return CertificateVerifyResult.INVALID;
+                return Response.invalid(AUTHORITY_INVALID);
+            } else {
+                return Response.valid();
             }
-            return CertificateVerifyResult.DEFAULT;
         });
 
-        JFrame frame = new JFrame("JxBrowser – SSL Certificate Verifier");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-        browser.loadURL("https://www.google.com");
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,68 +18,46 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.CloseStatus;
-import com.teamdev.jxbrowser.chromium.FileChooserMode;
-import com.teamdev.jxbrowser.chromium.FileChooserParams;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
-import java.awt.BorderLayout;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.OpenFileCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.nio.file.Paths;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example demonstrates how to register your DialogHandler and
+ * This example demonstrates how to register your OpenFileCallback and
  * override the functionality that displays file chooser when
  * user uploads file using INPUT TYPE="file" HTML element on a web page.
  */
-public class FileUpload {
+public final class FileUpload {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        final BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.setDialogHandler(new DefaultDialogHandler(view) {
-            @Override
-            public CloseStatus onFileChooser(final FileChooserParams params) {
-                final AtomicReference<CloseStatus> result = new AtomicReference<CloseStatus>(
-                        CloseStatus.CANCEL);
-
-                try {
-                    SwingUtilities.invokeAndWait(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (params.getMode() == FileChooserMode.Open) {
-                                JFileChooser fileChooser = new JFileChooser();
-                                if (fileChooser.showOpenDialog(view)
-                                        == JFileChooser.APPROVE_OPTION) {
-                                    File selectedFile = fileChooser.getSelectedFile();
-                                    params.setSelectedFiles(selectedFile.getAbsolutePath());
-                                    result.set(CloseStatus.OK);
-                                }
-                            }
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-
-                return result.get();
-            }
+            JFrame frame = new JFrame("File Upload");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadURL("http://www.cs.tut.fi/~jkorpela/forms/file.html");
+
+        browser.set(OpenFileCallback.class, (params, tell) ->
+                tell.open(Paths.get("file.txt")));
+
+        browser.mainFrame().ifPresent(frame ->
+                frame.loadHtml("Please specify a file, or a set of files:<br>\n" +
+                        "<input type='file' name='datafile' size='40'>"));
     }
 }

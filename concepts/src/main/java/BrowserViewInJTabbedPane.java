@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,32 +18,41 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * The example demonstrates how to use Browser in JTabbedPane.
+ * This example demonstrates how to display Swing BrowserView in JTabbedPane.
  */
-public class BrowserViewInJTabbedPane {
+public final class BrowserViewInJTabbedPane {
 
     public static void main(String[] args) {
-        Browser browserOne = new Browser();
-        Browser browserTwo = new Browser();
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build());
+        Browser browserOne = engine.newBrowser();
+        Browser browserTwo = engine.newBrowser();
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Google", new BrowserView(browserOne));
-        tabbedPane.addTab("TeamDev", new BrowserView(browserTwo));
+        SwingUtilities.invokeLater(() -> {
+            JTabbedPane pane = new JTabbedPane();
+            pane.addTab("Google", BrowserView.newInstance(browserOne));
+            pane.addTab("TeamDev", BrowserView.newInstance(browserTwo));
 
-        JFrame frame = new JFrame();
-        frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("Browser View In JTabbed Pane");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.getContentPane().add(pane, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 
-        browserOne.loadURL("https://www.google.com");
-        browserTwo.loadURL("https://www.teamdev.com");
+        browserOne.navigation().loadUrl("https://www.google.com");
+        browserTwo.navigation().loadUrl("https://www.teamdev.com");
     }
 }

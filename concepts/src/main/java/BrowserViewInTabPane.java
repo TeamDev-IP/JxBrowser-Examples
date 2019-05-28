@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,10 +18,10 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -30,37 +30,32 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 /**
- * The example demonstrates how to use JavaFX BrowserView in TabPane.
+ * This example demonstrates how to display JavaFX BrowserView in TabPane.
  */
-public class BrowserViewInTabPane extends Application {
+public final class BrowserViewInTabPane extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void init() {
-        // On Mac OS X Chromium engine must be initialized in non-UI thread.
-        if (Environment.isMac()) {
-            BrowserCore.initialize();
-        }
-    }
-
-    @Override
     public void start(Stage primaryStage) {
-        // Tab One
-        Browser browserOne = new Browser();
-        browserOne.loadURL("https://www.google.com");
-        BrowserView viewOne = new BrowserView(browserOne);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build());
+
+        Browser browserOne = engine.newBrowser();
+        browserOne.navigation().loadUrl("https://www.google.com");
+        BrowserView viewOne = BrowserView.newInstance(browserOne);
 
         Tab tabOne = new Tab("Browser One");
         tabOne.setContent(viewOne);
 
-        // Tab Two
-        Browser browserTwo = new Browser();
-        browserTwo.loadURL("https://www.teamdev.com");
-        BrowserView viewTwo = new BrowserView(browserTwo);
+        Browser browserTwo = engine.newBrowser();
+        browserTwo.navigation().loadUrl("https://www.teamdev.com");
+        BrowserView viewTwo = BrowserView.newInstance(browserTwo);
 
         Tab tabTwo = new Tab("Browser Two");
         tabTwo.setContent(viewTwo);
@@ -72,13 +67,14 @@ public class BrowserViewInTabPane extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, 700, 500);
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.prefHeightProperty().bind(scene.heightProperty());
-        borderPane.prefWidthProperty().bind(scene.widthProperty());
-        borderPane.setCenter(tabPane);
+        BorderPane pane = new BorderPane();
+        pane.prefHeightProperty().bind(scene.heightProperty());
+        pane.prefWidthProperty().bind(scene.widthProperty());
+        pane.setCenter(tabPane);
 
-        root.getChildren().add(borderPane);
+        root.getChildren().add(pane);
 
+        primaryStage.setTitle("Browser View In Tab Pane");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

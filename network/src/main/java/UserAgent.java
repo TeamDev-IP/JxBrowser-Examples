@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,33 +18,40 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 /**
- * The example demonstrates how to configure user-agent string
- * for all Browser instances.
+ * This example demonstrates how to configure the Engine with
+ * a custom user agent string.
  */
-public class UserAgent {
+public final class UserAgent {
+
     public static void main(String[] args) {
-        // It's very important to configure user-agent string
-        // before any Browser instance is created.
-        BrowserPreferences.setUserAgent("My User Agent String");
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+                        .userAgent("My User Agent String")
+                        .build());
+        Browser browser = engine.newBrowser();
 
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("User Agent");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 
-        browser.loadURL("http://whatsmyuseragent.com/");
+        browser.navigation().loadUrl("http://whatsmyuseragent.com/");
     }
 }

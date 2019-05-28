@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,46 +18,53 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.SavePageType;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.SavePageType;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.Navigation;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
  * This example demonstrates how to save the loaded web page.
  */
-public class SaveWebPage {
+public final class SaveWebPage {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    String filePath = new File("index.html").getAbsolutePath();
-                    String dirPath = new File("resources_dir").getAbsolutePath();
-                    if (browser.saveWebPage(filePath, dirPath, SavePageType.COMPLETE_HTML)) {
-                        System.out.println("The web page has been saved to " + filePath);
-                    } else {
-                        System.err.println("Failed to save the web page to " + filePath);
-                    }
-                }
-            }
+            JFrame frame = new JFrame("Save Web Page");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadURL("https://www.google.com");
+        Navigation navigation = browser.navigation();
+        navigation.on(FrameLoadFinished.class, event -> {
+            Path file = Paths.get("index.html");
+            Path dir = Paths.get("resources_dir");
+            if (browser.saveWebPage(file, dir, SavePageType.COMPLETE_HTML)) {
+                System.out.println("The web page has been saved to " + file.toAbsolutePath() + "\n"
+                        + "The resources has been saved to " + dir.toAbsolutePath() + " directory");
+            } else {
+                System.err.println("Failed to save the web page to " + file);
+            }
+        });
+        navigation.loadUrl("https://www.google.com");
     }
 }

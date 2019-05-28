@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,51 +18,49 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.Certificate;
-import com.teamdev.jxbrowser.chromium.CertificateErrorParams;
-import com.teamdev.jxbrowser.chromium.DefaultLoadHandler;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.CertificateErrorCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.engine.RenderingMode;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * The example demonstrates how to ignore SSL certificate errors and
+ * This example demonstrates how to ignore SSL certificate errors and
  * continue loading a website with invalid SSL certificate.
  */
-public class IgnoreSslCertificateErrors {
+public final class IgnoreSslCertificateErrors {
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("JxBrowser - Ignore SSL Certificate Errors");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.setLoadHandler(new DefaultLoadHandler() {
-            @Override
-            public boolean onCertificateError(CertificateErrorParams params) {
-                // Get the invalid SSL certificate details.
-                Certificate certificate = params.getCertificate();
-                System.out.println("Subject name: " + certificate.getSubjectName());
-                System.out.println("Issuer name: " + certificate.getIssuerName());
-                System.out.println("Certificate expired? " + certificate.hasExpired());
-
-                // Get the NetError code (e.g. CERT_AUTHORITY_INVALID).
-                System.out.println("Error code: " + params.getCertificateError());
-
-                // Return false to ignore the SSL certificate error and
-                // continue loading the web page.
-                return false;
-            }
+            JFrame frame = new JFrame("Ignore SSL Certificate Errors");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
+
+        browser.set(CertificateErrorCallback.class, (params, tell) -> {
+            System.out.println(
+                    "Request URL: " + params.url() + "\n"
+                            + "Reason of the certificate error: "
+                            + params.error().getValueDescriptor() + "(" + params.error().getNumber() + ")" + "\n"
+                            + "Invalid SSL certificate.: " + params.certificate() + "\n");
+            tell.allow();
+        });
+
         // Load HTTPS website with invalid SSL certificate.
-        browser.loadURL("https://self-signed.badssl.com/");
+        browser.navigation().loadUrl("https://self-signed.badssl.com/");
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,51 +18,50 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 /**
  * A simplest application with integrated browser component.
  *
  * <p>This example demonstrates:
+ *
  * <ol>
- *     <li>Creating an instance of {@link com.teamdev.jxbrowser.chromium.Browser Browser}
- *     <li>Embedding the browser into JavaFX via {@link com.teamdev.jxbrowser.chromium.javafx.BrowserView BrowserView}.
- *     <li>Loading HTML content as a string.
+ * <li>Creating an instance of {@link Engine}
+ * <li>Creating an instance of {@link Browser}
+ * <li>Embedding the browser into JavaFX via {@link BrowserView}.
+ * <li>Loading the "www.google.com" web site.
  * </ol>
  */
-public class HelloWorld extends Application {
-    
-    @Override
-    public void init() throws Exception {
-        // On Mac OS X Chromium engine must be initialized in non-UI thread.
-        if (Environment.isMac()) {
-            BrowserCore.initialize();
-        }
+public final class HelloWorld extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
+
+        BrowserView view = BrowserView.newInstance(browser);
 
         StackPane pane = new StackPane();
-        pane.getChildren().add(browserView);
+        pane.getChildren().add(view);
         Scene scene = new Scene(pane, 500, 400);
-        primaryStage.setTitle("JxBrowser: JavaFX - Hello World");
+        primaryStage.setTitle("JavaFX - Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        browser.loadHTML("<html><body><h1>Hello World!</h1></body></html>");
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

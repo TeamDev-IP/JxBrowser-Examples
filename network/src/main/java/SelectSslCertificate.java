@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,67 +18,90 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.Certificate;
-import com.teamdev.jxbrowser.chromium.CertificatesDialogParams;
-import com.teamdev.jxbrowser.chromium.CloseStatus;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
-import java.awt.BorderLayout;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.SelectClientCertificateCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.tls.Certificate;
+import com.teamdev.jxbrowser.net.tls.ClientCertificate;
+import com.teamdev.jxbrowser.net.tls.SslPrivateKey;
+import com.teamdev.jxbrowser.net.tls.X509Certificates;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 /**
- * The example demonstrates how to display the "Select Client SSL Certificate"
+ * This example demonstrates how to display the "Select Client SSL Certificate"
  * dialog where you must select a required SSL certificate to continue loading web page.
  *
- * Important: before you run this example, please follow the instruction at
+ * <p>Important: before you run this example, please follow the instruction at
  * https://badssl.com/download/ and install the required custom SSL certificate.
  */
-public class SelectSslCertificate {
+public final class SelectSslCertificate {
 
     private static final String DIALOG_TITLE = "Select a certificate";
     private static final String DIALOG_MESSAGE =
             "Select a certificate to authenticate yourself to %s";
+    private static BrowserView view;
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        final BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("JxBrowser – Select Client SSL Certificate");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            view = BrowserView.newInstance(browser);
 
-        browser.setDialogHandler(new DefaultDialogHandler(view) {
-
-            @Override
-            public CloseStatus onSelectCertificate(CertificatesDialogParams params) {
-                // Get a list of the installed client SSL certificates.
-                List<Certificate> certificates = params.getCertificates();
-                if (!certificates.isEmpty()) {
-                    // Display a dialog where the user must select
-                    // a client SSL certificate.
-                    Object[] selectionValues = certificates.toArray();
-                    Object selectedValue = JOptionPane.showInputDialog(
-                            view, String.format(DIALOG_MESSAGE,
-                                    params.getHostPortPair().getHostPort()),
-                            DIALOG_TITLE, JOptionPane.PLAIN_MESSAGE,
-                            null, selectionValues, selectionValues[0]);
-                    if (selectedValue != null) {
-                        // Tell the engine which SSL certificate has been selected.
-                        params.setSelectedCertificate((Certificate) selectedValue);
-                        return CloseStatus.OK;
-                    }
-                }
-                return CloseStatus.CANCEL;
-            }
+            JFrame frame = new JFrame("Select Client SSL Certificate");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadURL("https://client.badssl.com/");
+        browser.set(SelectClientCertificateCallback.class, (params, tell) -> {
+            if (params.certificates().size() != 0) {
+                List<Certificate> certificates = params.certificates();
+                List<X509Certificate> x509Certificates = new ArrayList<>();
+                for (Certificate certificate : certificates) {
+                    try {
+                        x509Certificates.add(X509Certificates.of(
+                                new ByteArrayInputStream(certificate.derEncodedValue())));
+                    } catch (CertificateException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Object[] selectionValues = x509Certificates.toArray();
+                Object selectedValue = JOptionPane.showInputDialog(view, String.format(DIALOG_MESSAGE,
+                        params.hostPort().host() + ":" + params.hostPort().port()),
+                        DIALOG_TITLE, PLAIN_MESSAGE, null, selectionValues, selectionValues[0]);
+                if (selectedValue != null) {
+                    // Tell the engine which SSL certificate has been selected.
+                    try {
+                        X509Certificate certificate = (X509Certificate) selectedValue;
+                        ClientCertificate clientCertificate = ClientCertificate.of(
+                                certificate, SslPrivateKey.of(certificate.getEncoded()));
+                        tell.select(clientCertificate);
+                        return;
+                    } catch (CertificateEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            tell.cancel();
+        });
+
+        browser.navigation().loadUrl("https://client.badssl.com/");
     }
 }

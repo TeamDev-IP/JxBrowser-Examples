@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,34 +18,45 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
  * A simplest application with integrated browser component.
  *
  * <p>This example demonstrates:
+ *
  * <ol>
- *     <li>Creating an instance of {@link com.teamdev.jxbrowser.chromium.Browser Browser}
- *     <li>Embedding the browser into Swing via {@link com.teamdev.jxbrowser.chromium.swing.BrowserView BrowserView}.
- *     <li>Loading HTML content as a string.
+ * <li>Creating an instance of {@link Engine}
+ * <li>Creating an instance of {@link Browser}
+ * <li>Embedding the browser into Swing via {@link BrowserView}.
+ * <li>Loading the "www.google.com" web site.
  * </ol>
  */
-public class HelloWorld {
+public final class HelloWorld {
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("JxBrowser - Hello World");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(500, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.loadHTML("<html><body><h1>Hello World!</h1></body></html>");
+            JFrame frame = new JFrame("Swing - Hello World");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(500, 400);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

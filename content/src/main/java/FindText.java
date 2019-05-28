@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,55 +18,43 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.SearchParams;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates, how to find text on a loaded web page.
+ * This example demonstrates how to find text on the loaded web page.
  */
-public class FindText {
-
-    private static final String SEARCH_TEXT = "Hello";
-    private static final String HTML = String.format(
-            "<html><body><p>Say %s to the web.</p></body></html>", SEARCH_TEXT);
+public final class FindText {
 
     public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("JxBrowser – Find Text");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    // Find the text from the beginning of the loaded web page.
-                    findText();
-                }
-            }
+            JTextField searchField = new JTextField("Text to find");
+            searchField.addActionListener(e ->
+                    browser.textFinder().find(searchField.getText(), findResult ->
+                            System.out.println("Matches found: " + findResult.numberOfMatches())));
 
-            private void findText() {
-                SearchParams request = new SearchParams(SEARCH_TEXT);
-                browser.findText(request, searchResult -> {
-                    if (searchResult.isCompleted()) {
-                        System.out.println(
-                                searchResult.indexOfSelectedMatch() + "/" +
-                                        searchResult.getNumberOfMatches());
-                    }
-                });
-            }
+            JFrame frame = new JFrame("Find Text");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(searchField, BorderLayout.NORTH);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadHTML(HTML);
+
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

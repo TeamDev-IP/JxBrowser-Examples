@@ -21,38 +21,33 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.navigation.Navigation;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.engine.RenderingMode;
+import com.teamdev.jxbrowser.net.*;
+import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
+import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback.Response;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import com.teamdev.jxbrowser.zoom.ZoomLevel;
-import com.teamdev.jxbrowser.zoom.ZoomLevels;
-import com.teamdev.jxbrowser.zoom.event.ZoomLevelChanged;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-
 /**
- * This example demonstrates how to modify zoom level for a
- * currently loaded web page.
- *
- * <p>Zoom level will be applied to the currently loaded web page only.
- *
- * <p>If you navigate to a different domain, its zoom level
- * will be 100% until you modify it.
+ * This example demonstrates how to intercept all URL requests and handle a custom protocol.
  */
-public final class ChangeZoomLevel {
+public final class CustomProtocolHandler {
+
+    private static final String PROTOCOL = "jxb";
+    private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+    private static final String CONTENT_TYPE_HEADER_VALUE = "text/html";
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Change Zoom Level");
+            JFrame frame = new JFrame("Custom Protocol Handler");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);
@@ -60,19 +55,26 @@ public final class ChangeZoomLevel {
             frame.setVisible(true);
         });
 
-        // Listen to the zoom changed events.
-        ZoomLevels levels = engine.zoomLevels();
-        levels.on(ZoomLevelChanged.class, event ->
-                System.out.println("Url: " + event.host() + "\n"
-                        + "Zoom level: " + event.level()));
-
-        Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event -> {
-            if (event.frame().isMain()) {
-                browser.zoom().level(ZoomLevel.P_200);
+        Network network = engine.network();
+        network.set(InterceptRequestCallback.class, params -> {
+            UrlRequest request = params.urlRequest();
+            // If URL protocol equals to the custom "jxb" protocol, then intercept this
+            // request and reply with a custom response.
+            if (request.url().startsWith(PROTOCOL)) {
+                UrlRequestJob job = network.newUrlRequestJob(
+                        UrlRequestJob.Options.newBuilder(request.id(), HttpStatus.OK)
+                                .addHttpHeader(HttpHeader.of(
+                                        CONTENT_TYPE_HEADER_NAME,
+                                        CONTENT_TYPE_HEADER_VALUE))
+                                .build());
+                job.write("<html><body><p>Hello there!</p></body></html>".getBytes());
+                job.complete();
+                return Response.intercept(job);
             }
+            // Otherwise proceed the request using default behavior.
+            return Response.proceed();
         });
 
-        navigation.loadUrl("https://www.google.com");
+        browser.navigation().loadUrl(PROTOCOL + "://hello");
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,47 +18,46 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.SpellCheckResult;
-import com.teamdev.jxbrowser.chromium.SpellCheckerService;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.event.SpellCheckCompleted;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example demonstrates how to get notifications when spell
+ * This example demonstrates how to get notifications when spell
  * checking has been completed on a web page.
  */
-public class SpellCheckEvents {
+public final class SpellCheckEvents {
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame("JxBrowser – Spell Check Events");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        BrowserContext browserContext = browser.getContext();
-        SpellCheckerService spellCheckerService =
-                browserContext.getSpellCheckerService();
-        spellCheckerService.addSpellCheckListener(params -> {
-            List<SpellCheckResult> checkResults = params.getResults();
-            for (SpellCheckResult checkResult : checkResults) {
-                int errorStartIndex = checkResult.getStartIndex();
-                int errorLength = checkResult.getLength();
-                System.out.println("Error start index: " + errorStartIndex);
-                System.out.println("Error length: " + errorLength);
-            }
+            JFrame frame = new JFrame("Spell Check Events");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadHTML("<html><body><textarea rows='20' cols='30'>" +
-                "Smple text with mitake.</textarea></body></html>");
+        browser.on(SpellCheckCompleted.class, event ->
+                event.results().forEach(checkResult -> {
+                    System.out.println("Error start index: " + checkResult.location());
+                    System.out.println("Error length: " + checkResult.length());
+                }));
+        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml("<html><body>" +
+                "<textarea autofocus rows='20' cols='30'>Smple text with mitake.</textarea>" +
+                "</body></html>"));
     }
 }

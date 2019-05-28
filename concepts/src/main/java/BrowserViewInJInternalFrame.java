@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,43 +18,54 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserType;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * The example demonstrates how to use Browser in JInternalFrame components.
+ * This example demonstrates how to display Swing BrowserView in JInternalFrame.
  */
-public class BrowserViewInJInternalFrame {
+public final class BrowserViewInJInternalFrame {
 
     public static void main(String[] args) {
-        JDesktopPane desktopPane = new JDesktopPane();
-        desktopPane.add(createInternalFrame("TeamDev", "http://www.teamdev.com", 0));
-        desktopPane.add(createInternalFrame("Google", "http://www.google.com", 100));
+        SwingUtilities.invokeLater(() -> {
+            JDesktopPane pane = new JDesktopPane();
+            pane.add(createInternalFrame("TeamDev", "http://www.teamdev.com", 0));
+            pane.add(createInternalFrame("Google", "http://www.google.com", 100));
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(desktopPane, BorderLayout.CENTER);
-        frame.setSize(800, 800);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("BrowserView In JInternalFrame");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(pane, BorderLayout.CENTER);
+            frame.setSize(800, 800);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
     }
 
     private static JInternalFrame createInternalFrame(String title, String url, int offset) {
-        Browser browser = new Browser(BrowserType.LIGHTWEIGHT);
-        BrowserView view = new BrowserView(browser);
-        browser.loadURL(url);
+        // To display BrowserView in Swing JInternalFrame, the engine must be configured
+        // with the OFF_SCREEN rendering mode. In case of the HARDWARE_ACCELERATED rendering
+        // mode we will get a well known issue with mixing heavyweight and lightweight
+        // components. Read more about this limitation at
+        // https://jxbrowser-support.teamdev.com/docs/guides/browser-view.html#mixing-heavyweight-and-lightweight
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build());
+        Browser browser = engine.newBrowser();
+        browser.navigation().loadUrl(url);
 
-        JInternalFrame internalFrame = new JInternalFrame(title, true);
-        internalFrame.setContentPane(view);
-        internalFrame.setLocation(100 + offset, 100 + offset);
-        internalFrame.setSize(400, 400);
-        internalFrame.setVisible(true);
-        return internalFrame;
+        BrowserView view = BrowserView.newInstance(browser);
+
+        JInternalFrame frame = new JInternalFrame(title, true);
+        frame.setContentPane(view);
+        frame.setLocation(100 + offset, 100 + offset);
+        frame.setSize(400, 400);
+        frame.setVisible(true);
+        return frame;
     }
 }

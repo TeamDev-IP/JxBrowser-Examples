@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,53 +18,52 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.Cookie;
-import com.teamdev.jxbrowser.chromium.NetworkService;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import com.teamdev.jxbrowser.chromium.swing.DefaultNetworkDelegate;
-import java.awt.BorderLayout;
-import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.Network;
+import com.teamdev.jxbrowser.net.callback.CanGetCookiesCallback;
+import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example demonstrates how to suppress/filter all
+ * This example demonstrates how to suppress/filter all
  * the incoming and outgoing cookies.
  */
-public class CookieFilter {
+public final class CookieFilter {
 
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        // Suppress/filter all the incoming and outgoing cookies.
-        BrowserContext browserContext = browser.getContext();
-        NetworkService networkService = browserContext.getNetworkService();
-        networkService.setNetworkDelegate(new DefaultNetworkDelegate() {
-            @Override
-            public boolean onCanSetCookies(String url, List<Cookie> cookies) {
-                System.out.println("Disallow accepting cookies for: " + url);
-                // Return false to disallow accepting and saving the cookies.
-                return false;
-            }
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-            @Override
-            public boolean onCanGetCookies(String url, List<Cookie> cookies) {
-                System.out.println("Disallow sending cookies for: " + url);
-                // Return false to disallow sending the cookies to a web server.
-                return false;
-            }
+            JFrame frame = new JFrame("Filter Cookies");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        JFrame frame = new JFrame("JxBrowser – Filter Cookies");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // Suppress/filter all the incoming and outgoing cookies.
+        Network networkService = engine.network();
+        networkService.set(CanSetCookieCallback.class, params -> {
+            System.out.println("Disallow accepting cookies for: " + params.url());
+            return CanSetCookieCallback.Response.cannot();
+        });
+        networkService.set(CanGetCookiesCallback.class, params -> {
+            System.out.println("Disallow sending cookies for: " + params.url());
+            return CanGetCookiesCallback.Response.cannot();
+        });
 
-        browser.loadURL("https://www.google.com");
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

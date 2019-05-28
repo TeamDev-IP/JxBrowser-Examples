@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,64 +18,40 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
-import com.teamdev.jxbrowser.chromium.PrintJob;
-import com.teamdev.jxbrowser.chromium.events.PrintJobEvent;
-import com.teamdev.jxbrowser.chromium.events.PrintJobListener;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example prints a <a href="http://www.javascriptkit.com/howto/newtech2.shtml">web page</a>,
- * which invokes the printing via JavaScript {@code window.print()} function.
- *
- * <p>Custom print settings are applied for:
- * <ol>
- *  <li>the landscape orientation;
- *  <li>printing background images.
- * </ol>
+ * This example demonstrates how to show the Print Preview dialog for the current web page
+ * via the {@code window.print()} JavaScript function.
  */
-public class PrintFromJavaScript {
+public final class PrintFromJavaScript {
 
     public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JButton print = new JButton("Print");
-        print.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                browser.print();
-            }
-        });
-        frame.add(print, BorderLayout.NORTH);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.setPrintHandler(new PrintHandler() {
-            @Override
-            public PrintStatus onPrint(PrintJob printJob) {
-                PrintSettings printSettings = printJob.getPrintSettings();
-                printSettings.setLandscape(true);
-                printSettings.setPrintBackgrounds(true);
-                printJob.addPrintJobListener(new PrintJobListener() {
-                    @Override
-                    public void onPrintingDone(PrintJobEvent event) {
-                        System.out.println("PrintingDone success: " + event.isSuccess());
-                    }
-                });
-                return PrintStatus.CONTINUE;
-            }
+            JFrame frame = new JFrame("Print From JavaScript");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadURL("http://www.javascriptkit.com/howto/newtech2.shtml");
+        browser.mainFrame().ifPresent(frame ->
+                frame.loadHtml("<html><body><a href='#' onclick='window.print();'>" +
+                        "Print this web page</a></body></html>"));
     }
 }

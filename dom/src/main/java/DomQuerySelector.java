@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,53 +18,51 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.dom.By;
-import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.dom.DOMElement;
-import com.teamdev.jxbrowser.chromium.dom.DOMNode;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
  * This example demonstrates how to use querySelector DOM API.
  */
-public class DomQuerySelector {
+public final class DomQuerySelector {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.getContentPane().add(browserView, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                DOMDocument document = event.getBrowser().getDocument();
-                // Get the div with id = "root".
-                DOMNode divRoot = document.findElement(By.cssSelector("#root"));
-                // Get all paragraphs.
-                List<DOMElement> paragraphs = divRoot.findElements(By.cssSelector("p"));
-                for (DOMElement paragraph : paragraphs) {
-                    System.out.println("paragraph.getNodeValue() = " +
-                            paragraph.getNodeValue());
-                }
-            }
+            JFrame frame = new JFrame("DOM Query Selector");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.getContentPane().add(view, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadHTML(
-                "<html><body><div id='root'>" +
+
+        browser.navigation().on(FrameLoadFinished.class, event ->
+                event.frame().document().ifPresent(document ->
+                        document.documentElement().ifPresent(element -> {
+                            element.findElementsByCssSelector("p").forEach(paragraph ->
+                                    System.out.println("innerHTML " + paragraph.innerHtml()));
+                        })));
+
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><div id='root'>" +
                         "<p>paragraph1</p>" +
                         "<p>paragraph2</p>" +
                         "<p>paragraph3</p>" +
-                        "</div></body></html>");
+                        "</div></body></html>"));
     }
 }
 

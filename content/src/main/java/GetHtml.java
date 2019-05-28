@@ -24,9 +24,6 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.navigation.Navigation;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import com.teamdev.jxbrowser.zoom.ZoomLevel;
-import com.teamdev.jxbrowser.zoom.ZoomLevels;
-import com.teamdev.jxbrowser.zoom.event.ZoomLevelChanged;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,15 +31,9 @@ import java.awt.*;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates how to modify zoom level for a
- * currently loaded web page.
- *
- * <p>Zoom level will be applied to the currently loaded web page only.
- *
- * <p>If you navigate to a different domain, its zoom level
- * will be 100% until you modify it.
+ * This example demonstrates how to obtain HTML code of the loaded web page.
  */
-public final class ChangeZoomLevel {
+public final class GetHtml {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -52,27 +43,23 @@ public final class ChangeZoomLevel {
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Change Zoom Level");
+            JFrame frame = new JFrame("Get HTML");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);
-            frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
         });
 
-        // Listen to the zoom changed events.
-        ZoomLevels levels = engine.zoomLevels();
-        levels.on(ZoomLevelChanged.class, event ->
-                System.out.println("Url: " + event.host() + "\n"
-                        + "Zoom level: " + event.level()));
-
         Navigation navigation = browser.navigation();
+        // Add the callback for waiting till the page is loaded.
         navigation.on(FrameLoadFinished.class, event -> {
             if (event.frame().isMain()) {
-                browser.zoom().level(ZoomLevel.P_200);
+                browser.mainFrame().ifPresent(frame ->
+                        System.out.println("HTML = " + frame.html()));
             }
         });
 
-        navigation.loadUrl("https://www.google.com");
+        navigation.loadUrl("https://www.teamdev.com/jxbrowser#features");
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,55 +18,57 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.dom.By;
-import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.dom.DOMOptionElement;
-import com.teamdev.jxbrowser.chromium.dom.DOMSelectElement;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.dom.OptionElement;
+import com.teamdev.jxbrowser.dom.SelectElement;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates how to programatically select an option item in SELECT tag.
+ * This example demonstrates how to programmatically select an OPTION item in the SELECT tag.
  */
-public class DomSelectOption {
+public final class DomSelectOption {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    Browser browser = event.getBrowser();
-                    DOMDocument document = browser.getDocument();
-                    DOMSelectElement select = (DOMSelectElement) document.findElement(By.id("select-tag"));
-                    selectOptionByIndex(select, 2);
-                }
-            }
+            JFrame frame = new JFrame("DOM Select Option");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadHTML("<html><body><select id='select-tag'>\n" +
-                "  <option value=\"volvo\">Volvo</option>\n" +
-                "  <option value=\"saab\">Saab</option>\n" +
-                "  <option value=\"opel\">Opel</option>\n" +
-                "  <option value=\"audi\">Audi</option>\n" +
-                "</select></body></html>");
-    }
 
-    private static void selectOptionByIndex(DOMSelectElement select, int index) {
-        List<DOMOptionElement> options = select.getOptions();
-        options.get(2).setSelected(true);
+        browser.navigation().on(FrameLoadFinished.class, event ->
+                browser.mainFrame().ifPresent(mainFrame ->
+                        mainFrame.document().ifPresent(document -> {
+                            document.documentElement().ifPresent(element ->
+                                    element.findElementById("select-tag").ifPresent(selectElement -> {
+                                        Object[] options = ((SelectElement) selectElement).options().toArray();
+                                        ((OptionElement) options[2]).select();
+                                        System.out.println(selectElement.innerHtml());
+                                    }));
+                        })));
+
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
+                        "  <option value=\"volvo\">Volvo</option>\n" +
+                        "  <option value=\"saab\">Saab</option>\n" +
+                        "  <option value=\"opel\">Opel</option>\n" +
+                        "  <option value=\"audi\">Audi</option>\n" +
+                        "</select></body></html>"));
     }
 }

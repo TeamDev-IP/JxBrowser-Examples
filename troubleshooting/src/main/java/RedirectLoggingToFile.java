@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,57 +18,50 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.LoggerProvider;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.internal.FileUtil;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.logging.*;
+import java.nio.file.Path;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
  * This example demonstrates how to redirect all JxBrowser log
- * messages to the '*.log' files.
+ * messages to the '*.log' file.
+ *
+ * <p>The "jxbrowser-logs..." directory is created in the user temp directory and is not deleted.
  */
-public class RedirectLoggingToFile {
-    public static void main(String[] args) throws IOException {
-        LoggerProvider.setLevel(Level.ALL);
+public final class RedirectLoggingToFile {
 
+    public static void main(String[] args) {
         // Redirect Browser log messages to jxbrowser-browser.log
-        redirectLogMessagesToFile(LoggerProvider.getBrowserLogger(),
-                "jxbrowser-browser.log");
+        Path loggingDir = FileUtil.createTempDir("jxbrowser-logs");
+        Path loggingFile = loggingDir.resolve("jxbrowser-browser.log");
+        System.setProperty("jxbrowser.logging.file",
+                loggingFile.toAbsolutePath().toString());
 
-        // Redirect IPC log messages to jxbrowser-ipc.log
-        redirectLogMessagesToFile(LoggerProvider.getIPCLogger(),
-                "jxbrowser-ipc.log");
+        System.out.println("Log file path: " + loggingFile.toAbsolutePath());
 
-        // Redirect Chromium Process log messages to jxbrowser-chromium.log
-        redirectLogMessagesToFile(LoggerProvider.getChromiumProcessLogger(),
-                "jxbrowser-chromium.log");
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("Redirect Logging To File");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 
-        browser.loadURL("https://google.com");
-    }
-
-    private static void redirectLogMessagesToFile(Logger logger, String logFilePath)
-            throws IOException {
-        FileHandler fileHandler = new FileHandler(logFilePath);
-        fileHandler.setFormatter(new SimpleFormatter());
-
-        // Remove default handlers including console handler
-        for (Handler handler : logger.getHandlers()) {
-            logger.removeHandler(handler);
-        }
-        logger.addHandler(fileHandler);
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

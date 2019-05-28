@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,50 +18,56 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.media.Audio;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
  * This example demonstrates how to mute audio sound on the opened web page
  * and check whether audio is muted or not.
  */
-public class MuteAudio {
+public final class MuteAudio {
+
     public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        final JButton muteAudioButton = new JButton();
-        muteAudioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                browser.setAudioMuted(!browser.isAudioMuted());
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
+
+            JButton muteAudioButton = new JButton("Mute Audio");
+            muteAudioButton.addActionListener(e -> {
+                Audio audio = browser.audio();
+                if (audio.isMuted()) {
+                    audio.unmute();
+                } else {
+                    audio.mute();
+                }
                 updateButtonText(muteAudioButton, browser);
-            }
+            });
+
+            JFrame frame = new JFrame("Mute Audio");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(muteAudioButton, BorderLayout.NORTH);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        updateButtonText(muteAudioButton, browser);
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(muteAudioButton, BorderLayout.NORTH);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-        browser.loadURL("https://www.youtube.com/");
+        browser.navigation().loadUrl("https://www.youtube.com/");
     }
 
-    private static void updateButtonText(final JButton button, final Browser browser) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                button.setText(browser.isAudioMuted() ? "Unmute Audio" : "Mute Audio");
-            }
-        });
+    private static void updateButtonText(JButton button, Browser browser) {
+        SwingUtilities.invokeLater(() ->
+                button.setText(browser.audio().isMuted() ? "Unmute Audio" : "Mute Audio"));
     }
 }

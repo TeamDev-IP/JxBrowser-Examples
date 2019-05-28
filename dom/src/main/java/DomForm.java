@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,50 +18,53 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.dom.By;
-import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.dom.DOMElement;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 /**
- * The example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
+ * This example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
  */
-public class DomForm {
+public final class DomForm {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(browserView, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    Browser browser = event.getBrowser();
-                    DOMDocument document = browser.getDocument();
-                    DOMElement firstName = document.findElement(By.name("firstName"));
-                    firstName.setAttribute("value", "John");
-                    DOMElement lastName = document.findElement(By.name("lastName"));
-                    lastName.setAttribute("value", "Doe");
-                }
-            }
+            JFrame frame = new JFrame("DOM HTML Form");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.getContentPane().add(view, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadHTML("<html><body><form name=\"myForm\">" +
-                "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
-                "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
-                "<input type=\"button\" value=\"Save\"/>" +
-                "</form></body></html>");
+
+        browser.navigation().on(FrameLoadFinished.class, event ->
+                event.frame().document().ifPresent(document ->
+                        document.documentElement().ifPresent(element -> {
+                            element.findElementByName("firstName").ifPresent(firstName ->
+                                    firstName.putAttribute("value", "John"));
+                            element.findElementByName("lastName").ifPresent(lastName ->
+                                    lastName.putAttribute("value", "Doe"));
+                        })));
+
+        browser.mainFrame().ifPresent(loadedFrame ->
+                loadedFrame.loadHtml("<html><body><form name=\"myForm\">" +
+                        "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
+                        "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
+                        "<input type=\"button\" value=\"Save\"/>" +
+                        "</form></body></html>"));
     }
 }
 

@@ -19,30 +19,32 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.download.Download;
+import com.teamdev.jxbrowser.download.Downloads;
+import com.teamdev.jxbrowser.download.callback.StartDownloadCallback;
+import com.teamdev.jxbrowser.download.event.DownloadFinished;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.navigation.Navigation;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.internal.FileUtil;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import com.teamdev.jxbrowser.zoom.ZoomLevel;
-import com.teamdev.jxbrowser.zoom.ZoomLevels;
-import com.teamdev.jxbrowser.zoom.event.ZoomLevelChanged;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates how to modify zoom level for a
- * currently loaded web page.
- *
- * <p>Zoom level will be applied to the currently loaded web page only.
- *
- * <p>If you navigate to a different domain, its zoom level
- * will be 100% until you modify it.
+ * This example demonstrates how to allow/disallow downloading a file
+ * and get notification when downloading has been completed.
  */
-public final class ChangeZoomLevel {
+public final class DownloadFile {
+
+    private static final String urlToDownload =
+            "https://storage.googleapis.com/cloud.teamdev.com/downloads/jxbrowser/7.0/jxbrowser-7.0-cross-desktop-win_mac_linux.zip";
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -52,27 +54,28 @@ public final class ChangeZoomLevel {
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Change Zoom Level");
+            JFrame frame = new JFrame("Download File");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
-            frame.setSize(700, 500);
+            frame.setSize(800, 600);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
 
-        // Listen to the zoom changed events.
-        ZoomLevels levels = engine.zoomLevels();
-        levels.on(ZoomLevelChanged.class, event ->
-                System.out.println("Url: " + event.host() + "\n"
-                        + "Zoom level: " + event.level()));
-
-        Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event -> {
-            if (event.frame().isMain()) {
-                browser.zoom().level(ZoomLevel.P_200);
-            }
+        engine.downloads().set(StartDownloadCallback.class, (params, tell) -> {
+            params.download().on(DownloadFinished.class, event ->
+                    System.out.println("File downloaded!"));
+            tell.download(createTempDirectory().toAbsolutePath());
         });
 
-        navigation.loadUrl("https://www.google.com");
+        browser.navigation().loadUrl(urlToDownload);
+    }
+
+    private static Path createTempDirectory() {
+        try {
+            return Files.createTempDirectory("Downloads");
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to create a temp dir", e);
+        }
     }
 }

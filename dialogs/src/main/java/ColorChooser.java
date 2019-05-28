@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,40 +18,44 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.CloseStatus;
-import com.teamdev.jxbrowser.chromium.ColorChooserParams;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import com.teamdev.jxbrowser.chromium.swing.DefaultDialogHandler;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.SelectColorCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.ui.Color;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 /**
- * This example demonstrates how to override behaviour of standard
- * color chooser dialog for HTML5 input color element.
+ * This example demonstrates how to suppress the color chooser dialog for
+ * HTML5 input color element and programmatically select the required color.
  */
-public class ColorChooser {
+public final class ColorChooser {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.setDialogHandler(new DefaultDialogHandler(view) {
-            @Override
-            public CloseStatus onColorChooser(ColorChooserParams params) {
-                params.setColor(Color.BLUE);
-                return CloseStatus.OK;
-            }
+            JFrame frame = new JFrame("Color Chooser");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadHTML("<html><body><input type='color' value='#ff000'></body></html>");
+        browser.set(SelectColorCallback.class, (params, tell) ->
+                tell.select(Color.newBuilder().blue(1.0f).alpha(1.0f).build()));
+
+        browser.mainFrame().ifPresent(loadedFrame
+                -> loadedFrame.loadHtml("<html><body><input type='color' value='#ff0000'></body></html>"));
     }
 }
-

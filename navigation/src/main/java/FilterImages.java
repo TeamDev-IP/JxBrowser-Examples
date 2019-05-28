@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,45 +18,51 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.*;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.callback.LoadResourceCallback;
+import com.teamdev.jxbrowser.net.callback.LoadResourceCallback.Response;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.net.ResourceType.IMAGE;
+
 /**
  * This example demonstrates how to handle all resources such as
  * HTML, PNG, JavaScript, CSS files and decide whether web browser
- * engine should load them from web server or not. For example, in
- * this sample we cancel loading of all Images.
+ * engine should load them from web server or not.
+ *
+ * <p>For example, in this sample we cancel loading of all Images.
  */
-public class FilterImages {
+public final class FilterImages {
+
     public static void main(String[] args) {
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        NetworkService networkService = browser.getContext().getNetworkService();
-        networkService.setResourceHandler(new ResourceHandler() {
-            @Override
-            public boolean canLoadResource(ResourceParams params) {
-                System.out.println("URL: " + params.getURL());
-                System.out.println("Type: " + params.getResourceType());
-                boolean isNotImageType =
-                        params.getResourceType() != ResourceType.IMAGE;
-                if (isNotImageType) {
-                    return true;    // Cancel loading of all images
-                }
-                return false;
-            }
+            JFrame frame = new JFrame("Filter Images");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
-        browser.loadURL("http://www.google.com");
+        engine.network().set(LoadResourceCallback.class, params -> {
+            if (params.resourceType() == IMAGE) {
+                return Response.cancel();
+            }
+            return Response.load();
+        });
+
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }

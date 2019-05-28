@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,50 +18,54 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.XPathResult;
-import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.dom.XPathException;
+import com.teamdev.jxbrowser.dom.XPathResult;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.Navigation;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 /**
  * This example demonstrates how to evaluate the XPath expression and work with the result.
  */
-public class XPath {
+public final class XPath {
+
     public static void main(String[] args) {
-        final Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        JFrame frame = new JFrame();
-        frame.getContentPane().add(browserView, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        browser.addLoadListener(new LoadAdapter() {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-                if (event.isMainFrame()) {
-                    DOMDocument document = browser.getDocument();
-                    XPathResult result = document.evaluate("count(//div)");
-                    // If the expression is not a valid XPath expression or the document
-                    // element is not available, we'll get an error.
-                    if (result.isError()) {
-                        System.out.println("Error: " + result.getErrorMessage());
-                        return;
-                    }
-
-                    // Make sure that result is a number.
-                    if (result.isNumber()) {
-                        System.out.println("Result: " + result.getNumber());
-                    }
-                }
-            }
+            JFrame frame = new JFrame("Evaluate XPath");
+            frame.getContentPane().add(view, BorderLayout.CENTER);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
-        browser.loadURL("http://www.teamdev.com/jxbrowser");
+
+        Navigation navigation = browser.navigation();
+        navigation.on(FrameLoadFinished.class, event ->
+                event.frame().document().ifPresent(document ->
+                        document.documentElement().ifPresent(element -> {
+                            try {
+                                XPathResult result = element.evaluate("count(//div)");
+                                if (result.isNumber()) {
+                                    System.out.println("Result: " + result.asNumber());
+                                }
+                            } catch (XPathException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        })));
+
+        navigation.loadUrl("https://www.teamdev.com/jxbrowser");
     }
 }

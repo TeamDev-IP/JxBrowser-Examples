@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,103 +18,106 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.ContextMenuHandler;
-import com.teamdev.jxbrowser.chromium.ContextMenuParams;
-import com.teamdev.jxbrowser.chromium.SpellCheckerService;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
-import java.awt.Point;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.menu.SpellCheckMenu;
+import com.teamdev.jxbrowser.spellcheck.Dictionary;
+import com.teamdev.jxbrowser.ui.Point;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.*;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example demonstrates how to configure spell checking functionality
+ * This example demonstrates how to configure spell checking functionality
  * with the required language and display the dictionary suggestions
  * in the context menu that is displayed under a misspelled word.
  */
-public class SpellCheckSuggestions {
+public final class SpellCheckSuggestions {
+
+    private static BrowserView view;
 
     public static void main(String[] args) {
         // Enable heavyweight popup menu for the heavyweight
         // (default) BrowserView component. Otherwise – the popup
         // menu will be displayed under the BrowserView component.
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Browser browser = engine.newBrowser();
 
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        SwingUtilities.invokeLater(() -> {
+            view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame("JxBrowser – Spell Check Suggestions");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("Spell Check Suggestions");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 
-        BrowserContext browserContext = browser.getContext();
-        SpellCheckerService spellCheckerService =
-                browserContext.getSpellCheckerService();
+        browser.set(ShowContextMenuCallback.class, (params, tell) -> {
+            JPopupMenu popupMenu = new JPopupMenu();
+            popupMenu.addPopupMenuListener(myPopupMenuListener(tell));
 
-        // Enable spell checking.
-        spellCheckerService.setEnabled(true);
+            // Add the suggestions menu items.
+            SpellCheckMenu spellCheckMenu = params.spellCheckMenu();
+            List<String> suggestions = spellCheckMenu.dictionarySuggestions();
+            suggestions.forEach(suggestion -> {
+                JMenuItem menuItem = new JMenuItem(suggestion);
+                menuItem.addActionListener(e -> {
+                    browser.replaceMisspelledWord(suggestion);
+                    tell.close();
+                });
+                popupMenu.add(menuItem);
+            });
 
-        // Configure the dictionary language.
-        spellCheckerService.setLanguage("en-US");
+            // Add menu separator if necessary.
+            if (!suggestions.isEmpty()) {
+                popupMenu.addSeparator();
+            }
 
-        // Register a custom context menu handler to display spell check suggestions.
-        browser.setContextMenuHandler(new SwingContextMenuHandler(view, browser));
+            // Add the "Add to Dictionary" menu item.
+            JMenuItem addToDictionary = new JMenuItem(
+                    spellCheckMenu.addToDictionaryMenuItemText());
+            addToDictionary.addActionListener(e -> {
+                Dictionary dictionary = engine.spellChecker().customDictionary();
+                dictionary.add(spellCheckMenu.misspelledWord());
+                tell.close();
+            });
+            popupMenu.add(addToDictionary);
 
-        browser.loadHTML("<html><body><textarea rows='20' cols='30'>" +
-                "Smple text with mitake.</textarea></body></html>");
+            // Display context menu at specified location.
+            Point location = params.location();
+            popupMenu.show(view, location.x(), location.y());
+        });
+        browser.mainFrame().ifPresent(frame ->
+                frame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
+                        "Smple text with mitake.</textarea></body></html>"));
     }
 
-    private static class SwingContextMenuHandler implements ContextMenuHandler {
-
-        private final JComponent component;
-        private final Browser browser;
-
-        private SwingContextMenuHandler(JComponent parentComponent, Browser browser) {
-            this.component = parentComponent;
-            this.browser = browser;
-        }
-
-        private static JMenuItem createMenuItem(String title, final Runnable action) {
-            JMenuItem result = new JMenuItem(title);
-            result.addActionListener(e -> action.run());
-            return result;
-        }
-
-        public void showContextMenu(final ContextMenuParams params) {
-            SwingUtilities.invokeLater(() -> {
-                JPopupMenu popupMenu = createPopupMenu(params);
-                Point location = params.getLocation();
-                popupMenu.show(component, location.x, location.y);
-            });
-        }
-
-        private JPopupMenu createPopupMenu(final ContextMenuParams params) {
-            final JPopupMenu result = new JPopupMenu();
-            // Add the suggestions menu items.
-            List<String> suggestions = params.getDictionarySuggestions();
-            for (final String suggestion : suggestions) {
-                result.add(createMenuItem(suggestion, () ->
-                        browser.replaceMisspelledWord(suggestion)));
+    private static PopupMenuListener myPopupMenuListener(ShowContextMenuCallback.Action tell) {
+        return new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             }
-            if (!suggestions.isEmpty()) {
-                // Add the "Add to Dictionary" menu item.
-                result.addSeparator();
-                result.add(createMenuItem("Add to Dictionary", () -> {
-                    String misspelledWord = params.getMisspelledWord();
-                    browser.addWordToSpellCheckerDictionary(misspelledWord);
-                }));
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             }
-            return result;
-        }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+                tell.close();
+            }
+        };
     }
 }

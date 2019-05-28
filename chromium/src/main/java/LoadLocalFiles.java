@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,41 +18,48 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The example demonstrates how to enable access to the local files from a web page.
+ * This example demonstrates how to enable access to the local files on a web page.
  */
-public class LoadLocalFiles {
+public final class LoadLocalFiles {
 
     public static void main(String[] args) {
-        // Disable web security for the Chromium engine and allow accessing local files
-        // from a web page.
-        BrowserPreferences.setChromiumSwitches(
-                "--disable-web-security",
-                "--allow-file-access-from-files"
-        );
+        // Disables web security for the Chromium engine and
+        // allow accessing local files on a web page.
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+                        .disableWebSecurity()
+                        .allowFileAccessFromFiles()
+                        .build());
+        Browser browser = engine.newBrowser();
 
-        Browser browser = new Browser();
-        BrowserView browserView = new BrowserView(browser);
+        SwingUtilities.invokeLater(() -> {
+            BrowserView view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame("JxBrowser Example – Load Local Files");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(browserView, BorderLayout.CENTER);
-        frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            JFrame frame = new JFrame("Load Local Files");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 
         // Get absolute path to the jxbrowser-logo.svg file.
         URL resource = LoadLocalFiles.class.getResource("jxbrowser-logo.svg");
 
         // Load HTML with an image located on the local file system.
-        browser.loadHTML("<html><body><img src='" + resource + "'></body></html>");
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><img src='" + resource + "'></body></html>"));
     }
 }

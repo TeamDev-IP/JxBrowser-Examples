@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018, TeamDev. All rights reserved.
+ *  Copyright 2019, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,41 +18,39 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.internal.Environment;
-import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 /**
- * Demonstrates how to embed Browser instance into JavaFX application.
+ * This example demonstrates how to embed JavaFX BrowserView into JavaFX app.
  */
-public class JavaFxBrowserView extends Application {
+public final class JavaFxBrowserView extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void init() {
-        // On Mac OS X Chromium engine must be initialized in non-UI thread.
-        if (Environment.isMac()) {
-            BrowserCore.initialize();
-        }
-    }
-
-    @Override
     public void start(final Stage primaryStage) {
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build());
+        Browser browser = engine.newBrowser();
+
+        BrowserView view = BrowserView.newInstance(browser);
 
         Scene scene = new Scene(new BorderPane(view), 700, 500);
+        primaryStage.setTitle("JavaFx BrowserView");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        browser.loadURL("http://www.google.com");
+        browser.navigation().loadUrl("https://www.google.com");
     }
 }
