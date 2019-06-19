@@ -21,11 +21,11 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.HttpHeader;
 import com.teamdev.jxbrowser.net.HttpStatus;
 import com.teamdev.jxbrowser.net.Network;
 import com.teamdev.jxbrowser.net.UrlRequestJob;
 import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
-import com.teamdev.jxbrowser.net.internal.rpc.HttpHeader;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
@@ -79,12 +79,10 @@ public final class JarProtocolHandler {
                 dataInputStream.readFully(data);
                 dataInputStream.close();
 
+                String mimeType = getMimeType(params.urlRequest().url());
                 UrlRequestJob urlRequestJob = engine.network().newUrlRequestJob(
                         UrlRequestJob.Options.newBuilder(params.urlRequest().id(), HttpStatus.OK)
-                                .addHttpHeader(HttpHeader.newBuilder()
-                                        .setName(CONTENT_TYPE)
-                                        .setValue(getMimeType(params.urlRequest().url()))
-                                        .build())
+                                .addHttpHeader(HttpHeader.of(CONTENT_TYPE, mimeType))
                                 .build());
                 urlRequestJob.write(data);
                 urlRequestJob.complete();
