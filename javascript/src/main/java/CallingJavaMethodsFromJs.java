@@ -112,5 +112,4 @@ public final class CallingJavaMethodsFromJs {
             System.out.print(s);
         }
     }
-
 }
