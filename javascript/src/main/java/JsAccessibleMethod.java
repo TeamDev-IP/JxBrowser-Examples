@@ -22,18 +22,12 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.Navigation;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
 
 /**
  * This example demonstrates how to call Java methods from JavaScript using injecting Java object
@@ -47,28 +41,22 @@ public final class JsAccessibleMethod {
         Browser browser = engine.newBrowser();
 
         browser.set(InjectJsCallback.class, params -> {
-            Frame frame = params.frame();
-            String window = "window";
-            JsObject jsObject = frame.executeJavaScript(window);
-            if (jsObject != null) {
-                jsObject.putProperty("human", new Human());
-            }
+            JsObject jsObject = params.frame().executeJavaScript("window");
+            jsObject.putProperty("human", new Human());
             return InjectJsCallback.Response.proceed();
         });
 
         Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event -> {
-            String js = "window.human.greet();";
-            event.frame().executeJavaScript(js);
-        });
+        navigation.on(FrameLoadFinished.class, event ->
+                event.frame().executeJavaScript("window.human.sayHello();"));
 
-        navigation.loadUrl("about:blank");
+        navigation.loadUrl("about:blank"); // Load 'about:blank' to initiate frame loading.
     }
 
     public static class Human {
 
         @JsAccessible // Only public annotated methods are accessible.
-        public void greet() {
+        public void sayHello() {
             System.out.println("Hello!");
         }
     }
