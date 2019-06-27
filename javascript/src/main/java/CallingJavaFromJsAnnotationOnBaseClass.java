@@ -73,7 +73,7 @@ public final class CallingJavaFromJsAnnotationOnBaseClass {
 
         browser.on(ConsoleMessageReceived.class, event -> {
             if (event.consoleMessage().level().equals(LEVEL_ERROR)) {
-                // Error message will be displayed if non-public or not annotated java method is called.
+                // Error message will be displayed if not annotated java method is called.
                 System.out.println(event.consoleMessage().message());
             }
         });
