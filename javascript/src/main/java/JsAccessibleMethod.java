@@ -20,7 +20,6 @@
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
-import com.teamdev.jxbrowser.browser.event.ConsoleMessageReceived;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.Frame;
@@ -34,77 +33,43 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.js.ConsoleMessageLevel.LEVEL_ERROR;
 import static java.lang.String.format;
 
 /**
  * This example demonstrates how to call Java methods from JavaScript using injecting Java object
  * and {@code @JsAccessible} annotation on the methods.
  */
-public final class CallingJavaFromJsAnnotationOnMethod {
+public final class JsAccessibleMethod {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Java object injection. Annotation on method");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(700, 500);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
         browser.set(InjectJsCallback.class, params -> {
             Frame frame = params.frame();
             String window = "window";
             JsObject jsObject = frame.executeJavaScript(window);
-            if (jsObject == null) {
-                throw new IllegalStateException(
-                        format("'%s' JS object not found", window));
+            if (jsObject != null) {
+                jsObject.putProperty("human", new Human());
             }
-            jsObject.putProperty("java", new JavaObject());
             return InjectJsCallback.Response.proceed();
-        });
-
-        browser.on(ConsoleMessageReceived.class, event -> {
-            if (event.consoleMessage().level().equals(LEVEL_ERROR)) {
-                // Error message will be displayed if non-public or not annotated java method is called.
-                System.out.println(event.consoleMessage().message());
-            }
         });
 
         Navigation navigation = browser.navigation();
         navigation.on(FrameLoadFinished.class, event -> {
-            String js = "window.java.sayGreetings();";
-            event.frame().executeJavaScript(js);
-            js = "window.java.sayNothing();";
-            event.frame().executeJavaScript(js);
-            js = "window.java.saySomething('Please hear me!!!');";
+            String js = "window.human.greet();";
             event.frame().executeJavaScript(js);
         });
 
         navigation.loadUrl("about:blank");
     }
 
-    public static class JavaObject {
+    public static class Human {
 
-        @JsAccessible // Annotated public method is accessible.
-        public void sayGreetings() {
-            System.out.println("Hello World!");
-        }
-
-        public void sayNothing() { // Unannotated public method is not accessible.
-            System.out.println("(silence)");
-        }
-
-        @JsAccessible
-        void saySomething(String s) { // Annotated not public method is not accessible.
-            System.out.println(s);
+        @JsAccessible // Only public annotated methods are accessible.
+        public void greet() {
+            System.out.println("Hello!");
         }
     }
 }

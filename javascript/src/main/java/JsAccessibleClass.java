@@ -20,7 +20,6 @@
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
-import com.teamdev.jxbrowser.browser.event.ConsoleMessageReceived;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.Frame;
@@ -34,81 +33,58 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.js.ConsoleMessageLevel.LEVEL_ERROR;
 import static java.lang.String.format;
 
 /**
  * This example demonstrates how to call Java methods from JavaScript using injecting Java object
- * and {@code @JsAccessible} annotation on injected class.
+ * and {@code @JsAccessible} annotation on base class of the injected object.
  */
-public final class CallingJavaFromJsAnnotationOnClass {
+public final class JsAccessibleClass {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Java object injection. Annotation on class");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(700, 500);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
         browser.set(InjectJsCallback.class, params -> {
             Frame frame = params.frame();
             String window = "window";
             JsObject jsObject = frame.executeJavaScript(window);
-            if (jsObject == null) {
-                throw new IllegalStateException(
-                        format("'%s' JS object not found", window));
+            if (jsObject != null) {
+                jsObject.putProperty("batman", new Batman());
             }
-            jsObject.putProperty("java", new JavaObject());
             return InjectJsCallback.Response.proceed();
-        });
-
-        browser.on(ConsoleMessageReceived.class, event -> {
-            if (event.consoleMessage().level().equals(LEVEL_ERROR)) {
-                // Error message will be displayed if non-public or not annotated java method is called.
-                System.out.println(event.consoleMessage().message());
-            }
         });
 
         Navigation navigation = browser.navigation();
         navigation.on(FrameLoadFinished.class, event -> {
-            String js = "window.java.sayGreetings();";
+            String js = "window.batman.greet();";
             event.frame().executeJavaScript(js);
-            js = "window.java.saySomething('Please hear me!!!');";
-            event.frame().executeJavaScript(js);
-            js = "window.java.sayNothing();";
+            js = "window.batman.introduceMyself();";
             event.frame().executeJavaScript(js);
         });
 
         navigation.loadUrl("about:blank");
     }
 
-    public static class BaseClass {
+    @JsAccessible // All the public methods are accessible even from the inheritors if they are not overridden.
+    public static class Human {
+        public void greet() {
+            System.out.print("Hello! ");
+        }
 
-        // Not accessible from the annotated inheritor.
-        public void sayNothing() {
-            System.out.println("(silence)");
+        public void introduceMyself() {
+            System.out.println("I am a boring homo sapiens.");
         }
     }
 
-    @JsAccessible // All the public declared methods in the class are accessible.
-    public static class JavaObject extends BaseClass {
+    public static class Batman extends Human {
 
-        public void sayGreetings() {
-            System.out.println("Hello World!");
-        }
-
-        // Not public method is not accessible.
-        void saySomething(String s) { // Annotated not public method is inaccessible.
-            System.out.println(s);
+        // To access the overridden method from JavaScript annotate it or the class it is declared in.
+        @Override
+        @JsAccessible
+        public void introduceMyself() {
+            System.out.println("I'm Batman!!!");
         }
     }
 }
