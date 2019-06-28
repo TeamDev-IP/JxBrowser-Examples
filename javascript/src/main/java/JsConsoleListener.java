@@ -22,8 +22,7 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.event.ConsoleMessageReceived;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.navigation.Navigation;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
+import com.teamdev.jxbrowser.js.ConsoleMessage;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
@@ -53,14 +52,14 @@ public final class JsConsoleListener {
             frame.setVisible(true);
         });
 
-        browser.on(ConsoleMessageReceived.class, event ->
-                System.out.println("Level: " + event.consoleMessage().level().name() + "\n"
-                        + "Message: " + event.consoleMessage().message()));
+        browser.on(ConsoleMessageReceived.class, event -> {
+            ConsoleMessage consoleMessage = event.consoleMessage();
+            System.out.println(String.format("Level: %s\nMessage: %s",
+                    consoleMessage.level().name(),
+                    consoleMessage.message()));
+        });
 
-        Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event ->
-                event.frame().executeJavaScript("console.error(\"Error message\");"));
-
-        navigation.loadUrl("about:blank");
+        browser.mainFrame().ifPresent(frame ->
+                frame.executeJavaScript("console.error(\"Error message\");"));
     }
 }
