@@ -19,43 +19,42 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
-import com.teamdev.jxbrowser.navigation.Navigation;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to call Java methods from JavaScript using injecting Java object
- * and {@code @JsAccessible} annotation on the methods.
+ * This example demonstrates how to inject a Java object into JavaScript and tell JavaScript
+ * which public methods of the injected Java object JavaScript can invoke.
  */
 public final class JsAccessibleMethod {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
-        Browser browser = engine.newBrowser();
+        try (Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build())) {
 
-        browser.set(InjectJsCallback.class, params -> {
-            JsObject jsObject = params.frame().executeJavaScript("window");
-            jsObject.putProperty("human", new Human());
-            return InjectJsCallback.Response.proceed();
-        });
-
-        Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event ->
-                event.frame().executeJavaScript("window.human.sayHello();"));
-
-        navigation.loadUrl("about:blank"); // Load 'about:blank' to initiate frame loading.
+            Browser browser = engine.newBrowser();
+            browser.mainFrame().ifPresent(frame -> {
+                JsObject jsObject = frame.executeJavaScript("window");
+                if (jsObject != null) {
+                    // Inject Java object into JavaScript and associate it
+                    // with the "window.java" JavaScript property.
+                    jsObject.putProperty("java", new JavaObject());
+                }
+                // Call the annotated public method of the injected Java object from JS.
+                frame.executeJavaScript("window.java.sayHello()");
+            });
+        }
     }
 
-    public static class Human {
+    // Only public classes and static nested classes can be injected into JS.
+    public static final class JavaObject {
 
-        @JsAccessible // Only public annotated methods are accessible.
+        @JsAccessible // This public method is accessible from JS.
+        @SuppressWarnings("unused") // To be called from JavaScript.
         public void sayHello() {
             System.out.println("Hello!");
         }
