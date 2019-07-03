@@ -27,7 +27,8 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to access the local/session storage using WebStorage API.
+ * This example demonstrates how to access the local/session storage and perform some operations
+ * with it.
  */
 public class WebStorageApi {
 
@@ -37,10 +38,11 @@ public class WebStorageApi {
         Browser browser = engine.newBrowser();
 
         browser.navigation().on(FrameLoadFinished.class, event -> {
-            WebStorage webStorage = event.frame().localStorage();
-//            WebStorage webStorage = event.frame().sessionStorage(); //
-            webStorage.putItem("Jack", "Ford");
-            System.out.println(webStorage.item("Jack").orElseThrow(IllegalStateException::new));
+            WebStorage webStorage = event.frame().localStorage(); // localStorage access
+//            WebStorage webStorage = event.frame().sessionStorage(); // sessionStorage access
+            String key = "your-custom-key";
+            webStorage.putItem(key, "Hello!");
+            System.out.println(webStorage.item(key).orElseThrow(IllegalStateException::new));
         });
 
         browser.navigation().loadUrl("https://www.teamdev.com");
