@@ -27,8 +27,7 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to access the local/session storage and perform some operations
- * with it.
+ * This example demonstrates how to access the local/session storage and perform operations with it.
  */
 public class WebStorageApi {
 
