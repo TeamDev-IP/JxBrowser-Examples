@@ -27,9 +27,12 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to access the local/session storage and perform operations with it.
+ * This example demonstrates how to access the local storage and perform operations with it.
+ *
+ * <p>Accessing the session storage is performed by calling {@code Frame.sessionStorage()} instead of
+ * {@code Frame.localStorage()}
  */
-public class WebStorageApi {
+public final class WebStorageApi {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -37,10 +40,9 @@ public class WebStorageApi {
         Browser browser = engine.newBrowser();
 
         browser.navigation().on(FrameLoadFinished.class, event -> {
-            WebStorage webStorage = event.frame().localStorage(); // localStorage access
-//            WebStorage webStorage = event.frame().sessionStorage(); // sessionStorage access
-            String key = "your-custom-key";
-            webStorage.putItem(key, "Hello!");
+            WebStorage webStorage = event.frame().localStorage();
+            String key = "myCat";
+            webStorage.putItem(key, "Tom");
             System.out.println(webStorage.item(key).orElseThrow(IllegalStateException::new));
         });
 
