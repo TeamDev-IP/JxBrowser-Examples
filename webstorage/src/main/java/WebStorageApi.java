@@ -21,9 +21,11 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.frame.WebStorage;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static java.lang.String.format;
 
 /**
  * This example demonstrates how to access the local storage and perform operations with it.
@@ -41,8 +43,10 @@ public final class WebStorageApi {
 
         browser.navigation().loadUrlAndWait("https://www.google.com");
 
-        WebStorage storage = browser.mainFrame().orElseThrow(IllegalStateException::new).localStorage();
+        Frame mainFrame = browser.mainFrame().orElseThrow(IllegalStateException::new);
+        WebStorage storage = mainFrame.localStorage();
         storage.putItem(KEY, "Tom");
-        System.out.println(storage.item(KEY).orElseThrow(IllegalStateException::new));
+        System.out.println((String) mainFrame.executeJavaScript(
+                format("window.localStorage.getItem(\"%s\")", KEY)));
     }
 }
