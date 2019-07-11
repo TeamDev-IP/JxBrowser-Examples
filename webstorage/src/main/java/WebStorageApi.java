@@ -22,30 +22,27 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.WebStorage;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
  * This example demonstrates how to access the local storage and perform operations with it.
  *
- * <p>Accessing the session storage is performed by calling {@code Frame.sessionStorage()} instead of
- * {@code Frame.localStorage()}
+ * <p>Accessing the session storage is performed by calling {@code Frame.sessionStorage()} instead
+ * of {@code Frame.localStorage()}
  */
 public final class WebStorageApi {
+    private static final String KEY = "Name";
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build());
         Browser browser = engine.newBrowser();
 
-        browser.navigation().on(FrameLoadFinished.class, event -> {
-            WebStorage webStorage = event.frame().localStorage();
-            String key = "myCat";
-            webStorage.putItem(key, "Tom");
-            System.out.println(webStorage.item(key).orElseThrow(IllegalStateException::new));
-        });
+        browser.navigation().loadUrlAndWait("https://www.google.com");
 
-        browser.navigation().loadUrl("https://www.teamdev.com");
+        WebStorage storage = browser.mainFrame().orElseThrow(IllegalStateException::new).localStorage();
+        storage.putItem(KEY, "Tom");
+        System.out.println(storage.item(KEY).orElseThrow(IllegalStateException::new));
     }
 }
