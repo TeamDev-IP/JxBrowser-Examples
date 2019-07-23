@@ -22,7 +22,9 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.ui.Bitmap;
-import com.teamdev.jxbrowser.view.swing.BitmapUtil;
+import com.teamdev.jxbrowser.view.javafx.BitmapUtil;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,24 +34,23 @@ import java.io.IOException;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to take screenshot of the loaded web page, convert it to a Java AWT
+ * This example demonstrates how to take a screenshot of the loaded web page, convert it to a JavaFX
  * image and save it to a PNG file.
  */
-public final class SwingTakeScreenshot {
+public final class JavaFxTakeScreenshot {
     public static void main(String[] args) throws IOException {
-        // Creating and running Chromium engine
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build());
         Browser browser = engine.newBrowser();
         // Resize browser to the required dimension
         browser.resize(500, 500);
-        // Load the required web page and wait until it is loaded completely
         browser.navigation().loadUrlAndWait("https://www.google.com");
-        // Take a bitmap of the currently loaded web page. Its size will be
-        // equal to the current browser's size.
+
         Bitmap bitmap = browser.bitmap();
-        // Convert the bitmap to java.awt.image.BufferedImage
-        BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
+        // Convert the bitmap to javafx.scene.image.Image
+        Image image = BitmapUtil.toImage(bitmap);
+        // Convert javafx.scene.image.Image to java.awt.image.BufferedImage
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
         // Save the image to a PNG file
         ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
     }

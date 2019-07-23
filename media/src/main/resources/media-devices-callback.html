@@ -2,13 +2,7 @@
 <html lang="en">
 <script>
 function requestMedia(constraints) {
-  navigator.mediaDevices.getUserMedia(constraints)
-  .then(function(stream) {
-    callback.onMediaPermissionStatusChanged('granted');
-  })
-  .catch(function(err) {
-    callback.onMediaPermissionStatusChanged('denied');
-  });
+  navigator.mediaDevices.getUserMedia(constraints);
 }
 
 function requestVideo() {

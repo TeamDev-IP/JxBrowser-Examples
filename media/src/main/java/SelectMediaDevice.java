@@ -31,7 +31,8 @@ import static com.teamdev.jxbrowser.media.MediaDeviceType.AUDIO_DEVICE;
 import static com.teamdev.jxbrowser.media.callback.SelectMediaDeviceCallback.Response;
 
 /**
- * This example demonstrates how programmatically select a media device when JavaScript requests it.
+ * This example demonstrates how to programmatically select a media device when JavaScript requests
+ * it.
  */
 public final class SelectMediaDevice {
     public static void main(String[] args) {
