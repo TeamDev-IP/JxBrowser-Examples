@@ -23,14 +23,12 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.event.ResponseBytesReceived;
 
-import java.util.Arrays;
-
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to listen to the response bytes receiving.
+ * This example demonstrates how to get HTTP response data and convert it to {@code String}.
  */
-public final class InterceptHttpResponseBody {
+public final class HttpResponseBytesListening {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -39,7 +37,7 @@ public final class InterceptHttpResponseBody {
 
         engine.network().on(ResponseBytesReceived.class, event -> {
             byte[] data = event.data();
-            System.out.println(Arrays.toString(data));
+            System.out.println(new String(data));
         });
 
         browser.navigation().loadUrl("https://google.com");
