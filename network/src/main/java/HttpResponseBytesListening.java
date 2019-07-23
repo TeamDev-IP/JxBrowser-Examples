@@ -26,7 +26,8 @@ import com.teamdev.jxbrowser.net.event.ResponseBytesReceived;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to get HTTP response data and convert it to {@code String}.
+ * This example demonstrates how to get HTTP response data as a bytes array and convert it to
+ * {@code String}.
  */
 public final class HttpResponseBytesListening {
 
