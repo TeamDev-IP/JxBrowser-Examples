@@ -19,44 +19,55 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.input.PressMouseCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.javafx.BrowserView;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates how to embed JavaFX BrowserView into Swing/AWT window using {@code
- * JFXPanel}.
+ * This example demonstrates how to suppress {@code MousePressed} event using {@code
+ * PressMouseCallback}.
+ *
+ * <p>For suppressing other mouse events the following callbacks are used:
+ * <li>{@code EnterMouseCallback}</li>
+ * <li>{@code ExitMouseCallback}</li>
+ * <li>{@code MoveMouseCallback}</li>
+ * <li>{@code MoveMouseWheelCallback}</li>
+ * <li>{@code ReleaseMouseCallback}event</li>
+ * </ul>
  */
-public final class BrowserViewInJFXPanel {
+public final class SuppressMouseEvent {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(OFF_SCREEN).build());
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        JFXPanel panel = new JFXPanel();
-        Platform.runLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-            panel.setScene(new Scene(view));
+        browser.set(PressMouseCallback.class, params -> {
+            if (params.event().keyModifiers().isShiftDown()) {
+                return PressMouseCallback.Response.proceed();
+            }
+            return PressMouseCallback.Response.suppress();
         });
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Embedding JavaFx BrowserView into Swing application");
+            BrowserView view = BrowserView.newInstance(browser);
+
+            JFrame frame = new JFrame("Suppress mouse event");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(panel, BorderLayout.CENTER);
-            frame.setSize(700, 500);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(500, 400);
             frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
-        browser.navigation().loadUrl("https://www.google.com");
+
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml(
+                "<button onclick=\"clicked()\">click holding shift</button>" +
+                        "<script>function clicked() {alert('clicked');}</script>"));
     }
 }

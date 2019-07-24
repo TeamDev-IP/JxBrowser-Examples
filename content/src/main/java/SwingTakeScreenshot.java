@@ -37,17 +37,19 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
  */
 public final class SwingTakeScreenshot {
     public static void main(String[] args) throws IOException {
-        Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(OFF_SCREEN).build());
-        Browser browser = engine.newBrowser();
-        // Resize browser to the required dimension
-        browser.resize(500, 500);
-        browser.navigation().loadUrlAndWait("https://www.google.com");
+        try (Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build())) {
+            Browser browser = engine.newBrowser();
+            // Resize browser to the required dimension
+            browser.resize(500, 500);
+            // Load the required web page and wait until it is loaded completely
+            browser.navigation().loadUrlAndWait("https://www.google.com");
 
-        Bitmap bitmap = browser.bitmap();
-        // Convert the bitmap to java.awt.image.BufferedImage
-        BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
-        // Save the image to a PNG file
-        ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
+            Bitmap bitmap = browser.bitmap();
+            // Convert the bitmap to java.awt.image.BufferedImage
+            BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
+            // Save the image to a PNG file
+            ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
+        }
     }
 }

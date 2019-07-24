@@ -19,44 +19,51 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.input.PressKeyCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.javafx.BrowserView;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.Character.isDigit;
 
 /**
- * This example demonstrates how to embed JavaFX BrowserView into Swing/AWT window using {@code
- * JFXPanel}.
+ * This example demonstrates how to suppress numbers typing using {@code PressKeyCallback}.
+ *
+ * <p>For suppressing other keyboard events the following callbacks are used:
+ * <ul>
+ * <li>{@code ReleaseKeyCallback}</li>
+ * <li>{@code TypeKeyCallback}</li>
+ * </ul>
  */
-public final class BrowserViewInJFXPanel {
+public final class SuppressKeyboardEvent {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(OFF_SCREEN).build());
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        JFXPanel panel = new JFXPanel();
-        Platform.runLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-            panel.setScene(new Scene(view));
+        browser.set(PressKeyCallback.class, params -> {
+            if (isDigit(params.event().keyChar())) {
+                return PressKeyCallback.Response.suppress();
+            }
+            return PressKeyCallback.Response.proceed();
         });
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Embedding JavaFx BrowserView into Swing application");
+            BrowserView view = BrowserView.newInstance(browser);
+
+            JFrame frame = new JFrame("Suppress keyboard event");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(panel, BorderLayout.CENTER);
-            frame.setSize(700, 500);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(500, 400);
             frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
-        browser.navigation().loadUrl("https://www.google.com");
+
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml("<textarea></textarea>"));
     }
 }

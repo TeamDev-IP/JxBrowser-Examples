@@ -29,7 +29,7 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 /**
  * This example demonstrates how to inject {@code JsFunctionCallback} into JavaScript and invoke it.
  */
-public final class JsFunctionInjecting {
+public final class JsFunctionCallbackInjecting {
 
     public static void main(String[] args) {
         try (Engine engine = Engine.newInstance(

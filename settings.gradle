@@ -47,5 +47,7 @@ include 'zoom'
 include 'troubleshooting'
 include 'network'
 include 'cache'
+include 'webstorage'
+include 'input-events'
 
 module ('content-changes', './tutorials/content-changes')
