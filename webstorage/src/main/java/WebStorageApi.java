@@ -19,40 +19,34 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
+import com.teamdev.jxbrowser.frame.Frame;
+import com.teamdev.jxbrowser.frame.WebStorage;
 
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static java.lang.String.format;
 
 /**
- * This example demonstrates how to inject a custom style sheet into the document.
+ * This example demonstrates how to access the local storage and perform operations with it.
+ *
+ * <p>Accessing the session storage is performed by calling {@code Frame.sessionStorage()} instead
+ * of {@code Frame.localStorage()}
  */
-public final class CustomCss {
+public final class WebStorageApi {
+    private static final String KEY = "Name";
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+                EngineOptions.newBuilder(OFF_SCREEN).build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+        browser.navigation().loadUrlAndWait("https://www.google.com");
 
-            JFrame frame = new JFrame("Custom CSS");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        browser.set(InjectCssCallback.class, params ->
-                InjectCssCallback.Response.inject("body { background-color: orange; }"));
-
-        browser.navigation().loadUrl("about:blank");
+        Frame mainFrame = browser.mainFrame().orElseThrow(IllegalStateException::new);
+        WebStorage storage = mainFrame.localStorage();
+        storage.putItem(KEY, "Tom");
+        System.out.println((String) mainFrame.executeJavaScript(
+                format("window.localStorage.getItem(\"%s\")", KEY)));
     }
 }

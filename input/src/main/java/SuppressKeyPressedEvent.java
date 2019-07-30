@@ -19,51 +19,51 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.input.PressKeyCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.net.Network;
-import com.teamdev.jxbrowser.net.callback.CanGetCookiesCallback;
-import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.Character.isDigit;
 
 /**
- * This example demonstrates how to suppress/filter all
- * the incoming and outgoing cookies.
+ * This example demonstrates how to suppress numbers typing using {@code PressKeyCallback}.
+ *
+ * <p>For suppressing other keyboard events the following callbacks are used:
+ * <ul>
+ * <li>{@code ReleaseKeyCallback}</li>
+ * <li>{@code TypeKeyCallback}</li>
+ * </ul>
  */
-public final class CookieFilter {
+public final class SuppressKeyPressedEvent {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
+        browser.set(PressKeyCallback.class, params -> {
+            if (isDigit(params.event().keyChar())) {
+                return PressKeyCallback.Response.suppress();
+            }
+            return PressKeyCallback.Response.proceed();
+        });
+
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Filter Cookies");
+            JFrame frame = new JFrame("Suppress the Key Pressed event");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
+            frame.setSize(500, 400);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
 
-        // Suppress/filter all the incoming and outgoing cookies.
-        Network networkService = engine.network();
-        networkService.set(CanSetCookieCallback.class, params -> {
-            System.out.println("Disallow accepting cookies for: " + params.url());
-            return CanSetCookieCallback.Response.cannot();
-        });
-        networkService.set(CanGetCookiesCallback.class, params -> {
-            System.out.println("Disallow sending cookies for: " + params.url());
-            return CanGetCookiesCallback.Response.cannot();
-        });
-
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml("<textarea></textarea>"));
     }
 }
