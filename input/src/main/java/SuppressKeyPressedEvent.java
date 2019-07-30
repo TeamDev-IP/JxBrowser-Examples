@@ -19,7 +19,7 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.callback.input.PressMouseCallback;
+import com.teamdev.jxbrowser.browser.callback.input.PressKeyCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -28,37 +28,35 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.Character.isDigit;
 
 /**
- * This example demonstrates how to suppress {@code MousePressed} event using {@code
- * PressMouseCallback}.
+ * This example demonstrates how to suppress numbers typing using {@code PressKeyCallback}.
  *
- * <p>For suppressing other mouse events the following callbacks are used:
- * <li>{@code EnterMouseCallback}</li>
- * <li>{@code ExitMouseCallback}</li>
- * <li>{@code MoveMouseCallback}</li>
- * <li>{@code MoveMouseWheelCallback}</li>
- * <li>{@code ReleaseMouseCallback}event</li>
+ * <p>For suppressing other keyboard events the following callbacks are used:
+ * <ul>
+ * <li>{@code ReleaseKeyCallback}</li>
+ * <li>{@code TypeKeyCallback}</li>
  * </ul>
  */
-public final class SuppressMouseEvent {
+public final class SuppressKeyPressedEvent {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        browser.set(PressMouseCallback.class, params -> {
-            if (params.event().keyModifiers().isShiftDown()) {
-                return PressMouseCallback.Response.proceed();
+        browser.set(PressKeyCallback.class, params -> {
+            if (isDigit(params.event().keyChar())) {
+                return PressKeyCallback.Response.suppress();
             }
-            return PressMouseCallback.Response.suppress();
+            return PressKeyCallback.Response.proceed();
         });
 
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Suppress mouse event");
+            JFrame frame = new JFrame("Suppress the Key Pressed event");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(500, 400);
@@ -66,8 +64,6 @@ public final class SuppressMouseEvent {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(frame -> frame.loadHtml(
-                "<button onclick=\"clicked()\">click holding shift</button>" +
-                        "<script>function clicked() {alert('clicked');}</script>"));
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml("<textarea></textarea>"));
     }
 }

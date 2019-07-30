@@ -48,6 +48,6 @@ include 'troubleshooting'
 include 'network'
 include 'cache'
 include 'webstorage'
-include 'input-events'
+include 'input'
 
 module ('content-changes', './tutorials/content-changes')

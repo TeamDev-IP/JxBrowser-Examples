@@ -21,32 +21,35 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.js.JsFunctionCallback;
-import com.teamdev.jxbrowser.js.JsObject;
+import com.teamdev.jxbrowser.ui.Bitmap;
+import com.teamdev.jxbrowser.view.swing.BitmapUtil;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to inject {@code JsFunctionCallback} into JavaScript and invoke it.
+ * This example demonstrates how to take bitmap of the loaded web page,
+ * convert it to a Java AWT image and save it to a PNG file.
  */
-public final class JsFunctionCallbackInjecting {
-
-    public static void main(String[] args) {
+public final class BitmapToSwingImage {
+    public static void main(String[] args) throws IOException {
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {
-
             Browser browser = engine.newBrowser();
-            browser.mainFrame().ifPresent(frame -> {
-                JsObject jsObject = frame.executeJavaScript("window");
-                if (jsObject != null) {
-                    // Inject JsFunctionCallback into JavaScript and associate it
-                    // with the "window.sayHelloTo" JavaScript property.
-                    jsObject.putProperty("sayHelloTo", (JsFunctionCallback) arguments ->
-                            "Hello, " + arguments[0]);
-                }
-                String greetings = frame.executeJavaScript("window.sayHelloTo('John')");
-                System.out.println(greetings);
-            });
+            // Resize browser to the required dimension
+            browser.resize(500, 500);
+            // Load the required web page and wait until it is loaded completely
+            browser.navigation().loadUrlAndWait("https://www.google.com");
+
+            Bitmap bitmap = browser.bitmap();
+            // Convert the bitmap to java.awt.image.BufferedImage
+            BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
+            // Save the image to a PNG file
+            ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
         }
     }
 }

@@ -32,8 +32,8 @@ import java.awt.*;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to embed JavaFX BrowserView into Swing/AWT window using {@code
- * JFXPanel}.
+ * This example demonstrates how to embed JavaFX BrowserView into
+ * Swing/AWT window using {@link JFXPanel}.
  */
 public final class BrowserViewInJFXPanel {
 
@@ -49,7 +49,7 @@ public final class BrowserViewInJFXPanel {
         });
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Embedding JavaFx BrowserView into Swing application");
+            JFrame frame = new JFrame("JavaFX BrowserView in Swing app");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(panel, BorderLayout.CENTER);
             frame.setSize(700, 500);

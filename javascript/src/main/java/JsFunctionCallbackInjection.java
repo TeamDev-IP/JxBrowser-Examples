@@ -21,39 +21,33 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.ui.Bitmap;
-import com.teamdev.jxbrowser.view.javafx.BitmapUtil;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import com.teamdev.jxbrowser.js.JsFunctionCallback;
+import com.teamdev.jxbrowser.js.JsObject;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to take a screenshot of the loaded web page, convert it to a JavaFX
- * image and save it to a PNG file.
+ * This example demonstrates how to inject {@code JsFunctionCallback}
+ * into JavaScript and call it from JavaScript code.
  */
-public final class JavaFxTakeScreenshot {
-    public static void main(String[] args) throws IOException {
+public final class JsFunctionCallbackInjection {
+
+    public static void main(String[] args) {
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {
-            Browser browser = engine.newBrowser();
-            // Resize browser to the required dimension
-            browser.resize(500, 500);
-            // Load the required web page and wait until it is loaded completely
-            browser.navigation().loadUrlAndWait("https://www.google.com");
 
-            Bitmap bitmap = browser.bitmap();
-            // Convert the bitmap to javafx.scene.image.Image
-            Image image = BitmapUtil.toImage(bitmap);
-            // Convert javafx.scene.image.Image to java.awt.image.BufferedImage
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            // Save the image to a PNG file
-            ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
+            Browser browser = engine.newBrowser();
+            browser.mainFrame().ifPresent(frame -> {
+                JsObject jsObject = frame.executeJavaScript("window");
+                if (jsObject != null) {
+                    // Inject JsFunctionCallback into JavaScript and associate it
+                    // with the "window.sayHelloTo" JavaScript property.
+                    jsObject.putProperty("sayHelloTo", (JsFunctionCallback) arguments ->
+                            "Hello, " + arguments[0]);
+                }
+                String greetings = frame.executeJavaScript("window.sayHelloTo('John')");
+                System.out.println(greetings);
+            });
         }
     }
 }
