@@ -21,36 +21,35 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.javafx.BrowserView;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import com.teamdev.jxbrowser.ui.Bitmap;
+import com.teamdev.jxbrowser.view.swing.BitmapUtil;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to embed JavaFX BrowserView into JavaFX app.
+ * This example demonstrates how to take bitmap of the loaded web page,
+ * convert it to a Java AWT image and save it to a PNG file.
  */
-public final class JavaFxBrowserView extends Application {
+public final class BitmapToSwingImage {
+    public static void main(String[] args) throws IOException {
+        try (Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build())) {
+            Browser browser = engine.newBrowser();
+            // Resize browser to the required dimension
+            browser.resize(500, 500);
+            // Load the required web page and wait until it is loaded completely
+            browser.navigation().loadUrlAndWait("https://www.google.com");
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(final Stage primaryStage) {
-        Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(OFF_SCREEN).build());
-        Browser browser = engine.newBrowser();
-
-        BrowserView view = BrowserView.newInstance(browser);
-
-        Scene scene = new Scene(new BorderPane(view), 700, 500);
-        primaryStage.setTitle("JavaFx BrowserView");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        browser.navigation().loadUrl("https://www.google.com");
+            Bitmap bitmap = browser.bitmap();
+            // Convert the bitmap to java.awt.image.BufferedImage
+            BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
+            // Save the image to a PNG file
+            ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
+        }
     }
 }

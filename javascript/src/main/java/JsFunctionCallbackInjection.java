@@ -19,40 +19,35 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
+import com.teamdev.jxbrowser.js.JsFunctionCallback;
+import com.teamdev.jxbrowser.js.JsObject;
 
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to inject a custom style sheet into the document.
+ * This example demonstrates how to inject {@code JsFunctionCallback}
+ * into JavaScript and call it from JavaScript code.
  */
-public final class CustomCss {
+public final class JsFunctionCallbackInjection {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
-        Browser browser = engine.newBrowser();
+        try (Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN).build())) {
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Custom CSS");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        browser.set(InjectCssCallback.class, params ->
-                InjectCssCallback.Response.inject("body { background-color: orange; }"));
-
-        browser.navigation().loadUrl("about:blank");
+            Browser browser = engine.newBrowser();
+            browser.mainFrame().ifPresent(frame -> {
+                JsObject jsObject = frame.executeJavaScript("window");
+                if (jsObject != null) {
+                    // Inject JsFunctionCallback into JavaScript and associate it
+                    // with the "window.sayHelloTo" JavaScript property.
+                    jsObject.putProperty("sayHelloTo", (JsFunctionCallback) arguments ->
+                            "Hello, " + arguments[0]);
+                }
+                String greetings = frame.executeJavaScript("window.sayHelloTo('John')");
+                System.out.println(greetings);
+            });
+        }
     }
 }

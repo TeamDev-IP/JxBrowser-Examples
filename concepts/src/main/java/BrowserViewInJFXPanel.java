@@ -21,49 +21,42 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.net.Network;
-import com.teamdev.jxbrowser.net.callback.CanGetCookiesCallback;
-import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
+import com.teamdev.jxbrowser.view.javafx.BrowserView;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
- * This example demonstrates how to suppress/filter all
- * the incoming and outgoing cookies.
+ * This example demonstrates how to embed JavaFX BrowserView into
+ * Swing/AWT window using {@link JFXPanel}.
  */
-public final class CookieFilter {
+public final class BrowserViewInJFXPanel {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+                EngineOptions.newBuilder(OFF_SCREEN).build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
+        JFXPanel panel = new JFXPanel();
+        Platform.runLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
+            panel.setScene(new Scene(view));
+        });
 
-            JFrame frame = new JFrame("Filter Cookies");
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("JavaFX BrowserView in Swing app");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setSize(700, 500);
             frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
-
-        // Suppress/filter all the incoming and outgoing cookies.
-        Network networkService = engine.network();
-        networkService.set(CanSetCookieCallback.class, params -> {
-            System.out.println("Disallow accepting cookies for: " + params.url());
-            return CanSetCookieCallback.Response.cannot();
-        });
-        networkService.set(CanGetCookiesCallback.class, params -> {
-            System.out.println("Disallow sending cookies for: " + params.url());
-            return CanGetCookiesCallback.Response.cannot();
-        });
-
         browser.navigation().loadUrl("https://www.google.com");
     }
 }
