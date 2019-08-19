@@ -38,9 +38,9 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
  * separate thread.
  */
 public final class InterceptRequest {
+
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(OFF_SCREEN).build());
+        Engine engine = Engine.newInstance(EngineOptions.newBuilder(OFF_SCREEN).build());
         Browser browser = engine.newBrowser();
 
         Network network = engine.network();
