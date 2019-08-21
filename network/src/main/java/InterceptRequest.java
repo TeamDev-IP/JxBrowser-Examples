@@ -53,7 +53,7 @@ public final class InterceptRequest {
                             .build());
             // Perform complex calculations and override the responce data in the separate thread.
             new Thread(() -> {
-                urlRequestJob.write("My data".getBytes());
+                urlRequestJob.write("<html><body><h1>Hello there!</h1></body></html>".getBytes());
                 urlRequestJob.complete();
             }).start();
             return InterceptRequestCallback.Response.intercept(urlRequestJob);
