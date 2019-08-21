@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/TeamDev-Ltd/JxBrowser-Examples.svg?branch=master)](https://travis-ci.com/TeamDev-Ltd/JxBrowser-Examples)
-
 # Welcome to JxBrowser Examples
 
 This repository contains examples of using JxBrowser library.
