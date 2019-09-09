@@ -21,6 +21,7 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.os.Environment;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -54,14 +55,22 @@ public final class HelloWorld extends Application {
         Browser browser = engine.newBrowser();
 
         BrowserView view = BrowserView.newInstance(browser);
+        Scene scene = new Scene(new StackPane(view), 500, 400);
 
-        StackPane pane = new StackPane();
-        pane.getChildren().add(view);
-        Scene scene = new Scene(pane, 500, 400);
+        // Close the engine when stage is about to close.
+        primaryStage.setOnCloseRequest(event -> close(engine));
         primaryStage.setTitle("JavaFX - Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         browser.navigation().loadUrl("https://www.google.com");
+    }
+
+    private void close(Engine engine) {
+        if (Environment.isWindows()) {
+            new Thread(engine::close).start();
+        } else {
+            engine.close();
+        }
     }
 }
