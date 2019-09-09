@@ -25,6 +25,8 @@ import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
@@ -50,7 +52,14 @@ public final class HelloWorld {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Swing - Hello World");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    // Close Engine when the application window is closed.
+                    engine.close();
+                }
+            });
+            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(500, 400);
             frame.setLocationRelativeTo(null);
