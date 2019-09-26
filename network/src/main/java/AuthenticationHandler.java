@@ -36,23 +36,27 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  */
 public class AuthenticationHandler {
 
+    private static BrowserView view;
+
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(view));
         Browser browser = engine.newBrowser();
+
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            view = BrowserView.newInstance(browser);
             JFrame frame = new JFrame("Hello World");
             frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 500);
             frame.setVisible(true);
-            engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(view));
         });
+
         browser.navigation().loadUrl("http://httpbin.org/basic-auth/user/passwd");
     }
 
     private static AuthenticateCallback createAuthenticationPopup(BrowserView view) {
-        return (params, tell) -> {
+        return (params, tell) -> SwingUtilities.invokeLater(() -> {
             JPanel userPanel = new JPanel();
             userPanel.setLayout(new GridLayout(2, 2));
             JLabel usernameLabel = new JLabel("Username:");
@@ -70,6 +74,6 @@ public class AuthenticationHandler {
             } else {
                 tell.cancel();
             }
-        };
+        });
     }
 }
