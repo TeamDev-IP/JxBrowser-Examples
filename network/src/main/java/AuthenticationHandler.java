@@ -32,19 +32,21 @@ import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
- * This example demonstrates how to show the Swing popup to fill in the credentials on the basic or digest authentication request.
+ * This example demonstrates how to show the Swing popup window to fill in the username and password
+ * on the authentication request. The AuthenticationCallback handles only "basic" or "digest" authentication.
  */
-public class AuthenticationHandler {
+public final class AuthenticationHandler {
 
     private static BrowserView view;
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
-        engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(view));
         Browser browser = engine.newBrowser();
+        engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(view));
 
         SwingUtilities.invokeLater(() -> {
             view = BrowserView.newInstance(browser);
+
             JFrame frame = new JFrame("Hello World");
             frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
@@ -70,8 +72,10 @@ public class AuthenticationHandler {
             int input = JOptionPane.showConfirmDialog(view, userPanel, "Enter your password:",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (input == OK_OPTION) {
+                // Authenticate with the particular username and password
                 tell.authenticate(username.getText(), new String(password.getPassword()));
             } else {
+                // Otherwise cancel the authentication.
                 tell.cancel();
             }
         });
