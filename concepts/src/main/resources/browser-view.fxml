@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.teamdev.jxbrowser.view.javafx.FxmlBrowserView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:controller="com.teamdev.jxbrowser.view.javafx.FxmlBrowserViewController" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <TextField fx:id="textField" text="https://www.google.com" onAction="#loadUrl"/>
+    </top>
+    <center>
+        <FxmlBrowserView fx:id="browserView"/>
+    </center>
+</BorderPane>
