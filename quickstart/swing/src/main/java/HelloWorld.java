@@ -66,6 +66,6 @@ public final class HelloWorld {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("http://maps.bing.com");
     }
 }
