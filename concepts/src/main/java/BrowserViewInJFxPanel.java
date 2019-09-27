@@ -35,7 +35,7 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
  * This example demonstrates how to embed JavaFX BrowserView into
  * Swing/AWT window using {@link JFXPanel}.
  */
-public final class BrowserViewInJFXPanel {
+public final class BrowserViewInJFxPanel {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
