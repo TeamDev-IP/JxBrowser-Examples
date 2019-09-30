@@ -32,7 +32,7 @@ import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
- * This example demonstrates how to show the Swing popup window to fill in the username and password
+ * This example demonstrates how to show the Swing popup window to fill in the username and password fields
  * on the authentication request. The AuthenticationCallback handles only "basic" or "digest" authentication.
  */
 public final class AuthenticationHandler {
