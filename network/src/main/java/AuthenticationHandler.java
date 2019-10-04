@@ -32,32 +32,31 @@ import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
- * This example demonstrates how to show the Swing popup window to fill in the username and password fields
- * on the authentication request. The AuthenticationCallback handles only "basic" or "digest" authentication.
+ * This example demonstrates how to show the Swing popup window to fill in the
+ * username and password fields on the authentication request.
+ * The AuthenticationCallback handles only "basic" or "digest" authentication.
  */
 public final class AuthenticationHandler {
 
-    private static BrowserView view;
-
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
-        engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(view));
 
         SwingUtilities.invokeLater(() -> {
-            view = BrowserView.newInstance(browser);
+            BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Hello World");
+            engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(frame));
             frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 500);
             frame.setVisible(true);
+            browser.navigation().loadUrl("http://httpbin.org/basic-auth/user/passwd");
         });
-
-        browser.navigation().loadUrl("http://httpbin.org/basic-auth/user/passwd");
     }
 
-    private static AuthenticateCallback createAuthenticationPopup(BrowserView view) {
+    private static AuthenticateCallback createAuthenticationPopup(Frame view) {
         return (params, tell) -> SwingUtilities.invokeLater(() -> {
             JPanel userPanel = new JPanel();
             userPanel.setLayout(new GridLayout(2, 2));
