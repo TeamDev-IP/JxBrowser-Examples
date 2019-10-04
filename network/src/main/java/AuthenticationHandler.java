@@ -56,7 +56,7 @@ public final class AuthenticationHandler {
         });
     }
 
-    private static AuthenticateCallback createAuthenticationPopup(Frame view) {
+    private static AuthenticateCallback createAuthenticationPopup(Frame frame) {
         return (params, tell) -> SwingUtilities.invokeLater(() -> {
             JPanel userPanel = new JPanel();
             userPanel.setLayout(new GridLayout(2, 2));
@@ -68,7 +68,7 @@ public final class AuthenticationHandler {
             userPanel.add(username);
             userPanel.add(passwordLabel);
             userPanel.add(password);
-            int input = JOptionPane.showConfirmDialog(view, userPanel, "Enter your password:",
+            int input = JOptionPane.showConfirmDialog(frame, userPanel, "Enter your password:",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (input == OK_OPTION) {
                 // Authenticate with the particular username and password
