@@ -25,7 +25,7 @@ buildscript {
 }
 
 ext {
-    jxBrowserVersion = '7.4' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.5' // The version of JxBrowser used in the examples.
     guavaVersion = '25.0-jre' // Some of the examples use Guava.
 }
 
@@ -69,6 +69,10 @@ subprojects {
         // Linux 64-bit
         // -------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
+
+        // Linux 64-bit ARM
+        // -------------------------
+        // compile "com.teamdev.jxbrowser:jxbrowser-linux64-arm:${jxBrowserVersion}"
 
         // JavaFX dependency
         // -------------------------
