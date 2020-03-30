@@ -51,3 +51,4 @@ include 'webstorage'
 include 'input'
 
 module ('content-changes', './tutorials/content-changes')
+module ('eclipse-rcp', './tutorials/eclipse-rcp')

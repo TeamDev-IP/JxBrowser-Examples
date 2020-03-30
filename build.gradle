@@ -30,7 +30,9 @@ ext {
 }
 
 allprojects {
-    apply plugin: 'idea'
+    if (!name.startsWith('eclipse')) {
+        apply plugin: 'idea'
+    }
 
     group = 'com.teamdev.jxbrowser-examples'
     version = "$jxBrowserVersion"
