@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JxBrowser-Linux64
+Bundle-SymbolicName: jxbrowser-linux64
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: TeamDev Ltd.
+Fragment-Host: jxbrowser;bundle-version="1.0.0"
+Automatic-Module-Name: jxbrowser-linux64
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: jxbrowser-linux64-7.6-b27-eap.jar
+Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))

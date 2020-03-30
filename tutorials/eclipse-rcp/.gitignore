@@ -1,0 +1,4 @@
+# Ignore all copied JAR files
+
+**/*.jar
+/.metadata/

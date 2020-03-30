@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jxbrowser-Mac
+Bundle-SymbolicName: jxbrowser-mac
+Bundle-Version: 1.0.0
+Fragment-Host: jxbrowser;bundle-version="1.0.0"
+Automatic-Module-Name: jxbrowser-mac
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-PlatformFilter: (osgi.os=macosx)
+Bundle-ClassPath: jxbrowser-mac-7.6-b27-eap.jar
