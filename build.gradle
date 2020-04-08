@@ -25,7 +25,7 @@ buildscript {
 }
 
 ext {
-    jxBrowserVersion = '7.5' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.6' // The version of JxBrowser used in the examples.
     guavaVersion = '25.0-jre' // Some of the examples use Guava.
 }
 
