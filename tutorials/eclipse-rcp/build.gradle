@@ -127,7 +127,7 @@ task cleanUp(type: Delete) {
 clean.dependsOn cleanUp
 
 task prepareEclipseExample {
-    group = "Eclise RCP Example"
+    group = "Eclipse RCP Example"
     description = "Downloads dependencies for the project and puts them to the right places"
     dependsOn copyJarsToPlugIns
 }
