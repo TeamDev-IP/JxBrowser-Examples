@@ -1,5 +1,5 @@
 /*
- *  Copyright 2019, TeamDev. All rights reserved.
+ *  Copyright 2020, TeamDev. All rights reserved.
  *  
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -24,8 +24,13 @@ buildscript {
     }
 }
 
+plugins {
+    // This plugin automatically resolves SWT dependencies.
+    id 'com.diffplug.gradle.eclipse.mavencentral' version '3.18.0' apply false
+}
+
 ext {
-    jxBrowserVersion = '7.5' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.7' // The version of JxBrowser used in the examples.
     guavaVersion = '25.0-jre' // Some of the examples use Guava.
 }
 
@@ -40,6 +45,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -83,7 +89,11 @@ subprojects {
         // Swing dependency
         // -------------------------
         compile "com.teamdev.jxbrowser:jxbrowser-swing:${jxBrowserVersion}"
-        
+
+        // SWT dependency
+        // -------------------------
+        compile "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
+
         compile files("$rootDir/network/src/main/resources/resource.jar")
     }
 
@@ -91,6 +101,16 @@ subprojects {
         // Assign all Java system properties from
         // the command line to the JavaExec task.
         systemProperties System.properties
+    }
+
+    eclipseMavenCentral {
+        // Plugin documentation claims that they support versions 3.5.0 through 4.12.0.
+        // Nevertheless all versions higher than 4.8.0 cannot be resolved.
+        // Current version is bundled with the 3.107.0 version of the SWT.
+        release '4.8.0', {
+            compile 'org.eclipse.swt'
+            useNativesForRunningPlatform()
+        }
     }
 }
 
