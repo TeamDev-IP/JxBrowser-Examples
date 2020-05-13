@@ -29,6 +29,9 @@ configurations {
 
 dependencies {
 
+    // Core JxBrowser library.
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser:${jxBrowserVersion}"
+
     // Uncomment when SWT artifact is available.
     // SWT dependency
     // -------------------------
@@ -74,7 +77,10 @@ task copyJarsToPlugIns {
                 into file("$projectDir/jxbrowser-$platform")
                 rename { String fileName -> "jxbrowser-${platform}.jar" }
             }
+            mkdir "$projectDir/jxbrowser-$platform/src"
         }
+
+        mkdir "$projectDir/jxbrowser/src"
 
         copy {
             from file("${buildDir}/temp/jxbrowser-${jxBrowserVersion}.jar")
