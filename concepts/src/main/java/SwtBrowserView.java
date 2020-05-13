@@ -29,32 +29,22 @@ import org.eclipse.swt.widgets.Shell;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The simplest application with the integrated browser component.
- *
- * <p>This example demonstrates:
- *
- * <ol>
- *     <li>Creating an instance of {@link Engine}.
- *     <li>Creating an instance of {@link Browser}.
- *     <li>Embedding the browser into SWT via {@link BrowserView}.
- *     <li>Loading the "www.google.com" web site.
- * </ol>
+ * This example demonstrates how to embed SWT BrowserView into an SWT app.
  */
-class HelloWorld {
+public final class SwtBrowserView {
 
     public static void main(String[] args) {
-        // Creating and running Chromium engine
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
         Display display = new Display();
         Shell shell = new Shell(display);
-        shell.setText("SWT - Hello World");
+        shell.setText("SWT BrowserView");
         shell.setLayout(new GridLayout());
 
-        BrowserView view = BrowserView.newInstance(shell, browser);
-        view.setSize(500, 400);
+        com.teamdev.jxbrowser.view.swt.BrowserView view = BrowserView.newInstance(shell, browser);
+        view.setSize(700, 500);
 
         shell.pack();
         shell.open();
