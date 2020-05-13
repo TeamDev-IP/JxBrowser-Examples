@@ -1,5 +1,5 @@
 /*
- *  Copyright 2019, TeamDev. All rights reserved.
+ *  Copyright 2020, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -31,15 +31,15 @@ import javafx.stage.Stage;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * A simplest application with integrated browser component.
+ * The simplest application with the integrated browser component.
  *
  * <p>This example demonstrates:
  *
  * <ol>
- * <li>Creating an instance of {@link Engine}
- * <li>Creating an instance of {@link Browser}
- * <li>Embedding the browser into JavaFX via {@link BrowserView}.
- * <li>Loading the "www.google.com" web site.
+ *     <li>Creating an instance of {@link Engine}.
+ *     <li>Creating an instance of {@link Browser}.
+ *     <li>Embedding the browser into JavaFX via {@link BrowserView}.
+ *     <li>Loading the "www.google.com" web site.
  * </ol>
  */
 public final class HelloWorld extends Application {

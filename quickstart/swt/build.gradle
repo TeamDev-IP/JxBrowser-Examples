@@ -1,5 +1,5 @@
 /*
- *  Copyright 2019, TeamDev. All rights reserved.
+ *  Copyright 2020, TeamDev. All rights reserved.
  *  
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,38 +18,5 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
-
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
-}
-
-module ('quickstart-swing',  './quickstart/swing')
-module ('quickstart-javafx', './quickstart/javafx')
-module ('quickstart-swt', './quickstart/swt')
-
-include 'content'
-include 'printing'
-include 'chromium'
-include 'dom'
-include 'concepts'
-include 'javascript'
-include 'dialogs'
-include 'media'
-include 'navigation'
-include 'plugins'
-include 'spellchecker'
-include 'download'
-include 'zoom'
-include 'troubleshooting'
-include 'network'
-include 'cache'
-include 'webstorage'
-include 'input'
-
-module ('content-changes', './tutorials/content-changes')
-module ('eclipse-rcp', './tutorials/eclipse-rcp')
+apply plugin: 'application'
+mainClassName = 'HelloWorld'
