@@ -17,4 +17,5 @@ in the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials//eclipse/
 3. In `File -> Import` menu choose `General -> Existing Projects Into Workspace`.
 4. In `Select root directory`, select this directory and import all found projects.
 5. Insert your license key into [com.example.e4.rcp/src/com/example/e4/rcp/parts/SamplePart.java]().
-6. Launch `com.example.e4.rcp.product` run configuration.
+6. In `Run` menu choose `Run Configurations`
+7. Launch `com.example.e4.rcp.product` run configuration from `Eclipse Applications` group.
