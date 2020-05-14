@@ -1,12 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JxBrowser
+Bundle-Name: Jxbrowser
 Bundle-SymbolicName: jxbrowser
 Bundle-Version: 1.0.0
-Bundle-ClassPath: jxbrowser-7.6-b27-eap.jar,
- jxbrowser-swt-7.6-b27-eap.jar
+Bundle-ClassPath: jxbrowser.jar,
+ jxbrowser-swt.jar
 Bundle-Vendor: TeamDev Ltd.
-Require-Bundle: org.eclipse.swt
 Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.annotation,
  com.teamdev.jxbrowser.browser,
@@ -113,7 +112,7 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.view.swt,
  com.teamdev.jxbrowser.view.swt.callback,
  com.teamdev.jxbrowser.view.swt.internal,
- com.teamdev.jxbrowser.view.swt.internal.dnd,
+ com.teamdev.jxbrowser.view.swt.internal.dialog,
  com.teamdev.jxbrowser.view.swt.internal.menu,
  com.teamdev.jxbrowser.zoom,
  com.teamdev.jxbrowser.zoom.event,
@@ -122,3 +121,4 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.protobuf.option
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: jxbrowser
+Require-Bundle: org.eclipse.swt

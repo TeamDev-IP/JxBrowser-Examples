@@ -29,10 +29,13 @@ configurations {
 
 dependencies {
 
+    // Core JxBrowser library.
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser:${jxBrowserVersion}"
+
     // Uncomment when SWT artifact is available.
     // SWT dependency
     // -------------------------
-    // implementation "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
 
     // Windows-only dependency
     // -------------------------
@@ -68,52 +71,29 @@ task copyJarsFromRepository(type: Copy) {
 task copyJarsToPlugIns {
     dependsOn copyJarsFromRepository
     doLast {
-        ['win32', 'win64', 'linux64'].each { platform ->
-            println platform
+        ['win32', 'win64', 'linux64', 'mac'].each { platform ->
             copy {
                 from file("$buildDir/temp/jxbrowser-$platform-${jxBrowserVersion}.jar")
                 into file("$projectDir/jxbrowser-$platform")
+                rename { String fileName -> "jxbrowser-${platform}.jar" }
             }
+            mkdir "$projectDir/jxbrowser-$platform/src"
         }
+
+        mkdir "$projectDir/jxbrowser/src"
 
         copy {
             from file("${buildDir}/temp/jxbrowser-${jxBrowserVersion}.jar")
             into file("${projectDir}/jxbrowser")
+            rename { String fileName -> "jxbrowser.jar" }
         }
 
-        // Uncomment when SWT artifact is available.
-        // copy {
-        //     from file("${buildDir}/temp/jxbrowser-${platform}-swt.jar")
-        //     into file("${projectDir}/jxbrowser")
-        // }
-    }
-}
-
-/**
- * Makes sure that JxBrowser version in this sub project stays consistent with the one used by the root project.
- */
-task checkVersionConsistency {
-    doLast {
-        final def prefix = 'Bundle-ClassPath: jxbrowser-'
-        final def manifestFile = new File("$projectDir/jxbrowser/META-INF/MANIFEST.MF")
-        final def versionLines = manifestFile.filterLine { line -> line.startsWith(prefix) }
-        if (versionLines == null) {
-            throw new GradleException("Can't find JxBrowser version in `eclipse-rcp` example")
-        }
-        final def versionLine = versionLines.toString()
-        final def versionInProject = versionLine.substring(prefix.length(), versionLine.length() - '.jar'.length() - 2)
-
-        if (versionInProject != rootProject.jxBrowserVersion) {
-            throw new GradleException(
-                    "Please update JxBrowser version in `eclipse-rcp` example. " +
-                    "Currenlty: `$versionInProject`. Should be: `${rootProject.jxBrowserVersion}`."
-            )
+        copy {
+            from file("${buildDir}/temp/jxbrowser-swt-${jxBrowserVersion}.jar")
+            into file("${projectDir}/jxbrowser")
+            rename { String fileName -> "jxbrowser-swt.jar" }
         }
     }
-}
-
-check {
-    dependsOn checkVersionConsistency
 }
 
 /**

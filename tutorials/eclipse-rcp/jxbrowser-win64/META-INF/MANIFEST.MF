@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JxBrowser-win64
+Bundle-Name: Jxbrowser-win64
 Bundle-SymbolicName: jxbrowser-win64
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: TeamDev Ltd.
 Fragment-Host: jxbrowser;bundle-version="1.0.0"
 Automatic-Module-Name: jxbrowser-win64
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: jxbrowser-win64-7.6-b27-eap.jar
+Bundle-ClassPath: jxbrowser-win64.jar,
+ .
 Eclipse-PlatformFilter: (& (osgi.os=win32) (osgi.arch=x86_64))
