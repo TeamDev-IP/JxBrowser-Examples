@@ -46,7 +46,7 @@ dependencies {
     // -------------------------
     jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
 
-    // Linux 64-bit
+    // Linux-only dependency
     // -------------------------
     jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
 
