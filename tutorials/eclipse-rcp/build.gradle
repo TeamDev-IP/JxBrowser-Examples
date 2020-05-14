@@ -1,0 +1,113 @@
+/*
+ *  Copyright 2020, TeamDev. All rights reserved.
+ *
+ *  Redistribution and use in source and/or binary forms, with or without
+ *  modification, must retain the above copyright notice and the following
+ *  disclaimer.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+repositories {
+    jcenter()
+    maven { url = 'http://maven.teamdev.com/repository/products' }
+}
+
+configurations {
+    jxbrowserPlatform
+}
+
+dependencies {
+
+    // Core JxBrowser library.
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser:${jxBrowserVersion}"
+
+    // Uncomment when SWT artifact is available.
+    // SWT dependency
+    // -------------------------
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
+
+    // Windows-only dependency
+    // -------------------------
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-win32:${jxBrowserVersion}"
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-win64:${jxBrowserVersion}"
+
+    // macOS-only dependency
+    // -------------------------
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
+
+    // Linux-only dependency
+    // -------------------------
+    jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
+
+    compile files("$rootDir/network/src/main/resources/resource.jar")
+}
+
+/**
+ * Copies JxBrowser JAR files from the local Maven repository to the temp directory.
+ */
+task copyJarsFromRepository(type: Copy) {
+    copy {
+        from configurations.jxbrowserPlatform
+        into "${buildDir}/temp"
+    }
+}
+
+/**
+ * Copies JxBrowser JAR files to the specific folders in the workspace where they belong.
+ *
+ * For example, `jxbrowser-win32-7.5.jar` is copied to `jxbrowser-win32` folder.
+ */
+task copyJarsToPlugIns {
+    dependsOn copyJarsFromRepository
+    doLast {
+        ['win32', 'win64', 'linux64', 'mac'].each { platform ->
+            copy {
+                from file("$buildDir/temp/jxbrowser-$platform-${jxBrowserVersion}.jar")
+                into file("$projectDir/jxbrowser-$platform")
+                rename { String fileName -> "jxbrowser-${platform}.jar" }
+            }
+            mkdir "$projectDir/jxbrowser-$platform/src"
+        }
+
+        mkdir "$projectDir/jxbrowser/src"
+
+        copy {
+            from file("${buildDir}/temp/jxbrowser-${jxBrowserVersion}.jar")
+            into file("${projectDir}/jxbrowser")
+            rename { String fileName -> "jxbrowser.jar" }
+        }
+
+        copy {
+            from file("${buildDir}/temp/jxbrowser-swt-${jxBrowserVersion}.jar")
+            into file("${projectDir}/jxbrowser")
+            rename { String fileName -> "jxbrowser-swt.jar" }
+        }
+    }
+}
+
+/**
+ * Removes JAR files copied to the Eclipse workspace.
+ */
+task cleanUp(type: Delete) {
+    delete fileTree(projectDir) {
+        include '**/*.jar'
+    }
+}
+clean.dependsOn cleanUp
+
+task prepareEclipseExample {
+    group = "Eclipse RCP Example"
+    description = "Downloads dependencies for the project and puts them to the right places"
+    dependsOn copyJarsToPlugIns
+}

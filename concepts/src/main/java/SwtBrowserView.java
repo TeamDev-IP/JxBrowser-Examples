@@ -21,51 +21,42 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import com.teamdev.jxbrowser.view.swt.BrowserView;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * The simplest application with the integrated browser component.
- *
- * <p>This example demonstrates:
- *
- * <ol>
- *     <li>Creating an instance of {@link Engine}.
- *     <li>Creating an instance of {@link Browser}.
- *     <li>Embedding the browser into Swing via {@link BrowserView}.
- *     <li>Loading the "www.google.com" web site.
- * </ol>
+ * This example demonstrates how to embed SWT BrowserView into an SWT app.
  */
-public final class HelloWorld {
+public final class SwtBrowserView {
+
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        shell.setText("SWT BrowserView");
+        shell.setLayout(new GridLayout());
 
-            JFrame frame = new JFrame("Swing - Hello World");
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    // Close Engine when the application window is closed.
-                    engine.close();
-                }
-            });
-            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(500, 400);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
+        com.teamdev.jxbrowser.view.swt.BrowserView view = BrowserView.newInstance(shell, browser);
+        view.setSize(700, 500);
+
+        shell.pack();
+        shell.open();
 
         browser.navigation().loadUrl("https://www.google.com");
+
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+        engine.close();
+        display.dispose();
     }
 }

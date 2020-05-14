@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jxbrowser-win32
+Bundle-SymbolicName: jxbrowser-win32
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: jxbrowser;bundle-version="1.0.0"
+Automatic-Module-Name: jxbrowser-win32
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: jxbrowser-win32.jar,
+ .
+Eclipse-PlatformFilter: (& (osgi.os=win32) (osgi.arch=x86))
