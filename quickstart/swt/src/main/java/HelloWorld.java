@@ -40,7 +40,7 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
  *     <li>Loading the "www.google.com" web site.
  * </ol>
  */
-class HelloWorld {
+public final class HelloWorld {
 
     public static void main(String[] args) {
         // Creating and running Chromium engine
