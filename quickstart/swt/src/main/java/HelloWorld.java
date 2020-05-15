@@ -22,6 +22,7 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -51,7 +52,7 @@ public final class HelloWorld {
         Display display = new Display();
         Shell shell = new Shell(display);
         shell.setText("SWT - Hello World");
-        shell.setLayout(new GridLayout());
+        shell.setLayout(new FillLayout());
 
         BrowserView view = BrowserView.newInstance(shell, browser);
         view.setSize(500, 400);
