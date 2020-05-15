@@ -22,7 +22,7 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.ui.Bitmap;
-import com.teamdev.jxbrowser.view.swing.BitmapUtil;
+import com.teamdev.jxbrowser.view.swing.graphics.BitmapImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -40,14 +40,18 @@ public final class BitmapToSwingImage {
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {
             Browser browser = engine.newBrowser();
+
             // Resize browser to the required dimension
-            browser.resize(500, 500);
+            browser.resize(1024, 768);
+
             // Load the required web page and wait until it is loaded completely
             browser.navigation().loadUrlAndWait("https://www.google.com");
 
             Bitmap bitmap = browser.bitmap();
+
             // Convert the bitmap to java.awt.image.BufferedImage
-            BufferedImage bufferedImage = BitmapUtil.toBufferedImage(bitmap);
+            BufferedImage bufferedImage = BitmapImage.toToolkit(bitmap);
+
             // Save the image to a PNG file
             ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
         }

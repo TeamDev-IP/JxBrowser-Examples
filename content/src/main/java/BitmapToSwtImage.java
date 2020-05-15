@@ -22,23 +22,22 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.ui.Bitmap;
-import com.teamdev.jxbrowser.view.javafx.graphics.BitmapImage;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import com.teamdev.jxbrowser.view.swt.graphics.BitmapImage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.widgets.Display;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
  * This example demonstrates how to take bitmap of the loaded web page,
- * convert it to a JavaFX image and save it to a PNG file.
+ * convert it to an SWT image and save it to a PNG file.
  */
-public final class BitmapToJavaFxImage {
-    public static void main(String[] args) throws IOException {
+public final class BitmapToSwtImage {
+    public static void main(String[] args) {
+        Display display = new Display();
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {
             Browser browser = engine.newBrowser();
@@ -51,14 +50,14 @@ public final class BitmapToJavaFxImage {
 
             Bitmap bitmap = browser.bitmap();
 
-            // Convert the bitmap to javafx.scene.image.Image
-            Image image = BitmapImage.toToolkit(bitmap);
-
-            // Convert javafx.scene.image.Image to java.awt.image.BufferedImage
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            // Convert the bitmap to org.eclipse.swt.graphics.Image
+            Image image = BitmapImage.toToolkit(display, bitmap);
 
             // Save the image to a PNG file
-            ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));
+            ImageLoader loader = new ImageLoader();
+            loader.data = new ImageData[]{image.getImageData()};
+            loader.save("bitmap.png", SWT.IMAGE_PNG);
         }
+        display.dispose();
     }
 }
