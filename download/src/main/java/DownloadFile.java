@@ -39,7 +39,7 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
  */
 public final class DownloadFile {
 
-    private static final String urlToDownload =
+    private static final String URL_TO_DOWNLOAD =
             "https://storage.googleapis.com/cloud.teamdev.com/downloads/jxbrowser/7.0/jxbrowser-7.0-cross-desktop-win_mac_linux.zip";
 
     public static void main(String[] args) {
@@ -64,7 +64,7 @@ public final class DownloadFile {
             tell.download(createTempDirectory().toAbsolutePath());
         });
 
-        browser.navigation().loadUrl(urlToDownload);
+        browser.navigation().loadUrl(URL_TO_DOWNLOAD);
     }
 
     private static Path createTempDirectory() {
