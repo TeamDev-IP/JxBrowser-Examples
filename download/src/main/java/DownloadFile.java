@@ -19,13 +19,10 @@
  */
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.download.Download;
-import com.teamdev.jxbrowser.download.Downloads;
-import com.teamdev.jxbrowser.download.callback.StartDownloadCallback;
+import com.teamdev.jxbrowser.browser.callback.StartDownloadCallback;
 import com.teamdev.jxbrowser.download.event.DownloadFinished;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.internal.FileUtil;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
@@ -33,7 +30,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
@@ -62,7 +58,7 @@ public final class DownloadFile {
             frame.setVisible(true);
         });
 
-        engine.downloads().set(StartDownloadCallback.class, (params, tell) -> {
+        browser.set(StartDownloadCallback.class, (params, tell) -> {
             params.download().on(DownloadFinished.class, event ->
                     System.out.println("File downloaded!"));
             tell.download(createTempDirectory().toAbsolutePath());
