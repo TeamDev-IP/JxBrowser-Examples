@@ -18,6 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// #docfragment "without-license"
 import com.google.common.base.Charsets;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
@@ -45,10 +46,12 @@ import static java.lang.String.format;
 public final class ContentListening {
 
     public static void main(String[] args) {
+        // #docfragment "engine-creation"
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
         Browser browser = engine.newBrowser();
-
+        // #enddocfragment "engine-creation"
+        // #docfragment "embed-browser-view"
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
@@ -59,7 +62,9 @@ public final class ContentListening {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+        // #enddocfragment "embed-browser-view"
 
+        // #docfragment "inject-js"
         browser.set(InjectJsCallback.class, params -> {
             Frame frame = params.frame();
             String window = "window";
@@ -71,14 +76,19 @@ public final class ContentListening {
             jsObject.putProperty("java", new JavaObject());
             return Response.proceed();
         });
+        // #enddocfragment "inject-js"
 
+        // #docfragment "frame-load-finished"
         browser.navigation().on(FrameLoadFinished.class, event -> {
             String javaScript = load("observer.js");
             event.frame().executeJavaScript(javaScript);
         });
+        // #enddocfragment "frame-load-finished"
 
+        // #docfragment "load-page"
         String html = load("index.html");
         browser.mainFrame().ifPresent(frame -> frame.loadHtml(html));
+        // #enddocfragment "load-page"
     }
 
     /**
@@ -86,6 +96,7 @@ public final class ContentListening {
      *
      * <p>The class and methods that are invoked from JavaScript code must be public.
      */
+    // #docfragment "java-object"
     public static class JavaObject {
 
         @SuppressWarnings("unused") // invoked by callback processing code.
@@ -94,10 +105,12 @@ public final class ContentListening {
             System.out.println("DOM node changed: " + innerHtml);
         }
     }
+    // #enddocfragment "java-object"
 
     /**
      * Loads a resource content as a string.
      */
+    // #docfragment "load-method"
     private static String load(String resourceFile) {
         URL url = ContentListening.class.getResource(resourceFile);
         try (Scanner scanner = new Scanner(url.openStream(),
@@ -109,4 +122,6 @@ public final class ContentListening {
                     resourceFile, e);
         }
     }
+    // #enddocfragment "load-method"
 }
+// #enddocfragment "without-license"

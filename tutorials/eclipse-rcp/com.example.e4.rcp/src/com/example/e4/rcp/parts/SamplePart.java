@@ -17,7 +17,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+// #docfragment "without-license"
 package com.example.e4.rcp.parts;
 
 import static org.eclipse.swt.layout.GridData.FILL;
@@ -65,3 +65,4 @@ public class SamplePart {
         view.setLayoutData(new GridData(FILL, FILL, true, true));
     }
 }
+// #enddocfragment "without-license"
