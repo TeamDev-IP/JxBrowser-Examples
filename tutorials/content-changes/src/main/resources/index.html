@@ -17,7 +17,7 @@
   ~  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   ~  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   -->
-
+<!-- #docfragment "without-license" -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,9 +25,13 @@
     <title>index</title>
 </head>
 <body>
+<!-- #docfragment "counter-layout" -->
 <div>
     <span class="counter" id="counter"></span>
 </div>
+<!-- #enddocfragment "counter-layout" -->
+
+<!-- #docfragment "counter-script" -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -35,5 +39,7 @@
         setInterval(function() { $(".counter").text(counter++); }, 1000);
     });
 </script>
+<!-- #enddocfragment "counter-script" -->
 </body>
 </html>
+<!-- #enddocfragment "without-license" -->

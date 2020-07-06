@@ -17,7 +17,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+// #docfragment "without-license"
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -69,3 +69,4 @@ public final class HelloWorld {
         browser.navigation().loadUrl("https://www.google.com");
     }
 }
+// #enddocfragment "without-license"
