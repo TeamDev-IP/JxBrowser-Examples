@@ -39,34 +39,38 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
  *     <li>Creating an instance of {@link Engine}.
  *     <li>Creating an instance of {@link Browser}.
  *     <li>Embedding the browser into Swing via {@link BrowserView}.
- *     <li>Loading the "www.google.com" web site.
+ *     <li>Loading the "https://html5test.com" web site.
  * </ol>
  */
 public final class HelloWorld {
     public static void main(String[] args) {
+        // Creating and running Chromium engine
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+
         Browser browser = engine.newBrowser();
+        // Loading the required web page
+        browser.navigation().loadUrl("https://html5test.com");
 
         SwingUtilities.invokeLater(() -> {
+            // Creating Swing component for rendering web content
+            // loaded in the given Browser instance
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Swing - Hello World");
+            // Creating and displaying Swing app frame
+            JFrame frame = new JFrame("JxBrowser AWT/Swing");
+            // Closing the engine when app frame is about to close
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    // Close Engine when the application window is closed.
                     engine.close();
                 }
             });
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
-            frame.setSize(500, 400);
-            frame.setLocationRelativeTo(null);
+            frame.setSize(800, 600);
             frame.setVisible(true);
         });
-
-        browser.navigation().loadUrl("https://www.google.com");
     }
 }
 // #enddocfragment "without-license"

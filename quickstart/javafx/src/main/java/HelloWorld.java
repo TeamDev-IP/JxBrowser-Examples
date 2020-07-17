@@ -24,7 +24,7 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
@@ -38,30 +38,31 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
  *     <li>Creating an instance of {@link Engine}.
  *     <li>Creating an instance of {@link Browser}.
  *     <li>Embedding the browser into JavaFX via {@link BrowserView}.
- *     <li>Loading the "www.google.com" web site.
+ *     <li>Loading the "https://html5test.com" web site.
  * </ol>
  */
 public final class HelloWorld extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void start(Stage primaryStage) {
+        // Creating and running Chromium engine
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+
         Browser browser = engine.newBrowser();
+        // Loading the required web page
+        browser.navigation().loadUrl("https://html5test.com");
 
+        // Creating UI component for rendering web content
+        // loaded in the given Browser instance
         BrowserView view = BrowserView.newInstance(browser);
-        Scene scene = new Scene(new StackPane(view), 500, 400);
 
-        // Close the engine when stage is about to close.
-        primaryStage.setOnCloseRequest(event -> engine.close());
-        primaryStage.setTitle("JavaFX - Hello World");
+        Scene scene = new Scene(new BorderPane(view), 800, 600);
+        primaryStage.setTitle("JxBrowser JavaFX");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        browser.navigation().loadUrl("https://www.google.com");
+        // Closing the engine when stage is about to close
+        primaryStage.setOnCloseRequest(event -> engine.close());
     }
 }

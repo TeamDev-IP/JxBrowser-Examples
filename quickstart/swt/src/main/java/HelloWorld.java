@@ -37,7 +37,7 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
  *     <li>Creating an instance of {@link Engine}.
  *     <li>Creating an instance of {@link Browser}.
  *     <li>Embedding the browser into SWT via {@link BrowserView}.
- *     <li>Loading the "www.google.com" web site.
+ *     <li>Loading the "https://html5test.com" web site.
  * </ol>
  */
 public final class HelloWorld {
@@ -46,27 +46,32 @@ public final class HelloWorld {
         // Creating and running Chromium engine
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+
         Browser browser = engine.newBrowser();
+        // Loading the required web page
+        browser.navigation().loadUrl("https://html5test.com");
 
         Display display = new Display();
         Shell shell = new Shell(display);
-        shell.setText("SWT - Hello World");
+        shell.setText("JxBrowser SWT");
         shell.setLayout(new FillLayout());
 
+        // Creating SWT component for rendering web content loaded
+        // in the Browser instance
         BrowserView view = BrowserView.newInstance(shell, browser);
-        view.setSize(500, 400);
+        view.setSize(800, 600);
 
         shell.pack();
         shell.open();
-
-        browser.navigation().loadUrl("https://www.google.com");
 
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
                 display.sleep();
             }
         }
+        // Closing the engine and releasing all allocated resources
         engine.close();
+
         display.dispose();
     }
 }
