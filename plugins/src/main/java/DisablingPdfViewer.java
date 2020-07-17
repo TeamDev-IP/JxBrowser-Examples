@@ -21,6 +21,7 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.plugin.Plugins;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
@@ -38,9 +39,11 @@ public final class DisablingPdfViewer {
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
+        Plugins plugins = engine.plugins();
 
-        // Disable the built-in PDF Viewer.
-        engine.plugins().settings().disablePdfViewer();
+        // #docfragment "disabling-pdf-viewer"
+        plugins.settings().disablePdfViewer();
+        // #enddocfragment "disabling-pdf-viewer"
 
         Browser browser = engine.newBrowser();
 
