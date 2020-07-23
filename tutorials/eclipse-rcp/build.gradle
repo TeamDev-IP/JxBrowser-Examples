@@ -20,7 +20,7 @@
 
 repositories {
     jcenter()
-    maven { url = 'http://maven.teamdev.com/repository/products' }
+    maven { url = 'https://europe-maven.pkg.dev/jxbrowser/releases' }
 }
 
 configurations {
