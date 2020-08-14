@@ -42,9 +42,7 @@ public final class ClearHttpDiskCache {
             BrowserView view = BrowserView.newInstance(browser);
 
             JButton clearCacheButton = new JButton("Clear HTTP Disk Cache");
-            clearCacheButton.addActionListener(e ->
-                    engine.httpCache().clearDiskCache(() ->
-                            System.out.println("HTTP cache has been cleared")));
+            clearCacheButton.addActionListener(e -> engine.httpCache().clear());
 
             JFrame frame = new JFrame("JxBrowser – Clear Cache");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

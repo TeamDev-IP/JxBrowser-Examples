@@ -21,7 +21,7 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.internal.FileUtil;
+import com.teamdev.jxbrowser.internal.Files;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public final class RedirectLoggingToFile {
 
     public static void main(String[] args) {
         // Redirect Browser log messages to jxbrowser-browser.log
-        Path loggingDir = FileUtil.createTempDir("jxbrowser-logs");
+        Path loggingDir = Files.createTempDir("jxbrowser-logs");
         Path loggingFile = loggingDir.resolve("jxbrowser-browser.log");
         System.setProperty("jxbrowser.logging.file",
                 loggingFile.toAbsolutePath().toString());
