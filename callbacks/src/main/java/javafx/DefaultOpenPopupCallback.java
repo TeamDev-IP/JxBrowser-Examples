@@ -21,7 +21,6 @@
 package javafx;
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback;
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.browser.event.TitleChanged;
@@ -35,7 +34,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
- * The default {@link CreatePopupCallback} implementation for the Swing UI toolkit that creates and shows a new window
+ * The default {@link OpenPopupCallback} implementation for the Swing UI toolkit that creates and shows a new window
  * with the embedded popup browser.
  */
 public final class DefaultOpenPopupCallback implements OpenPopupCallback {
