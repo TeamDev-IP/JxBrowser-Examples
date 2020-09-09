@@ -46,7 +46,7 @@ public final class RedirectLoggingToFile {
         } catch (IOException e) {
             throw new RuntimeException("Failed to create a temporary directory", e);
         }
-        Path loggingFile = loggingDir.resolve("jxbrowser-browser.log");
+        Path loggingFile = loggingDir.resolve("jxbrowser.log");
         System.setProperty("jxbrowser.logging.file",
                 loggingFile.toAbsolutePath().toString());
 
