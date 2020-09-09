@@ -42,18 +42,6 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
     private static final int DEFAULT_POPUP_WIDTH = 800;
     private static final int DEFAULT_POPUP_HEIGHT = 600;
 
-    private static void updateBounds(Stage stage, Rect bounds) {
-        if (bounds.size().isEmpty()) {
-            stage.setWidth(DEFAULT_POPUP_WIDTH);
-            stage.setHeight(DEFAULT_POPUP_HEIGHT);
-        } else {
-            stage.setX(bounds.origin().x());
-            stage.setY(bounds.origin().y());
-            stage.setWidth(bounds.size().width());
-            stage.setHeight(bounds.size().height());
-        }
-    }
-
     @Override
     public Response on(Params params) {
         Browser browser = params.popupBrowser();
@@ -83,5 +71,17 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
             stage.show();
         });
         return Response.proceed();
+    }
+
+    private static void updateBounds(Stage stage, Rect bounds) {
+        if (bounds.size().isEmpty()) {
+            stage.setWidth(DEFAULT_POPUP_WIDTH);
+            stage.setHeight(DEFAULT_POPUP_HEIGHT);
+        } else {
+            stage.setX(bounds.origin().x());
+            stage.setY(bounds.origin().y());
+            stage.setWidth(bounds.size().width());
+            stage.setHeight(bounds.size().height());
+        }
     }
 }

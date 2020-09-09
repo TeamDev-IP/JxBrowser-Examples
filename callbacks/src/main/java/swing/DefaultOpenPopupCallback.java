@@ -45,20 +45,6 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
     private static final int DEFAULT_POPUP_WIDTH = 800;
     private static final int DEFAULT_POPUP_HEIGHT = 600;
 
-    private static void updateBounds(JFrame frame, Rect bounds) {
-        Size size = bounds.size();
-        if (size.isEmpty()) {
-            frame.setLocationByPlatform(true);
-            frame.setSize(DEFAULT_POPUP_WIDTH, DEFAULT_POPUP_HEIGHT);
-        } else {
-            com.teamdev.jxbrowser.ui.Point origin = bounds.origin();
-            frame.setLocation(new Point(origin.x(), origin.y()));
-            Dimension dimension = new Dimension(size.width(), size.height());
-            frame.getContentPane().setPreferredSize(dimension);
-            frame.pack();
-        }
-    }
-
     @Override
     public Response on(Params params) {
         Browser browser = params.popupBrowser();
@@ -88,5 +74,19 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
             frame.setVisible(true);
         });
         return Response.proceed();
+    }
+
+    private static void updateBounds(JFrame frame, Rect bounds) {
+        Size size = bounds.size();
+        if (size.isEmpty()) {
+            frame.setLocationByPlatform(true);
+            frame.setSize(DEFAULT_POPUP_WIDTH, DEFAULT_POPUP_HEIGHT);
+        } else {
+            com.teamdev.jxbrowser.ui.Point origin = bounds.origin();
+            frame.setLocation(new Point(origin.x(), origin.y()));
+            Dimension dimension = new Dimension(size.width(), size.height());
+            frame.getContentPane().setPreferredSize(dimension);
+            frame.pack();
+        }
     }
 }

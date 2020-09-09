@@ -42,27 +42,6 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
     private static final int DEFAULT_POPUP_WIDTH = 800;
     private static final int DEFAULT_POPUP_HEIGHT = 600;
 
-    private static void updateBounds(Shell shell, BrowserView view, Rect bounds) {
-        shell.setLocation(bounds.x(), bounds.y());
-        if (bounds.size().isEmpty()) {
-            view.setSize(DEFAULT_POPUP_WIDTH, DEFAULT_POPUP_HEIGHT);
-        } else {
-            view.setSize(bounds.width(), bounds.height());
-        }
-    }
-
-    private static void asyncExec(Widget widget, Runnable doRun) {
-        try {
-            widget.getDisplay().asyncExec(() -> {
-                if (!widget.isDisposed()) {
-                    doRun.run();
-                }
-            });
-        } catch (SWTException ignore) {
-            // No op.
-        }
-    }
-
     @Override
     public Response on(Params params) {
         Browser browser = params.popupBrowser();
@@ -103,5 +82,26 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
             Response.proceed();
         }
         return Response.proceed();
+    }
+
+    private static void updateBounds(Shell shell, BrowserView view, Rect bounds) {
+        shell.setLocation(bounds.x(), bounds.y());
+        if (bounds.size().isEmpty()) {
+            view.setSize(DEFAULT_POPUP_WIDTH, DEFAULT_POPUP_HEIGHT);
+        } else {
+            view.setSize(bounds.width(), bounds.height());
+        }
+    }
+
+    private static void asyncExec(Widget widget, Runnable doRun) {
+        try {
+            widget.getDisplay().asyncExec(() -> {
+                if (!widget.isDisposed()) {
+                    doRun.run();
+                }
+            });
+        } catch (SWTException ignore) {
+            // No op.
+        }
     }
 }
