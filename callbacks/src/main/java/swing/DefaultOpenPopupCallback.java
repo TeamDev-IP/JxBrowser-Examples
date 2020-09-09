@@ -61,16 +61,17 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
             updateBounds(frame, params.initialBounds());
 
-            browser.on(TitleChanged.class, event ->
-                    invokeLater(() ->
-                            frame.setTitle(event.title())));
-            browser.on(BrowserClosed.class, event ->
-                    invokeLater(() -> {
-                        frame.setVisible(false);
-                        frame.dispose();
-                    }));
-            browser.on(UpdateBoundsRequested.class, event ->
-                    invokeLater(() -> updateBounds(frame, event.bounds())));
+            browser.on(TitleChanged.class, event -> invokeLater(() ->
+                    frame.setTitle(event.title())
+            ));
+            browser.on(BrowserClosed.class, event -> invokeLater(() -> {
+                frame.setVisible(false);
+                frame.dispose();
+            }));
+            browser.on(UpdateBoundsRequested.class, event -> invokeLater(() ->
+                    updateBounds(frame, event.bounds())
+            ));
+
             frame.setVisible(true);
         });
         return Response.proceed();

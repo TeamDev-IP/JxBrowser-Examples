@@ -25,7 +25,6 @@ import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.browser.event.TitleChanged;
 import com.teamdev.jxbrowser.browser.event.UpdateBoundsRequested;
-import com.teamdev.jxbrowser.os.Environment;
 import com.teamdev.jxbrowser.ui.Rect;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Platform;
@@ -34,7 +33,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
- * The default {@link OpenPopupCallback} implementation for the Swing UI toolkit that creates and shows a new window
+ * The default {@link OpenPopupCallback} implementation for the JavaFX UI toolkit that creates and shows a new window
  * with the embedded popup browser.
  */
 public final class DefaultOpenPopupCallback implements OpenPopupCallback {
@@ -55,19 +54,16 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
             updateBounds(stage, params.initialBounds());
 
-            stage.setOnCloseRequest(event -> {
-                if (Environment.isWindows()) {
-                    new Thread(browser::close).start();
-                } else {
-                    browser.close();
-                }
-            });
+            stage.setOnCloseRequest(event -> browser.close());
             browser.on(TitleChanged.class, event ->
-                    Platform.runLater(() -> stage.setTitle(event.title())));
+                    Platform.runLater(() -> stage.setTitle(event.title()))
+            );
             browser.on(BrowserClosed.class, event ->
-                    Platform.runLater(stage::close));
+                    Platform.runLater(stage::close)
+            );
             browser.on(UpdateBoundsRequested.class, event ->
-                    Platform.runLater(() -> updateBounds(stage, event.bounds())));
+                    Platform.runLater(() -> updateBounds(stage, event.bounds()))
+            );
             stage.show();
         });
         return Response.proceed();

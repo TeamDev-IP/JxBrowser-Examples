@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * The default {@link OpenPopupCallback} implementation for the Swing UI toolkit that creates and shows a new window
+ * The default {@link OpenPopupCallback} implementation for the SWT UI toolkit that creates and shows a new window
  * with the embedded popup browser.
  */
 public final class DefaultOpenPopupCallback implements OpenPopupCallback {
@@ -61,10 +61,8 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
                 browser.on(TitleChanged.class, event ->
                         asyncExec(shell, () -> shell.setText(event.title())));
-
                 browser.on(BrowserClosed.class, event ->
                         asyncExec(shell, shell::dispose));
-
                 browser.on(UpdateBoundsRequested.class, event ->
                         asyncExec(shell, () -> updateBounds(shell, view, event.bounds())));
 
@@ -94,14 +92,10 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
     }
 
     private static void asyncExec(Widget widget, Runnable doRun) {
-        try {
-            widget.getDisplay().asyncExec(() -> {
-                if (!widget.isDisposed()) {
-                    doRun.run();
-                }
-            });
-        } catch (SWTException ignore) {
-            // No op.
-        }
+        widget.getDisplay().asyncExec(() -> {
+            if (!widget.isDisposed()) {
+                doRun.run();
+            }
+        });
     }
 }
