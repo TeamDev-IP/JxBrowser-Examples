@@ -21,11 +21,12 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.internal.Files;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
@@ -39,9 +40,13 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 public final class RedirectLoggingToFile {
 
     public static void main(String[] args) {
-        // Redirect Browser log messages to jxbrowser-browser.log
-        Path loggingDir = Files.createTempDir("jxbrowser-logs");
-        Path loggingFile = loggingDir.resolve("jxbrowser-browser.log");
+        Path loggingDir;
+        try {
+            loggingDir = Files.createTempDirectory("jxbrowser-logs");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create a temporary directory", e);
+        }
+        Path loggingFile = loggingDir.resolve("jxbrowser.log");
         System.setProperty("jxbrowser.logging.file",
                 loggingFile.toAbsolutePath().toString());
 

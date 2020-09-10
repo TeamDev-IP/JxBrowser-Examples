@@ -36,6 +36,7 @@ include 'content'
 include 'printing'
 include 'chromium'
 include 'dom'
+include 'callbacks'
 include 'concepts'
 include 'javascript'
 include 'dialogs'
@@ -53,3 +54,4 @@ include 'input'
 
 module ('content-changes', './tutorials/content-changes')
 module ('eclipse-rcp', './tutorials/eclipse-rcp')
+
