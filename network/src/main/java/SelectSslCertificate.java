@@ -18,6 +18,9 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.SelectClientCertificateCallback;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -27,22 +30,21 @@ import com.teamdev.jxbrowser.net.tls.ClientCertificate;
 import com.teamdev.jxbrowser.net.tls.SslPrivateKey;
 import com.teamdev.jxbrowser.net.tls.X509Certificates;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to display the "Select Client SSL Certificate"
- * dialog where you must select a required SSL certificate to continue loading web page.
+ * This example demonstrates how to display the "Select Client SSL Certificate" dialog where you
+ * must select a required SSL certificate to continue loading web page.
  *
  * <p>Important: before you run this example, please follow the instruction at
  * https://badssl.com/download/ and install the required custom SSL certificate.
@@ -52,7 +54,6 @@ public final class SelectSslCertificate {
     private static final String DIALOG_TITLE = "Select a certificate";
     private static final String DIALOG_MESSAGE =
             "Select a certificate to authenticate yourself to %s";
-    private static BrowserView view;
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -83,9 +84,11 @@ public final class SelectSslCertificate {
                     }
                 }
                 Object[] selectionValues = x509Certificates.toArray();
-                Object selectedValue = JOptionPane.showInputDialog(view, String.format(DIALOG_MESSAGE,
-                        params.hostPort().host() + ":" + params.hostPort().port()),
-                        DIALOG_TITLE, PLAIN_MESSAGE, null, selectionValues, selectionValues[0]);
+                Object selectedValue = JOptionPane
+                        .showInputDialog(view, String.format(DIALOG_MESSAGE,
+                                params.hostPort().host() + ":" + params.hostPort().port()),
+                                DIALOG_TITLE, PLAIN_MESSAGE, null, selectionValues,
+                                selectionValues[0]);
                 if (selectedValue != null) {
                     // Tell the engine which SSL certificate has been selected.
                     try {
@@ -104,4 +107,6 @@ public final class SelectSslCertificate {
 
         browser.navigation().loadUrl("https://client.badssl.com/");
     }
+
+    private static BrowserView view;
 }

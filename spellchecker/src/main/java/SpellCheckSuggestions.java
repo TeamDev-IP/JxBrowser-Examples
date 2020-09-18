@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -26,23 +28,22 @@ import com.teamdev.jxbrowser.menu.SpellCheckMenu;
 import com.teamdev.jxbrowser.spellcheck.Dictionary;
 import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import java.awt.*;
-import java.util.List;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 /**
- * This example demonstrates how to configure spell checking functionality
- * with the required language and display the dictionary suggestions
- * in the context menu that is displayed under a misspelled word.
+ * This example demonstrates how to configure spell checking functionality with the required
+ * language and display the dictionary suggestions in the context menu that is displayed under a
+ * misspelled word.
  */
 public final class SpellCheckSuggestions {
-
-    private static BrowserView view;
 
     public static void main(String[] args) {
         // Enable heavyweight popup menu for the heavyweight
@@ -103,6 +104,8 @@ public final class SpellCheckSuggestions {
                 frame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
                         "Smple text with mitake.</textarea></body></html>"));
     }
+
+    private static BrowserView view;
 
     private static PopupMenuListener myPopupMenuListener(ShowContextMenuCallback.Action tell) {
         return new PopupMenuListener() {

@@ -27,10 +27,9 @@ import com.teamdev.jxbrowser.engine.RenderingMode;
 import javafx.scene.layout.StackPane;
 
 /**
- * A wrapper component for JavaFX {@link BrowserView} that allows using
- * the BrowserView instance in FXML applications. The JavaFX BrowserView
- * cannot be used in FXML directly, because it does not provide the default
- * public constructor.
+ * A wrapper component for JavaFX {@link BrowserView} that allows using the BrowserView instance in
+ * FXML applications. The JavaFX BrowserView cannot be used in FXML directly, because it does not
+ * provide the default public constructor.
  */
 public final class FxmlBrowserView extends StackPane {
 

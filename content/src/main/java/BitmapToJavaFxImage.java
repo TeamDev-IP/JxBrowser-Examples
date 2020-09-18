@@ -18,26 +18,26 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.javafx.graphics.BitmapImage;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
 
 /**
- * This example demonstrates how to take bitmap of the loaded web page,
- * convert it to a JavaFX image and save it to a PNG file.
+ * This example demonstrates how to take bitmap of the loaded web page, convert it to a JavaFX image
+ * and save it to a PNG file.
  */
 public final class BitmapToJavaFxImage {
+
     public static void main(String[] args) throws IOException {
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {

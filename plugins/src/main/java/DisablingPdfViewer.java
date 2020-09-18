@@ -18,21 +18,21 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.SwingUtilities.invokeLater;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.plugin.Plugins;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static javax.swing.SwingUtilities.invokeLater;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to disable the built-in PDF Viewer and for the engine
- * to download the PDF files instead of displaying them.
+ * This example demonstrates how to disable the built-in PDF Viewer and for the engine to download
+ * the PDF files instead of displaying them.
  */
 public final class DisablingPdfViewer {
 

@@ -18,24 +18,24 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.swing.graphics.BitmapImage;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import javax.imageio.ImageIO;
 
 /**
- * This example demonstrates how to take bitmap of the loaded web page,
- * convert it to a Java AWT image and save it to a PNG file.
+ * This example demonstrates how to take bitmap of the loaded web page, convert it to a Java AWT
+ * image and save it to a PNG file.
  */
 public final class BitmapToSwingImage {
+
     public static void main(String[] args) throws IOException {
         try (Engine engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN).build())) {

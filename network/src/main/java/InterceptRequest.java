@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -27,11 +29,10 @@ import com.teamdev.jxbrowser.net.Network;
 import com.teamdev.jxbrowser.net.UrlRequestJob;
 import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to intercept a URL request and override the responce data in the

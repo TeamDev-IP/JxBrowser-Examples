@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -29,13 +31,12 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Display;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
-
 /**
- * This example demonstrates how to take bitmap of the loaded web page,
- * convert it to an SWT image and save it to a PNG file.
+ * This example demonstrates how to take bitmap of the loaded web page, convert it to an SWT image
+ * and save it to a PNG file.
  */
 public final class BitmapToSwtImage {
+
     public static void main(String[] args) {
         Display display = new Display();
         try (Engine engine = Engine.newInstance(

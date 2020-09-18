@@ -21,23 +21,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>index</title>
+  <meta charset="UTF-8">
+  <title>index</title>
 </head>
 <body>
 <!-- #docfragment "counter-layout" -->
 <div>
-    <span class="counter" id="counter"></span>
+  <span class="counter" id="counter"></span>
 </div>
 <!-- #enddocfragment "counter-layout" -->
 
 <!-- #docfragment "counter-script" -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var counter = 1;
         setInterval(function() { $(".counter").text(counter++); }, 1000);
     });
+
 </script>
 <!-- #enddocfragment "counter-script" -->
 </body>

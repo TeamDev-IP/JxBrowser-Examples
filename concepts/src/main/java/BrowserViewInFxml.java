@@ -25,8 +25,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- * This example demonstrates how to use JavaFX BrowserView in FXML app
- * through the {@link com.teamdev.jxbrowser.view.javafx.FxmlBrowserView} control.
+ * This example demonstrates how to use JavaFX BrowserView in FXML app through the {@link
+ * com.teamdev.jxbrowser.view.javafx.FxmlBrowserView} control.
  */
 public final class BrowserViewInFxml extends Application {
 

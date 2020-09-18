@@ -20,17 +20,16 @@
 
 package com.teamdev.jxbrowser.view.javafx;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
- * Represents FXML controller with the address bar and browser view area that
- * displays the URL entered in the address bar.
+ * Represents FXML controller with the address bar and browser view area that displays the URL
+ * entered in the address bar.
  */
 public final class FxmlBrowserViewController implements Initializable {
 

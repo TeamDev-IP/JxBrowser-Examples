@@ -1,10 +1,12 @@
-<svg class="icon-product icon-jxbrowser" role="img" aria-labelledby="title" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
-<title>JxBrowser</title>
-<style type="text/css">
+<svg aria-labelledby="title" class="icon-product icon-jxbrowser" role="img"
+  viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <path
+      d="M598.911,167.466V0.06H0v167.406H598.911z M540.281,57.148v53.231H58.631V57.148H540.281z"/>
+    <path d="M598.911,600V217.355H0V600H598.911z"/>
+  </g>
+  <style type="text/css">
     .icon-jxbrowser path {fill: #fe9800;}
-</style>
-<g>
-	<path d="M598.911,167.466V0.06H0v167.406H598.911z M540.281,57.148v53.231H58.631V57.148H540.281z"/>
-	<path d="M598.911,600V217.355H0V600H598.911z"/>
-</g>
+  </style>
+  <title>JxBrowser</title>
 </svg>

@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -25,15 +27,13 @@ import com.teamdev.jxbrowser.net.Network;
 import com.teamdev.jxbrowser.net.callback.CanGetCookiesCallback;
 import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to suppress/filter all
- * the incoming and outgoing cookies.
+ * This example demonstrates how to suppress/filter all the incoming and outgoing cookies.
  */
 public final class CookieFilter {
 

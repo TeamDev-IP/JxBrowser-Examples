@@ -18,20 +18,20 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to create Browser instance,
- * embed it into Swing BrowserView container, display it in JFrame and
- * navigate to the "www.google.com" web site.
+ * This example demonstrates how to create Browser instance, embed it into Swing BrowserView
+ * container, display it in JFrame and navigate to the "www.google.com" web site.
  */
 public final class LoadUrl {
 

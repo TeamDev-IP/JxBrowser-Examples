@@ -18,14 +18,14 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static java.lang.String.format;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.frame.WebStorage;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
-import static java.lang.String.format;
 
 /**
  * This example demonstrates how to access the local storage and perform operations with it.
@@ -34,6 +34,7 @@ import static java.lang.String.format;
  * of {@code Frame.localStorage()}
  */
 public final class WebStorageApi {
+
     private static final String KEY = "Name";
 
     public static void main(String[] args) {

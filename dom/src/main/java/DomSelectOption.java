@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.OptionElement;
 import com.teamdev.jxbrowser.dom.SelectElement;
@@ -25,11 +27,10 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to programmatically select an OPTION item in the SELECT tag.
@@ -56,11 +57,13 @@ public final class DomSelectOption {
                 browser.mainFrame().ifPresent(mainFrame ->
                         mainFrame.document().ifPresent(document -> {
                             document.documentElement().ifPresent(element ->
-                                    element.findElementById("select-tag").ifPresent(selectElement -> {
-                                        Object[] options = ((SelectElement) selectElement).options().toArray();
-                                        ((OptionElement) options[2]).select();
-                                        System.out.println(selectElement.innerHtml());
-                                    }));
+                                    element.findElementById("select-tag")
+                                            .ifPresent(selectElement -> {
+                                                Object[] options = ((SelectElement) selectElement)
+                                                        .options().toArray();
+                                                ((OptionElement) options[2]).select();
+                                                System.out.println(selectElement.innerHtml());
+                                            }));
                         })));
 
         browser.mainFrame().ifPresent(mainFrame ->

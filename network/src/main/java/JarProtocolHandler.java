@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -27,32 +29,24 @@ import com.teamdev.jxbrowser.net.Network;
 import com.teamdev.jxbrowser.net.UrlRequestJob;
 import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to register a JAR protocol handler to load
- * the files located inside a JAR archive.
+ * This example demonstrates how to register a JAR protocol handler to load the files located inside
+ * a JAR archive.
  */
 public final class JarProtocolHandler {
 
-    private static Map<String, String> MIME_TYPE_MAP = new HashMap<>();
-
-    static {
-        MIME_TYPE_MAP.put(".html", "text/html");
-        MIME_TYPE_MAP.put(".js", "text/javascript");
-        MIME_TYPE_MAP.put(".css", "text/css");
-    }
-
     private static final String CONTENT_TYPE = "Content-Type";
+    private static final Map<String, String> MIME_TYPE_MAP = new HashMap<>();
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
@@ -98,6 +92,12 @@ public final class JarProtocolHandler {
         if (resource != null) {
             browser.navigation().loadUrl(resource.toString());
         }
+    }
+
+    static {
+        MIME_TYPE_MAP.put(".html", "text/html");
+        MIME_TYPE_MAP.put(".js", "text/javascript");
+        MIME_TYPE_MAP.put(".css", "text/css");
     }
 
     private static String getMimeType(String path) {

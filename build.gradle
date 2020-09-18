@@ -85,7 +85,7 @@ subprojects {
         // JavaFX dependency
         // -------------------------
         compile "com.teamdev.jxbrowser:jxbrowser-javafx:${jxBrowserVersion}"
-        
+
         // Swing dependency
         // -------------------------
         compile "com.teamdev.jxbrowser:jxbrowser-swing:${jxBrowserVersion}"
@@ -128,7 +128,7 @@ idea {
             }
         }
     }
-    
+
     module {
         downloadJavadoc = true
     }

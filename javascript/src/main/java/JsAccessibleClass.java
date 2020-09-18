@@ -18,17 +18,17 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
-
 /**
- * This example demonstrates how inject a Java object into JavaScript and tell that all
- * public methods of the injected Java object are accessible from JavaScript.
+ * This example demonstrates how inject a Java object into JavaScript and tell that all public
+ * methods of the injected Java object are accessible from JavaScript.
  */
 public final class JsAccessibleClass {
 

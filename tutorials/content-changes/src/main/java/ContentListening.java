@@ -19,6 +19,10 @@
  */
 
 // #docfragment "without-license"
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
+
 import com.google.common.base.Charsets;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
@@ -30,15 +34,13 @@ import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to listen to DOM changes from a Java object.
@@ -92,22 +94,6 @@ public final class ContentListening {
     }
 
     /**
-     * The object observing DOM changes.
-     *
-     * <p>The class and methods that are invoked from JavaScript code must be public.
-     */
-    // #docfragment "java-object"
-    public static class JavaObject {
-
-        @SuppressWarnings("unused") // invoked by callback processing code.
-        @JsAccessible
-        public void onDomChanged(String innerHtml) {
-            System.out.println("DOM node changed: " + innerHtml);
-        }
-    }
-    // #enddocfragment "java-object"
-
-    /**
      * Loads a resource content as a string.
      */
     // #docfragment "load-method"
@@ -120,6 +106,22 @@ public final class ContentListening {
         } catch (IOException e) {
             throw new IllegalStateException("Unable to load resource " +
                     resourceFile, e);
+        }
+    }
+    // #enddocfragment "java-object"
+
+    /**
+     * The object observing DOM changes.
+     *
+     * <p>The class and methods that are invoked from JavaScript code must be public.
+     */
+    // #docfragment "java-object"
+    public static class JavaObject {
+
+        @SuppressWarnings("unused") // invoked by callback processing code.
+        @JsAccessible
+        public void onDomChanged(String innerHtml) {
+            System.out.println("DOM node changed: " + innerHtml);
         }
     }
     // #enddocfragment "load-method"

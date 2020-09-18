@@ -20,6 +20,8 @@
 
 package swing;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
@@ -28,17 +30,16 @@ import com.teamdev.jxbrowser.browser.event.UpdateBoundsRequested;
 import com.teamdev.jxbrowser.ui.Rect;
 import com.teamdev.jxbrowser.ui.Size;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import static javax.swing.SwingUtilities.invokeLater;
+import javax.swing.JFrame;
 
 /**
- * The default {@link OpenPopupCallback} implementation for the Swing UI toolkit that creates and shows a new window
- * with the embedded popup browser.
+ * The default {@link OpenPopupCallback} implementation for the Swing UI toolkit that creates and
+ * shows a new window with the embedded popup browser.
  */
 public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 

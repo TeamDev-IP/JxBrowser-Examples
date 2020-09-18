@@ -22,13 +22,18 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
-import com.teamdev.jxbrowser.net.*;
+import com.teamdev.jxbrowser.net.HttpHeader;
+import com.teamdev.jxbrowser.net.HttpStatus;
+import com.teamdev.jxbrowser.net.Network;
+import com.teamdev.jxbrowser.net.UrlRequest;
+import com.teamdev.jxbrowser.net.UrlRequestJob;
 import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
 import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback.Response;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to intercept all URL requests and handle a custom protocol.

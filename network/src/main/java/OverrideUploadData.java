@@ -18,14 +18,14 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.navigation.LoadUrlParams;
 import com.teamdev.jxbrowser.net.TextData;
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 /**
  * This example demonstrates how to override POST upload data before it is sent to the server.

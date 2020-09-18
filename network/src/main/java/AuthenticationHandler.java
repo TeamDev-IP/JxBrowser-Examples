@@ -18,23 +18,30 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.callback.AuthenticateCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static javax.swing.JOptionPane.OK_OPTION;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
- * This example demonstrates how to show the Swing popup window to fill in the
- * username and password fields on the authentication request.
- * The AuthenticationCallback handles only "basic" or "digest" authentication.
+ * This example demonstrates how to show the Swing popup window to fill in the username and password
+ * fields on the authentication request. The AuthenticationCallback handles only "basic" or "digest"
+ * authentication.
  */
 public final class AuthenticationHandler {
 

@@ -24,13 +24,14 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to ignore SSL certificate errors and
- * continue loading a website with invalid SSL certificate.
+ * This example demonstrates how to ignore SSL certificate errors and continue loading a website
+ * with invalid SSL certificate.
  */
 public final class IgnoreSslCertificateErrors {
 
@@ -54,7 +55,8 @@ public final class IgnoreSslCertificateErrors {
             System.out.println(
                     "Request URL: " + params.url() + "\n"
                             + "Reason of the certificate error: "
-                            + params.error().getValueDescriptor() + "(" + params.error().getNumber() + ")" + "\n"
+                            + params.error().getValueDescriptor() + "(" + params.error().getNumber()
+                            + ")" + "\n"
                             + "Invalid SSL certificate.: " + params.certificate() + "\n");
             tell.allow();
         });

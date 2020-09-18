@@ -18,23 +18,23 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.net.ResourceType.IMAGE;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.callback.LoadResourceCallback;
 import com.teamdev.jxbrowser.net.callback.LoadResourceCallback.Response;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.net.ResourceType.IMAGE;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to handle all resources such as
- * HTML, PNG, JavaScript, CSS files and decide whether web browser
- * engine should load them from web server or not.
+ * This example demonstrates how to handle all resources such as HTML, PNG, JavaScript, CSS files
+ * and decide whether web browser engine should load them from web server or not.
  *
  * <p>For example, in this sample we cancel loading of all Images.
  */

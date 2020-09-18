@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * The default {@link OpenPopupCallback} implementation for the SWT UI toolkit that creates and shows a new window
- * with the embedded popup browser.
+ * The default {@link OpenPopupCallback} implementation for the SWT UI toolkit that creates and
+ * shows a new window with the embedded popup browser.
  */
 public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
