@@ -67,6 +67,7 @@ public final class AcceptLanguage {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
+            // Load the web page that prints the Accept-Language HTTP header value.
             browser.navigation().loadUrl("http://www.reliply.org/tools/requestheaders.php");
         });
     }
