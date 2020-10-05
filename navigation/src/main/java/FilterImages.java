@@ -18,25 +18,23 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.net.ResourceType.IMAGE;
-
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.net.callback.LoadResourceCallback;
-import com.teamdev.jxbrowser.net.callback.LoadResourceCallback.Response;
+import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.net.ResourceType.IMAGE;
 
 /**
  * This example demonstrates how to handle all resources such as HTML, PNG, JavaScript, CSS files
  * and decide whether web browser engine should load them from web server or not.
  *
- * <p>For example, in this sample we cancel loading of all Images.
+ * <p>For example, in this example we cancel loading of all images.
  */
 public final class FilterImages {
 
@@ -56,11 +54,11 @@ public final class FilterImages {
             frame.setVisible(true);
         });
 
-        engine.network().set(LoadResourceCallback.class, params -> {
-            if (params.resourceType() == IMAGE) {
-                return Response.cancel();
+        engine.network().set(BeforeUrlRequestCallback.class, params -> {
+            if (params.urlRequest().resourceType() == IMAGE) {
+                return BeforeUrlRequestCallback.Response.cancel();
             }
-            return Response.load();
+            return BeforeUrlRequestCallback.Response.proceed();
         });
 
         browser.navigation().loadUrl("https://www.google.com");
