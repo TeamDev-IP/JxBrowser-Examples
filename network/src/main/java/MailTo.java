@@ -37,6 +37,9 @@ import java.net.URISyntaxException;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static java.awt.Desktop.isDesktopSupported;
 
+/**
+ * This example demonstrates how to open a default desktop mail client by clicking {@code mailto:} links.
+ */
 public final class MailTo {
 
     private static final String HTML = "<a href=\"mailto:test@example.com\">Click to mail</a>";
