@@ -21,7 +21,6 @@
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.net.UrlRequest;
 import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback;
 import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback.Response;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -38,7 +37,8 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static java.awt.Desktop.isDesktopSupported;
 
 /**
- * This example demonstrates how to handle the clicks on the {@code mailto:} links to open a default desktop mail client.
+ * This example demonstrates how to handle the clicks on the {@code mailto:} links to open
+ * a default desktop mail client.
  */
 public final class HandleMailToClick {
 
@@ -50,25 +50,25 @@ public final class HandleMailToClick {
         Browser browser = engine.newBrowser();
 
         engine.network().set(BeforeUrlRequestCallback.class, params -> {
-            Desktop desktop = Desktop.getDesktop();
-            if (isDesktopSupported() && desktop.isSupported(Desktop.Action.MAIL)) {
-                try {
-                    UrlRequest urlRequest = params.urlRequest();
-                    String url = urlRequest.url();
-                    if (url.contains("mailto:")) {
+            String url = params.urlRequest().url();
+            if (url.startsWith("mailto:")) {
+                Desktop desktop = Desktop.getDesktop();
+                if (isDesktopSupported() && desktop.isSupported(Desktop.Action.MAIL)) {
+                    try {
                         desktop.mail(new URI(url));
+                        return Response.cancel();
+                    } catch (URISyntaxException | IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (URISyntaxException | IOException e) {
-                    throw new RuntimeException(e);
                 }
             }
-            return Response.cancel();
+            return Response.proceed();
         });
 
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Mail");
+            JFrame frame = new JFrame("Open a desktop mail client");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
