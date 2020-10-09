@@ -52,13 +52,15 @@ public final class HandleMailToClick {
         engine.network().set(BeforeUrlRequestCallback.class, params -> {
             String url = params.urlRequest().url();
             if (url.startsWith("mailto:")) {
-                Desktop desktop = Desktop.getDesktop();
-                if (isDesktopSupported() && desktop.isSupported(Desktop.Action.MAIL)) {
-                    try {
-                        desktop.mail(new URI(url));
-                        return Response.cancel();
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
+                if (isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.MAIL)) {
+                        try {
+                            desktop.mail(new URI(url));
+                            return Response.cancel();
+                        } catch (URISyntaxException | IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
