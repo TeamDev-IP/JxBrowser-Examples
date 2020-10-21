@@ -75,8 +75,8 @@ public final class DispatchKeyEventExample {
         });
 
         loadHtmlAndWait(browser, HTML);
-        dispatchKeyH(browser);
-        dispatchKeyI(browser);
+        dispatchKey(browser, 'h');
+        dispatchKey(browser, 'i');
     }
 
     private static void loadHtmlAndWait(Browser browser, String html) {
@@ -86,15 +86,7 @@ public final class DispatchKeyEventExample {
         awaitUninterruptibly(latch);
     }
 
-    private static void dispatchKeyH(Browser browser) {
-        dispatchKeyEvent(browser, 'h');
-    }
-
-    private static void dispatchKeyI(Browser browser) {
-        dispatchKeyEvent(browser, 'i');
-    }
-
-    private static void dispatchKeyEvent(Browser browser, char character) {
+    private static void dispatchKey(Browser browser, char character) {
         dispatchKeyEvent(browser, character, charToKeyCode.get(character));
     }
 
