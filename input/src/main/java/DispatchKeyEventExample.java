@@ -49,7 +49,7 @@ public final class DispatchKeyEventExample {
 
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
-            JFrame frame = new JFrame();
+            JFrame frame = new JFrame("Dispatch key event");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
