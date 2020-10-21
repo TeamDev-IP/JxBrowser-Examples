@@ -18,9 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-
+import com.google.common.collect.ImmutableMap;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -31,17 +29,30 @@ import com.teamdev.jxbrowser.ui.event.KeyReleased;
 import com.teamdev.jxbrowser.ui.event.KeyTyped;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
-import java.awt.event.KeyEvent;
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
+import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
+/**
+ * This example demonstrates how to dispatch the {@code KeyEvent} to
+ * the currently focused element on the loaded web page.
+ */
 public final class DispatchKeyEventExample {
 
     private static final String HTML = "<input id=\"input\" autofocus>";
+    private static final Map<Character, KeyCode> charToKeyCode;
+
+    static {
+        charToKeyCode = ImmutableMap.<Character, KeyCode>builder()
+                .put('h', KeyCode.KEY_CODE_H)
+                .put('i', KeyCode.KEY_CODE_I)
+                .build();
+    }
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).build());
@@ -64,8 +75,16 @@ public final class DispatchKeyEventExample {
         });
 
         loadHtmlAndWait(browser, HTML);
-        dispatchKeyEvent(browser, (char) KeyEvent.VK_H, KeyCode.KEY_CODE_H);
-        dispatchKeyEvent(browser, (char) KeyEvent.VK_I, KeyCode.KEY_CODE_I);
+        dispatchKeyH(browser);
+        dispatchKeyI(browser);
+    }
+
+    private static void dispatchKeyH(Browser browser) {
+        dispatchKeyEvent(browser, 'h', charToKeyCode.get('h'));
+    }
+
+    private static void dispatchKeyI(Browser browser) {
+        dispatchKeyEvent(browser, 'i', charToKeyCode.get('i'));
     }
 
     private static void loadHtmlAndWait(Browser browser, String html) {
