@@ -79,19 +79,23 @@ public final class DispatchKeyEventExample {
         dispatchKeyI(browser);
     }
 
-    private static void dispatchKeyH(Browser browser) {
-        dispatchKeyEvent(browser, 'h', charToKeyCode.get('h'));
-    }
-
-    private static void dispatchKeyI(Browser browser) {
-        dispatchKeyEvent(browser, 'i', charToKeyCode.get('i'));
-    }
-
     private static void loadHtmlAndWait(Browser browser, String html) {
         CountDownLatch latch = new CountDownLatch(1);
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
         browser.mainFrame().ifPresent(frame -> frame.loadHtml(html));
         awaitUninterruptibly(latch);
+    }
+
+    private static void dispatchKeyH(Browser browser) {
+        dispatchKeyEvent(browser, 'h');
+    }
+
+    private static void dispatchKeyI(Browser browser) {
+        dispatchKeyEvent(browser, 'i');
+    }
+
+    private static void dispatchKeyEvent(Browser browser, char character) {
+        dispatchKeyEvent(browser, character, charToKeyCode.get(character));
     }
 
     private static void dispatchKeyEvent(Browser browser, char character, KeyCode keyCode) {
