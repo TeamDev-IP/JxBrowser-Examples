@@ -20,7 +20,9 @@
 
 // #docfragment "without-license"
 
-import com.google.common.base.Charsets;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback.Response;
@@ -32,14 +34,14 @@ import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 
-import javax.swing.*;
-import java.awt.*;
+import com.google.common.base.Charsets;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to listen to DOM changes from a Java object.
