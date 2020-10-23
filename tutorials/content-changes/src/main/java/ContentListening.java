@@ -23,7 +23,6 @@
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static java.lang.String.format;
 
-import com.google.common.base.Charsets;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback.Response;
@@ -34,6 +33,8 @@ import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import com.google.common.base.Charsets;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.URL;
@@ -108,7 +109,7 @@ public final class ContentListening {
                     resourceFile, e);
         }
     }
-    // #enddocfragment "java-object"
+    // #enddocfragment "load-method"
 
     /**
      * The object observing DOM changes.
@@ -124,6 +125,6 @@ public final class ContentListening {
             System.out.println("DOM node changed: " + innerHtml);
         }
     }
-    // #enddocfragment "load-method"
+    // #enddocfragment "java-object"
 }
 // #enddocfragment "without-license"
