@@ -19,6 +19,5 @@
  */
 
 dependencies {
-    // Depend on Guava for the Uninterruptibles utility class to wait for the latch.
     compile "com.google.guava:guava:$guavaVersion"
 }
