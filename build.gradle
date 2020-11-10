@@ -30,7 +30,7 @@ plugins {
 }
 
 ext {
-    jxBrowserVersion = '7.11' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.12' // The version of JxBrowser used in the examples.
     guavaVersion = '25.0-jre' // Some of the examples use Guava.
 }
 
@@ -93,6 +93,9 @@ subprojects {
         // SWT dependency
         // -------------------------
         compile "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
+
+        // Depend on Guava for the Resources utility class used for loading resource files into strings.
+        compile "com.google.guava:guava:$guavaVersion"
 
         compile files("$rootDir/network/src/main/resources/resource.jar")
     }
