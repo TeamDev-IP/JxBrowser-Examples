@@ -18,25 +18,28 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
+import static com.teamdev.jxbrowser.dom.event.EventType.KEY_DOWN;
+import static com.teamdev.jxbrowser.dom.event.EventType.KEY_PRESS;
+import static com.teamdev.jxbrowser.dom.event.EventType.KEY_UP;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Element;
 import com.teamdev.jxbrowser.dom.event.Event;
-import com.teamdev.jxbrowser.dom.event.EventType;
 import com.teamdev.jxbrowser.dom.event.KeyEvent;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
-
-import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This examples demonstrates how to capture keyboard events from the DOM nodes.
@@ -47,8 +50,7 @@ public class KeyboardEventListener {
     private static final String HTML = "<input type='text' id='" + INPUT_FIELD_ID + "' />";
 
     public static void main(String[] args) {
-        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED)
-                                             .build();
+        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
         Engine engine = Engine.newInstance(options);
         Browser browser = engine.newBrowser();
 
@@ -64,34 +66,30 @@ public class KeyboardEventListener {
         });
         loadHtmlAndWait(browser);
 
-        findInputField(browser)
-                .ifPresent(element -> {
-                    element.addEventListener(EventType.KEY_DOWN, KeyboardEventListener::printEventDetails, false);
-                    element.addEventListener(EventType.KEY_PRESS, KeyboardEventListener::printEventDetails, false);
-                    element.addEventListener(EventType.KEY_UP, KeyboardEventListener::printEventDetails, false);
-                });
+        findInputField(browser).ifPresent(element -> {
+            element.addEventListener(KEY_DOWN, KeyboardEventListener::printEventDetails, false);
+            element.addEventListener(KEY_PRESS, KeyboardEventListener::printEventDetails, false);
+            element.addEventListener(KEY_UP, KeyboardEventListener::printEventDetails, false);
+        });
     }
 
     private static void printEventDetails(Event event) {
         KeyEvent keyEvent = (KeyEvent) event;
         String message = format("Event type: %s. Typed character (if applicable): %s. Key: %s",
-                keyEvent.type()
-                        .value(), keyEvent.character(), keyEvent.domKeyCode());
+                keyEvent.type().value(), keyEvent.character(), keyEvent.domKeyCode());
         System.out.println(message);
     }
 
     private static void loadHtmlAndWait(Browser browser) {
         CountDownLatch latch = new CountDownLatch(1);
-        browser.navigation()
-               .on(FrameLoadFinished.class, event -> latch.countDown());
-        browser.mainFrame()
-               .ifPresent(frame -> frame.loadHtml(HTML));
+        browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml(HTML));
         awaitUninterruptibly(latch);
     }
 
     private static Optional<Element> findInputField(Browser browser) {
         return browser.mainFrame()
-                      .flatMap(Frame::document)
-                      .flatMap(document -> document.findElementById(INPUT_FIELD_ID));
+                .flatMap(Frame::document)
+                .flatMap(document -> document.findElementById(INPUT_FIELD_ID));
     }
 }

@@ -18,10 +18,16 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
+import static com.teamdev.jxbrowser.dom.event.EventType.MOUSE_DOWN;
+import static com.teamdev.jxbrowser.dom.event.EventType.MOUSE_OVER;
+import static com.teamdev.jxbrowser.dom.event.EventType.MOUSE_UP;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Element;
 import com.teamdev.jxbrowser.dom.event.Event;
-import com.teamdev.jxbrowser.dom.event.EventType;
 import com.teamdev.jxbrowser.dom.event.MouseEvent;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -29,15 +35,12 @@ import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
-
-import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This examples demonstrates how to capture mouse events from the DOM nodes.
@@ -48,15 +51,14 @@ public class MouseEventListener {
     private static final String HTML = "<button id='" + BUTTON_ID + "'>Click me</button>";
 
     public static void main(String[] args) {
-        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED)
-                                             .build();
+        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
         Engine engine = Engine.newInstance(options);
         Browser browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("DOM Mouse Event Listener ");
+            JFrame frame = new JFrame("DOM Mouse Event Listener");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 600);
@@ -65,35 +67,31 @@ public class MouseEventListener {
         });
         loadHtmlAndWait(browser);
 
-        findButton(browser)
-                .ifPresent(element -> {
-                    element.addEventListener(EventType.MOUSE_DOWN, MouseEventListener::printEventDetails, false);
-                    element.addEventListener(EventType.MOUSE_UP, MouseEventListener::printEventDetails, false);
-                    element.addEventListener(EventType.MOUSE_OVER, MouseEventListener::printEventDetails, false);
-                });
+        findButton(browser).ifPresent(element -> {
+            element.addEventListener(MOUSE_DOWN, MouseEventListener::printEventDetails, false);
+            element.addEventListener(MOUSE_UP, MouseEventListener::printEventDetails, false);
+            element.addEventListener(MOUSE_OVER, MouseEventListener::printEventDetails, false);
+        });
     }
 
     private static void printEventDetails(Event event) {
         MouseEvent mouseEvent = (MouseEvent) event;
         Point location = mouseEvent.pageLocation();
         String message = format("Event type: %s. Button: %s. Page location: (%d, %d)",
-                mouseEvent.type()
-                          .value(), mouseEvent.button(), location.x(), location.y());
+                mouseEvent.type().value(), mouseEvent.button(), location.x(), location.y());
         System.out.println(message);
     }
 
     private static void loadHtmlAndWait(Browser browser) {
         CountDownLatch latch = new CountDownLatch(1);
-        browser.navigation()
-               .on(FrameLoadFinished.class, event -> latch.countDown());
-        browser.mainFrame()
-               .ifPresent(frame -> frame.loadHtml(HTML));
+        browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
+        browser.mainFrame().ifPresent(frame -> frame.loadHtml(HTML));
         awaitUninterruptibly(latch);
     }
 
     private static Optional<Element> findButton(Browser browser) {
         return browser.mainFrame()
-                      .flatMap(Frame::document)
-                      .flatMap(document -> document.findElementById(BUTTON_ID));
+                .flatMap(Frame::document)
+                .flatMap(document -> document.findElementById(BUTTON_ID));
     }
 }
