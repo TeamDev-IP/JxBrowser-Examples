@@ -30,3 +30,7 @@ To run the examples follow the instruction below:
 ## Documentation
 
 Read more about JxBrowser features in our [guides](https://jxbrowser-support.teamdev.com/docs/guides) and [tutorials](https://jxbrowser-support.teamdev.com/docs/tutorials).
+
+---
+
+The information in this repository is provided on the following terms: https://www.teamdev.com/terms-and-privacy
