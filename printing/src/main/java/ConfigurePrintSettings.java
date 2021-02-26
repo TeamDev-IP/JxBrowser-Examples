@@ -38,7 +38,7 @@ import com.teamdev.jxbrowser.print.event.PrintCompleted;
  * This example demonstrates how to configure print settings programmatically and print the
  * currently loaded web page on the default system printer.
  */
-public class ConfigurePrintSettings {
+public final class ConfigurePrintSettings {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
