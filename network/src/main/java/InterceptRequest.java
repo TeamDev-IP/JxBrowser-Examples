@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020, TeamDev. All rights reserved.
+ *  Copyright 2021, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -19,48 +19,35 @@
  */
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.HttpHeader;
 import com.teamdev.jxbrowser.net.HttpStatus;
-import com.teamdev.jxbrowser.net.Network;
+import com.teamdev.jxbrowser.net.Scheme;
 import com.teamdev.jxbrowser.net.UrlRequestJob;
-import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to intercept a URL request and override the responce data in the
+ * This example demonstrates how to intercept a URL request and override the response data in the
  * separate thread.
  */
 public final class InterceptRequest {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(EngineOptions.newBuilder(OFF_SCREEN).build());
+        Engine engine = Engine.newInstance(
+                EngineOptions.newBuilder(OFF_SCREEN)
+                        .addScheme(Scheme.HTTPS, new InterceptHttpsCallback())
+                        .build());
         Browser browser = engine.newBrowser();
 
-        Network network = engine.network();
-        network.set(InterceptRequestCallback.class, params -> {
-            UrlRequestJob urlRequestJob =
-                    network.newUrlRequestJob(UrlRequestJob.Options
-                            .newBuilder(params.urlRequest().id(), HttpStatus.OK)
-                            .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
-                            .addHttpHeader(HttpHeader.of("Content-Type", "charset=utf-8"))
-                            .build());
-            // Perform complex calculations and override the responce data in the separate thread.
-            new Thread(() -> {
-                urlRequestJob.write("<html><body><h1>Hello there!</h1></body></html>".getBytes());
-                urlRequestJob.complete();
-            }).start();
-            return InterceptRequestCallback.Response.intercept(urlRequestJob);
-        });
-
-        SwingUtilities.invokeLater(() -> {
+        invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Intercept Request");
@@ -72,5 +59,24 @@ public final class InterceptRequest {
         });
 
         browser.navigation().loadUrl("https://www.google.com");
+    }
+
+    private static final class InterceptHttpsCallback implements InterceptUrlRequestCallback {
+
+        @Override
+        public Response on(Params params) {
+            UrlRequestJob job = params.newUrlRequestJob(
+                    UrlRequestJob.Options
+                            .newBuilder(HttpStatus.OK)
+                            .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
+                            .addHttpHeader(HttpHeader.of("Content-Type", "charset=utf-8"))
+                            .build());
+            // Perform complex calculations and override the responce data in the separate thread.
+            new Thread(() -> {
+                job.write("<html><body><h1>Hello there!</h1></body></html>".getBytes());
+                job.complete();
+            }).start();
+            return Response.intercept(job);
+        }
     }
 }

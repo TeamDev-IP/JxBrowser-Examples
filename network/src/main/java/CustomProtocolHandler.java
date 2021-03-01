@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020, TeamDev. All rights reserved.
+ *  Copyright 2021, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,21 +18,20 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.net.HttpHeader;
 import com.teamdev.jxbrowser.net.HttpStatus;
-import com.teamdev.jxbrowser.net.Network;
-import com.teamdev.jxbrowser.net.UrlRequest;
+import com.teamdev.jxbrowser.net.Scheme;
 import com.teamdev.jxbrowser.net.UrlRequestJob;
-import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback;
-import com.teamdev.jxbrowser.net.callback.InterceptRequestCallback.Response;
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -46,10 +45,12 @@ public final class CustomProtocolHandler {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(
-                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED).build());
+                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
+                        .addScheme(Scheme.of(PROTOCOL), new InterceptCustomSchemeCallback())
+                        .build());
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
+        invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Custom Protocol Handler");
@@ -60,26 +61,23 @@ public final class CustomProtocolHandler {
             frame.setVisible(true);
         });
 
-        Network network = engine.network();
-        network.set(InterceptRequestCallback.class, params -> {
-            UrlRequest request = params.urlRequest();
-            // If URL protocol equals to the custom "jxb" protocol, then intercept this
-            // request and reply with a custom response.
-            if (request.url().startsWith(PROTOCOL)) {
-                UrlRequestJob job = network.newUrlRequestJob(
-                        UrlRequestJob.Options.newBuilder(request.id(), HttpStatus.OK)
-                                .addHttpHeader(HttpHeader.of(
-                                        CONTENT_TYPE_HEADER_NAME,
-                                        CONTENT_TYPE_HEADER_VALUE))
-                                .build());
-                job.write("<html><body><p>Hello there!</p></body></html>".getBytes());
-                job.complete();
-                return Response.intercept(job);
-            }
-            // Otherwise proceed the request using default behavior.
-            return Response.proceed();
-        });
-
         browser.navigation().loadUrl(PROTOCOL + "://hello");
+    }
+
+    private static final class InterceptCustomSchemeCallback implements
+            InterceptUrlRequestCallback {
+
+        @Override
+        public Response on(Params params) {
+            UrlRequestJob job = params.newUrlRequestJob(
+                    UrlRequestJob.Options.newBuilder(HttpStatus.OK)
+                            .addHttpHeader(HttpHeader.of(
+                                    CONTENT_TYPE_HEADER_NAME,
+                                    CONTENT_TYPE_HEADER_VALUE))
+                            .build());
+            job.write("<html><body><p>Hello there!</p></body></html>".getBytes());
+            job.complete();
+            return Response.intercept(job);
+        }
     }
 }
