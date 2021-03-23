@@ -54,5 +54,5 @@ include 'input'
 
 module('content-changes', './tutorials/content-changes')
 module('eclipse-rcp', './tutorials/eclipse-rcp')
-module('selenium-starter', './tutorials/selenium/selenium-starter')
-module('test-application', './tutorials/selenium/test-application')
+module('launcher', './tutorials/selenium/launcher')
+module('target-app', './tutorials/selenium/target-app')
