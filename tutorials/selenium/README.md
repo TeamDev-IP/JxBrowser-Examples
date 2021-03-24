@@ -6,7 +6,7 @@ Creating of these example projects is described in the [tutorial](https://jxbrow
 
 ## Building and Launching
 
-1. Download [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) in the `launcher/src/main/resources` directory. Try to download one of the latest versions.
+1. Download [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads). Put it into the `launcher/src/main/resources` directory. Use one of the latest versions.
 2. [Insert your license key](https://jxbrowser-support.teamdev.com/docs/guides/licensing.html#adding-the-license-to-a-project) into [the test application](https://github.com/TeamDev-IP/JxBrowser-Examples/blob/90fdd92f7c4c8737929f57e0383aad39d4be2aee/tutorials/selenium/target-app/src/main/java/TargetApp.java#L45).
 3. In the [target-app](target-app) module run the `createExe` Gradle task.
 4. Run [Selenium](launcher/src/main/java/SeleniumLauncher.java).
@@ -17,5 +17,5 @@ Creating of these example projects is described in the [tutorial](https://jxbrow
    ```
    Current URL: https://www.google.com/
    ```
-   It means that Selenium WebDriver managed to successfully run the application, set up a connection with the Chromium engine launched by JxBrowser, and accessed the web page loaded in JxBrowser to obtain and print its URL.
+   It means that Selenium WebDriver managed to successfully run the application, set up a connection with the JxBrowser's Chromium engine, and accessed the loaded web page to print its URL.
    
