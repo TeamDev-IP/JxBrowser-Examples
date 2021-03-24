@@ -33,21 +33,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to configure the Chromium engine launched by JxBrowser to integrate
- * with Selenium WebDriver.
+ * This example demonstrates how to create a simple Swing application with a web page loaded in
+ * BrowserView, and connect JxBrowser's Chromium engine with Selenium via the remote debugging port
+ * obtained from the command line.
  */
 public final class TargetApp {
 
     private static final String REMOTE_DEBUGGING_PORT_ARG = "--remote-debugging-port=";
 
     public static void main(String[] args) {
-        // Set the license key.
+        // Set your JxBrowser license key.
         System.setProperty("jxbrowser.license.key", "your_license_key");
 
         // Create a builder for EngineOptions.
         EngineOptions.Builder builder = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
-        // Pass the remote debugging port from the command line if it presents.
+        // Configure Engine with the remote debugging port obtained from the command line args.
         remoteDebuggingPortFromCommandLine(args).ifPresent(builder::remoteDebuggingPort);
 
         // Creating Chromium engine.
@@ -61,7 +62,6 @@ public final class TargetApp {
 
             // Creating and displaying Swing app frame.
             JFrame frame = new JFrame();
-
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
