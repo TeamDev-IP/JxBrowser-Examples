@@ -17,5 +17,5 @@ Creating of these example projects is described in the [tutorial](https://jxbrow
    ```
    Current URL: https://www.google.com/
    ```
-   It means that Selenium WebDriver managed to successfully run the application, set up a connection with the JxBrowser's Chromium engine, and accessed the loaded web page to print its URL.
+   It means that Selenium WebDriver managed to successfully run the application, set up a connection with the JxBrowser's Chromium engine, and access the loaded web page to print its URL.
    
