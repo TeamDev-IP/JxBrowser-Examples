@@ -34,13 +34,17 @@ public final class SeleniumLauncher {
         System.setProperty("webdriver.chrome.driver",
                 "tutorials/selenium/launcher/src/main/resources/chromedriver.exe");
 
+        // #docfragment "path-to-exe"
         ChromeOptions options = new ChromeOptions();
 
         // Set a path to your JxBrowser application executable.
         options.setBinary(
                 new File("tutorials/selenium/target-app/build/executable/TargetApp.exe"));
+        // #enddocfragment "path-to-exe"
+        // #docfragment "set-remote-debugging-port"
         // Set a port to communicate on.
         options.addArguments("--remote-debugging-port=9222");
+        // #enddocfragment "set-remote-debugging-port"
 
         WebDriver driver = new ChromeDriver(options);
 

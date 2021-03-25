@@ -45,11 +45,13 @@ public final class TargetApp {
         // Set your JxBrowser license key.
         System.setProperty("jxbrowser.license.key", "your_license_key");
 
+        // #docfragment "forward-remote-debugging-port"
         // Create a builder for EngineOptions.
         EngineOptions.Builder builder = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
         // Configure Engine with the remote debugging port obtained from the command line args.
         remoteDebuggingPortFromCommandLine(args).ifPresent(builder::remoteDebuggingPort);
+        // #enddocfragment "forward-remote-debugging-port"
 
         // Creating Chromium engine.
         Engine engine = Engine.newInstance(builder.build());
@@ -78,6 +80,7 @@ public final class TargetApp {
         });
     }
 
+    // #docfragment "get-remote-debugging-port"
     private static Optional<Integer> remoteDebuggingPortFromCommandLine(String[] args) {
         if (args.length > 0) {
             for (String arg : args) {
@@ -89,4 +92,5 @@ public final class TargetApp {
         }
         return Optional.empty();
     }
+    // #enddocfragment "get-remote-debugging-port"
 }
