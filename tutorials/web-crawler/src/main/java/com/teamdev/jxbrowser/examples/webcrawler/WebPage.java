@@ -18,24 +18,19 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.teamdev.jxbrowser.examples.webcrawler;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.teamdev.jxbrowser.net.NetError;
 import java.util.Collections;
 import java.util.Set;
 
 public final class WebPage {
 
-    public static WebPage newInstance(String url, NetError status) {
-        return new WebPage(url, status);
-    }
-
-    public static WebPage newInstance(String url, String html, Set<String> anchors) {
-        return new WebPage(url, NetError.OK, html, anchors);
-    }
-
     private final String url;
     private final String html;
     private final Set<String> anchors;
-
     private final NetError status;
 
     private WebPage(String url, NetError status) {
@@ -43,10 +38,23 @@ public final class WebPage {
     }
 
     private WebPage(String url, NetError status, String html, Set<String> anchors) {
+        checkNotNull(url);
+        checkNotNull(status);
+        checkNotNull(html);
+        checkNotNull(anchors);
+
         this.url = url;
         this.html = html;
         this.status = status;
         this.anchors = anchors;
+    }
+
+    static WebPage newInstance(String url, NetError status) {
+        return new WebPage(url, status);
+    }
+
+    static WebPage newInstance(String url, String html, Set<String> anchors) {
+        return new WebPage(url, NetError.OK, html, anchors);
     }
 
     public String url() {

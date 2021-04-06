@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.teamdev.jxbrowser.examples.webcrawler;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
@@ -36,7 +38,8 @@ import java.util.Set;
 public final class WebCrawler implements Closeable {
 
     /**
-     * Creates a new {@code WebCrawler} instance for the given target {@code url}.
+     * Creates a new {@code com.teamdev.jxbrowser.examples.webcrawler.WebCrawler} instance for the
+     * given target {@code url}.
      *
      * @param url            the URL of the target web page the crawler will start its analysis
      * @param webPageFactory the factory used to create a {@link WebPage} instance for the

@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.teamdev.jxbrowser.examples.webcrawler;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.NavigationException;
@@ -32,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A factory used for creating a {@link WebPage} instance for the discovered URLs.
  */
-class WebPageFactory {
+public final class WebPageFactory {
 
     /**
      * The delay in milliseconds between navigation.

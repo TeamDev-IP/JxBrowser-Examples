@@ -28,17 +28,6 @@ import java.util.Objects;
  */
 public final class DeadLink {
 
-    /**
-     * Returns a {@code DeadLink} instance for the given problematic {@code url} and the {@code
-     * netError} status describing the reason why the URL link is problematic or dead.
-     *
-     * @param url      the problematic or dead link URL
-     * @param netError the status describing the reason why the URL link is problematic or dead
-     */
-    public static DeadLink of(String url, NetError netError) {
-        return new DeadLink(url, netError);
-    }
-
     private final String url;
     private final NetError netError;
 
@@ -51,16 +40,27 @@ public final class DeadLink {
     }
 
     /**
+     * Returns a {@code DeadLink} instance for the given problematic {@code url} and the {@code
+     * netError} status describing the reason why the URL link is problematic or dead.
+     *
+     * @param url      the problematic or dead link URL
+     * @param netError the status describing the reason why the URL link is problematic or dead
+     */
+    static DeadLink of(String url, NetError netError) {
+        return new DeadLink(url, netError);
+    }
+
+    /**
      * Returns URL of the problematic or dead link.
      */
-    public String url() {
+    String url() {
         return url;
     }
 
     /**
      * Returns the network error describing the reason why the URL link is problematic.
      */
-    public NetError netError() {
+    NetError netError() {
         return netError;
     }
 
