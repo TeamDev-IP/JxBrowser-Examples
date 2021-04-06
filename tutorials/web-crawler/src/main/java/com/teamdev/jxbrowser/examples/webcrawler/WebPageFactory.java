@@ -67,7 +67,7 @@ public final class WebPageFactory {
      * @return a {@link WebPage} instance that contains the info about web page such as the anchors
      * and HTML of the web page
      */
-    public WebPage create(Browser browser, String url, String targetUrl) {
+    WebPage create(Browser browser, String url, String targetUrl) {
         NetError status = loadUrlAndWait(browser, url, NAVIGATION_ATTEMPTS);
         if (status != NetError.OK) {
             return WebPage.newInstance(url, status);

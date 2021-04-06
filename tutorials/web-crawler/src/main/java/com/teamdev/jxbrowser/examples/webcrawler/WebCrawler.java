@@ -33,7 +33,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- *
+ * A web crawler implementation that is based on JxBrowser that allows discovering and analyzing the
+ * web pages, accessing their DOM and HTML content, finding the broken links on a web page, etc.
  */
 public final class WebCrawler implements Closeable {
 
@@ -56,6 +57,9 @@ public final class WebCrawler implements Closeable {
     private final WebPageFactory webPageFactory;
 
     private WebCrawler(String url, WebPageFactory webPageFactory) {
+        checkNotNull(url);
+        checkNotNull(webPageFactory);
+
         targetUrl = url;
         this.webPageFactory = webPageFactory;
         pages = new HashSet<>();
@@ -111,6 +115,8 @@ public final class WebCrawler implements Closeable {
      * empty options if there is no such web page.
      */
     public Optional<WebPage> page(String url) {
+        checkNotNull(url);
+
         for (WebPage page : pages) {
             if (page.url().equals(url)) {
                 return Optional.of(page);
