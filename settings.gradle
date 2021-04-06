@@ -54,4 +54,4 @@ include 'input'
 
 module('content-changes', './tutorials/content-changes')
 module('eclipse-rcp', './tutorials/eclipse-rcp')
-module('dead-link-checker', './tutorials/dead-link-checker')
+module('web-crawler', './tutorials/web-crawler')
