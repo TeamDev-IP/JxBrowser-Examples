@@ -38,18 +38,21 @@ public final class DeadLink extends Link {
     }
 
     /**
-     * Returns a {@code DeadLink} instance for the given problematic {@code url} and the {@code
-     * netError} status describing the reason why the URL link is problematic or dead.
+     * Returns a {@code DeadLink} instance for the given problematic {@code url}
+     * and the {@code netError} status describing the reason why the URL link is
+     * problematic or dead.
      *
      * @param url      the problematic or dead link URL
-     * @param netError the status describing the reason why the URL link is problematic or dead
+     * @param netError the status describing the reason why the URL link is
+     *                 problematic or dead
      */
     static DeadLink of(String url, NetError netError) {
         return new DeadLink(url, netError);
     }
 
     /**
-     * Returns the network error describing the reason why the link is not accessible.
+     * Returns the network error describing the reason why the link is treated
+     * as problematic or dead.
      */
     NetError netError() {
         return netError;

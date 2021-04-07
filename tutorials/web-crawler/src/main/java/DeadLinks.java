@@ -28,12 +28,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This example demonstrates how analyze the given web page using {@link WebCrawler}, find all the
- * links to internal and external web pages, recursively go through all internal web pages, find
- * anchors and get HTML for each web page.
+ * This example demonstrates how analyze the given web page using {@link
+ * WebCrawler}, find all the links to internal and external web pages,
+ * recursively go through all internal web pages, find anchors and get HTML for
+ * each web page.
  *
- * <p>Then go through all the discovered web pages and print the web pages with the problematic or
- * dead links.
+ * <p>Then go through all the discovered web pages and print the web pages with
+ * the problematic or dead links.
  */
 public final class DeadLinks {
 
@@ -43,23 +44,28 @@ public final class DeadLinks {
     private static final String URL = "https://teamdev.com/jxbrowser";
 
     public static void main(String[] args) {
-        try (WebCrawler crawler = WebCrawler.newInstance(URL, new WebPageFactory())) {
-            // Start web crawler and print the details of each discovered and analyzed web page.
+        try (WebCrawler crawler = WebCrawler
+                .newInstance(URL, new WebPageFactory())) {
+            // Start web crawler and print the details of each discovered
+            // and analyzed web page.
             crawler.start(DeadLinks::print);
             // Collect and print the web pages with problematic or dead links.
             print(problematicWebPages(crawler));
         }
     }
 
-    private static Map<WebPage, Set<DeadLink>> problematicWebPages(WebCrawler crawler) {
+    private static Map<WebPage, Set<DeadLink>> problematicWebPages(
+            WebCrawler crawler) {
         Map<WebPage, Set<DeadLink>> result = new HashMap<>();
         crawler.pages().forEach(page -> {
             Set<DeadLink> deadLinks = new HashSet<>();
-            page.links().forEach(link -> crawler.page(link.url()).ifPresent(webPage -> {
-                if (webPage.status() != NetError.OK) {
-                    deadLinks.add(DeadLink.of(webPage.url(), webPage.status()));
-                }
-            }));
+            page.links().forEach(link ->
+                    crawler.page(link.url()).ifPresent(webPage -> {
+                        if (webPage.status() != NetError.OK) {
+                            deadLinks.add(DeadLink
+                                    .of(webPage.url(), webPage.status()));
+                        }
+                    }));
             if (!deadLinks.isEmpty()) {
                 result.put(page, deadLinks);
             }

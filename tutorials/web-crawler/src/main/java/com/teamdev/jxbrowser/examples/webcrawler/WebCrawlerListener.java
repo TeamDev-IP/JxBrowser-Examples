@@ -21,7 +21,8 @@
 package com.teamdev.jxbrowser.examples.webcrawler;
 
 /**
- * The listener interface for receiving notifications about discovered and visited web pages.
+ * The listener interface for receiving notifications about discovered and
+ * visited web pages.
  */
 public interface WebCrawlerListener {
 

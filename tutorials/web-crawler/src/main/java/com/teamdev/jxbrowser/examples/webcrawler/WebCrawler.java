@@ -33,20 +33,23 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * A web crawler implementation that is based on JxBrowser that allows discovering and analyzing the
- * web pages, accessing their DOM and HTML content, finding the broken links on a web page, etc.
+ * A web crawler implementation that is based on JxBrowser that allows
+ * discovering and analyzing the web pages, accessing their DOM and HTML
+ * content, finding the broken links on a web page, etc.
  */
 public final class WebCrawler implements Closeable {
 
     /**
-     * Creates a new {@code com.teamdev.jxbrowser.examples.webcrawler.WebCrawler} instance for the
-     * given target {@code url}.
+     * Creates a new {@code com.teamdev.jxbrowser.examples.webcrawler.WebCrawler}
+     * instance for the given target {@code url}.
      *
-     * @param url            the URL of the target web page the crawler will start its analysis
-     * @param webPageFactory the factory used to create a {@link WebPage} instance for the
-     *                       discovered internal and external URLs
+     * @param url            the URL of the target web page the crawler will
+     *                       start its analysis
+     * @param webPageFactory the factory used to create a {@link WebPage}
+     *                       instance for the internal and external URLs
      */
-    public static WebCrawler newInstance(String url, WebPageFactory webPageFactory) {
+    public static WebCrawler newInstance(String url,
+            WebPageFactory webPageFactory) {
         return new WebCrawler(url, webPageFactory);
     }
 
@@ -73,10 +76,12 @@ public final class WebCrawler implements Closeable {
     }
 
     /**
-     * Starts the crawler and report the progress to the given {@code listener}.
-     *
-     * <p>This operation blocks the current thread execution until the crawler stops analyzing the
+     * Starts the web crawler and reports the progress via the given {@code
+     * listener}. The time required to analyze web site depends on the number of
      * discovered web pages.
+     *
+     * <p>This operation blocks the current thread execution until the crawler
+     * stops analyzing the discovered web pages.
      *
      * @param listener a listener that will be invoked to report the progress
      */
@@ -85,17 +90,19 @@ public final class WebCrawler implements Closeable {
         analyze(targetUrl, pageFactory, listener);
     }
 
-    private void analyze(String url, WebPageFactory factory, WebCrawlerListener listener) {
+    private void analyze(String url, WebPageFactory factory,
+            WebCrawlerListener listener) {
         if (!isVisited(url)) {
             WebPage webPage = factory.create(browser, url);
             pages.add(webPage);
 
-            // Notify the listener that a web page has been discovered and visited.
+            // Notify the listener that a web page has been visited.
             listener.webPageVisited(webPage);
 
             // If it is an external web page, do not go through its links.
             if (url.startsWith(targetUrl)) {
-                webPage.links().forEach(link -> analyze(link.url(), factory, listener));
+                webPage.links().forEach(
+                        link -> analyze(link.url(), factory, listener));
             }
         }
     }
@@ -109,15 +116,15 @@ public final class WebCrawler implements Closeable {
     }
 
     /**
-     * Returns an immutable set of the web pages discovered and analyzed by this crawler.
+     * Returns an immutable set of the web pages analyzed by this crawler.
      */
     public ImmutableSet<WebPage> pages() {
         return ImmutableSet.copyOf(pages);
     }
 
     /**
-     * Returns an optional that contains a web page associated with the given {@code url} or an
-     * empty options if there is no such web page.
+     * Returns an optional that contains a web page associated with the given
+     * {@code url} or an empty options if there is no such web page.
      */
     public Optional<WebPage> page(String url) {
         checkNotNull(url);
@@ -131,8 +138,8 @@ public final class WebCrawler implements Closeable {
     }
 
     /**
-     * Releases all allocated resources and closes the web browser instance used to discover and
-     * analyze the web pages.
+     * Releases all allocated resources and closes the web browser instance used
+     * to discover and analyze the web pages.
      */
     @Override
     public void close() {

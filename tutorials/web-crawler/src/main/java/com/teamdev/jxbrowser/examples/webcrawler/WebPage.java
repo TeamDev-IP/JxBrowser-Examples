@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Represents the details of a web page such as its URL, HTML, the status code from web server, and
- * the list of anchors found on it.
+ * Represents the details of a web page such as its URL, HTML, the status code
+ * from web server, and the list of anchors found on it.
  */
 public final class WebPage {
 
@@ -55,11 +55,13 @@ public final class WebPage {
     }
 
     /**
-     * Creates a instance of {@code WebPage} with the given {@code url} and {@code status} code.
+     * Creates a instance of {@code WebPage} with the given {@code url} and
+     * {@code status} code.
      *
-     * <p>This factory method is used to create an instance of an inaccessible {@code WebPage}. The
-     * status code should represent the network error obtained from web server that explains why the
-     * web page is not accessible.
+     * <p>This factory method is used to create an instance of an inaccessible
+     * {@code WebPage}. The status code should represent the network error
+     * obtained from web server that explains why the web page is not
+     * accessible.
      */
     static WebPage newInstance(String url, NetError status) {
         return new WebPage(url, status);

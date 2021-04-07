@@ -47,8 +47,8 @@ public class Link {
     /**
      * Returns a URL of the link.
      *
-     * <p>It can be an absolute, relative, or an anchor URL that points to an anchor within a page
-     * like {@code "#top"}.
+     * <p>It can be an absolute, relative, or an anchor URL that points to an
+     * anchor within a page like {@code "#top"}.
      */
     public String url() {
         return url;

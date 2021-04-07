@@ -36,39 +36,43 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A factory used for creating a {@link WebPage} instance for the discovered URLs.
+ * A factory used for creating a {@link WebPage} instance for the discovered
+ * URLs.
  */
 public final class WebPageFactory {
 
     /**
      * The delay in milliseconds between navigation.
      *
-     * <p>Some web servers detect frequent HTTP/HTTPS requests and mark this activity as
-     * "suspicious" that might be a sing of a DDoS attack. Too frequent request might be aborted in
-     * this case. To get rid of aborted requests, we use a delay between navigation, to simulate a
-     * human. Human cannot manually navigate to a web page dozen times per second.
+     * <p>Some web servers detect frequent HTTP/HTTPS requests and mark this
+     * activity as "suspicious" that might be a sing of a DDoS attack. Too
+     * frequent request might be aborted in this case. To get rid of aborted
+     * requests, we use a delay between navigation, to simulate a human. Human
+     * cannot manually navigate to a web page dozen times per second.
      *
-     * <p>Politeness delay in milliseconds (delay between sending two requests to the same host).
+     * <p>Politeness delay in milliseconds (delay between sending two requests
+     * to the same host).
      */
     private static final int NAVIGATION_DELAY_MS = 500;
 
     /**
      * The number or navigation attempts.
      *
-     * <p>Some web servers might abort "suspicious" requests. In this case navigation will fail
-     * with {@link NetError#ABORTED}. We do not give up and try sending request again several times
-     * with bigger delay.
+     * <p>Some web servers might abort "suspicious" requests. In this case
+     * navigation will fail with {@link NetError#ABORTED}. We do not give up and
+     * try sending request again several times with bigger delay.
      */
     private static final int NAVIGATION_ATTEMPTS = 3;
 
     /**
      * Creates a {@link WebPage} instance for the given {@code url}.
      *
-     * @param browser the web browser instance used to load web page and access its DOM
+     * @param browser the web browser instance used to load web page and access
+     *                its DOM
      * @param url     the URL of the web page to load and analyze
      *
-     * @return a {@link WebPage} instance that contains the info about web page such as the anchors
-     * and HTML of the web page
+     * @return a {@link WebPage} instance that contains the info about web page
+     * such as the anchors and HTML of the web page
      */
     WebPage create(Browser browser, String url) {
         NetError status = loadUrlAndWait(browser, url, NAVIGATION_ATTEMPTS);
@@ -81,25 +85,30 @@ public final class WebPageFactory {
     }
 
     /**
-     * Loads the given {@code url} and waits until the web page is loaded completely.
+     * Loads the given {@code url} and waits until the web page is loaded
+     * completely.
      *
-     * @return {@code true} if the web page has been loaded successfully. If the given URL is dead
-     * or we didn't manage to load it within 45 seconds, returns {@code false}.
+     * @return {@code true} if the web page has been loaded successfully. If the
+     * given URL is dead or we didn't manage to load it within 45 seconds,
+     * returns {@code false}.
      *
-     * @implNote before every navigation we wait for {@link #NAVIGATION_DELAY_MS} because web server
-     * may abort often URL requests to protect itself from DDoS attacks.
+     * @implNote before every navigation we wait for {@link
+     * #NAVIGATION_DELAY_MS} because web server may abort often URL requests to
+     * protect itself from DDoS attacks.
      */
-    private NetError loadUrlAndWait(Browser browser, String url, int navigationAttempts) {
+    private NetError loadUrlAndWait(Browser browser, String url,
+            int navigationAttempts) {
         // All our attempts to load the given url were rejected (
         // We give up and continue processing other web pages.
         if (navigationAttempts == 0) {
             return NetError.ABORTED;
         }
         try {
-            // Web server might abort often URL requests to protect itself from DDoS attack.
-            // Use a delay between URL requests.
-            TimeUnit.MILLISECONDS.sleep((long) NAVIGATION_DELAY_MS * navigationAttempts);
-            // Load the given URL and wait until the web page is loaded completely.
+            // Web server might abort often URL requests to protect itself from
+            // DDoS attack. Use a delay between URL requests.
+            long timeout = (long) NAVIGATION_DELAY_MS * navigationAttempts;
+            TimeUnit.MILLISECONDS.sleep(timeout);
+            // Load the given URL and wait until web page is loaded completely.
             browser.navigation().loadUrlAndWait(url, Duration.ofSeconds(30));
         } catch (NavigationException e) {
             NetError netError = e.netError();
@@ -109,7 +118,7 @@ public final class WebPageFactory {
             }
             return netError;
         } catch (TimeoutException e) {
-            // Web server did not respond within `Navigation.defaultTimeoutInSeconds()`.
+            // Web server did not respond within 30 seconds (
             return NetError.CONNECTION_TIMED_OUT;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -118,7 +127,7 @@ public final class WebPageFactory {
     }
 
     /**
-     * Returns a stream that represents HTML of the currently loaded web page.
+     * Returns a string that represents HTML of the currently loaded web page.
      */
     private String html(Browser browser) {
         AtomicReference<String> htmlRef = new AtomicReference<>("");
@@ -129,37 +138,42 @@ public final class WebPageFactory {
     /**
      * Returns a set of the link URLs on the currently loaded web page.
      *
-     * @implNote we find the links on the main frame document only. We skip {@code IFRAME}s on the
-     * web page because very often they represent some third-party widgets such as Google analytics,
-     * social network widgets, etc.
+     * @implNote we find the links on the main frame document only. We skip
+     * {@code IFRAME}s on the web page because very often they represent some
+     * third-party widgets such as Google analytics, social network widgets,
+     * etc.
      */
     private Set<Link> links(Browser browser) {
         Set<Link> result = new HashSet<>();
         browser.mainFrame().flatMap(Frame::document).ifPresent(document ->
-                // Collect the links by analyzing the HREF attribute of the Anchor HTML elements.
+                // Collect the links by analyzing the HREF attribute of
+                // the Anchor HTML elements.
                 document.findElementsByTagName("a").forEach(element -> {
                     try {
                         String href = element.attributeValue("href");
                         toUrl(href, browser.url()).ifPresent(
                                 url -> result.add(Link.of(url)));
                     } catch (IllegalStateException ignore) {
-                        // DOM of a web page might be changed dynamically from JavaScript.
-                        // The DOM HTML Element we analyze, might be removed during our analysis.
-                        // We do not analyze attributes of the removed DOM elements.
+                        // DOM of a web page might be changed dynamically from
+                        // JavaScript. The DOM HTML Element we analyze, might
+                        // be removed during our analysis. We do not analyze
+                        // attributes of the removed DOM elements.
                     }
                 }));
         return result;
     }
 
     /**
-     * Converts the given {@code href} attribute value to an absolute URL if possible.
+     * Converts the given {@code href} attribute value to an absolute URL if
+     * possible.
      *
      * @param href    the {@code href} attribute value
      * @param pageUrl the URL of the web page to resolve relative links
      *
-     * @return an {@link Optional} instance that contains an absolute URL for the given {@code href}
-     * attribute value or an empty {@code Optional} if the given attribute contains the value that
-     * cannot be converted to an absolute URL that meets our needs
+     * @return an {@link Optional} instance that contains an absolute URL for
+     * the given {@code href} attribute value or an empty {@code Optional} if
+     * the given attribute contains the value that cannot be converted to an
+     * absolute URL that meets our needs
      */
     private Optional<String> toUrl(String href, String pageUrl) {
         checkNotNull(href);
@@ -197,7 +211,8 @@ public final class WebPageFactory {
     }
 
     /**
-     * Returns the top level {@code [scheme]://[host]} URL of the given {@code url}.
+     * Returns the top level {@code [scheme]://[host]} address of the given
+     * {@code url}.
      */
     private String topLevelUrl(String url) {
         checkNotNull(url);
