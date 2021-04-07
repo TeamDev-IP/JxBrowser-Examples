@@ -20,11 +20,15 @@
 
 package com.teamdev.jxbrowser.examples.webcrawler;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.NavigationException;
 import com.teamdev.jxbrowser.navigation.TimeoutException;
 import com.teamdev.jxbrowser.net.NetError;
+import java.net.URI;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -60,21 +64,20 @@ public final class WebPageFactory {
     /**
      * Creates a {@link WebPage} instance for the given {@code url}.
      *
-     * @param browser   the web browser instance used to load web page and access its DOM
-     * @param url       the URL of the web page to load and analyze
-     * @param targetUrl the URL of the target web page we start our analysis from
+     * @param browser the web browser instance used to load web page and access its DOM
+     * @param url     the URL of the web page to load and analyze
      *
      * @return a {@link WebPage} instance that contains the info about web page such as the anchors
      * and HTML of the web page
      */
-    WebPage create(Browser browser, String url, String targetUrl) {
+    WebPage create(Browser browser, String url) {
         NetError status = loadUrlAndWait(browser, url, NAVIGATION_ATTEMPTS);
         if (status != NetError.OK) {
             return WebPage.newInstance(url, status);
         }
-        Set<String> anchors = findAnchors(browser, targetUrl);
+        Set<Link> links = links(browser);
         String html = html(browser);
-        return WebPage.newInstance(url, html, anchors);
+        return WebPage.newInstance(url, html, links);
     }
 
     /**
@@ -97,7 +100,7 @@ public final class WebPageFactory {
             // Use a delay between URL requests.
             TimeUnit.MILLISECONDS.sleep((long) NAVIGATION_DELAY_MS * navigationAttempts);
             // Load the given URL and wait until the web page is loaded completely.
-            browser.navigation().loadUrlAndWait(url);
+            browser.navigation().loadUrlAndWait(url, Duration.ofSeconds(30));
         } catch (NavigationException e) {
             NetError netError = e.netError();
             if (netError == NetError.ABORTED) {
@@ -130,13 +133,15 @@ public final class WebPageFactory {
      * web page because very often they represent some third-party widgets such as Google analytics,
      * social network widgets, etc.
      */
-    private Set<String> findAnchors(Browser browser, String targetUrl) {
-        Set<String> result = new HashSet<>();
+    private Set<Link> links(Browser browser) {
+        Set<Link> result = new HashSet<>();
         browser.mainFrame().flatMap(Frame::document).ifPresent(document ->
+                // Collect the links by analyzing the HREF attribute of the Anchor HTML elements.
                 document.findElementsByTagName("a").forEach(element -> {
                     try {
                         String href = element.attributeValue("href");
-                        normalizeUrl(href, targetUrl).ifPresent(result::add);
+                        toUrl(href, browser.url()).ifPresent(
+                                url -> result.add(Link.of(url)));
                     } catch (IllegalStateException ignore) {
                         // DOM of a web page might be changed dynamically from JavaScript.
                         // The DOM HTML Element we analyze, might be removed during our analysis.
@@ -146,34 +151,57 @@ public final class WebPageFactory {
         return result;
     }
 
-    private Optional<String> normalizeUrl(String url, String targetUrl) {
-        if (url.isEmpty()) {
+    /**
+     * Converts the given {@code href} attribute value to an absolute URL if possible.
+     *
+     * @param href    the {@code href} attribute value
+     * @param pageUrl the URL of the web page to resolve relative links
+     *
+     * @return an {@link Optional} instance that contains an absolute URL for the given {@code href}
+     * attribute value or an empty {@code Optional} if the given attribute contains the value that
+     * cannot be converted to an absolute URL that meets our needs
+     */
+    private Optional<String> toUrl(String href, String pageUrl) {
+        checkNotNull(href);
+        checkNotNull(pageUrl);
+
+        if (href.isEmpty()) {
             return Optional.empty();
         }
-        if (url.equals("/")) {
+        if (href.startsWith("#")) {
             return Optional.empty();
         }
-        if (url.startsWith("#")) {
+        if (href.startsWith("tel:")) {
             return Optional.empty();
         }
-        if (url.startsWith("tel:")) {
+        if (href.startsWith("mailto:")) {
             return Optional.empty();
         }
-        if (url.startsWith("mailto:")) {
-            return Optional.empty();
-        }
-        if (url.startsWith("javascript:")) {
+        if (href.startsWith("javascript:")) {
             return Optional.empty();
         }
         // Normalize URL.
+        String domain = topLevelUrl(pageUrl);
+        if (href.equals("/")) {
+            return Optional.of(domain);
+        }
         // If it is a relative root URL, convert to a full URL.
-        if (url.startsWith("/")) {
-            url = targetUrl + url;
+        if (href.startsWith("/")) {
+            href = domain + href;
         }
         // Remove "/" at the end of URL.
-        if (url.endsWith("/")) {
-            url = url.substring(0, url.length() - 1);
+        if (href.endsWith("/")) {
+            href = href.substring(0, href.length() - 1);
         }
-        return Optional.of(url);
+        return Optional.of(href);
+    }
+
+    /**
+     * Returns the top level {@code [scheme]://[host]} URL of the given {@code url}.
+     */
+    private String topLevelUrl(String url) {
+        checkNotNull(url);
+        URI uri = URI.create(url);
+        return uri.getScheme() + "://" + uri.getHost();
     }
 }

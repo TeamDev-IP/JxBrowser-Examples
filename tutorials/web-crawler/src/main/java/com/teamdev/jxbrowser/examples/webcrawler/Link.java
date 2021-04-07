@@ -18,41 +18,40 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.teamdev.jxbrowser.examples.webcrawler;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.teamdev.jxbrowser.examples.webcrawler.Link;
-import com.teamdev.jxbrowser.net.NetError;
 import java.util.Objects;
 
 /**
- * A problematic or dead link.
+ * A link on a web page.
  */
-public final class DeadLink extends Link {
+public class Link {
 
-    private final NetError netError;
+    private final String url;
 
-    private DeadLink(String url, NetError netError) {
-        super(url);
-        checkNotNull(netError);
-        this.netError = netError;
+    protected Link(String url) {
+        checkNotNull(url);
+
+        this.url = url;
     }
 
     /**
-     * Returns a {@code DeadLink} instance for the given problematic {@code url} and the {@code
-     * netError} status describing the reason why the URL link is problematic or dead.
+     * Returns an instance of {@code Link} for the given {@code url}.
+     */
+    static Link of(String url) {
+        return new Link(url);
+    }
+
+    /**
+     * Returns a URL of the link.
      *
-     * @param url      the problematic or dead link URL
-     * @param netError the status describing the reason why the URL link is problematic or dead
+     * <p>It can be an absolute, relative, or an anchor URL that points to an anchor within a page
+     * like {@code "#top"}.
      */
-    static DeadLink of(String url, NetError netError) {
-        return new DeadLink(url, netError);
-    }
-
-    /**
-     * Returns the network error describing the reason why the link is not accessible.
-     */
-    NetError netError() {
-        return netError;
+    public String url() {
+        return url;
     }
 
     @Override
@@ -63,20 +62,17 @@ public final class DeadLink extends Link {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
-        DeadLink deadLink = (DeadLink) o;
-        return netError == deadLink.netError;
+        Link link = (Link) o;
+        return Objects.equals(url, link.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), netError);
+        return Objects.hash(url);
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + netError;
+        return url;
     }
 }

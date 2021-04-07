@@ -46,16 +46,16 @@ public final class DeadLinks {
         try (WebCrawler crawler = WebCrawler.newInstance(URL, new WebPageFactory())) {
             // Start web crawler and print the details of each discovered and analyzed web page.
             crawler.start(DeadLinks::print);
-            // Collect the web pages with problematic or dead links and print them.
-            print(collectProblematicWebPages(crawler));
+            // Collect and print the web pages with problematic or dead links.
+            print(problematicWebPages(crawler));
         }
     }
 
-    private static Map<WebPage, Set<DeadLink>> collectProblematicWebPages(WebCrawler crawler) {
+    private static Map<WebPage, Set<DeadLink>> problematicWebPages(WebCrawler crawler) {
         Map<WebPage, Set<DeadLink>> result = new HashMap<>();
         crawler.pages().forEach(page -> {
             Set<DeadLink> deadLinks = new HashSet<>();
-            page.anchors().forEach(anchor -> crawler.page(anchor).ifPresent(webPage -> {
+            page.links().forEach(link -> crawler.page(link.url()).ifPresent(webPage -> {
                 if (webPage.status() != NetError.OK) {
                     deadLinks.add(DeadLink.of(webPage.url(), webPage.status()));
                 }
@@ -73,15 +73,18 @@ public final class DeadLinks {
 
     private static void print(Map<WebPage, Set<DeadLink>> webPages) {
         System.out.println("Dead or problematic links:");
+
         StringBuilder builder = new StringBuilder();
         for (WebPage webPage : webPages.keySet()) {
             builder.append(webPage.url());
+            builder.append("\n");
             Set<DeadLink> deadLinks = webPages.get(webPage);
             for (DeadLink deadLink : deadLinks) {
                 builder.append("\t");
                 builder.append(deadLink.url());
                 builder.append(" ");
                 builder.append(deadLink.netError());
+                builder.append("\n");
             }
         }
         System.out.println(builder);

@@ -54,19 +54,20 @@ public final class WebCrawler implements Closeable {
     private final Browser browser;
     private final String targetUrl;
     private final Set<WebPage> pages;
-    private final WebPageFactory webPageFactory;
+    private final WebPageFactory pageFactory;
 
     private WebCrawler(String url, WebPageFactory webPageFactory) {
         checkNotNull(url);
         checkNotNull(webPageFactory);
 
         targetUrl = url;
-        this.webPageFactory = webPageFactory;
+        pageFactory = webPageFactory;
         pages = new HashSet<>();
 
         engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN)
-                        .disableChromiumTraffic()
+                        // Visit the web pages in the Chromium's incognito mode.
+                        .enableIncognito()
                         .build());
         browser = engine.newBrowser();
     }
@@ -79,27 +80,31 @@ public final class WebCrawler implements Closeable {
      *
      * @param listener a listener that will be invoked to report the progress
      */
-    public void start(Listener listener) {
+    public void start(WebCrawlerListener listener) {
         checkNotNull(listener);
-        analyze(targetUrl, webPageFactory, listener);
+        analyze(targetUrl, pageFactory, listener);
     }
 
-    private void analyze(String url, WebPageFactory factory, Listener listener) {
+    private void analyze(String url, WebPageFactory factory, WebCrawlerListener listener) {
         if (!isVisited(url)) {
-            WebPage webPage = factory.create(browser, url, targetUrl);
+            WebPage webPage = factory.create(browser, url);
             pages.add(webPage);
 
             // Notify the listener that a web page has been discovered and visited.
             listener.webPageVisited(webPage);
 
-            // If it is an external URL, do not go through its anchors.
+            // If it is an external web page, do not go through its links.
             if (url.startsWith(targetUrl)) {
-                webPage.anchors().forEach(anchor -> analyze(anchor, factory, listener));
+                webPage.links().forEach(link -> analyze(link.url(), factory, listener));
             }
         }
     }
 
+    /**
+     * Checks if the given {@code url} belongs to already visited web page.
+     */
     private boolean isVisited(String url) {
+        checkNotNull(url);
         return page(url).orElse(null) != null;
     }
 
@@ -132,16 +137,5 @@ public final class WebCrawler implements Closeable {
     @Override
     public void close() {
         engine.close();
-    }
-
-    /**
-     * The listener interface for receiving notifications about discovered and visited web pages.
-     */
-    public interface Listener {
-
-        /**
-         * Invoked when the given {@code webPage} has been discovered and analyzed.
-         */
-        void webPageVisited(WebPage webPage);
     }
 }

@@ -22,53 +22,84 @@ package com.teamdev.jxbrowser.examples.webcrawler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableSet;
 import com.teamdev.jxbrowser.net.NetError;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * Represents the details of a web page such as its URL, HTML, the status code from web server, and
+ * the list of anchors found on it.
+ */
 public final class WebPage {
 
     private final String url;
     private final String html;
-    private final Set<String> anchors;
     private final NetError status;
+    private final ImmutableSet<Link> links;
 
     private WebPage(String url, NetError status) {
         this(url, status, "", Collections.emptySet());
     }
 
-    private WebPage(String url, NetError status, String html, Set<String> anchors) {
+    private WebPage(String url, NetError status, String html, Set<Link> links) {
         checkNotNull(url);
         checkNotNull(status);
         checkNotNull(html);
-        checkNotNull(anchors);
+        checkNotNull(links);
 
         this.url = url;
         this.html = html;
         this.status = status;
-        this.anchors = anchors;
+        this.links = ImmutableSet.copyOf(links);
     }
 
+    /**
+     * Creates a instance of {@code WebPage} with the given {@code url} and {@code status} code.
+     *
+     * <p>This factory method is used to create an instance of an inaccessible {@code WebPage}. The
+     * status code should represent the network error obtained from web server that explains why the
+     * web page is not accessible.
+     */
     static WebPage newInstance(String url, NetError status) {
         return new WebPage(url, status);
     }
 
-    static WebPage newInstance(String url, String html, Set<String> anchors) {
-        return new WebPage(url, NetError.OK, html, anchors);
+    /**
+     * Creates a {@code WebPage} instance with the given details.
+     *
+     * @param url   the URL of the web page
+     * @param html  the HTML content of the web page
+     * @param links the list of links found on the web page
+     */
+    static WebPage newInstance(String url, String html, Set<Link> links) {
+        return new WebPage(url, NetError.OK, html, links);
     }
 
+    /**
+     * Returns URL of the web page.
+     */
     public String url() {
         return url;
     }
 
-    public Set<String> anchors() {
-        return anchors;
+    /**
+     * Returns an immutable set of the links on this web page.
+     */
+    public ImmutableSet<Link> links() {
+        return links;
     }
 
+    /**
+     * Returns HTML of this web page.
+     */
     public String html() {
         return html;
     }
 
+    /**
+     * Returns the status code from web server.
+     */
     public NetError status() {
         return status;
     }
