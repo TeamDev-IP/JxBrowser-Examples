@@ -3,8 +3,8 @@
 This project is an example Eclipse workspace that demonstrates how to use JxBrowser in Eclipse RCP
 projects.
 
-Creating of this example project is described 
-in the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials//eclipse/rcp-application.html).
+Creating of this example project is described in
+the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-application.html).
 
 ## Build and launch
 1. Copy necessary JxBrowser JAR files to the workspace:

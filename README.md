@@ -9,7 +9,8 @@ To learn about the library please visit the [product page](https://www.teamdev.c
 To run the examples follow the instruction below:
 
 1. Make sure your environment meets the
-[software and hardware requirements](https://jxbrowser-support.teamdev.com/docs/quickstart/requirements.html).
+   [software and hardware requirements](https://jxbrowser-support.teamdev.com/docs/guides/introduction/requirements.html)
+   .
 
 2. Download a free 30-day evaluation license key by sending a request via the [web form](https://www.teamdev.com/jxbrowser#evaluate).
 
@@ -29,7 +30,9 @@ To run the examples follow the instruction below:
  
 ## Documentation
 
-Read more about JxBrowser features in our [guides](https://jxbrowser-support.teamdev.com/docs/guides) and [tutorials](https://jxbrowser-support.teamdev.com/docs/tutorials).
+Read more about JxBrowser features in
+our [guides](https://jxbrowser-support.teamdev.com/docs/guides/engine.html)
+and [tutorials](https://jxbrowser-support.teamdev.com/docs/tutorials).
 
 ---
 
