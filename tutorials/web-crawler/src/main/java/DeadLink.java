@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * A problematic or dead link.
  */
-public final class DeadLink extends Link {
+final class DeadLink extends Link {
 
     private final NetError netError;
 
