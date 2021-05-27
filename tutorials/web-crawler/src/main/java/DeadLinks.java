@@ -28,13 +28,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This example demonstrates how analyze the given web page using {@link
- * WebCrawler}, find all the links to internal and external web pages,
- * recursively go through all internal web pages, find anchors and get HTML for
- * each web page.
- *
- * <p>Then go through all the discovered web pages and print the web pages with
- * the problematic or dead links.
+ * This example demonstrates how to:
+ * <ul>
+ * <li>analyze the given web page using {@link WebCrawler};
+ * <li>find all the links to the internal and external web pages;
+ * <li>recursively go through all internal web pages;
+ * <li>find anchors and get HTML for each web page;
+ * <li>go through all the discovered web pages and print the web
+ * pages with the problematic or dead links.
+ * </ul>
  */
 public final class DeadLinks {
 
