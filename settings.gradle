@@ -28,10 +28,6 @@ final def module = { final String name, final String path ->
     project(":$name").projectDir = new File("$path")
 }
 
-module('quickstart-swing', './quickstart/swing')
-module('quickstart-javafx', './quickstart/javafx')
-module('quickstart-swt', './quickstart/swt')
-
 include 'content'
 include 'printing'
 include 'chromium'
