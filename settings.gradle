@@ -48,8 +48,13 @@ include 'cache'
 include 'webstorage'
 include 'input'
 
+// DOM changes
 module('content-changes', './tutorials/content-changes')
 module('eclipse-rcp', './tutorials/eclipse-rcp')
+// Selenium integration
 module('launcher', './tutorials/selenium/launcher')
 module('target-app', './tutorials/selenium/target-app')
+// Java web crawler
 module('web-crawler', './tutorials/web-crawler')
+// Java media player
+module('media-player', './tutorials/media-player')
