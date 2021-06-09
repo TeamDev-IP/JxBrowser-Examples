@@ -1,0 +1,56 @@
+<!--
+  ~  Copyright 2021, TeamDev. All rights reserved.
+  ~
+  ~  Redistribution and use in source and/or binary forms, with or without
+  ~  modification, must retain the above copyright notice and the following
+  ~  disclaimer.
+  ~
+  ~  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  ~  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  ~  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  ~  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  ~  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  ~  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  ~  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  ~  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  ~  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  ~  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  ~  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Java Media Player</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css"/>
+</head>
+<body style="margin:0">
+
+<video id="player"
+       controls
+       crossorigin
+       playsinline
+       data-poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg">
+  <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4"
+          type="video/mp4"/>
+</video>
+
+<script src="https://cdn.plyr.io/3.6.8/plyr.js" crossorigin="anonymous"></script>
+<script>
+  const player = new Plyr('#player', {
+    // Remove all controls because they will be provided by Java Swing UI.
+    controls: []
+  });
+
+  player.on('timeupdate', event => { java.onTimeUpdated(player.currentTime); });
+  player.on('volumechange', event => { java.onVolumeChanged(player.volume, player.muted); });
+  player.on('play', event => { java.onPlaybackStarted(); });
+  player.on('pause', event => { java.onPlaybackPaused(); });
+
+  // Sets the initial volume at 50%.
+  player.volume = 0.5;
+
+</script>
+</body>
+</html>
