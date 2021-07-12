@@ -1,0 +1,22 @@
+plugins {
+    id "com.diffplug.gradle.eclipse.mavencentral" version "3.18.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'DemoApp'
+
+repositories {
+    maven { url = 'https://europe-maven.pkg.dev/jxbrowser/releases' }
+    mavenCentral()
+}
+
+ext {
+    jxBrowserVersion = '7.16'
+}
+
+dependencies {
+    compile "com.teamdev.jxbrowser:jxbrowser-swing:${jxBrowserVersion}"
+    compile "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
+}
