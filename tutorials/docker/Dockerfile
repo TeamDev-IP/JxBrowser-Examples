@@ -42,14 +42,16 @@ RUN apt install -y \
     libxtst6 \
     xdg-utils
 
-# Install a virtual X11 server that is required for Chromium to work correctly.
+# Install a virtual X11 server that is required for Chromium to work.
 RUN apt install -y xvfb
 
 WORKDIR /root
 
+# Copy a script that starts a virtual X11 server and launches the Java application.
 ADD startup.sh .
 RUN chmod +x startup.sh
 
+# Copy and build the Java application.
 ADD project/ .
 RUN gradle build
 
