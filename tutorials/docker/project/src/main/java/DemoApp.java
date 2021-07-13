@@ -34,7 +34,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * Simple Swing application that works in Docker. It prints the web page's title when the page is loaded.
+ * Simple Swing application that works in Docker.
+ *
+ * <p>Prints the web page's title once the page is loaded.
  */
 public final class DemoApp {
 
