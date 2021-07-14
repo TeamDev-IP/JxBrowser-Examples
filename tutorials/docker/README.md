@@ -12,4 +12,5 @@ Please visit our [Docker tutorial](https://jxbrowser-support.teamdev.com/docs/tu
    `sudo docker build -t jxbrowser .`
 3. Start a container:
    `sudo docker run --shm-size=1gb -t jxbrowser`
+
    _Please note that the `--shm-size=1gb` argument is required. By default, Docker's shared memory is limited to 64MB, which is not enough for Chromium to work._
