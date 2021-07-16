@@ -97,7 +97,7 @@ subprojects {
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         compile "com.google.guava:guava:$guavaVersion"
 
-        compile files("$rootDir/network/src/main/resources/resource.jar")
+        compile files("$rootDir/examples/src/main/resources/resource.jar")
     }
 
     tasks.withType(JavaExec) {

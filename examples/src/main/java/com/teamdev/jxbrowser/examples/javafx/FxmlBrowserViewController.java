@@ -1,10 +1,10 @@
 /*
  *  Copyright 2021, TeamDev. All rights reserved.
- *  
+ *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
  *  disclaimer.
- *  
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -18,25 +18,33 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+package com.teamdev.jxbrowser.examples.javafx;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * Represents FXML controller with the address bar and browser view area that displays the URL
+ * entered in the address bar.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public final class FxmlBrowserViewController implements Initializable {
+
+    @FXML
+    private TextField textField;
+
+    @FXML
+    private FxmlBrowserView browserView;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        browserView.browser().navigation().loadUrl(textField.getText());
+    }
+
+    public void loadUrl(ActionEvent actionEvent) {
+        browserView.browser().navigation().loadUrl(textField.getText());
+    }
 }
-
-include 'examples'
-
-// DOM changes
-module('content-changes', './tutorials/content-changes')
-module('eclipse-rcp', './tutorials/eclipse-rcp')
-// Selenium integration
-module('launcher', './tutorials/selenium/launcher')
-module('target-app', './tutorials/selenium/target-app')
-// Java web crawler
-module('web-crawler', './tutorials/web-crawler')
-// Java media player
-module('media-player', './tutorials/media-player')

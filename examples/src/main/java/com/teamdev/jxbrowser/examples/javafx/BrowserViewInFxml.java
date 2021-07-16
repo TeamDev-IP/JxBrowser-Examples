@@ -1,10 +1,10 @@
 /*
  *  Copyright 2021, TeamDev. All rights reserved.
- *  
+ *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
  *  disclaimer.
- *  
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -18,25 +18,32 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+package com.teamdev.jxbrowser.examples.javafx;
+
+import java.util.Objects;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
- * Includes a module and sets custom project directory to it.
+ * This example demonstrates how to use JavaFX BrowserView in FXML app through the {@link
+ * com.teamdev.jxbrowser.examples.javafx.FxmlBrowserView} control.
  */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+public final class BrowserViewInFxml extends Application {
+
+    public static void main(String[] args) {
+        Application.launch(BrowserViewInFxml.class, args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        BorderPane pane = FXMLLoader.load(Objects.requireNonNull(
+                BrowserViewInFxml.class.getResource("/browser-view.fxml")));
+
+        primaryStage.setTitle("JavaFX BrowserView in FXML");
+        primaryStage.setScene(new Scene(pane, 1024, 600));
+        primaryStage.show();
+    }
 }
-
-include 'examples'
-
-// DOM changes
-module('content-changes', './tutorials/content-changes')
-module('eclipse-rcp', './tutorials/eclipse-rcp')
-// Selenium integration
-module('launcher', './tutorials/selenium/launcher')
-module('target-app', './tutorials/selenium/target-app')
-// Java web crawler
-module('web-crawler', './tutorials/web-crawler')
-// Java media player
-module('media-player', './tutorials/media-player')
