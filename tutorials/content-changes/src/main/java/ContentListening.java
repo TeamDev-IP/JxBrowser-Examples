@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020, TeamDev. All rights reserved.
+ *  Copyright 2021, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -22,7 +22,9 @@
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.google.common.base.Charsets;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback.Response;
@@ -33,11 +35,10 @@ import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-
-import com.google.common.base.Charsets;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -90,7 +91,9 @@ public final class ContentListening {
 
         // #docfragment "load-page"
         String html = load("index.html");
-        browser.mainFrame().ifPresent(frame -> frame.loadHtml(html));
+        String base64Html = Base64.getEncoder().encodeToString(html.getBytes(UTF_8));
+        String dataUrl = "data:text/html;base64," + base64Html;
+        browser.navigation().loadUrl(dataUrl);
         // #enddocfragment "load-page"
     }
 
