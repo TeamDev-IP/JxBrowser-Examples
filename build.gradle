@@ -30,7 +30,7 @@ plugins {
 }
 
 ext {
-    jxBrowserVersion = '7.17' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.18' // The version of JxBrowser used in the examples.
     guavaVersion = '29.0-jre' // Some of the examples use Guava.
 }
 
@@ -66,13 +66,21 @@ subprojects {
            2. uncomment the dependency for your platform.
         */
 
-        // Windows-only dependency
+        // Windows 32-bit
         // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-win:${jxBrowserVersion}"
+        // compile "com.teamdev.jxbrowser:jxbrowser-win32:${jxBrowserVersion}"
 
-        // macOS-only dependency
+        // Windows 64-bit
+        // -------------------------
+        // compile "com.teamdev.jxbrowser:jxbrowser-win64:${jxBrowserVersion}"
+
+        // macOS 64-bit
         // -------------------------
         // compile "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
+
+        // macOS 64-bit ARM
+        // -------------------------
+        // compile "com.teamdev.jxbrowser:jxbrowser-mac-arm:${jxBrowserVersion}"
 
         // Linux 64-bit
         // -------------------------
