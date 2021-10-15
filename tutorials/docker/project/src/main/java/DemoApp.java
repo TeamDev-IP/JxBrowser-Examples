@@ -46,12 +46,6 @@ public final class DemoApp {
 
         EngineOptions.Builder options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
-        // #docfragment "disable-gpu"
-        // Disable GPU accelerated rendering.
-        // This option is required as the GPU is not available in the Docker container.
-        options.disableGpu();
-        // #enddocfragment "disable-gpu"
-
         // #docfragment "enable-remote-debugging-port"
         // Enable the remote debugging port.
         options.remoteDebuggingPort(9222);
