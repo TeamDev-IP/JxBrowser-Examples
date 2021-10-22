@@ -60,7 +60,7 @@ public final class LoadHtml {
      */
     static void loadHtmlAndWait(Browser browser, String html) {
         String base64Html = Base64.getEncoder().encodeToString(html.getBytes(UTF_8));
-        String dataUrl = "data:text/html;base64," + base64Html;
+        String dataUrl = "data:text/html;charset=utf-8;base64," + base64Html;
         browser.navigation().loadUrl(dataUrl);
     }
 }
