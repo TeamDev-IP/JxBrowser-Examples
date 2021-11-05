@@ -21,13 +21,13 @@
 package com.teamdev.jxbrowser.examples.swing;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -39,7 +39,7 @@ public final class SwingBrowserView {
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
+        invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Swing BrowserView");

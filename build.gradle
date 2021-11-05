@@ -30,7 +30,7 @@ plugins {
 }
 
 ext {
-    jxBrowserVersion = '7.19' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.20' // The version of JxBrowser used in the examples.
     guavaVersion = '29.0-jre' // Some of the examples use Guava.
 }
 
@@ -62,8 +62,8 @@ subprojects {
 
         /*
            For having only platform-dependent dependency:
-           1. comment out the cross-platform dependency above;
-           2. uncomment the dependency for your platform.
+           1. Comment out the cross-platform dependency above.
+           2. Uncomment the dependency for your platform.
         */
 
         // Windows 32-bit
