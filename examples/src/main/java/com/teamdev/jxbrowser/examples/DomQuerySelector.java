@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Document;
@@ -57,12 +56,13 @@ public final class DomQuerySelector {
                 event.frame().document().flatMap(Document::documentElement).ifPresent(element ->
                         element.findElementsByCssSelector("p").forEach(paragraph ->
                                 System.out.println("innerHTML " + paragraph.innerHtml()))));
-
-        loadHtmlAndWait(browser, "<html><body><div id='root'>" +
-                "<p>paragraph1</p>" +
-                "<p>paragraph2</p>" +
-                "<p>paragraph3</p>" +
-                "</div></body></html>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body><div id='root'>" +
+                    "<p>paragraph1</p>" +
+                    "<p>paragraph2</p>" +
+                    "<p>paragraph3</p>" +
+                    "</div></body></html>");
+        });
     }
 }
 

@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.event.SpellCheckCompleted;
@@ -58,8 +57,10 @@ public final class SpellCheckEvents {
                     System.out.println("Error start index: " + checkResult.location());
                     System.out.println("Error length: " + checkResult.length());
                 }));
-        loadHtmlAndWait(browser, "<html><body>" +
-                "<textarea autofocus rows='20' cols='30'>Smple text with mitake.</textarea>" +
-                "</body></html>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body>" +
+                    "<textarea autofocus rows='20' cols='30'>Smple text with mitake.</textarea>" +
+                    "</body></html>");
+        });
     }
 }

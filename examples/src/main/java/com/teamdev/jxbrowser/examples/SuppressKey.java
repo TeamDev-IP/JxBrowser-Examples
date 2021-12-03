@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 import static java.lang.Character.isDigit;
 
 import com.teamdev.jxbrowser.browser.Browser;
@@ -66,6 +65,8 @@ public final class SuppressKey {
             frame.setVisible(true);
         });
 
-        loadHtmlAndWait(browser, "<textarea></textarea>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<textarea></textarea>");
+        });
     }
 }

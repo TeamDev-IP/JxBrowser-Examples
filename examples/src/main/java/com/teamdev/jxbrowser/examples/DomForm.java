@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
@@ -60,12 +59,13 @@ public final class DomForm {
                     element.findElementByName("lastName").ifPresent(lastName ->
                             lastName.putAttribute("value", "Doe"));
                 }));
-
-        loadHtmlAndWait(browser, "<html><body><form name=\"myForm\">" +
-                "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
-                "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
-                "<input type=\"button\" value=\"Save\"/>" +
-                "</form></body></html>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body><form name=\"myForm\">" +
+                    "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
+                    "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
+                    "<input type=\"button\" value=\"Save\"/>" +
+                    "</form></body></html>");
+        });
     }
 }
 

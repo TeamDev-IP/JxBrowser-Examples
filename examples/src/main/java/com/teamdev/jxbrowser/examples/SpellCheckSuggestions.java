@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
@@ -101,8 +100,11 @@ public final class SpellCheckSuggestions {
             Point location = params.location();
             popupMenu.show(view, location.x(), location.y());
         });
-        loadHtmlAndWait(browser, "<html><body><textarea rows='20' cols='30'>" +
-                "Smple text with mitake.</textarea></body></html>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
+                    "Smple text with mitake.</textarea></body></html>");
+        });
+
     }
 
     private static BrowserView view;

@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Document;
@@ -64,12 +63,13 @@ public final class DomSelectOption {
                             ((OptionElement) options[2]).select();
                             System.out.println(selectElement.innerHtml());
                         }));
-
-        loadHtmlAndWait(browser, "<html><body><select id='select-tag'>\n" +
-                "  <option value=\"volvo\">Volvo</option>\n" +
-                "  <option value=\"saab\">Saab</option>\n" +
-                "  <option value=\"opel\">Opel</option>\n" +
-                "  <option value=\"audi\">Audi</option>\n" +
-                "</select></body></html>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
+                    "  <option value=\"volvo\">Volvo</option>\n" +
+                    "  <option value=\"saab\">Saab</option>\n" +
+                    "  <option value=\"opel\">Opel</option>\n" +
+                    "  <option value=\"audi\">Audi</option>\n" +
+                    "</select></body></html>");
+        });
     }
 }

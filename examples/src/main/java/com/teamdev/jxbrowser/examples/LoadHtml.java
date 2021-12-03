@@ -52,15 +52,8 @@ public final class LoadHtml {
             frame.setVisible(true);
         });
 
-        loadHtmlAndWait(browser, "<html><body><h1>Hello there!</h1></body></html>");
-    }
-
-    /**
-     * Loads the given {@code html} into the {@code browser} instance using the Data URI approach.
-     */
-    static void loadHtmlAndWait(Browser browser, String html) {
-        String base64Html = Base64.getEncoder().encodeToString(html.getBytes(UTF_8));
-        String dataUrl = "data:text/html;charset=utf-8;base64," + base64Html;
-        browser.navigation().loadUrl(dataUrl);
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("<html><body><h1>Hello there!</h1></body></html>");
+        });
     }
 }

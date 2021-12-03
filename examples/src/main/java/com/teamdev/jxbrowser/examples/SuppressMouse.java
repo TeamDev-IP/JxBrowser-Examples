@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.input.PressMouseCallback;
@@ -68,8 +67,10 @@ public final class SuppressMouse {
             frame.setVisible(true);
         });
 
-        loadHtmlAndWait(browser,
-                "<button onclick=\"clicked()\">click holding shift</button>" +
-                        "<script>function clicked() {alert('clicked');}</script>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml(
+                    "<button onclick=\"clicked()\">click holding shift</button>" +
+                            "<script>function clicked() {alert('clicked');}</script>");
+        });
     }
 }
