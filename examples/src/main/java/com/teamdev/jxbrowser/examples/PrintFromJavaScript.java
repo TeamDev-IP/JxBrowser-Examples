@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -51,8 +50,10 @@ public final class PrintFromJavaScript {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            loadHtmlAndWait(browser, "<html><body><a href='#' onclick='window.print();'>" +
-                    "Print</a></body></html>");
+            browser.mainFrame().ifPresent(mainFrame -> {
+                mainFrame.loadHtml("<html><body><a href='#' onclick='window.print();'>" +
+                        "Print</a></body></html>");
+            });
         });
     }
 }

@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.OpenFileCallback;
@@ -58,7 +57,9 @@ public final class FileUpload {
         browser.set(OpenFileCallback.class, (params, tell) ->
                 tell.open(Paths.get("file.txt")));
 
-        loadHtmlAndWait(browser, "Please specify a file, or a set of files:<br>\n" +
-                "<input type='file' name='datafile' size='40'>");
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml("Please specify a file, or a set of files:<br>\n" +
+                    "<input type='file' name='datafile' size='40'>");
+        });
     }
 }

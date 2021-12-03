@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
-import static com.teamdev.jxbrowser.examples.LoadHtml.loadHtmlAndWait;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Document;
@@ -38,11 +37,19 @@ public final class DomGetAttributes {
         Engine engine = Engine.newInstance(OFF_SCREEN);
         Browser browser = engine.newBrowser();
 
-        loadHtmlAndWait(browser,
-                "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>");
-        browser.mainFrame().flatMap(Frame::document).flatMap(Document::documentElement)
-                .flatMap(element -> element.findElementById("link")).ifPresent(linkElement
-                -> linkElement.attributes().forEach((name, value)
-                -> System.out.println(name + " = " + value)));
+        browser.mainFrame().ifPresent(mainFrame -> {
+            mainFrame.loadHtml(
+                    "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>");
+        });
+        browser.mainFrame()
+                .flatMap(Frame::document)
+                .flatMap(Document::documentElement)
+                .flatMap(element -> element.findElementById("link"))
+                .ifPresent(
+                        linkElement -> linkElement.attributes().forEach(DomGetAttributes::print));
+    }
+
+    private static void print(String name, String value) {
+        System.out.println(name + " = " + value);
     }
 }
