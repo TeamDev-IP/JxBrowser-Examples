@@ -1,8 +1,6 @@
 # Welcome to JxBrowser Examples
 
-This repository contains examples of using JxBrowser library.
-
-To learn about the library please visit the [product page](https://www.teamdev.com/jxbrowser).
+This repository contains a set of examples and tutorials you can use to walk through the features of [JxBrowser](https://www.teamdev.com/jxbrowser).
 
 ## Setup & Run
 
@@ -12,9 +10,9 @@ To run the examples follow the instruction below:
    [software and hardware requirements](https://jxbrowser-support.teamdev.com/docs/guides/introduction/requirements.html)
    .
 
-2. Download a free 30-day evaluation license key by sending a request via the [web form](https://www.teamdev.com/jxbrowser#evaluate).
+2. [Download](https://www.teamdev.com/jxbrowser#evaluate) a free 30-day trial license key.
 
-3. Clone this repository using the following command:
+3. Clone this repository:
     ```bash
     git clone https://github.com/TeamDev-IP/JxBrowser-Examples
     ```
@@ -23,7 +21,7 @@ To run the examples follow the instruction below:
    - [Eclipse](https://marketplace.eclipse.org/content/buildship-gradle-integration#group-details)
    - [NetBeans](https://netbeans.org/features/java/build-tools.html)
    
-5. Run an example with the following VM parameter:
+5. Run the example you are interested in with the following VM parameter:
     ```bash
     -Djxbrowser.license.key=<your_license_key>
     ```
