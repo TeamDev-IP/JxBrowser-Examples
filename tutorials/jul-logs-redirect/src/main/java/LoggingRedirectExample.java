@@ -39,7 +39,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  */
 public final class LoggingRedirectExample {
 
-    // The logger you use in your application.
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingRedirectExample.class);
 
     public static void main(String[] args) {
@@ -50,16 +49,16 @@ public final class LoggingRedirectExample {
         // Configure Log4j.
         BasicConfigurator.configure();
 
-        // Get JxBrowser logger.
+        // Get the JxBrowser logger.
         java.util.logging.Logger jxBrowserLogger =
                 LogManager.getLogManager().getLogger("com.teamdev.jxbrowser");
 
-        // Remove existing handlers attached to JxBrowser logger.
+        // Remove existing handlers attached to the JxBrowser logger.
         for (java.util.logging.Handler handler : jxBrowserLogger.getHandlers()) {
             jxBrowserLogger.removeHandler(handler);
         }
 
-        // Add SLF4JBridgeHandler to JxBrowser logger to route all incoming JUL records to the SLF4j API.
+        // Add SLF4JBridgeHandler to the JxBrowser logger to route log records to the SLF4j.
         jxBrowserLogger.addHandler(new SLF4JBridgeHandler());
 
         logger.info("Application started.");
