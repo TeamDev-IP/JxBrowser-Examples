@@ -22,19 +22,9 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.logging.Level;
 import com.teamdev.jxbrowser.logging.Logger;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.logging.LogManager;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -81,37 +71,9 @@ public final class TestApp {
         // Creating and running Chromium engine.
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         Browser browser = engine.newBrowser();
+        browser.navigation().loadUrl("https://google.com");
+        engine.close();
 
-        SwingUtilities.invokeLater(() -> {
-            // Creating Swing component for rendering web content
-            // loaded in the given Browser instance.
-            final BrowserView view = BrowserView.newInstance(browser);
-
-            // Creating and displaying Swing app frame.
-            JFrame frame = new JFrame("Hello World");
-
-            // Close Engine and onClose app window.
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    engine.close();
-                    logger.debug("Window closed.");
-                }
-            });
-            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            JTextField addressBar = new JTextField("https://google.com");
-            addressBar.addActionListener(e -> browser.navigation()
-                    .loadUrl(addressBar.getText()));
-            frame.add(addressBar, BorderLayout.NORTH);
-            frame.add(view, BorderLayout.CENTER);
-            JButton print = new JButton("Print");
-            print.addActionListener(e -> browser.mainFrame().ifPresent(Frame::print));
-            frame.add(print, BorderLayout.SOUTH);
-            frame.setSize(1280, 900);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-
-            browser.navigation().loadUrl(addressBar.getText());
-        });
+        logger.info("Application finished.");
     }
 }

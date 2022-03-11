@@ -35,11 +35,6 @@ jxbrowser {
 }
 
 dependencies {
-    // Adds a dependency to the core JxBrowser API.
-    implementation(jxbrowser.core())
-
-    // Adds dependency to the UI toolkit integration (Swing in this example).
-    implementation(jxbrowser.swing())
 
     // Detects the current platform and adds the corresponding Chromium binaries.
     implementation(jxbrowser.currentPlatform())
