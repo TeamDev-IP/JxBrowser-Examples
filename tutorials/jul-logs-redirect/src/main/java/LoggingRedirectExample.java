@@ -37,25 +37,25 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  * <p>Since the JxBrowser logging system is built on JUL (java.util.logging) you need to route all incoming log records to
  * the SLF4J API to avoid losing them.
  */
-public final class TestApp {
+public final class LoggingRedirectExample {
 
     // The name of the JUL root logger.
     private static final String ROOT_LOGGER_NAME = "com.teamdev.jxbrowser";
 
     // The logger you use in your application.
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TestApp.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingRedirectExample.class);
 
     public static void main(String[] args) {
 
-        // Configure JxBrowser logging levels.
+        // Configure JxBrowser logging level.
         Logger.level(Level.ALL);
 
         // Configure Log4j.
         BasicConfigurator.configure();
 
         // Get JUL root logger.
-        java.util.logging.Logger julRootLogger = LogManager.getLogManager()
-                .getLogger(ROOT_LOGGER_NAME);
+        java.util.logging.Logger julRootLogger =
+                LogManager.getLogManager().getLogger(ROOT_LOGGER_NAME);
 
         // Remove existing handlers attached to JUL root logger.
         for (java.util.logging.Handler handler : julRootLogger.getHandlers()) {
