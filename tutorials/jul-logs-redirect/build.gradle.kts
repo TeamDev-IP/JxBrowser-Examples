@@ -45,6 +45,6 @@ dependencies {
     // Adds a dependency to the Log4j binding for SLF4J.
     implementation("org.slf4j:slf4j-log4j12:1.7.36")
 
-    // Includes a j.u.l handler, namely SLF4JBridgeHandler, which routes all incoming jul records to the SLF4j API.
+    // Includes a JUL handler, namely SLF4JBridgeHandler, which routes all incoming JUL records to the SLF4j API.
     implementation("org.slf4j:jul-to-slf4j:1.7.36")
 }

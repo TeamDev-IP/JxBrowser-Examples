@@ -30,20 +30,19 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
- * This example demonstrates how to enable JxBrowser logging using SLF4J API. This can be useful
- * when you are using third party logging libraries such as log4j, logback, etc. Since the JxBrowser
- * logging system is built on JUL (java.util.logging) you need to route all incoming log records to
- * the SLF4J API to avoid losing them.
+ * This example demonstrates how to capture logs of JxBrowser using SLF4J API.
  *
- * <p>
- * Test application represents the simple Swing component for rendering web content.
+ * <p>This can be useful when you are using third party logging libraries such as log4j, logback, etc.
+ *
+ * <p>Since the JxBrowser logging system is built on JUL (java.util.logging) you need to route all incoming log records to
+ * the SLF4J API to avoid losing them.
  */
 public final class TestApp {
 
-    // The name of the j.u.l root logger that the JxBrowser uses.
+    // The name of the JUL root logger.
     private static final String ROOT_LOGGER_NAME = "com.teamdev.jxbrowser";
 
-    // Logger you use in your application.
+    // The logger you use in your application.
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     public static void main(String[] args) {
@@ -51,19 +50,19 @@ public final class TestApp {
         // Configure JxBrowser logging levels.
         Logger.level(Level.ALL);
 
-        // Configure log4j.
+        // Configure Log4j.
         BasicConfigurator.configure();
 
-        // Get j.u.l root logger.
+        // Get JUL root logger.
         java.util.logging.Logger julRootLogger = LogManager.getLogManager()
                 .getLogger(ROOT_LOGGER_NAME);
 
-        // Remove existing handlers attached to j.u.l root logger.
+        // Remove existing handlers attached to JUL root logger.
         for (java.util.logging.Handler handler : julRootLogger.getHandlers()) {
             julRootLogger.removeHandler(handler);
         }
 
-        // Add SLF4JBridgeHandler to j.u.l's root logger to route all incoming j.u.l records to the SLF4j API.
+        // Add SLF4JBridgeHandler to JUL's root logger to route all incoming JUL records to the SLF4j API.
         julRootLogger.addHandler(new SLF4JBridgeHandler());
 
         logger.info("Application started.");
