@@ -1,10 +1,10 @@
 /*
  *  Copyright 2021, TeamDev. All rights reserved.
- *  
+ *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
  *  disclaimer.
- *  
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -40,3 +40,5 @@ module('target-app', './tutorials/selenium/target-app')
 module('web-crawler', './tutorials/web-crawler')
 // Java media player
 module('media-player', './tutorials/media-player')
+// JxBrowser logs redirection
+module('jul-logs-redirect', './tutorials/jul-logs-redirect')
