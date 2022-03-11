@@ -39,9 +39,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  */
 public final class LoggingRedirectExample {
 
-    // The name of the JUL root logger.
-    private static final String ROOT_LOGGER_NAME = "com.teamdev.jxbrowser";
-
     // The logger you use in your application.
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingRedirectExample.class);
 
@@ -53,17 +50,17 @@ public final class LoggingRedirectExample {
         // Configure Log4j.
         BasicConfigurator.configure();
 
-        // Get JUL root logger.
-        java.util.logging.Logger julRootLogger =
-                LogManager.getLogManager().getLogger(ROOT_LOGGER_NAME);
+        // Get JxBrowser logger.
+        java.util.logging.Logger jxBrowserLogger =
+                LogManager.getLogManager().getLogger("com.teamdev.jxbrowser");
 
-        // Remove existing handlers attached to JUL root logger.
-        for (java.util.logging.Handler handler : julRootLogger.getHandlers()) {
-            julRootLogger.removeHandler(handler);
+        // Remove existing handlers attached to JxBrowser logger.
+        for (java.util.logging.Handler handler : jxBrowserLogger.getHandlers()) {
+            jxBrowserLogger.removeHandler(handler);
         }
 
-        // Add SLF4JBridgeHandler to JUL's root logger to route all incoming JUL records to the SLF4j API.
-        julRootLogger.addHandler(new SLF4JBridgeHandler());
+        // Add SLF4JBridgeHandler to JxBrowser logger to route all incoming JUL records to the SLF4j API.
+        jxBrowserLogger.addHandler(new SLF4JBridgeHandler());
 
         logger.info("Application started.");
 
