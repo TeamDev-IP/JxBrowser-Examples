@@ -25,7 +25,6 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.logging.Level;
 import com.teamdev.jxbrowser.logging.Logger;
 import java.util.logging.LogManager;
-import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
@@ -45,9 +44,6 @@ public final class LoggingRedirectExample {
 
         // Configure JxBrowser logging level.
         Logger.level(Level.ALL);
-
-        // Configure Log4j.
-        BasicConfigurator.configure();
 
         // Get the JxBrowser logger.
         java.util.logging.Logger jxBrowserLogger =
