@@ -25,20 +25,12 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.logging.Level;
 import com.teamdev.jxbrowser.logging.Logger;
 import java.util.logging.LogManager;
-import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
  * This example demonstrates how to capture logs of JxBrowser using SLF4J API.
- *
- * <p>This can be useful when you are using third party logging libraries such as log4j, logback, etc.
- *
- * <p>Since the JxBrowser logging system is built on JUL (java.util.logging) you need to route all incoming log records to
- * the SLF4J API to avoid losing them.
  */
 public final class LoggingRedirectExample {
-
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(LoggingRedirectExample.class);
 
     public static void main(String[] args) {
 
@@ -57,14 +49,10 @@ public final class LoggingRedirectExample {
         // Add SLF4JBridgeHandler to the JxBrowser logger to route log records to the SLF4j.
         jxBrowserLogger.addHandler(new SLF4JBridgeHandler());
 
-        logger.info("Application started.");
-
         // Creating and running Chromium engine.
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         Browser browser = engine.newBrowser();
         browser.navigation().loadUrl("https://google.com");
         engine.close();
-
-        logger.info("Application finished.");
     }
 }

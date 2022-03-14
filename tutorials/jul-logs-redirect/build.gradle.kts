@@ -35,7 +35,6 @@ jxbrowser {
 }
 
 dependencies {
-
     // Detects the current platform and adds the corresponding Chromium binaries.
     implementation(jxbrowser.currentPlatform())
 
