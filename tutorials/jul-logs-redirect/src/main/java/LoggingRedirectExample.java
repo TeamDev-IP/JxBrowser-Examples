@@ -28,7 +28,7 @@ import java.util.logging.LogManager;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
- * This example demonstrates how to capture logs of JxBrowser using SLF4J API.
+ * This example demonstrates how to capture JxBrowser logs using SLF4J API.
  */
 public final class LoggingRedirectExample {
 
