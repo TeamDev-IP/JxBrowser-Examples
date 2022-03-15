@@ -18,26 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    java
-    // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser.gradle") version "0.0.2"
-}
-
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-}
-
-jxbrowser {
-    // The JxBrowser version.
-    version = "7.23"
-}
-
 dependencies {
-    // Detects the current platform and adds the corresponding Chromium binaries.
-    implementation(jxbrowser.currentPlatform())
-
     // Adds a dependency to the SLF4J API.
     implementation("org.slf4j:slf4j-api:1.7.36")
 

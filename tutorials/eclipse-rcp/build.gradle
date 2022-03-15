@@ -50,7 +50,7 @@ dependencies {
     // -------------------------
     jxbrowserPlatform "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
 
-    compile files("$rootDir/network/src/main/resources/resource.jar")
+    implementation files("$rootDir/network/src/main/resources/resource.jar")
 }
 
 /**
