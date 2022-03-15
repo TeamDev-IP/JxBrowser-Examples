@@ -1,5 +1,5 @@
 /*
- *  Copyright 2021, TeamDev. All rights reserved.
+ *  Copyright 2022, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,27 +18,13 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'JxBrowser-Examples'
+dependencies {
+    // Adds a dependency to the SLF4J API.
+    implementation("org.slf4j:slf4j-api:1.7.36")
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name, final String path ->
-    include name
-    project(":$name").projectDir = new File("$path")
+    // Adds a dependency to the Log4j binding for SLF4J.
+    implementation("org.slf4j:slf4j-log4j12:1.7.36")
+
+    // Includes a JUL handler, namely SLF4JBridgeHandler, which routes all incoming JUL records to the SLF4j API.
+    implementation("org.slf4j:jul-to-slf4j:1.7.36")
 }
-
-include 'examples'
-
-// DOM changes
-module('content-changes', './tutorials/content-changes')
-module('eclipse-rcp', './tutorials/eclipse-rcp')
-// Selenium integration
-module('launcher', './tutorials/selenium/launcher')
-module('target-app', './tutorials/selenium/target-app')
-// Java web crawler
-module('web-crawler', './tutorials/web-crawler')
-// Java media player
-module('media-player', './tutorials/media-player')
-// JxBrowser logs redirection
-module('jul-logs-redirect', './tutorials/jul-logs-redirect')

@@ -1,10 +1,10 @@
 /*
  *  Copyright 2021, TeamDev. All rights reserved.
- *  
+ *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
  *  disclaimer.
- *  
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -20,11 +20,14 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 
 plugins {
+    // Provides convenience methods for adding JxBrowser dependencies into a project.
+    id "com.teamdev.jxbrowser.gradle" version "0.0.2"
+
     // This plugin automatically resolves SWT dependencies.
     id 'com.diffplug.gradle.eclipse.mavencentral' version '3.18.0' apply false
 }
@@ -32,6 +35,10 @@ plugins {
 ext {
     jxBrowserVersion = '7.23' // The version of JxBrowser used in the examples.
     guavaVersion = '29.0-jre' // Some of the examples use Guava.
+}
+
+jxbrowser {
+    version = "$jxBrowserVersion"
 }
 
 allprojects {
@@ -51,14 +58,13 @@ subprojects {
     targetCompatibility = 1.8
 
     repositories {
-        jcenter()
+        mavenCentral()
         maven { url = 'https://europe-maven.pkg.dev/jxbrowser/releases' }
     }
 
     dependencies {
         // Cross-platform dependency
-        // -------------------------
-        compile "com.teamdev.jxbrowser:jxbrowser-cross-platform:${jxBrowserVersion}"
+        implementation jxbrowser.currentPlatform()
 
         /*
            For having only platform-dependent dependency:
@@ -67,45 +73,36 @@ subprojects {
         */
 
         // Windows 32-bit
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-win32:${jxBrowserVersion}"
+        // implementation jxbrowser.win32()
 
         // Windows 64-bit
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-win64:${jxBrowserVersion}"
+        // implementation jxbrowser.win64()
 
         // macOS 64-bit
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-mac:${jxBrowserVersion}"
+        // implementation jxbrowser.mac()
 
         // macOS 64-bit ARM
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-mac-arm:${jxBrowserVersion}"
+        // implementation jxbrowser.macArm()
 
         // Linux 64-bit
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-linux64:${jxBrowserVersion}"
+        // implementation jxbrowser.linux64()
 
         // Linux 64-bit ARM
-        // -------------------------
-        // compile "com.teamdev.jxbrowser:jxbrowser-linux64-arm:${jxBrowserVersion}"
+        // implementation jxbrowser.linuxArm()
 
         // JavaFX dependency
-        // -------------------------
-        compile "com.teamdev.jxbrowser:jxbrowser-javafx:${jxBrowserVersion}"
+        implementation jxbrowser.javafx()
 
         // Swing dependency
-        // -------------------------
-        compile "com.teamdev.jxbrowser:jxbrowser-swing:${jxBrowserVersion}"
+        implementation jxbrowser.swing()
 
         // SWT dependency
-        // -------------------------
-        compile "com.teamdev.jxbrowser:jxbrowser-swt:${jxBrowserVersion}"
+        implementation jxbrowser.swt()
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
-        compile "com.google.guava:guava:$guavaVersion"
+        implementation "com.google.guava:guava:$guavaVersion"
 
-        compile files("$rootDir/examples/src/main/resources/resource.jar")
+        implementation files("$rootDir/examples/src/main/resources/resource.jar")
     }
 
     tasks.withType(JavaExec) {
@@ -119,7 +116,7 @@ subprojects {
         // Nevertheless all versions higher than 4.8.0 cannot be resolved.
         // Current version is bundled with the 3.107.0 version of the SWT.
         release '4.8.0', {
-            compile 'org.eclipse.swt'
+            implementation 'org.eclipse.swt'
             useNativesForRunningPlatform()
         }
     }
