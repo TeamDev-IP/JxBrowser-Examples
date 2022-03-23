@@ -53,10 +53,8 @@ public final class PrintSettings {
                     .orElseThrow(IllegalStateException::new);
             PrintJob<HtmlSettings> printJob = printer.printJob();
             printJob.settings()
-                    // Configure header with custom text and document title.
                     .header("<span style=\"font-size: 12px;\">"
                             + "Page header: <span class=\"title\"></span></div>")
-                    // Configure footer with custom text and the current page number.
                     .footer("<span style=\"font-size: 12px;\">"
                             + "Page footer: <span class=\"pageNumber\"></span></div>")
                     .paperSize(ISO_A4)
