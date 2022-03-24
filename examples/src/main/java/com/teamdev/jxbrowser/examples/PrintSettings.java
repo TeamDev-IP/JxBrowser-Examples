@@ -53,10 +53,10 @@ public final class PrintSettings {
                     .orElseThrow(IllegalStateException::new);
             PrintJob<HtmlSettings> printJob = printer.printJob();
             printJob.settings()
-                    .header("<span style=\"font-size: 12px;\">"
-                            + "Page header: <span class=\"title\"></span></div>")
-                    .footer("<span style=\"font-size: 12px;\">"
-                            + "Page footer: <span class=\"pageNumber\"></span></div>")
+                    .header("<span style='font-size: 12px;'>"
+                            + "Page header: <span class='title'></span></div>")
+                    .footer("<span style='font-size: 12px;'>"
+                            + "Page footer: <span class='pageNumber'></span></div>")
                     .paperSize(ISO_A4)
                     .colorModel(COLOR)
                     .enablePrintingBackgrounds()
