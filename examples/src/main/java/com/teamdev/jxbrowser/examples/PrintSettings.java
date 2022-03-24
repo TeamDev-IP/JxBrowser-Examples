@@ -54,9 +54,9 @@ public final class PrintSettings {
             PrintJob<HtmlSettings> printJob = printer.printJob();
             printJob.settings()
                     .header("<span style='font-size: 12px;'>"
-                            + "Page header: <span class='title'></span></div>")
+                            + "Page header: <span class='title'></span>")
                     .footer("<span style='font-size: 12px;'>"
-                            + "Page footer: <span class='pageNumber'></span></div>")
+                            + "Page footer: <span class='pageNumber'></span>")
                     .paperSize(ISO_A4)
                     .colorModel(COLOR)
                     .enablePrintingBackgrounds()
