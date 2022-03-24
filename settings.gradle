@@ -42,3 +42,5 @@ module('web-crawler', './tutorials/web-crawler')
 module('media-player', './tutorials/media-player')
 // JxBrowser logs redirection
 module('jul-logs-redirect', './tutorials/jul-logs-redirect')
+// Java remote screen sharing
+module('screen-sharing', './tutorials/screen-sharing')
