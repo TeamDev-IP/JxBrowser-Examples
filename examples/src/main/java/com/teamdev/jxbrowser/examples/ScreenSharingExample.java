@@ -18,6 +18,8 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.teamdev.jxbrowser.examples;
+
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -28,22 +30,25 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+/**
+ * This example demonstrates how to enable screen sharing between two browsers.
+ */
 public final class ScreenSharingExample {
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        Browser browser1 = engine.newBrowser();
 
-        initBrowserView(browser);
+        initBrowserView(browser1);
 
-        browser.navigation().loadUrl("https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222");
+        browser1.navigation().loadUrl("https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222");
     }
 
     private static void initBrowserView(Browser browser) {
         invokeLater(() -> {
             BrowserView view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Swing BrowserView");
+            JFrame frame = new JFrame("Screen Sharing Example");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(1200, 800);
