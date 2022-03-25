@@ -24,6 +24,11 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.callback.StartCaptureSessionCallback;
+import com.teamdev.jxbrowser.browser.event.CaptureSessionStarted;
+import com.teamdev.jxbrowser.capture.AudioCaptureMode;
+import com.teamdev.jxbrowser.capture.CaptureSource;
+import com.teamdev.jxbrowser.capture.CaptureSources;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -33,15 +38,38 @@ import javax.swing.WindowConstants;
 /**
  * This example demonstrates how to enable screen sharing between two browsers.
  */
-public final class ScreenSharingExample {
+public final class ScreenSharing {
+
+    private static final String WEBRTC_SCREEN_SHARING_URL = "https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222";
 
     public static void main(String[] args) {
+        // Creating an Engine and two Browser instances.
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         Browser browser1 = engine.newBrowser();
+        Browser browser2 = engine.newBrowser();
+
+        // Handling a request to start a capture session.
+        browser1.set(StartCaptureSessionCallback.class, (params, tell) -> {
+            CaptureSources sources = params.sources();
+
+            // Get the capture source (the first entire screen).
+            CaptureSource screen = sources.screens().get(0);
+
+            // Tell the browser instance to start a new capture session with capturing the audio content.
+            tell.selectSource(screen, AudioCaptureMode.CAPTURE);
+        });
+
+        // Subscribe to the capture session start event.
+        browser1.on(CaptureSessionStarted.class, event ->
+
+            // Navigate to the screen sharing URL in the second browser.
+            browser2.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL)
+        );
 
         initBrowserView(browser1);
+        initBrowserView(browser2);
 
-        browser1.navigation().loadUrl("https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222");
+        browser1.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL);
     }
 
     private static void initBrowserView(Browser browser) {
@@ -51,7 +79,7 @@ public final class ScreenSharingExample {
             JFrame frame = new JFrame("Screen Sharing Example");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
-            frame.setSize(1200, 800);
+            frame.setSize(720, 800);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
