@@ -26,7 +26,7 @@ buildscript {
 
 plugins {
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id "com.teamdev.jxbrowser.gradle" version "0.0.2"
+    id "com.teamdev.jxbrowser.gradle" version "0.0.3"
 
     // This plugin automatically resolves SWT dependencies.
     id 'com.diffplug.gradle.eclipse.mavencentral' version '3.18.0' apply false
@@ -64,7 +64,7 @@ subprojects {
 
     dependencies {
         // Cross-platform dependency
-        implementation jxbrowser.currentPlatform()
+        implementation jxbrowser.crossPlatform()
 
         /*
            For having only platform-dependent dependency:
