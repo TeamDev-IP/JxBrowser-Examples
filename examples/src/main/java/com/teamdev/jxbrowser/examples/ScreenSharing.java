@@ -43,13 +43,14 @@ public final class ScreenSharing {
     private static final String WEBRTC_SCREEN_SHARING_URL = "https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222";
 
     public static void main(String[] args) {
-        // Creating an Engine and two Browser instances.
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser1 = engine.newBrowser();
-        Browser browser2 = engine.newBrowser();
 
-        // Handling a request to start a capture session.
-        browser1.set(StartCaptureSessionCallback.class, (params, tell) -> {
+        // Create an Engine and two Browser instances.
+        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        Browser browserStreamer = engine.newBrowser();
+        Browser browserSpectator = engine.newBrowser();
+
+        // Handle a request to start a capture session.
+        browserStreamer.set(StartCaptureSessionCallback.class, (params, tell) -> {
             CaptureSources sources = params.sources();
 
             // Get the capture source (the first entire screen).
@@ -60,16 +61,16 @@ public final class ScreenSharing {
         });
 
         // Subscribe to the capture session start event.
-        browser1.on(CaptureSessionStarted.class, event ->
+        browserStreamer.on(CaptureSessionStarted.class, event ->
 
             // Navigate to the screen sharing URL in the second browser.
-            browser2.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL)
+            browserSpectator.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL)
         );
 
-        initBrowserView(browser1);
-        initBrowserView(browser2);
+        initBrowserView(browserStreamer);
+        initBrowserView(browserSpectator);
 
-        browser1.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL);
+        browserStreamer.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL);
     }
 
     private static void initBrowserView(Browser browser) {
