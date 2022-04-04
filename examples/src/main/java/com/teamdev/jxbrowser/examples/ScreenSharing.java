@@ -80,7 +80,7 @@ public final class ScreenSharing {
             JFrame frame = new JFrame("Screen Sharing Example");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
-            frame.setSize(720, 800);
+            frame.setSize(1200, 800);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
