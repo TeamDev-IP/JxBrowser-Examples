@@ -50,6 +50,6 @@ public final class SwingBrowserView {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("chrome://crash/");
     }
 }
