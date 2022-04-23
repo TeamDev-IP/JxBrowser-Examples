@@ -21,22 +21,27 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.System.lineSeparator;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.StartCaptureSessionCallback;
-import com.teamdev.jxbrowser.browser.event.CaptureSessionStarted;
 import com.teamdev.jxbrowser.capture.AudioCaptureMode;
 import com.teamdev.jxbrowser.capture.CaptureSource;
 import com.teamdev.jxbrowser.capture.CaptureSources;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to enable screen sharing between two browsers.
+ * This example demonstrates how to share the screen with a button click in the Swing application.
  */
 public final class ScreenSharing {
 
@@ -44,13 +49,12 @@ public final class ScreenSharing {
 
     public static void main(String[] args) {
 
-        // Create an Engine and two Browser instances.
+        // Create an Engine and Browser instances.
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browserStreamer = engine.newBrowser();
-        Browser browserSpectator = engine.newBrowser();
+        Browser browser = engine.newBrowser();
 
         // Handle a request to start a capture session.
-        browserStreamer.set(StartCaptureSessionCallback.class, (params, tell) -> {
+        browser.set(StartCaptureSessionCallback.class, (params, tell) -> {
             CaptureSources sources = params.sources();
 
             // Get the capture source (the first entire screen).
@@ -60,27 +64,32 @@ public final class ScreenSharing {
             tell.selectSource(screen, AudioCaptureMode.CAPTURE);
         });
 
-        // Subscribe to the capture session start event.
-        browserStreamer.on(CaptureSessionStarted.class, event ->
-
-            // Navigate to the screen sharing URL in the second browser.
-            browserSpectator.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL)
-        );
-
-        initBrowserView(browserStreamer);
-        initBrowserView(browserSpectator);
-
-        browserStreamer.navigation().loadUrl(WEBRTC_SCREEN_SHARING_URL);
-    }
-
-    private static void initBrowserView(Browser browser) {
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
             JFrame frame = new JFrame("Screen Sharing Example");
+            JButton share = new JButton("Share Your Screen");
+
+            share.addActionListener(e -> {
+
+                // Load the WebRTC Screen Sharing Demo.
+                browser.navigation()
+                        .loadUrlAndWait(WEBRTC_SCREEN_SHARING_URL);
+
+                // Click the "Share Your Screen" button to start a capture session.
+                browser.mainFrame().ifPresent(mainFrame ->
+                        mainFrame.executeJavaScript(
+                                "document.getElementById('share-screen').click();"));
+
+                // Copy the screen sharing URL to a clipboard.
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(new StringSelection(WEBRTC_SCREEN_SHARING_URL), null);
+                JOptionPane.showMessageDialog(frame, "You are sharing the screen." + lineSeparator()
+                        + "URL copied to clipboard.");
+            });
+
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(1200, 800);
+            frame.setSize(600, 400);
+            frame.setLayout(new GridBagLayout());
+            frame.add(share, new GridBagConstraints());
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
