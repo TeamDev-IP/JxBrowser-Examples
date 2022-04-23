@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.System.lineSeparator;
 import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
@@ -82,8 +81,8 @@ public final class ScreenSharing {
                 // Copy the screen sharing URL to a clipboard.
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(new StringSelection(WEBRTC_SCREEN_SHARING_URL), null);
-                JOptionPane.showMessageDialog(frame, "You are sharing the screen." + lineSeparator()
-                        + "URL copied to clipboard.");
+                String message = String.format("You are sharing the screen.%nURL copied to clipboard.");
+                JOptionPane.showMessageDialog(frame, message);
             });
 
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
