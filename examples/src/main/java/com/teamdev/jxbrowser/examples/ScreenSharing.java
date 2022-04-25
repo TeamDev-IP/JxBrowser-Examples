@@ -29,11 +29,13 @@ import com.teamdev.jxbrowser.capture.AudioCaptureMode;
 import com.teamdev.jxbrowser.capture.CaptureSource;
 import com.teamdev.jxbrowser.capture.CaptureSources;
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.navigation.event.FrameDocumentLoadFinished;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,7 +46,8 @@ import javax.swing.WindowConstants;
  */
 public final class ScreenSharing {
 
-    private static final String WEBRTC_SCREEN_SHARING_URL = "https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing/#654705298396222";
+    private static final String WEBRTC_SCREEN_SHARING_URL = "https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing";
+    private static CountDownLatch countDownLatch;
 
     public static void main(String[] args) {
 
@@ -63,15 +66,31 @@ public final class ScreenSharing {
             tell.selectSource(screen, AudioCaptureMode.CAPTURE);
         });
 
+        // Subscribe to the complete document download.
+        browser.navigation().on(FrameDocumentLoadFinished.class, event -> {
+            String url = event.frame().browser().url();
+            if (url.startsWith(WEBRTC_SCREEN_SHARING_URL)) {
+                countDownLatch.countDown();
+            }
+        });
+
         invokeLater(() -> {
             JFrame frame = new JFrame("Screen Sharing Example");
             JButton share = new JButton("Share Your Screen");
 
             share.addActionListener(e -> {
+                countDownLatch = new CountDownLatch(1);
 
                 // Load the WebRTC Screen Sharing Demo.
                 browser.navigation()
                         .loadUrlAndWait(WEBRTC_SCREEN_SHARING_URL);
+
+                // Wait until the document in the main frame is loaded completely.
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 // Click the "Share Your Screen" button to start a capture session.
                 browser.mainFrame().ifPresent(mainFrame ->
@@ -80,8 +99,9 @@ public final class ScreenSharing {
 
                 // Copy the screen sharing URL to a clipboard.
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(WEBRTC_SCREEN_SHARING_URL), null);
-                String message = String.format("You are sharing the screen.%nURL copied to clipboard.");
+                clipboard.setContents(new StringSelection(browser.url()), null);
+                String message = String.format(
+                        "You are sharing the screen.%nURL copied to clipboard.");
                 JOptionPane.showMessageDialog(frame, message);
             });
 
