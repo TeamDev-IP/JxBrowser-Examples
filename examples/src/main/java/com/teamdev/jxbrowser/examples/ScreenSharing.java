@@ -82,12 +82,7 @@ public final class ScreenSharing {
                         mainFrame.executeJavaScript(
                                 "document.getElementById('share-screen').click();"));
 
-                // Copy the screen sharing URL to a clipboard.
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(browser.url()), null);
-                String message = String.format(
-                        "You are sharing the screen.%nURL copied to clipboard.");
-                JOptionPane.showMessageDialog(frame, message);
+                showSuccessScreenSharingDialog(frame, browser.url());
             });
 
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -114,5 +109,28 @@ public final class ScreenSharing {
             throw new RuntimeException(e);
         }
         subscription.unsubscribe();
+    }
+
+    private static void showSuccessScreenSharingDialog(JFrame frame, String url) {
+        String title = "You are sharing the primary screen";
+        String message = String.format(
+                "Please share and open the following URL in Google Chrome to see your screen remotely:%n%s",
+                url);
+        String copyActionText = "Copy URL";
+        String closeActionText = "Close";
+
+        Object[] options = new Object[]{copyActionText, closeActionText};
+        int returnValue = JOptionPane.showOptionDialog(frame,
+                message,
+                title,
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]);
+        if (returnValue == JOptionPane.OK_OPTION) {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(url), null);
+        }
     }
 }
