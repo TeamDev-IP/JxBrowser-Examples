@@ -29,6 +29,7 @@ import com.teamdev.jxbrowser.capture.AudioCaptureMode;
 import com.teamdev.jxbrowser.capture.CaptureSource;
 import com.teamdev.jxbrowser.capture.CaptureSources;
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.event.Subscription;
 import com.teamdev.jxbrowser.navigation.event.FrameDocumentLoadFinished;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -47,7 +48,6 @@ import javax.swing.WindowConstants;
 public final class ScreenSharing {
 
     private static final String WEBRTC_SCREEN_SHARING_URL = "https://www.webrtc-experiment.com/Pluginfree-Screen-Sharing";
-    private static CountDownLatch countDownLatch;
 
     public static void main(String[] args) {
 
@@ -66,31 +66,14 @@ public final class ScreenSharing {
             tell.selectSource(screen, AudioCaptureMode.CAPTURE);
         });
 
-        // Subscribe to the complete document download.
-        browser.navigation().on(FrameDocumentLoadFinished.class, event -> {
-            String url = event.frame().browser().url();
-            if (url.startsWith(WEBRTC_SCREEN_SHARING_URL)) {
-                countDownLatch.countDown();
-            }
-        });
-
         invokeLater(() -> {
             JFrame frame = new JFrame("Screen Sharing Example");
             JButton share = new JButton("Share screen");
 
             share.addActionListener(e -> {
-                countDownLatch = new CountDownLatch(1);
 
-                // Load the WebRTC Screen Sharing Demo.
-                browser.navigation()
-                        .loadUrlAndWait(WEBRTC_SCREEN_SHARING_URL);
-
-                // Wait until the document in the main frame is loaded completely.
-                try {
-                    countDownLatch.await();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                // Load the WebRTC Screen Sharing Demo and wait until the document in the main frame is loaded completely.
+                loadUrlAndWaitForDocument(browser, WEBRTC_SCREEN_SHARING_URL);
 
                 // Click the "Share Your Screen" button to start a capture session.
                 browser.mainFrame().ifPresent(mainFrame ->
@@ -112,5 +95,22 @@ public final class ScreenSharing {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    private static void loadUrlAndWaitForDocument(Browser browser, String url) {
+        CountDownLatch documentLoaded = new CountDownLatch(1);
+        Subscription subscription = browser.navigation().on(FrameDocumentLoadFinished.class, e -> {
+            String currentUrl = e.frame().browser().url();
+            if (currentUrl.startsWith(url)) {
+                documentLoaded.countDown();
+            }
+        });
+        browser.navigation().loadUrlAndWait(url);
+        try {
+            documentLoaded.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        subscription.unsubscribe();
     }
 }
