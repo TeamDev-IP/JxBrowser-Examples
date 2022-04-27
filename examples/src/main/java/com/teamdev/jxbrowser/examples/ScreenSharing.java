@@ -76,7 +76,7 @@ public final class ScreenSharing {
 
         invokeLater(() -> {
             JFrame frame = new JFrame("Screen Sharing Example");
-            JButton share = new JButton("Share Your Screen");
+            JButton share = new JButton("Share screen");
 
             share.addActionListener(e -> {
                 countDownLatch = new CountDownLatch(1);
