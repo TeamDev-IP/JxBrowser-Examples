@@ -43,7 +43,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to share the screen with a button click in the Swing application.
+ * This example demonstrates how to share a primary screen programmatically via WebRTC and generate
+ * a URL that can be opened remotely in a web browser app to observe the shared screen.
  */
 public final class ScreenSharing {
 
@@ -68,11 +69,12 @@ public final class ScreenSharing {
 
         invokeLater(() -> {
             JFrame frame = new JFrame("Screen Sharing Example");
-            JButton share = new JButton("Share screen");
+            JButton share = new JButton("Share My Screen...");
 
             share.addActionListener(e -> {
 
-                // Load the WebRTC Screen Sharing Demo and wait until the document in the main frame is loaded completely.
+                // Load the WebRTC Screen Sharing Demo
+                // and wait until the document in the main frame is loaded completely.
                 loadUrlAndWaitForDocument(browser, WEBRTC_SCREEN_SHARING_URL);
 
                 // Click the "Share Your Screen" button to start a capture session.
@@ -89,7 +91,7 @@ public final class ScreenSharing {
             });
 
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setSize(600, 400);
+            frame.setSize(500, 300);
             frame.setLayout(new GridBagLayout());
             frame.add(share, new GridBagConstraints());
             frame.setLocationRelativeTo(null);
