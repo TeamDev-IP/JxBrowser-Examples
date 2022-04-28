@@ -112,25 +112,27 @@ public final class ScreenSharing {
     }
 
     private static void showSuccessScreenSharingDialog(JFrame frame, String url) {
-        String title = "You are sharing the primary screen";
-        String message = String.format(
-                "Please share and open the following URL in Google Chrome to see your screen remotely:%n%s",
-                url);
-        String copyActionText = "Copy URL";
-        String closeActionText = "Close";
+        invokeLater(() -> {
+            String title = "You are sharing the primary screen";
+            String message = String.format(
+                    "Please share and open the following URL in Google Chrome to see your screen remotely:%n%s",
+                    url);
+            String copyActionText = "Copy URL";
+            String closeActionText = "Close";
 
-        Object[] options = new Object[]{copyActionText, closeActionText};
-        int returnValue = JOptionPane.showOptionDialog(frame,
-                message,
-                title,
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[0]);
-        if (returnValue == JOptionPane.OK_OPTION) {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(new StringSelection(url), null);
-        }
+            Object[] options = new Object[]{copyActionText, closeActionText};
+            int returnValue = JOptionPane.showOptionDialog(frame,
+                    message,
+                    title,
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+            if (returnValue == JOptionPane.OK_OPTION) {
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(new StringSelection(url), null);
+            }
+        });
     }
 }
