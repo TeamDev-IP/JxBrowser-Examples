@@ -115,7 +115,7 @@ public final class ScreenSharing {
         invokeLater(() -> {
             String title = "You are sharing the primary screen";
             String message = String.format(
-                    "Please share and open the following URL in a web browser to see your screen remotely:%n%s",
+                    "Please open the following URL in a web browser to see your screen remotely:%n%s",
                     url);
             String copyActionText = "Copy URL";
             String closeActionText = "Close";
