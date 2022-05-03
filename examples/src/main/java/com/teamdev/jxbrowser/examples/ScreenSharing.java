@@ -28,6 +28,7 @@ import com.teamdev.jxbrowser.browser.callback.StartCaptureSessionCallback;
 import com.teamdev.jxbrowser.capture.AudioCaptureMode;
 import com.teamdev.jxbrowser.capture.CaptureSource;
 import com.teamdev.jxbrowser.capture.CaptureSources;
+import com.teamdev.jxbrowser.dom.Node;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.event.Subscription;
 import com.teamdev.jxbrowser.navigation.event.FrameDocumentLoadFinished;
@@ -43,8 +44,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to share a primary screen programmatically via WebRTC and generate
- * a URL that can be opened remotely in a web browser app to observe the shared screen.
+ * This example demonstrates how to share the primary screen programmatically via WebRTC and
+ * generate a URL that can be opened remotely in a browser.
  */
 public final class ScreenSharing {
 
@@ -78,11 +79,11 @@ public final class ScreenSharing {
                 loadUrlAndWaitForDocument(browser, WEBRTC_SCREEN_SHARING_URL);
 
                 // Click the "Share Your Screen" button to start a capture session.
-                browser.mainFrame().ifPresent(mainFrame ->
-                        mainFrame.executeJavaScript(
-                                "document.getElementById('share-screen').click();"));
+                browser.mainFrame().flatMap(mainFrame -> mainFrame.document()
+                                .flatMap(document -> document.findElementById("share-screen")))
+                        .ifPresent(Node::click);
 
-                showSuccessScreenSharingDialog(frame, browser.url());
+                showSuccessDialog(frame, browser.url());
             });
 
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -97,8 +98,7 @@ public final class ScreenSharing {
     private static void loadUrlAndWaitForDocument(Browser browser, String url) {
         CountDownLatch documentLoaded = new CountDownLatch(1);
         Subscription subscription = browser.navigation().on(FrameDocumentLoadFinished.class, e -> {
-            String currentUrl = e.frame().browser().url();
-            if (currentUrl.startsWith(url)) {
+            if (e.frame().isMain()) {
                 documentLoaded.countDown();
             }
         });
@@ -111,11 +111,11 @@ public final class ScreenSharing {
         subscription.unsubscribe();
     }
 
-    private static void showSuccessScreenSharingDialog(JFrame frame, String url) {
+    private static void showSuccessDialog(JFrame frame, String url) {
         invokeLater(() -> {
             String title = "You are sharing the primary screen";
             String message = String.format(
-                    "Please share and open the following URL in Google Chrome to see your screen remotely:%n%s",
+                    "Please share and open the following URL in a web browser to see your screen remotely:%n%s",
                     url);
             String copyActionText = "Copy URL";
             String closeActionText = "Close";
@@ -130,9 +130,13 @@ public final class ScreenSharing {
                     options,
                     options[0]);
             if (returnValue == JOptionPane.OK_OPTION) {
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(url), null);
+                copyToClipboard(url);
             }
         });
+    }
+
+    private static void copyToClipboard(String url) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(url), null);
     }
 }
