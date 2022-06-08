@@ -26,7 +26,7 @@ buildscript {
 
 plugins {
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id "com.teamdev.jxbrowser.gradle" version "0.0.3"
+    id "com.teamdev.jxbrowser.gradle" version "0.0.3" apply false
 
     // This plugin automatically resolves SWT dependencies.
     id 'com.diffplug.gradle.eclipse.mavencentral' version '3.18.0' apply false
@@ -35,10 +35,6 @@ plugins {
 ext {
     jxBrowserVersion = '7.25' // The version of JxBrowser used in the examples.
     guavaVersion = '29.0-jre' // Some of the examples use Guava.
-}
-
-jxbrowser {
-    version = "$jxBrowserVersion"
 }
 
 allprojects {
@@ -53,13 +49,17 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
+    apply plugin: 'com.teamdev.jxbrowser.gradle'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
         mavenCentral()
-        maven { url = 'https://europe-maven.pkg.dev/jxbrowser/releases' }
+    }
+
+    jxbrowser {
+        version = "$jxBrowserVersion"
     }
 
     dependencies {
