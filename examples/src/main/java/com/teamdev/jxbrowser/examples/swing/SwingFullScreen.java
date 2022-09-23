@@ -23,9 +23,10 @@ package com.teamdev.jxbrowser.examples.swing;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.browser.event.FullScreenEntered;
-import com.teamdev.jxbrowser.browser.event.FullScreenExited;
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.fullscreen.FullScreen;
+import com.teamdev.jxbrowser.fullscreen.event.FullScreenEntered;
+import com.teamdev.jxbrowser.fullscreen.event.FullScreenExited;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.Frame;
@@ -53,8 +54,9 @@ public final class SwingFullScreen {
             frame.setVisible(true);
 
             FullScreenHandler fullScreenHandler = new FullScreenHandler(frame, view);
-            browser.on(FullScreenEntered.class, event -> fullScreenHandler.onFullScreenEnter());
-            browser.on(FullScreenExited.class, event -> fullScreenHandler.onFullScreenExit());
+            FullScreen fullScreen = browser.fullScreen();
+            fullScreen.on(FullScreenEntered.class, event -> fullScreenHandler.onFullScreenEnter());
+            fullScreen.on(FullScreenExited.class, event -> fullScreenHandler.onFullScreenExit());
         });
 
         browser.navigation().loadUrl("http://www.quirksmode.org/html5/tests/video.html");
