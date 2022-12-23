@@ -59,7 +59,7 @@ public final class AuthenticationDialog {
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 500);
             frame.setVisible(true);
-            browser.navigation().loadUrl("http://httpbin.org/basic-auth/user/passwd");
+            browser.navigation().loadUrl("https://httpbin.org/basic-auth/user/passwd");
         });
     }
 

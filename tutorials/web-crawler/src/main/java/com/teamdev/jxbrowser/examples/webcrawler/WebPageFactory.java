@@ -48,7 +48,7 @@ public final class WebPageFactory {
      * activity as "suspicious" that might be a sing of a DDoS attack. Too
      * frequent request might be aborted in this case. To get rid of aborted
      * requests, we use a delay between navigation, to simulate a human. Human
-     * cannot manually navigate to a web page dozen times per second.
+     * cannot manually navigate to a web page a dozen times per second.
      *
      * <p>Politeness delay in milliseconds (delay between sending two requests
      * to the same host).
@@ -89,7 +89,7 @@ public final class WebPageFactory {
      * completely.
      *
      * @return {@code true} if the web page has been loaded successfully. If the
-     * given URL is dead or we didn't manage to load it within 45 seconds,
+     * given URL is dead, or we didn't manage to load it within 45 seconds,
      * returns {@code false}.
      *
      * @implNote before every navigation we wait for {@link
@@ -98,7 +98,7 @@ public final class WebPageFactory {
      */
     private NetError loadUrlAndWait(Browser browser, String url,
             int navigationAttempts) {
-        // All our attempts to load the given url were rejected (
+        // All our attempts to load the given url were rejected.
         // We give up and continue processing other web pages.
         if (navigationAttempts == 0) {
             return NetError.ABORTED;
@@ -140,7 +140,7 @@ public final class WebPageFactory {
      *
      * @implNote we find the links on the main frame document only. We skip
      * {@code IFRAME}s on the web page because very often they represent some
-     * third-party widgets such as Google analytics, social network widgets,
+     * third-party widgets such as Google Analytics, social network widgets,
      * etc.
      */
     private Set<Link> links(Browser browser) {

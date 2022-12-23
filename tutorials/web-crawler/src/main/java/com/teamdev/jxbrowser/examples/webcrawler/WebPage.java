@@ -55,7 +55,7 @@ public final class WebPage {
     }
 
     /**
-     * Creates a instance of {@code WebPage} with the given {@code url} and
+     * Creates an instance of {@code WebPage} with the given {@code url} and
      * {@code status} code.
      *
      * <p>This factory method is used to create an instance of an inaccessible

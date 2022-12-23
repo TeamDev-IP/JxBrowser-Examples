@@ -77,7 +77,7 @@ public final class WebCrawler implements Closeable {
 
     /**
      * Starts the web crawler and reports the progress via the given {@code
-     * listener}. The time required to analyze web site depends on the number of
+     * listener}. The time required to analyze website depends on the number of
      * discovered web pages.
      *
      * <p>This operation blocks the current thread execution until the crawler

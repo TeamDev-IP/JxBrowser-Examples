@@ -53,7 +53,7 @@ public final class DisablePdfViewer {
 
             // Now, if you load a PDF document, it will not be displayed in the
             // PDF Viewer and will be downloaded instead.
-            browser.navigation().loadUrl("http://www.orimi.com/pdf-test.pdf");
+            browser.navigation().loadUrl("https://www.orimi.com/pdf-test.pdf");
         });
     }
 

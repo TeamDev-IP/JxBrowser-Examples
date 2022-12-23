@@ -59,7 +59,7 @@ public final class SwingFullScreen {
             fullScreen.on(FullScreenExited.class, event -> fullScreenHandler.onFullScreenExit());
         });
 
-        browser.navigation().loadUrl("http://www.quirksmode.org/html5/tests/video.html");
+        browser.navigation().loadUrl("https://www.quirksmode.org/html5/tests/video.html");
     }
 
     private static class FullScreenHandler {

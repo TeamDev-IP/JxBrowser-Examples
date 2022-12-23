@@ -73,7 +73,7 @@ public final class InterceptRequest {
                             .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
                             .addHttpHeader(HttpHeader.of("Content-Type", "charset=utf-8"))
                             .build());
-            // Perform complex calculations and override the responce data in the separate thread.
+            // Perform complex calculations and override the response data in the separate thread.
             new Thread(() -> {
                 job.write("<html><body><h1>Hello there!</h1></body></html>".getBytes());
                 job.complete();
