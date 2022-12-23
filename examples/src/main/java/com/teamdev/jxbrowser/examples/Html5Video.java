@@ -50,6 +50,6 @@ public final class Html5Video {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("http://www.quirksmode.org/html5/tests/video.html");
+        browser.navigation().loadUrl("https://www.quirksmode.org/html5/tests/video.html");
     }
 }

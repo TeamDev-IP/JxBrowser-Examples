@@ -206,7 +206,7 @@ public final class MediaPlayer extends JPanel {
                 player.mute();
             }
         });
-        // Update the button text when sound has been muted or un-muted.
+        // Update the button text when sound has been muted or unmuted.
         player.onVolumeChanged(
                 muted -> muteButton.setText(muted ? BTN_UNMUTE_TEXT : BTN_MUTE_TEXT));
         return muteButton;

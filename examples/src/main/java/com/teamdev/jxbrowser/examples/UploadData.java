@@ -25,6 +25,8 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.LoadUrlParams;
+import com.teamdev.jxbrowser.net.FormData;
+import com.teamdev.jxbrowser.net.FormData.Pair;
 import com.teamdev.jxbrowser.net.TextData;
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback;
 
@@ -44,9 +46,15 @@ public final class UploadData {
                 return BeforeSendUploadDataCallback.Response.proceed();
             });
             Browser browser = engine.newBrowser();
+
+            // Load URL request using POST method and send form data, that
+            // is going to be overriden.
+            FormData formData = FormData.newBuilder()
+                    .addPair(Pair.of("key", "value"))
+                    .build();
             browser.navigation().loadUrlAndWait(
                     LoadUrlParams.newBuilder("http://localhost/")
-                            .postData("key=value")
+                            .uploadData(formData)
                             .build());
         }
     }

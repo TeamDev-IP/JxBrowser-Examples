@@ -40,8 +40,8 @@ public final class BrowserViewInJInternalFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JDesktopPane pane = new JDesktopPane();
-            pane.add(createInternalFrame("TeamDev", "http://www.teamdev.com", 0));
-            pane.add(createInternalFrame("Google", "http://www.google.com", 100));
+            pane.add(createInternalFrame("TeamDev", "https://www.teamdev.com", 0));
+            pane.add(createInternalFrame("Google", "https://www.google.com", 100));
 
             JFrame frame = new JFrame("BrowserView In JInternalFrame");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

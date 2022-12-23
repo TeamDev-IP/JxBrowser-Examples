@@ -54,6 +54,6 @@ public final class UserAgent {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("http://whatsmyuseragent.com/");
+        browser.navigation().loadUrl("https://whatsmyuseragent.com/");
     }
 }

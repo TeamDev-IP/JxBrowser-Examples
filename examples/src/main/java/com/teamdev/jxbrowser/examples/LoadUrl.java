@@ -32,7 +32,7 @@ import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to create Browser instance, embed it into Swing BrowserView
- * container, display it in JFrame and navigate to the "www.google.com" web site.
+ * container, display it in JFrame and navigate to the "www.google.com" website.
  */
 public final class LoadUrl {
 
