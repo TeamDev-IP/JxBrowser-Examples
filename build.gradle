@@ -33,7 +33,7 @@ plugins {
 }
 
 ext {
-    jxBrowserVersion = '7.30.3' // The version of JxBrowser used in the examples.
+    jxBrowserVersion = '7.31' // The version of JxBrowser used in the examples.
     guavaVersion = '29.0-jre' // Some of the examples use Guava.
 }
 
