@@ -46,5 +46,5 @@ The information in this repository is provided on the following terms: https://w
 [requirements]: https://jxbrowser-support.teamdev.com/docs/guides/introduction/requirements.html
 [idea]: https://www.jetbrains.com/help/idea/gradle.html#gradle_import
 [eclipse]: https://marketplace.eclipse.org/content/buildship-gradle-integration#group-details
-[netBeans]: https://netbeans.org/features/java/build-tools.html
+[netbeans]: https://netbeans.org/features/java/build-tools.html
 [get-evaluation]: https://www.teamdev.com/jxbrowser#evaluate
