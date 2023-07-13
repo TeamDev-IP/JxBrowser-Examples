@@ -85,7 +85,13 @@ public final class JarProtocol {
      * Converts the "jar://file/path" URL into the "jar:file:/path" URL.
      */
     private static String toJarUrl(String url) {
-        return url.replace("jar://file", "jar:file:");
+        String result = url.replace("jar://file", "jar:file:");
+        // Remove the query part.
+        int index = result.indexOf("?");
+        if (index > 0) {
+            result = result.substring(0, index);
+        }
+        return result;
     }
 
     private static String getMimeType(String path) {
