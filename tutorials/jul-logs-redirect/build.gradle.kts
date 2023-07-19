@@ -1,5 +1,5 @@
 /*
- *  Copyright 2022, TeamDev. All rights reserved.
+ *  Copyright 2023, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,25 +18,13 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id "com.teamdev.jxbrowser.gradle" version "0.0.3"
-}
-
-apply plugin: 'java'
-apply plugin: 'application'
-
-mainClassName = 'DemoApp'
-
-repositories {
-    mavenCentral()
-}
-
-jxbrowser {
-    version = '7.33.2'
-}
-
 dependencies {
-    implementation jxbrowser.swing()
-    implementation jxbrowser.linux64()
+    // Adds a dependency to the SLF4J API.
+    implementation("org.slf4j:slf4j-api:1.7.36")
+
+    // Adds a dependency to the Log4j binding for SLF4J.
+    implementation("org.slf4j:slf4j-log4j12:1.7.36")
+
+    // Includes a JUL handler, namely SLF4JBridgeHandler, which routes all incoming JUL records to the SLF4j API.
+    implementation("org.slf4j:jul-to-slf4j:1.7.36")
 }

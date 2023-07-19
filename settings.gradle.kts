@@ -1,5 +1,5 @@
 /*
- *  Copyright 2022, TeamDev. All rights reserved.
+ *  Copyright 2023, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -18,17 +18,29 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    id 'java'
-    id 'edu.sc.seis.launch4j' version '2.4.9'
+rootProject.name = "JxBrowser-Examples"
+
+/**
+ * Includes a module and sets custom project directory to it.
+ */
+val module: (String, String) -> Unit = { name, path ->
+    include(name)
+    project(":$name").projectDir = File(path)
 }
 
-repositories {
-    mavenCentral()
-}
+include("examples")
 
-launch4j {
-    outfile = 'TargetApp.exe'
-    mainClassName = 'TargetApp'
-    outputDir = 'executable'
-}
+// DOM changes
+module("content-changes", "./tutorials/content-changes")
+module("docker", "./tutorials/docker")
+module("eclipse-rcp", "./tutorials/eclipse-rcp")
+// Selenium integration
+module("launcher", "./tutorials/selenium/launcher")
+module("target-app", "./tutorials/selenium/target-app")
+// Java web crawler
+module("web-crawler", "./tutorials/web-crawler")
+// Java media player
+module("media-player", "./tutorials/media-player")
+// JxBrowser logs redirection
+module("jul-logs-redirect", "./tutorials/jul-logs-redirect")
+module("serve-from-directory", "./tutorials/serve-from-directory")
