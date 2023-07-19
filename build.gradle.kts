@@ -18,9 +18,6 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.gradle.plugins.ide.idea.model.Project
-import org.w3c.dom.Element
-
 buildscript {
     repositories {
         mavenCentral()
@@ -29,7 +26,6 @@ buildscript {
 
 plugins {
     java
-    idea
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
     id("com.teamdev.jxbrowser.gradle") version "0.0.3"
@@ -42,10 +38,6 @@ val jxBrowserVersion by extra { "7.33.2" } // The version of JxBrowser used in t
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
-    if (!name.startsWith("eclipse")) {
-        apply(plugin = "idea")
-    }
-
     group = "com.teamdev.jxbrowser-examples"
     version = jxBrowserVersion
 }
@@ -123,32 +115,5 @@ subprojects {
             implementation("org.eclipse.swt")
             useNativesForRunningPlatform()
         }
-    }
-}
-
-// IDEA project configuration.
-idea {
-    project {
-        ipr {
-            beforeMerged(Action<Project> {
-                modulePaths.clear()
-            })
-            withXml {
-                fun Element.firstElement(predicate: (Element.() -> Boolean)) =
-                        childNodes
-                                .run { (0 until length).map(::item) }
-                                .filterIsInstance<Element>()
-                                .first { it.predicate() }
-
-                asElement()
-                        .firstElement { tagName == "component" && getAttribute("name") == "VcsDirectoryMappings" }
-                        .firstElement { tagName == "mapping" }
-                        .setAttribute("vcs", "Git")
-            }
-        }
-    }
-
-    module {
-        isDownloadJavadoc = true
     }
 }
