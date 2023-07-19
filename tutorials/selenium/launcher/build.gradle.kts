@@ -1,5 +1,5 @@
 /*
- *  Copyright 2022, TeamDev. All rights reserved.
+ *  Copyright 2023, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -19,12 +19,5 @@
  */
 
 dependencies {
-    // Adds a dependency to the SLF4J API.
-    implementation("org.slf4j:slf4j-api:1.7.36")
-
-    // Adds a dependency to the Log4j binding for SLF4J.
-    implementation("org.slf4j:slf4j-log4j12:1.7.36")
-
-    // Includes a JUL handler, namely SLF4JBridgeHandler, which routes all incoming JUL records to the SLF4j API.
-    implementation("org.slf4j:jul-to-slf4j:1.7.36")
+    implementation(group = "org.seleniumhq.selenium", name = "selenium-chrome-driver", version = "3.141.59")
 }

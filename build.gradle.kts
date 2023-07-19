@@ -1,5 +1,5 @@
 /*
- *  Copyright 2022, TeamDev. All rights reserved.
+ *  Copyright 2023, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -25,46 +25,42 @@ buildscript {
 }
 
 plugins {
+    java
+
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id "com.teamdev.jxbrowser.gradle" version "0.0.3" apply false
+    id("com.teamdev.jxbrowser.gradle") version "0.0.3"
 
     // This plugin automatically resolves SWT dependencies.
-    id 'com.diffplug.gradle.eclipse.mavencentral' version '3.18.0' apply false
+    id("com.diffplug.gradle.eclipse.mavencentral") version "3.18.0"
 }
 
-ext {
-    jxBrowserVersion = '7.33.2' // The version of JxBrowser used in the examples.
-    guavaVersion = '29.0-jre' // Some of the examples use Guava.
-}
+val jxBrowserVersion by extra { "7.33.2" } // The version of JxBrowser used in the examples.
+val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
-    if (!name.startsWith('eclipse')) {
-        apply plugin: 'idea'
-    }
-
-    group = 'com.teamdev.jxbrowser-examples'
-    version = "$jxBrowserVersion"
+    group = "com.teamdev.jxbrowser-examples"
+    version = jxBrowserVersion
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
-    apply plugin: 'com.teamdev.jxbrowser.gradle'
+    apply(plugin = "java")
+    apply(plugin = "com.diffplug.gradle.eclipse.mavencentral")
+    apply(plugin = "com.teamdev.jxbrowser.gradle")
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
+    java.targetCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
         mavenCentral()
     }
 
     jxbrowser {
-        version = "$jxBrowserVersion"
+        version = jxBrowserVersion
     }
 
     dependencies {
         // Cross-platform dependency
-        implementation jxbrowser.crossPlatform()
+        implementation(jxbrowser.crossPlatform())
 
         /*
            For having only platform-dependent dependency:
@@ -73,71 +69,51 @@ subprojects {
         */
 
         // Windows 32-bit
-        // implementation jxbrowser.win32()
+        // implementation(jxbrowser.win32())
 
         // Windows 64-bit
-        // implementation jxbrowser.win64()
+        // implementation(jxbrowser.win64())
 
         // macOS 64-bit
-        // implementation jxbrowser.mac()
+        // implementation(jxbrowser.mac())
 
         // macOS 64-bit ARM
-        // implementation jxbrowser.macArm()
+        // implementation(jxbrowser.macArm())
 
         // Linux 64-bit
-        // implementation jxbrowser.linux64()
+        // implementation(jxbrowser.linux64())
 
         // Linux 64-bit ARM
-        // implementation jxbrowser.linuxArm()
+        // implementation(jxbrowser.linuxArm())
 
         // JavaFX dependency
-        implementation jxbrowser.javafx()
+        implementation(jxbrowser.javafx())
 
         // Swing dependency
-        implementation jxbrowser.swing()
+        implementation(jxbrowser.swing())
 
         // SWT dependency
-        implementation jxbrowser.swt()
+        implementation(jxbrowser.swt())
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
-        implementation "com.google.guava:guava:$guavaVersion"
+        implementation("com.google.guava:guava:$guavaVersion")
 
-        implementation files("$rootDir/examples/src/main/resources/resource.jar")
+        implementation(files("$rootDir/examples/src/main/resources/resource.jar"))
     }
 
-    tasks.withType(JavaExec) {
+    tasks.withType<JavaExec> {
         // Assign all Java system properties from
         // the command line to the JavaExec task.
-        systemProperties System.properties
+        systemProperties(System.getProperties().mapKeys { it.key as String })
     }
 
     eclipseMavenCentral {
         // Plugin documentation claims that they support versions 3.5.0 through 4.12.0.
-        // Nevertheless all versions higher than 4.8.0 cannot be resolved.
+        // Nevertheless, all versions higher than 4.8.0 cannot be resolved.
         // Current version is bundled with the 3.107.0 version of the SWT.
-        release '4.8.0', {
-            implementation 'org.eclipse.swt'
+        release("4.8.0") {
+            implementation("org.eclipse.swt")
             useNativesForRunningPlatform()
         }
-    }
-}
-
-// IDEA project configuration.
-idea {
-    project {
-        ipr {
-            beforeMerged { final project ->
-                project.modulePaths.clear()
-            }
-            withXml { final provider ->
-                provider.node.component
-                        .find { it.@name == 'VcsDirectoryMappings' }
-                        .mapping.@vcs = 'Git'
-            }
-        }
-    }
-
-    module {
-        downloadJavadoc = true
     }
 }

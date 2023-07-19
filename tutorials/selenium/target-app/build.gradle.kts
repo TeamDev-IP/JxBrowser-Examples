@@ -1,5 +1,5 @@
 /*
- *  Copyright 2022, TeamDev. All rights reserved.
+ *  Copyright 2023, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -19,13 +19,11 @@
  */
 
 plugins {
-    id 'java'
+    id("edu.sc.seis.launch4j") version "2.4.9"
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
+launch4j {
+    outfile = "TargetApp.exe"
+    mainClassName = "TargetApp"
+    outputDir = "executable"
 }
