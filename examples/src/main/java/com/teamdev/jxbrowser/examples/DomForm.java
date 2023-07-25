@@ -29,6 +29,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -45,6 +47,12 @@ public final class DomForm {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("DOM HTML Form");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.getContentPane().add(view, BorderLayout.CENTER);
             frame.setSize(800, 600);
@@ -59,13 +67,12 @@ public final class DomForm {
                     element.findElementByName("lastName").ifPresent(lastName ->
                             lastName.putAttribute("value", "Doe"));
                 }));
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("<html><body><form name=\"myForm\">" +
-                    "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
-                    "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
-                    "<input type=\"button\" value=\"Save\"/>" +
-                    "</form></body></html>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><form name=\"myForm\">" +
+                        "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
+                        "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
+                        "<input type=\"button\" value=\"Save\"/>" +
+                        "</form></body></html>"));
     }
 }
 

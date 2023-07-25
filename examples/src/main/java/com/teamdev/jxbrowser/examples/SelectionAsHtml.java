@@ -26,6 +26,8 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,6 +53,12 @@ public final class SelectionAsHtml {
                                     "Selected HTML", JOptionPane.PLAIN_MESSAGE))));
 
             JFrame frame = new JFrame("Get Selected HTML");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(button, BorderLayout.NORTH);
             frame.add(view, BorderLayout.CENTER);

@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.browser.callback.OpenFileCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Paths;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -47,6 +49,12 @@ public final class FileUpload {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("File Upload");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);
@@ -57,9 +65,8 @@ public final class FileUpload {
         browser.set(OpenFileCallback.class, (params, tell) ->
                 tell.open(Paths.get("file.txt")));
 
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("Please specify a file, or a set of files:<br>\n" +
-                    "<input type='file' name='datafile' size='40'>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("Please specify a file, or a set of files:<br>\n" +
+                        "<input type='file' name='datafile' size='40'>"));
     }
 }

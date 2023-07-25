@@ -22,16 +22,10 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to redirect all JxBrowser log messages to the '*.log' file.
@@ -54,19 +48,6 @@ public final class RedirectLoggingToFile {
         System.out.println("Log file path: " + loggingFile.toAbsolutePath());
 
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
-
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Redirect Logging To File");
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(700, 500);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        browser.navigation().loadUrl("https://www.google.com");
+        engine.close();
     }
 }

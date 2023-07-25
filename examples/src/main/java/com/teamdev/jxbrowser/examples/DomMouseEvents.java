@@ -38,6 +38,8 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
@@ -61,6 +63,12 @@ public class DomMouseEvents {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("DOM Mouse Event Listener");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 600);

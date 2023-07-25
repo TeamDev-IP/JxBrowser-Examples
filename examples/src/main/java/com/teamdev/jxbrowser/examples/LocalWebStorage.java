@@ -37,13 +37,14 @@ public final class LocalWebStorage {
     private static final String KEY = "Name";
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
-        browser.navigation().loadUrlAndWait("https://www.google.com");
-        browser.mainFrame().ifPresent(frame -> {
-            frame.localStorage().putItem(KEY, "Tom");
-            System.out.println((String) frame.executeJavaScript(
-                    format("window.localStorage.getItem(\"%s\")", KEY)));
-        });
+        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+            Browser browser = engine.newBrowser();
+            browser.navigation().loadUrlAndWait("https://www.google.com");
+            browser.mainFrame().ifPresent(frame -> {
+                frame.localStorage().putItem(KEY, "Tom");
+                System.out.println((String) frame.executeJavaScript(
+                        format("window.localStorage.getItem(\"%s\")", KEY)));
+            });
+        }
     }
 }

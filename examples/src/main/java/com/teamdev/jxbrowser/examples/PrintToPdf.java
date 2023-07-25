@@ -42,28 +42,29 @@ import java.nio.file.Paths;
 public final class PrintToPdf {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
-        browser.set(PrintCallback.class, (params, tell) -> tell.print());
-        browser.set(PrintHtmlCallback.class, (params, tell) -> {
-            PdfPrinter<PdfPrinter.HtmlSettings> pdfPrinter =
-                    params.printers().pdfPrinter();
-            PrintJob<HtmlSettings> printJob = pdfPrinter.printJob();
-            printJob.settings()
-                    .pdfFilePath(Paths.get("google.pdf").toAbsolutePath())
-                    .enablePrintingBackgrounds()
-                    .orientation(PORTRAIT)
-                    .apply();
-            printJob.on(PrintCompleted.class, event -> {
-                if (event.isSuccess()) {
-                    System.out.println("Printing is completed successfully.");
-                } else {
-                    System.out.println("Printing has failed.");
-                }
+        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+            Browser browser = engine.newBrowser();
+            browser.set(PrintCallback.class, (params, tell) -> tell.print());
+            browser.set(PrintHtmlCallback.class, (params, tell) -> {
+                PdfPrinter<PdfPrinter.HtmlSettings> pdfPrinter =
+                        params.printers().pdfPrinter();
+                PrintJob<HtmlSettings> printJob = pdfPrinter.printJob();
+                printJob.settings()
+                        .pdfFilePath(Paths.get("google.pdf").toAbsolutePath())
+                        .enablePrintingBackgrounds()
+                        .orientation(PORTRAIT)
+                        .apply();
+                printJob.on(PrintCompleted.class, event -> {
+                    if (event.isSuccess()) {
+                        System.out.println("Printing is completed successfully.");
+                    } else {
+                        System.out.println("Printing has failed.");
+                    }
+                });
+                tell.proceed(pdfPrinter);
             });
-            tell.proceed(pdfPrinter);
-        });
-        browser.navigation().loadUrlAndWait("https://google.com");
-        browser.mainFrame().ifPresent(Frame::print);
+            browser.navigation().loadUrlAndWait("https://google.com");
+            browser.mainFrame().ifPresent(Frame::print);
+        }
     }
 }

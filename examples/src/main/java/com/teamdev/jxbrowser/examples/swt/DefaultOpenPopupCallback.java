@@ -44,8 +44,7 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
     @Override
     public Response on(Params params) {
-        Browser browser = params.popupBrowser();
-        try {
+        try (Browser browser = params.popupBrowser()) {
             Display display = Display.getDefault();
             display.asyncExec(() -> {
                 Shell shell = new Shell(display);

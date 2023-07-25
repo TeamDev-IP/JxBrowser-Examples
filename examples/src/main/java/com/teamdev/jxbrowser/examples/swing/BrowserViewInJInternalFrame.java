@@ -31,6 +31,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  * This example demonstrates how to display Swing BrowserView in JInternalFrame.
@@ -65,6 +67,12 @@ public final class BrowserViewInJInternalFrame {
         BrowserView view = BrowserView.newInstance(browser);
 
         JInternalFrame frame = new JInternalFrame(title, true);
+        frame.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                engine.close();
+            }
+        });
         frame.setContentPane(view);
         frame.setLocation(100 + offset, 100 + offset);
         frame.setSize(400, 400);

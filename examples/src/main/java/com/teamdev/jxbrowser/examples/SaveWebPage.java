@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.browser.SavePageType;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFrame;
@@ -46,6 +48,12 @@ public final class SaveWebPage {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Save Web Page");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);

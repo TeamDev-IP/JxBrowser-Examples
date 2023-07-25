@@ -27,13 +27,15 @@ import com.teamdev.jxbrowser.browser.callback.input.PressMouseCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to suppress {@code MousePressed} event using {@code
- * PressMouseCallback}.
+ * This example demonstrates how to suppress {@code MousePressed} event using
+ * {@code PressMouseCallback}.
  *
  * <p>For suppressing other mouse events the following callbacks are used:
  * <li>{@code EnterMouseCallback}</li>
@@ -60,6 +62,12 @@ public final class SuppressMouse {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Suppress the Mouse Pressed event");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(500, 400);
@@ -67,10 +75,8 @@ public final class SuppressMouse {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml(
-                    "<button onclick=\"clicked()\">click holding shift</button>" +
-                            "<script>function clicked() {alert('clicked');}</script>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<button onclick=\"clicked()\">click holding shift</button>" +
+                        "<script>function clicked() {alert('clicked');}</script>"));
     }
 }

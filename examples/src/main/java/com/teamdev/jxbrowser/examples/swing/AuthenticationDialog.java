@@ -31,6 +31,8 @@ import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -55,6 +57,12 @@ public final class AuthenticationDialog {
 
             JFrame frame = new JFrame("Hello World");
             engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(frame));
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 500);

@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -37,8 +39,8 @@ import javax.swing.WindowConstants;
  * <p>By default, voice recognition functionality is disabled. To enable it you must
  * provide your Google API Keys to the Chromium engine as shown in this example.
  *
- * <p>The instruction that describes how to acquire the API keys you can find at
- * https://www.chromium.org/developers/how-tos/api-keys
+ * <p>The instruction that describes how to acquire the API keys can be found
+ * <a href="https://www.chromium.org/developers/how-tos/api-keys">here</a>.
  */
 public final class VoiceRecognition {
 
@@ -55,6 +57,12 @@ public final class VoiceRecognition {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Voice Recognition");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);

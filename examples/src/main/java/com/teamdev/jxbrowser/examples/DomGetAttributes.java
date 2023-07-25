@@ -34,19 +34,18 @@ import com.teamdev.jxbrowser.frame.Frame;
 public final class DomGetAttributes {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
+        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+            Browser browser = engine.newBrowser();
 
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml(
-                    "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>");
-        });
-        browser.mainFrame()
-                .flatMap(Frame::document)
-                .flatMap(Document::documentElement)
-                .flatMap(element -> element.findElementById("link"))
-                .ifPresent(
-                        linkElement -> linkElement.attributes().forEach(DomGetAttributes::print));
+            browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(
+                    "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>"));
+            browser.mainFrame()
+                    .flatMap(Frame::document)
+                    .flatMap(Document::documentElement)
+                    .flatMap(element -> element.findElementById("link"))
+                    .ifPresent(
+                            linkElement -> linkElement.attributes().forEach(DomGetAttributes::print));
+        }
     }
 
     private static void print(String name, String value) {

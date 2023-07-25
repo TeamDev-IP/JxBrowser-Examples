@@ -29,10 +29,6 @@ import com.teamdev.jxbrowser.dom.XPathResult;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.Navigation;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 /**
  * This example demonstrates how to evaluate the XPath expression and work with the result.
@@ -40,32 +36,21 @@ import javax.swing.SwingUtilities;
 public final class XPath {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
-
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Evaluate XPath");
-            frame.getContentPane().add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
-        Navigation navigation = browser.navigation();
-        navigation.on(FrameLoadFinished.class, event ->
-                event.frame().document().flatMap(Document::documentElement).ifPresent(element -> {
-                    try {
-                        XPathResult result = element.evaluate("count(//div)");
-                        if (result.isNumber()) {
-                            System.out.println("Result: " + result.asNumber());
+        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+            Browser browser = engine.newBrowser();
+            Navigation navigation = browser.navigation();
+            navigation.on(FrameLoadFinished.class, event ->
+                    event.frame().document().flatMap(Document::documentElement).ifPresent(element -> {
+                        try {
+                            XPathResult result = element.evaluate("count(//div)");
+                            if (result.isNumber()) {
+                                System.out.println("Result: " + result.asNumber());
+                            }
+                        } catch (XPathException e) {
+                            System.out.println(e.getMessage());
                         }
-                    } catch (XPathException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }));
-
-        navigation.loadUrl("https://www.teamdev.com/jxbrowser");
+                    }));
+            navigation.loadUrl("https://www.teamdev.com/jxbrowser");
+        }
     }
 }

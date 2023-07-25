@@ -28,6 +28,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -45,6 +47,12 @@ public final class DomQuerySelector {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("DOM Query Selector");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.getContentPane().add(view, BorderLayout.CENTER);
             frame.setSize(800, 600);
@@ -56,13 +64,12 @@ public final class DomQuerySelector {
                 event.frame().document().flatMap(Document::documentElement).ifPresent(element ->
                         element.findElementsByCssSelector("p").forEach(paragraph ->
                                 System.out.println("innerHTML " + paragraph.innerHtml()))));
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("<html><body><div id='root'>" +
-                    "<p>paragraph1</p>" +
-                    "<p>paragraph2</p>" +
-                    "<p>paragraph3</p>" +
-                    "</div></body></html>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><div id='root'>" +
+                        "<p>paragraph1</p>" +
+                        "<p>paragraph2</p>" +
+                        "<p>paragraph3</p>" +
+                        "</div></body></html>"));
     }
 }
 

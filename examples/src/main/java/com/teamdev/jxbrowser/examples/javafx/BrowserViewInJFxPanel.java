@@ -26,6 +26,8 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -34,8 +36,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to embed JavaFX BrowserView into Swing/AWT window using {@link
- * JFXPanel}.
+ * This example demonstrates how to embed JavaFX BrowserView into Swing/AWT window using
+ * {@link JFXPanel}.
  */
 public final class BrowserViewInJFxPanel {
 
@@ -51,11 +53,16 @@ public final class BrowserViewInJFxPanel {
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("JavaFX BrowserView in Swing app");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(panel, BorderLayout.CENTER);
             frame.setSize(700, 500);
             frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setVisible(true);
         });
         browser.navigation().loadUrl("https://www.google.com");
