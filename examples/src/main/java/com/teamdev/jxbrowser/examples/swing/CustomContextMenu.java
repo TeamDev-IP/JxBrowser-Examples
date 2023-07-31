@@ -34,6 +34,8 @@ import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.ui.event.internal.rpc.MoveMouseWheel;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -56,6 +58,12 @@ public final class CustomContextMenu {
             browser.set(ShowContextMenuCallback.class, new ShowCustomContextMenu(view));
 
             JFrame frame = new JFrame("JxBrowser: Swing Context Menu");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(900, 700);

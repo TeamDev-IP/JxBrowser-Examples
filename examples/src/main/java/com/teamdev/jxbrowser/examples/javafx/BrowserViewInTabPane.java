@@ -77,5 +77,7 @@ public final class BrowserViewInTabPane extends Application {
         primaryStage.setTitle("Browser View In Tab Pane");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> engine.close());
     }
 }

@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -43,6 +45,12 @@ public final class SwingBrowserView {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Swing BrowserView");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);

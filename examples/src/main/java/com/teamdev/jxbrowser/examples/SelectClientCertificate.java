@@ -32,6 +32,8 @@ import com.teamdev.jxbrowser.net.tls.SslPrivateKey;
 import com.teamdev.jxbrowser.net.tls.X509Certificates;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -48,7 +50,8 @@ import javax.swing.WindowConstants;
  * must select a required SSL certificate to continue loading web page.
  *
  * <p>Important: before you run this example, please follow the instruction at
- * https://badssl.com/download/ and install the required custom SSL certificate.
+ * <a href="https://badssl.com/download/">https://badssl.com/download/</a>
+ * and install the required custom SSL certificate.
  */
 public final class SelectClientCertificate {
 
@@ -64,6 +67,12 @@ public final class SelectClientCertificate {
             view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Select Client SSL Certificate");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);

@@ -28,6 +28,8 @@ import com.teamdev.jxbrowser.download.event.DownloadFinished;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,6 +54,12 @@ public final class DownloadFile {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Download File");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(800, 600);

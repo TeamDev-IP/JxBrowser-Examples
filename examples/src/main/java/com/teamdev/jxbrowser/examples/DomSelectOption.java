@@ -31,6 +31,8 @@ import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -48,6 +50,12 @@ public final class DomSelectOption {
             BrowserView view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("DOM Select Option");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);
@@ -63,13 +71,12 @@ public final class DomSelectOption {
                             ((OptionElement) options[2]).select();
                             System.out.println(selectElement.innerHtml());
                         }));
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
-                    "  <option value=\"volvo\">Volvo</option>\n" +
-                    "  <option value=\"saab\">Saab</option>\n" +
-                    "  <option value=\"opel\">Opel</option>\n" +
-                    "  <option value=\"audi\">Audi</option>\n" +
-                    "</select></body></html>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
+                        "  <option value=\"volvo\">Volvo</option>\n" +
+                        "  <option value=\"saab\">Saab</option>\n" +
+                        "  <option value=\"opel\">Opel</option>\n" +
+                        "  <option value=\"audi\">Audi</option>\n" +
+                        "</select></body></html>"));
     }
 }

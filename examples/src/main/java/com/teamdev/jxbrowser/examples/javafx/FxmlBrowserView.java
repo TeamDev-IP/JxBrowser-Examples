@@ -40,9 +40,10 @@ public final class FxmlBrowserView extends StackPane {
      * Constructs an instance of {@code FxmlBrowserView}.
      */
     public FxmlBrowserView() {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        view = BrowserView.newInstance(engine.newBrowser());
-        getChildren().add(view);
+        try (Engine engine = Engine.newInstance(HARDWARE_ACCELERATED)) {
+            view = BrowserView.newInstance(engine.newBrowser());
+            getChildren().add(view);
+        }
     }
 
     /**

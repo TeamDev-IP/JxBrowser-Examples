@@ -52,5 +52,6 @@ public final class JavaFxBrowserView extends Application {
         primaryStage.show();
 
         browser.navigation().loadUrl("https://www.google.com");
+        primaryStage.setOnCloseRequest(event -> engine.close());
     }
 }

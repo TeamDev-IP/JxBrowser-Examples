@@ -26,6 +26,8 @@ import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -47,6 +49,12 @@ public final class BrowserViewInJTabbedPane {
             pane.addTab("TeamDev", BrowserView.newInstance(browserTwo));
 
             JFrame frame = new JFrame("Browser View In JTabbed Pane");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.getContentPane().add(pane, BorderLayout.CENTER);
             frame.setSize(800, 600);

@@ -30,6 +30,8 @@ import com.teamdev.jxbrowser.spellcheck.Dictionary;
 import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -58,6 +60,12 @@ public final class SpellCheckSuggestions {
             view = BrowserView.newInstance(browser);
 
             JFrame frame = new JFrame("Spell Check Suggestions");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(700, 500);
@@ -100,10 +108,9 @@ public final class SpellCheckSuggestions {
             Point location = params.location();
             popupMenu.show(view, location.x(), location.y());
         });
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
-                    "Smple text with mitake.</textarea></body></html>");
-        });
+        browser.mainFrame().ifPresent(mainFrame ->
+                mainFrame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
+                        "Smple text with mitake.</textarea></body></html>"));
 
     }
 

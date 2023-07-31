@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.media.Audio;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -57,6 +59,12 @@ public final class MuteAudio {
             });
 
             JFrame frame = new JFrame("Mute Audio");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(muteAudioButton, BorderLayout.NORTH);
             frame.add(view, BorderLayout.CENTER);

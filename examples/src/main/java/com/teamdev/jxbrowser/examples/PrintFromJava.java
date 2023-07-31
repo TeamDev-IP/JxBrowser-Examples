@@ -27,6 +27,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -49,6 +51,12 @@ public final class PrintFromJava {
             print.addActionListener(e -> browser.mainFrame().ifPresent(Frame::print));
 
             JFrame frame = new JFrame("Print From Java");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.add(print, BorderLayout.NORTH);
