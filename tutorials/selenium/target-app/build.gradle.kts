@@ -19,7 +19,7 @@
  */
 
 plugins {
-    id("edu.sc.seis.launch4j") version "2.4.9"
+    id("edu.sc.seis.launch4j") version "3.0.4"
 }
 
 launch4j {
