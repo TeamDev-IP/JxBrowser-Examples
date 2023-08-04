@@ -34,7 +34,7 @@ plugins {
     id("com.diffplug.gradle.eclipse.mavencentral") version "3.18.0"
 }
 
-val jxBrowserVersion by extra { "7.33.2" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "7.34" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
