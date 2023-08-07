@@ -66,7 +66,6 @@ object Swt {
                     "gtk.linux.x86_64"
                 }
             }
-
             os.contains("mac") -> {
                 if (isArm) {
                     "cocoa.macosx.aarch64"
@@ -74,7 +73,6 @@ object Swt {
                     "cocoa.macosx.x86_64"
                 }
             }
-
             else -> {
                 throw IllegalStateException("Unexpected operating system")
             }
