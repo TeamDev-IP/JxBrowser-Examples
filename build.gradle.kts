@@ -105,4 +105,14 @@ subprojects {
         // the command line to the JavaExec task.
         systemProperties(System.getProperties().mapKeys { it.key as String })
     }
+
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute(module("org.eclipse.platform:org.eclipse.swt.\${osgi.platform}"))
+                        .because("The Maven property osgi.platform is not handled by Gradle")
+                        .using(module(Swt.platformDependency()))
+            }
+        }
+    }
 }

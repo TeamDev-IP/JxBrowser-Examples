@@ -19,7 +19,6 @@
  */
 
 import org.gradle.api.JavaVersion
-import java.util.*
 
 /**
  * A dependency on SWT.
@@ -38,32 +37,47 @@ object Swt {
     }
 
     /**
+     * Returns the dependency to SWT.
+     */
+    fun toolkitDependency(): String {
+        return "$groupdId:org.eclipse.swt:$version"
+    }
+
+    /**
      * Returns the dependency to SWT for the current platform.
      */
     fun platformDependency(): String {
-        val os = System.getProperty("os.name").lowercase()
+        return "$groupdId:org.eclipse.swt.${osgiPlatform()}:$version"
+    }
+
+    /**
+     * Returns the platform bit of the SWT artifact names.
+     */
+    private fun osgiPlatform(): String {
+        val os = System.getProperty("os.name").toLowerCase()
         val arch = System.getProperty("os.arch")
         val isArm = "aarch64" == arch || "arm" == arch
-        val artifactId = when {
-            os.contains("win") -> "org.eclipse.swt.win32.win32.x86_64"
+        return when {
+            os.contains("win") -> "win32.win32.x86_64"
             os.contains("linux") -> {
                 if (isArm) {
-                    "org.eclipse.swt.gtk.linux.aarch64"
+                    "gtk.linux.aarch64"
                 } else {
-                    "org.eclipse.swt.gtk.linux.x86_64"
+                    "gtk.linux.x86_64"
                 }
             }
+
             os.contains("mac") -> {
                 if (isArm) {
-                    "org.eclipse.swt.cocoa.macosx.aarch64"
+                    "cocoa.macosx.aarch64"
                 } else {
-                    "org.eclipse.swt.cocoa.macosx.x86_64"
+                    "cocoa.macosx.x86_64"
                 }
             }
+
             else -> {
                 throw IllegalStateException("Unexpected operating system")
             }
         }
-        return "$groupdId:${artifactId}:$version"
     }
 }
