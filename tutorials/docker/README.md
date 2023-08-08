@@ -7,7 +7,7 @@ Please visit our [Docker tutorial](https://jxbrowser-support.teamdev.com/docs/tu
 ## Building and Launching an Example
 
 1. [Insert your license key](https://jxbrowser-support.teamdev.com/docs/guides/licensing.html#adding-the-license-to-a-project)
-   into [the demo application](src/main/java/DemoApp.java#L43).
+   into [the demo application](project/src/main/java/DemoApp.java#L43).
 2. Build a Docker image:
    `docker build -t jxbrowser .`
 3. Start a container:
