@@ -47,11 +47,11 @@ RUN apt install -y xvfb
 # Copy a script that starts a virtual X11 server and launches the Java application.
 COPY startup.sh .
 
-# Copy the Java project
-COPY project/ project
-
 # Make sure the script is executable.
 RUN chmod +x startup.sh
+
+# Copy the Java project
+COPY project/ project
 
 # Build the Java project.
 RUN cd project && ./gradlew build
