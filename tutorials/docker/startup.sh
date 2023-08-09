@@ -22,5 +22,8 @@
 # Launch a virtual X11 server for Chromium.
 Xvfb :0 -screen 0 800x600x24+32 &
 
+# Switch to the project directory.
+cd project
+
 # Start the Java application.
-DISPLAY=:0 gradle run
+DISPLAY=:0 ./gradlew run

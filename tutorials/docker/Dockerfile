@@ -7,7 +7,6 @@ RUN apt update
 
 # Install JDK.
 RUN apt install -y openjdk-8-jdk
-RUN apt install -y gradle
 
 # Install Chromium's runtime dependencies.
 RUN apt install -y \
@@ -45,14 +44,17 @@ RUN apt install -y \
 # Install a virtual X11 server that is required for Chromium to work.
 RUN apt install -y xvfb
 
-WORKDIR /root
-
 # Copy a script that starts a virtual X11 server and launches the Java application.
-ADD startup.sh .
+COPY startup.sh .
+
+# Copy the Java project
+COPY project/ project
+
+# Make sure the script is executable.
 RUN chmod +x startup.sh
 
-# Copy and build the Java application.
-ADD project/ .
-RUN gradle build
+# Build the Java project.
+RUN cd project && ./gradlew build
 
-ENTRYPOINT ["sh", "-c", "/root/startup.sh"]
+WORKDIR /
+ENTRYPOINT ["sh", "-c", "/startup.sh"]
