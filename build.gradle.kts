@@ -92,7 +92,7 @@ subprojects {
         implementation(jxbrowser.swt())
 
         // Dependency on a SWT for the current platform.
-        implementation(Swt.platformDependency())
+        implementation(Swt.toolkitDependency)
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
@@ -106,13 +106,5 @@ subprojects {
         systemProperties(System.getProperties().mapKeys { it.key as String })
     }
 
-    configurations.all {
-        resolutionStrategy {
-            dependencySubstitution {
-                substitute(module("org.eclipse.platform:org.eclipse.swt.\${osgi.platform}"))
-                        .because("The Maven property osgi.platform is not handled by Gradle")
-                        .using(module(Swt.platformDependency()))
-            }
-        }
-    }
+    Swt.configurePlatformDependency(project)
 }

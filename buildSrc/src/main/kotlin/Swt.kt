@@ -19,6 +19,7 @@
  */
 
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 
 /**
  * A dependency on SWT.
@@ -26,28 +27,30 @@ import org.gradle.api.JavaVersion
 object Swt {
 
     private const val groupdId = "org.eclipse.platform"
-
-    val version = if (JavaVersion.current().isJava8) {
-        // This version corresponds to Eclipse 4.16, the last version of the framework that
-        // supported Java 8. Note, that SWT itself may still work on Java 8.
-        "3.114.100"
+    private val version = if (JavaVersion.current().isJava8) {
+        // This version corresponds to Eclipse 4.8.0.
+        "3.107.0"
     } else {
         // This version also supports Apple Silicon.
         "3.124.0" // Eclipse 4.28.0
     }
+    private val platformDependency = "$groupdId:org.eclipse.swt.${osgiPlatform()}:$version"
 
     /**
-     * Returns the dependency to SWT.
+     * The dependency to SWT.
      */
-    fun toolkitDependency(): String {
-        return "$groupdId:org.eclipse.swt:$version"
-    }
+    public val toolkitDependency = "$groupdId:org.eclipse.swt:$version"
 
-    /**
-     * Returns the dependency to SWT for the current platform.
-     */
-    fun platformDependency(): String {
-        return "$groupdId:org.eclipse.swt.${osgiPlatform()}:$version"
+    fun configurePlatformDependency(project: Project) {
+        project.configurations.all {
+            resolutionStrategy {
+                dependencySubstitution {
+                    substitute(module("org.eclipse.platform:org.eclipse.swt.\${osgi.platform}"))
+                            .because("The Maven property osgi.platform is not handled by Gradle")
+                            .using(module(platformDependency))
+                }
+            }
+        }
     }
 
     /**
@@ -66,6 +69,7 @@ object Swt {
                     "gtk.linux.x86_64"
                 }
             }
+
             os.contains("mac") -> {
                 if (isArm) {
                     "cocoa.macosx.aarch64"
@@ -73,6 +77,7 @@ object Swt {
                     "cocoa.macosx.x86_64"
                 }
             }
+
             else -> {
                 throw IllegalStateException("Unexpected operating system")
             }
