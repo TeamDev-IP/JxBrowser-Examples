@@ -29,9 +29,6 @@ plugins {
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
     id("com.teamdev.jxbrowser.gradle") version "0.0.3"
-
-    // This plugin automatically resolves SWT dependencies.
-    id("com.diffplug.gradle.eclipse.mavencentral") version "3.18.0"
 }
 
 val jxBrowserVersion by extra { "7.34.1" } // The version of JxBrowser used in the examples.
@@ -44,7 +41,6 @@ allprojects {
 
 subprojects {
     apply(plugin = "java")
-    apply(plugin = "com.diffplug.gradle.eclipse.mavencentral")
     apply(plugin = "com.teamdev.jxbrowser.gradle")
 
     java.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -86,14 +82,17 @@ subprojects {
         // Linux 64-bit ARM
         // implementation(jxbrowser.linuxArm())
 
-        // JavaFX dependency
+        // JxBrowser for JavaFX dependency.
         implementation(jxbrowser.javafx())
 
-        // Swing dependency
+        // JxBrowser for Swing dependency.
         implementation(jxbrowser.swing())
 
-        // SWT dependency
+        // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt())
+
+        // Dependency on a SWT for the current platform.
+        implementation(Swt.toolkitDependency)
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
@@ -107,13 +106,5 @@ subprojects {
         systemProperties(System.getProperties().mapKeys { it.key as String })
     }
 
-    eclipseMavenCentral {
-        // Plugin documentation claims that they support versions 3.5.0 through 4.12.0.
-        // Nevertheless, all versions higher than 4.8.0 cannot be resolved.
-        // Current version is bundled with the 3.107.0 version of the SWT.
-        release("4.8.0") {
-            implementation("org.eclipse.swt")
-            useNativesForRunningPlatform()
-        }
-    }
+    Swt.configurePlatformDependency(project)
 }
