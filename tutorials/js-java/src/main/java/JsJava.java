@@ -36,9 +36,23 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to call Java methods from JavaScript in a UI application.
+ * This example demonstrates how to invoke Java from JavaScript.
  */
-public class JsJavaBridge {
+public class JsJava {
+
+    /**
+     * A Java object to inject into JavaScript.
+     *
+     * <p>Note: Only public classes and static nested classes can be injected into JS.
+     */
+    @JsAccessible
+    public static final class JavaObject {
+
+        @SuppressWarnings("unused") // To be called from JavaScript.
+        public String sayHelloTo(String name) {
+            return "Hello " + name + "! This message comes from Java.";
+        }
+    }
 
     public static void main(String[] args) {
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
@@ -59,7 +73,7 @@ public class JsJavaBridge {
             showGui(browser);
 
             // Load a page that calls a Java method.
-            URL resource = getResource(JsJavaBridge.class, "/index.html");
+            URL resource = getResource(JsJava.class, "/index.html");
             browser.navigation().loadUrl(resource.getPath());
         });
     }
@@ -67,7 +81,7 @@ public class JsJavaBridge {
     private static void showGui(Browser browser) {
         BrowserView view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame("JavaScript Java Bridge");
+        JFrame frame = new JFrame("Calling Java from JavaScript");
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -79,18 +93,5 @@ public class JsJavaBridge {
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    // @JsAccessible means that all public methods of the injected Java object
-    // can be called from JavaScript.
-    //
-    // Only public classes and static nested classes can be injected into JS.
-    @JsAccessible
-    public static final class JavaObject {
-
-        @SuppressWarnings("unused") // To be called from JavaScript.
-        public String sayHelloTo(String name) {
-            return "Hello " + name + "! This message comes from Java";
-        }
     }
 }

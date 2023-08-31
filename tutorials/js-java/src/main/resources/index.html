@@ -22,7 +22,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JavaScript Java Bridge</title>
+  <title>Calling Java from JavaScript</title>
 </head>
 <body>
 <div>
@@ -36,7 +36,7 @@
     let name = document.querySelector("#greet-input").value;
 
     // Refer to a Java object and call its method.
-    document.querySelector("#greet-msg").textContent = window.java.sayHelloTo(name);
+    document.querySelector("#greet-msg").textContent = java.sayHelloTo(name);
   }
 
   window.addEventListener("DOMContentLoaded", () => {

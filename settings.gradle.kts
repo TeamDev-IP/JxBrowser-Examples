@@ -44,4 +44,4 @@ module("media-player", "./tutorials/media-player")
 // JxBrowser logs redirection
 module("jul-logs-redirect", "./tutorials/jul-logs-redirect")
 module("serve-from-directory", "./tutorials/serve-from-directory")
-module("js-java-bridge", "./tutorials/js-java-bridge")
+module("js-java", "./tutorials/js-java")
