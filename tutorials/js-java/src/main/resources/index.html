@@ -22,26 +22,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css"/>
   <title>Calling Java from JavaScript</title>
 </head>
 <body>
-<div>
+<div class="container">
+  <div class="row">
+    <img src="jxbrowser-logo.svg" class="logo" alt="JxBrowser logo"/>
+  </div>
+  <h1>Welcome to JxBrowser!</h1>
   <p>Please enter your name and click the button.</p>
-  <input id="greet-input" placeholder="Your name"/>
-  <button id="greet-btn" type="button">Greet</button>
+  <div class="row">
+    <div>
+      <input id="greet-input" placeholder="Your name"/>
+      <button id="greet-btn" type="button">Greet</button>
+    </div>
+  </div>
   <p id="greet-msg"></p>
 </div>
 <script>
-  function greet() {
-    let name = document.querySelector("#greet-input").value;
+  const greetInput = document.querySelector("#greet-input");
+  const greetMessage = document.querySelector("#greet-msg");
+  const btn = document.querySelector("#greet-btn");
 
-    // Refer to a Java object and call its method.
-    document.querySelector("#greet-msg").textContent = java.sayHelloTo(name);
+  function greet() {
+    let name = greetInput.value;
+    greetMessage.textContent = java.sayHelloTo(name);
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    let btn = document.querySelector("#greet-btn");
-    btn.addEventListener("click", () => greet());
+    btn.addEventListener("click", greet);
   });
 </script>
 </body>

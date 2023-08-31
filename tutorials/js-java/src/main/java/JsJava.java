@@ -69,7 +69,6 @@ public class JsJava {
         });
 
         invokeLater(() -> {
-            // Display a Swing frame with embedded BrowserView.
             showGui(browser);
 
             // Load a page that calls a Java method.
@@ -90,7 +89,7 @@ public class JsJava {
         });
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
