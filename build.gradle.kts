@@ -41,7 +41,7 @@ allprojects {
 
 subprojects {
     apply(plugin = "java")
-    apply(plugin = "com.teamdev.jxbrowser.gradle")
+    apply(plugin = "com.teamdev.jxbrowser")
 
     java.sourceCompatibility = JavaVersion.VERSION_1_8
     java.targetCompatibility = JavaVersion.VERSION_1_8
