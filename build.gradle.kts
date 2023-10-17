@@ -28,10 +28,10 @@ plugins {
     java
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser.gradle") version "0.0.3"
+    id("com.teamdev.jxbrowser") version "0.0.5"
 }
 
-val jxBrowserVersion by extra { "7.35.2" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "7.36" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
