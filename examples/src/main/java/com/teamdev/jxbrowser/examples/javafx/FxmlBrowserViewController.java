@@ -20,7 +20,6 @@
 
 package com.teamdev.jxbrowser.examples.javafx;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -42,14 +41,10 @@ public final class FxmlBrowserViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try (Browser browser = browserView.browser()) {
-            browser.navigation().loadUrl(textField.getText());
-        }
+        browserView.browser().navigation().loadUrl(textField.getText());
     }
 
     public void loadUrl(ActionEvent actionEvent) {
-        try (Browser browser = browserView.browser()) {
-            browser.navigation().loadUrl(textField.getText());
-        }
+        browserView.browser().navigation().loadUrl(textField.getText());
     }
 }

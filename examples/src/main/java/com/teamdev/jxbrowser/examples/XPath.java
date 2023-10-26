@@ -36,21 +36,20 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 public final class XPath {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
-            Navigation navigation = browser.navigation();
-            navigation.on(FrameLoadFinished.class, event ->
-                    event.frame().document().flatMap(Document::documentElement).ifPresent(element -> {
-                        try {
-                            XPathResult result = element.evaluate("count(//div)");
-                            if (result.isNumber()) {
-                                System.out.println("Result: " + result.asNumber());
-                            }
-                        } catch (XPathException e) {
-                            System.out.println(e.getMessage());
+        Engine engine = Engine.newInstance(OFF_SCREEN);
+        Browser browser = engine.newBrowser();
+        Navigation navigation = browser.navigation();
+        navigation.on(FrameLoadFinished.class, event ->
+                event.frame().document().flatMap(Document::documentElement).ifPresent(element -> {
+                    try {
+                        XPathResult result = element.evaluate("count(//div)");
+                        if (result.isNumber()) {
+                            System.out.println("Result: " + result.asNumber());
                         }
-                    }));
-            navigation.loadUrl("https://www.teamdev.com/jxbrowser");
-        }
+                    } catch (XPathException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }));
+        navigation.loadUrl("https://www.teamdev.com/jxbrowser");
     }
 }
