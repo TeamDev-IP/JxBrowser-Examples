@@ -28,7 +28,7 @@ plugins {
     java
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "0.0.5"
+    id("com.teamdev.jxbrowser") version "1.0.1"
 }
 
 val jxBrowserVersion by extra { "7.36" } // The version of JxBrowser used in the examples.
@@ -56,7 +56,7 @@ subprojects {
 
     dependencies {
         // Cross-platform dependency
-        implementation(jxbrowser.crossPlatform())
+        implementation(jxbrowser.crossPlatform)
 
         /*
            For having only platform-dependent dependency:
@@ -65,31 +65,31 @@ subprojects {
         */
 
         // Windows 32-bit
-        // implementation(jxbrowser.win32())
+        // implementation(jxbrowser.win32)
 
         // Windows 64-bit
-        // implementation(jxbrowser.win64())
+        // implementation(jxbrowser.win64)
 
         // macOS 64-bit
-        // implementation(jxbrowser.mac())
+        // implementation(jxbrowser.mac)
 
         // macOS 64-bit ARM
-        // implementation(jxbrowser.macArm())
+        // implementation(jxbrowser.macArm)
 
         // Linux 64-bit
-        // implementation(jxbrowser.linux64())
+        // implementation(jxbrowser.linux64)
 
         // Linux 64-bit ARM
-        // implementation(jxbrowser.linuxArm())
+        // implementation(jxbrowser.linuxArm)
 
         // JxBrowser for JavaFX dependency.
-        implementation(jxbrowser.javafx())
+        implementation(jxbrowser.javafx)
 
         // JxBrowser for Swing dependency.
-        implementation(jxbrowser.swing())
+        implementation(jxbrowser.swing)
 
         // JxBrowser for SWT dependency.
-        implementation(jxbrowser.swt())
+        implementation(jxbrowser.swt)
 
         // Dependency on a SWT for the current platform.
         implementation(Swt.toolkitDependency)
