@@ -22,7 +22,7 @@ plugins {
     java
     application
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser.gradle") version "0.0.3"
+    id("com.teamdev.jxbrowser") version "1.0.1"
 }
 
 application {
@@ -34,11 +34,11 @@ repositories {
 }
 
 jxbrowser {
-    version = "7.34.1"
+    version = "7.36"
 }
 
 dependencies {
-    implementation(jxbrowser.swing())
-    implementation(jxbrowser.linux64())
+    implementation(jxbrowser.swing)
+    implementation(jxbrowser.linux64)
 }
 
