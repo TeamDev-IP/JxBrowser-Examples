@@ -42,44 +42,42 @@ import com.teamdev.jxbrowser.print.event.PrintCompleted;
 public final class PrintSettings {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(HARDWARE_ACCELERATED)) {
-            Browser browser = engine.newBrowser();
-            browser.set(PrintCallback.class, (params, tell) -> tell.print());
-            // #docfragment "Callback"
-            browser.set(PrintHtmlCallback.class, (params, tell) -> {
-                // #docfragment "Configure settings"
-                SystemPrinter<HtmlSettings> printer = params.printers()
-                        .defaultPrinter()
-                        .orElseThrow(IllegalStateException::new);
-                PrintJob<HtmlSettings> printJob = printer.printJob();
-                printJob.settings()
-                        .header("<span style='font-size: 12px;'>Page header:</span>"
-                                + "<span class='title'></span>")
-                        .footer("<span style='font-size: 12px;'>Page footer:</span>"
-                                + "<span class='pageNumber'></span>")
-                        .paperSize(ISO_A4)
-                        .colorModel(COLOR)
-                        .enablePrintingBackgrounds()
-                        .disablePrintingHeaderFooter()
-                        .orientation(PORTRAIT)
-                        .apply();
-                // #enddocfragment "Configure settings"
-                // #docfragment "Subscribe to PrintCompleted"
-                printJob.on(PrintCompleted.class, event -> {
-                    if (event.isSuccess()) {
-                        System.out.println("Printing is completed successfully.");
-                    } else {
-                        System.out.println("Printing has failed.");
-                    }
-                });
-                // #enddocfragment "Subscribe to PrintCompleted"
-                // #docfragment "Proceed"
-                tell.proceed(printer);
-                // #enddocfragment "Proceed"
+        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        Browser browser = engine.newBrowser();
+        browser.set(PrintCallback.class, (params, tell) -> tell.print());
+        // #docfragment "Callback"
+        browser.set(PrintHtmlCallback.class, (params, tell) -> {
+            // #docfragment "Configure settings"
+            SystemPrinter<HtmlSettings> printer = params.printers()
+                    .defaultPrinter()
+                    .orElseThrow(IllegalStateException::new);
+            PrintJob<HtmlSettings> printJob = printer.printJob();
+            printJob.settings()
+                    .header("<span style='font-size: 12px;'>Page header:</span>"
+                            + "<span class='title'></span>")
+                    .footer("<span style='font-size: 12px;'>Page footer:</span>"
+                            + "<span class='pageNumber'></span>")
+                    .paperSize(ISO_A4)
+                    .colorModel(COLOR)
+                    .enablePrintingBackgrounds()
+                    .disablePrintingHeaderFooter()
+                    .orientation(PORTRAIT)
+                    .apply();
+            // #enddocfragment "Configure settings"
+            printJob.on(PrintCompleted.class, event -> {
+                if (event.isSuccess()) {
+                    System.out.println("Printing is completed successfully.");
+                } else {
+                    System.out.println("Printing has failed.");
+                }
+                engine.close();
             });
-            // #enddocfragment "Callback"
-            browser.navigation().loadUrlAndWait("https://google.com");
-            browser.mainFrame().ifPresent(Frame::print);
-        }
+            // #docfragment "Proceed"
+            tell.proceed(printer);
+            // #enddocfragment "Proceed"
+        });
+        // #enddocfragment "Callback"
+        browser.navigation().loadUrlAndWait("https://google.com");
+        browser.mainFrame().ifPresent(Frame::print);
     }
 }
