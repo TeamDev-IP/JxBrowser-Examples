@@ -60,6 +60,7 @@ public final class PrintToPdf {
                 } else {
                     System.out.println("Printing has failed.");
                 }
+                engine.close();
             });
             tell.proceed(pdfPrinter);
         });

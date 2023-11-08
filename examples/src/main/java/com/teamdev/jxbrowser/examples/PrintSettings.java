@@ -64,15 +64,14 @@ public final class PrintSettings {
                     .orientation(PORTRAIT)
                     .apply();
             // #enddocfragment "Configure settings"
-            // #docfragment "Subscribe to PrintCompleted"
             printJob.on(PrintCompleted.class, event -> {
                 if (event.isSuccess()) {
                     System.out.println("Printing is completed successfully.");
                 } else {
                     System.out.println("Printing has failed.");
                 }
+                engine.close();
             });
-            // #enddocfragment "Subscribe to PrintCompleted"
             // #docfragment "Proceed"
             tell.proceed(printer);
             // #enddocfragment "Proceed"
