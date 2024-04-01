@@ -18,20 +18,16 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     java
+    kotlin("jvm") version "1.9.23"
+    id("org.jetbrains.compose") version "1.6.1"
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "1.0.1"
+    id("com.teamdev.jxbrowser") version "1.0.2"
 }
 
-val jxBrowserVersion by extra { "7.38.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.0.0-eap.1" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
@@ -42,16 +38,20 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "com.teamdev.jxbrowser")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.compose")
 
-    java.sourceCompatibility = JavaVersion.VERSION_1_8
-    java.targetCompatibility = JavaVersion.VERSION_1_8
+    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.targetCompatibility = JavaVersion.VERSION_17
 
     repositories {
         mavenCentral()
+        google()
     }
 
     jxbrowser {
         version = jxBrowserVersion
+        includePreviewBuilds = true
     }
 
     dependencies {
@@ -88,6 +88,12 @@ subprojects {
         // JxBrowser for Swing dependency.
         implementation(jxbrowser.swing)
 
+        // JxBrowser for Compose dependency.
+        implementation(jxbrowser.compose)
+
+        // Dependency on Compose for the current platform.
+        implementation(compose.desktop.currentOs)
+
         // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt)
 
@@ -96,8 +102,6 @@ subprojects {
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
-
-        implementation(files("$rootDir/examples/src/main/resources/resource.jar"))
     }
 
     tasks.withType<JavaExec> {
