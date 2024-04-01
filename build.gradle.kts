@@ -19,8 +19,7 @@
  */
 
 plugins {
-    java
-    kotlin("jvm") version "1.9.23"
+    id("org.jetbrains.kotlin.jvm") version "1.9.23"
     id("org.jetbrains.compose") version "1.6.1"
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
@@ -36,17 +35,18 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java")
-    apply(plugin = "com.teamdev.jxbrowser")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.compose")
-
-    java.sourceCompatibility = JavaVersion.VERSION_17
-    java.targetCompatibility = JavaVersion.VERSION_17
+    apply(plugin = "com.teamdev.jxbrowser")
 
     repositories {
         mavenCentral()
         google()
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     jxbrowser {
