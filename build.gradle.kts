@@ -19,11 +19,11 @@
  */
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.9.23"
-    id("org.jetbrains.compose") version "1.6.1"
+    java
+    kotlin("jvm") version "1.9.23"
 
-    // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "1.0.2"
+    id("com.teamdev.jxbrowser") version "1.0.2" // Adds JxBrowser to the project.
+    id("org.jetbrains.compose") version "1.6.1" // Adds Compose Desktop.
 }
 
 val jxBrowserVersion by extra { "8.0.0-eap.1" } // The version of JxBrowser used in the examples.
@@ -35,9 +35,10 @@ allprojects {
 }
 
 subprojects {
+    apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.compose")
     apply(plugin = "com.teamdev.jxbrowser")
+    apply(plugin = "org.jetbrains.compose")
 
     repositories {
         mavenCentral()
@@ -51,7 +52,7 @@ subprojects {
 
     jxbrowser {
         version = jxBrowserVersion
-        includePreviewBuilds = true
+        includePreviewBuilds = true // Until JxBrowser 8 is released.
     }
 
     dependencies {
