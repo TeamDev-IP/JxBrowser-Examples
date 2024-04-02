@@ -29,6 +29,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.singleWindowApplication
+import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -40,15 +41,17 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
  * This example demonstrates how to build a custom context menu using
- * Compose API and browser's [ShowContextMenuCallback].
+ * [ShowContextMenuCallback] and Compose API.
  *
- * The browser uses this callback when a user right-clicks on a web page.
+ * [Browser] invokes this callback when a user right-clicks on a web page.
+ * We are going to create our own [DropdownMenu] and bind it to the browser
+ * with the callback.
  */
 fun main() = singleWindowApplication {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
-    // Store context menu state.
+    // Store dropdown menu state.
     var menuShowed by remember { mutableStateOf(false) }
     var menuLocation by remember { mutableStateOf(DpOffset.Zero) }
     val clipboard = LocalClipboardManager.current
@@ -58,7 +61,7 @@ fun main() = singleWindowApplication {
 
     // Add custom context menu.
     DropdownMenu(
-        expanded = menuShowed,
+        expanded = menuShowed, // Controls menu's visibility.
         offset = menuLocation,
         onDismissRequest = { menuShowed = false },
     ) {
@@ -92,7 +95,8 @@ fun main() = singleWindowApplication {
 
     DisposableEffect(Unit) {
 
-        // Register a callback, which triggers showing of the menu.
+        // Register a callback, which shows the menu when a user right-clicks
+        // on a web page
         browser.register(ShowContextMenuCallback { params, action ->
             menuLocation = with(params.location()) { DpOffset(x().dp, y().dp) }
             menuShowed = true
@@ -101,7 +105,7 @@ fun main() = singleWindowApplication {
 
         browser.navigation().loadUrl("teamdev.com/jxbrowser")
 
-        // The callback can be removed  when it is no longer needed.
+        // Remove the callback when it is no longer needed.
         onDispose {
             browser.removeCallback<ShowContextMenuCallback>()
             engine.close()
