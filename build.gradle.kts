@@ -98,7 +98,7 @@ subprojects {
         // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt)
 
-        // Dependency on a SWT for the current platform.
+        // Dependency on an SWT for the current platform.
         implementation(Swt.toolkitDependency)
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
