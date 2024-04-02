@@ -40,7 +40,7 @@ import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to build a custom context menu using
+ * This example demonstrates how to create a custom context menu using
  * [ShowContextMenuCallback] and Compose API.
  *
  * [Browser] invokes this callback when a user right-clicks on a web page.
@@ -105,9 +105,11 @@ fun main() = singleWindowApplication {
 
         browser.navigation().loadUrl("teamdev.com/jxbrowser")
 
-        // Remove the callback when it is no longer needed.
         onDispose {
+
+            // Remove the callback when it is no longer needed.
             browser.removeCallback<ShowContextMenuCallback>()
+
             engine.close()
         }
     }
