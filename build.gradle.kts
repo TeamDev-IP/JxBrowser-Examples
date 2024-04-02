@@ -22,8 +22,12 @@ plugins {
     java
     kotlin("jvm") version "1.9.23"
 
-    id("com.teamdev.jxbrowser") version "1.0.2" // Adds JxBrowser to the project.
-    id("org.jetbrains.compose") version "1.6.1" // Adds Compose Desktop.
+    // Adds JxBrowser.
+    id("com.teamdev.jxbrowser") version "1.0.2"
+
+    // Adds UI toolkits.
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.jetbrains.compose") version "1.6.1"
 }
 
 val jxBrowserVersion by extra { "8.0.0-eap.1" } // The version of JxBrowser used in the examples.
@@ -38,6 +42,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.teamdev.jxbrowser")
+    apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.compose")
 
     repositories {
@@ -53,6 +58,11 @@ subprojects {
     jxbrowser {
         version = jxBrowserVersion
         includePreviewBuilds = true // Until JxBrowser 8 is released.
+    }
+
+    javafx {
+        version = "17"
+        modules = listOf("javafx.controls", "javafx.swing", "javafx.fxml")
     }
 
     dependencies {
