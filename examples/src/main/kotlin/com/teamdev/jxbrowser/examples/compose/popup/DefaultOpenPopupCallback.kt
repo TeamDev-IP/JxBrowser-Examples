@@ -36,13 +36,21 @@ import kotlinx.coroutines.CoroutineScope
  * This example demonstrates the default [OpenPopupCallback] implementation
  * for Compose UI toolkit.
  *
- * It creates and shows a new window with the embedded pop-up browser.
+ * It creates and shows a new window with the embedded pop-up browser
+ * each time [OpenPopupCallback] is invoked.
+ *
+ * This implementation matches the one provided in JxBrowser by default.
+ * Custom implementation of [OpenPopupCallback] takes precedence
+ * over the default one.
+ *
+ * This example snippet is meant to be used as a prototype for clients
+ * custom implementations.
  */
 fun main() = singleWindowApplication {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
-    // Store pop-up windows.
+    // Store pop-up windows in Compose observable list.
     val popups = remember { mutableStateListOf<PopupWindowState>() }
 
     // Remember the coroutine scope to update the pop-up window after creation.
@@ -69,9 +77,9 @@ fun main() = singleWindowApplication {
         // `suppress` instead of `create`.
         browser.register(CreatePopupCallback { CreatePopupCallback.Response.create() })
 
-        // This one is responsible for the pop-up window creation.
+        // `OpenPopupCallback` is responsible for the pop-up window creation.
         browser.register(OpenPopupCallback { params ->
-            popups.add(params, scope) // Adds a new popup to the observable list.
+            popups.addNewPopup(params, scope) // Adds a new popup to the observable list.
             OpenPopupCallback.Response.proceed()
         })
 
@@ -89,12 +97,13 @@ fun main() = singleWindowApplication {
 }
 
 /**
- * Creates and adds a new instance of [PopupWindowState] to this list.
+ * Creates a new instance of [PopupWindowState] and adds it to
+ * this [SnapshotStateList].
  *
- * The created pop-up is removed from the list automatically
- * when it is closed.
+ * The created pop-up will be removed from the list automatically
+ * when it is closed via [PopupWindowState.onClose] callback.
  */
-fun SnapshotStateList<PopupWindowState>.add(
+fun SnapshotStateList<PopupWindowState>.addNewPopup(
     params: OpenPopupCallback.Params,
     scope: CoroutineScope,
 ) = add(PopupWindowState(params, scope, onClose = { remove(it) }))
