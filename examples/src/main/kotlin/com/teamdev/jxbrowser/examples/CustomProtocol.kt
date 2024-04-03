@@ -1,5 +1,5 @@
 /*
- *  Copyright 2023, TeamDev. All rights reserved.
+ *  Copyright 2024, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -17,74 +17,71 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.teamdev.jxbrowser.examples
 
-import com.teamdev.jxbrowser.engine.Engine
-import com.teamdev.jxbrowser.engine.EngineOptions
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.window.singleWindowApplication
+import com.teamdev.jxbrowser.compose.BrowserView
+import com.teamdev.jxbrowser.dsl.Engine
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.net.HttpHeader
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
 import com.teamdev.jxbrowser.net.UrlRequestJob
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
-import com.teamdev.jxbrowser.view.swing.BrowserView
-import java.awt.BorderLayout
-import java.awt.event.WindowAdapter
-import java.awt.event.WindowEvent
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
-import javax.swing.WindowConstants
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Params
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
 
 /**
- * This example demonstrates how to intercept all URL requests and handle a custom protocol.
+ * URL protocol for custom handling.
  */
-object CustomProtocol {
-    private const val PROTOCOL = "jxb"
-    private const val CONTENT_TYPE_HEADER_NAME = "Content-Type"
-    private const val CONTENT_TYPE_HEADER_VALUE = "text/html"
+private val PROTOCOL = Scheme.of("jxb")
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val engine = Engine.newInstance(
-            EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
-                .addScheme(Scheme.of(PROTOCOL), InterceptCustomSchemeCallback())
-                .build()
-        )
-        val browser = engine.newBrowser()
-
-        SwingUtilities.invokeLater {
-            val view = BrowserView.newInstance(browser)
-            val frame = JFrame("Custom Protocol Handler")
-            frame.addWindowListener(object : WindowAdapter() {
-                override fun windowClosing(e: WindowEvent) {
-                    engine.close()
-                }
-            })
-            frame.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-            frame.add(view, BorderLayout.CENTER)
-            frame.setSize(700, 500)
-            frame.setLocationRelativeTo(null)
-            frame.isVisible = true
+/**
+ * This example demonstrates how to intercept all URL requests and handle
+ * a custom protocol.
+ */
+fun main() = singleWindowApplication(title = "Custom Protocol Handler") {
+    val engine = remember { createEngine() }
+    val browser = remember { engine.newBrowser() }
+    BrowserView(browser)
+    DisposableEffect(Unit) {
+        browser.navigation.loadUrl("${PROTOCOL.name()}://hello")
+        onDispose {
+            engine.close()
         }
-
-        browser.navigation().loadUrl(PROTOCOL + "://hello")
     }
+}
 
-    private class InterceptCustomSchemeCallback : InterceptUrlRequestCallback {
-        override fun on(params: InterceptUrlRequestCallback.Params): InterceptUrlRequestCallback.Response? {
-            val job = params.newUrlRequestJob(
-                UrlRequestJob.Options.newBuilder(HttpStatus.OK)
-                    .addHttpHeader(
-                        HttpHeader.of(
-                            CONTENT_TYPE_HEADER_NAME,
-                            CONTENT_TYPE_HEADER_VALUE
-                        )
-                    )
-                    .build()
-            )
-            job.write("<html><body><p>Hello there!</p></body></html>".toByteArray())
-            job.complete()
-            return InterceptUrlRequestCallback.Response.intercept(job)
+/**
+ * Creates a new [Engine] with the custom requests interceptor for
+ * the given [PROTOCOL].
+ */
+private fun createEngine() = Engine(RenderingMode.OFF_SCREEN) {
+    options {
+        schemes {
+            add(PROTOCOL, RespondWithGreetings())
         }
+    }
+}
+
+/**
+ * An interceptor, which always sends "Hello there!" text in a response.
+ */
+private class RespondWithGreetings : InterceptUrlRequestCallback {
+
+    override fun on(params: Params): Response {
+        val header = HttpHeader.of("Content-Type", "text/html")
+        val options = UrlRequestJob.Options.newBuilder(HttpStatus.OK)
+            .addHttpHeader(header)
+            .build()
+        val job = params.newUrlRequestJob(options).apply {
+            write("<html><body><p>Hello there!</p></body></html>".toByteArray())
+            complete()
+        }
+        return Response.intercept(job)
     }
 }
