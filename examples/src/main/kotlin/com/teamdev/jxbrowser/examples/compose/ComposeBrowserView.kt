@@ -32,7 +32,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example demonstrates how to embed Compose [BrowserView]
  * into Compose application.
  */
-fun main(): Unit = singleWindowApplication {
+fun main(): Unit = singleWindowApplication(title = "Compose Browser View") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)

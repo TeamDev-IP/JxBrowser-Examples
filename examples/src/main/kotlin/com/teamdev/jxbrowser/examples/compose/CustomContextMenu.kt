@@ -47,7 +47,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * We are going to create our own [DropdownMenu] and bind it to the browser
  * with the callback.
  */
-fun main() = singleWindowApplication {
+fun main() = singleWindowApplication(title = "Custom Context Menu") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 

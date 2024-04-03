@@ -46,7 +46,7 @@ import kotlinx.coroutines.CoroutineScope
  * This example snippet is meant to be used as a prototype for clients
  * custom implementations.
  */
-fun main() = singleWindowApplication {
+fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
