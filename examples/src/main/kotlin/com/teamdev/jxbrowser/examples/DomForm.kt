@@ -20,81 +20,62 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
-import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
-import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.dom.document
+import com.teamdev.jxbrowser.dsl.dom.documentElement
+import com.teamdev.jxbrowser.dsl.dom.findFirstByName
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.navigation.Navigation
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
-import com.teamdev.jxbrowser.ui.MouseButton
-import com.teamdev.jxbrowser.ui.Point
-import com.teamdev.jxbrowser.ui.event.MousePressed
-import com.teamdev.jxbrowser.ui.event.MouseReleased
-import java.util.concurrent.CountDownLatch
 
 /**
- * This example demonstrates how to programmatically dispatch the right click
- * mouse event to the currently loaded web page and get the event notification
- * on JavaScript.
+ * This example demonstrates how to fill HTML Form fields using
+ * JxBrowser DOM API.
  */
-fun main() = singleWindowApplication(title = "Dispatch Mouse Events") {
+fun main() = singleWindowApplication(title = "DOM HTML Form") {
     val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
-
-    Column {
-        Button(onClick = { browser.dispatchMouseEvent() }) {
-            Text("Dispatch Mouse Right Click")
-        }
-        BrowserView(browser)
-    }
-
+    BrowserView(browser)
     DisposableEffect(Unit) {
-        browser.loadHtmlAndWait()
+        browser.navigation.fillFormOnLoadFinished()
+        browser.mainFrame?.loadHtml(HTML_FORM)
         onDispose {
             engine.close()
         }
     }
 }
 
-// Dispatch mouse press and then release to simulate click.
-private fun Browser.dispatchMouseEvent() {
-    dispatch(
-        MousePressed.newBuilder(Point.of(50, 50))
-            .button(MouseButton.SECONDARY).clickCount(1)
-            .build()
-    )
-    dispatch(
-        MouseReleased.newBuilder(Point.of(50, 50))
-            .button(MouseButton.SECONDARY).clickCount(1)
-            .build()
-    )
-}
+/**
+ * Subscribes for [FrameLoadFinished] event to programmatically fill in
+ * [HTML_FORM] when the page is loaded.
+ */
+private fun Navigation.fillFormOnLoadFinished() =
+    subscribe<FrameLoadFinished> { event ->
+        val element = event.frame().document?.documentElement
+        element?.let {
+            it.findFirstByName("firstName")?.putAttribute("value", "John")
+            it.findFirstByName("lastName")?.putAttribute("value", "Doe")
+        }
+    }
 
-private fun Browser.loadHtmlAndWait() {
-    val latch = CountDownLatch(1)
-    mainFrame?.loadHtml(oncontextmenuCallback)
-    navigation.subscribe<FrameLoadFinished> { latch.countDown() }
-    awaitUninterruptibly(latch)
-}
-
-private val oncontextmenuCallback = """
+/**
+ * A simple HTML form asking for a name.
+ */
+private val HTML_FORM = """
     <html lang="en">
     <body>
-    <script>
-    document.oncontextmenu = function (e) {
-        document.body.innerHTML = "DOM event triggered: " + e.type;
-        return false;
-    }
-    </script>
+    <form name="myForm">
+      First name: <input type="text" name="firstName"/><br/>
+      Last name: <input type="text" name="lastName"/><br/>
+      <input type="button" value=\"Save\"/>
+    </form>
     </body>
     </html>
 """.trimIndent()
