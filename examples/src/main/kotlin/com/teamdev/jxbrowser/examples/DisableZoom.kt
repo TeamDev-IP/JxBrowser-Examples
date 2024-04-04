@@ -23,27 +23,26 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback.Response
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.zoom.ZoomLevel
 
 /**
- * This example demonstrates how to inject a custom style sheet
- * into the document.
+ * This example demonstrates how to disable zoom on a web page.
  */
-fun main() = singleWindowApplication(title = "Custom CSS") {
+fun main() = singleWindowApplication(title = "Disable Zoom") {
     val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)
     DisposableEffect(Unit) {
-        browser.register(InjectCssCallback {
-            Response.inject("body { background-color: orange; }")
-        })
-        browser.navigation.loadUrl("about:blank")
+        browser.navigation.loadUrlAndWait("https://www.google.com")
+
+        val zoom = browser.zoom()
+        zoom.disable() // Disable zoom.
+        zoom.level(ZoomLevel.P_300) // Set zoom to 300% that will NOT be applied.
+
         onDispose {
             engine.close()
         }

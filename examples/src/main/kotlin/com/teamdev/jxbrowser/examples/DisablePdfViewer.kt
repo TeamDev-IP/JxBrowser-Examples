@@ -23,27 +23,25 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback.Response
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to inject a custom style sheet
- * into the document.
+ * This example demonstrates how to disable the built-in PDF Viewer
+ * for the engine and download PDF files instead of displaying them.
  */
-fun main() = singleWindowApplication(title = "Custom CSS") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
+fun main() = singleWindowApplication(title = "Disabling PDF Viewer") {
+    val engine = remember {
+        Engine(RenderingMode.HARDWARE_ACCELERATED).apply {
+            plugins().settings().disablePdfViewer()
+        }
+    }
+    val browser = engine.newBrowser()
     BrowserView(browser)
     DisposableEffect(Unit) {
-        browser.register(InjectCssCallback {
-            Response.inject("body { background-color: orange; }")
-        })
-        browser.navigation.loadUrl("about:blank")
+        browser.navigation.loadUrl("https://www.orimi.com/pdf-test.pdf")
         onDispose {
             engine.close()
         }

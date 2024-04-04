@@ -60,7 +60,7 @@ fun main() = singleWindowApplication(title = "Custom Protocol Handler") {
  * Creates a new [Engine] with the custom requests interceptor for
  * the given [PROTOCOL].
  */
-private fun createEngine() = Engine(RenderingMode.OFF_SCREEN) {
+private fun createEngine() = Engine(RenderingMode.HARDWARE_ACCELERATED) {
     options {
         schemes {
             add(PROTOCOL, RespondWithGreetings())
