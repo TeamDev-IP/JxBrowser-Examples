@@ -95,8 +95,8 @@ fun main() = singleWindowApplication(title = "Custom Context Menu") {
 
     DisposableEffect(Unit) {
 
-        // Register a callback, which shows the menu when a user right-clicks
-        // on a web page
+        // Register a callback to display the menu
+        // upon right-clicking on a web page.
         browser.register(ShowContextMenuCallback { params, action ->
             menuLocation = with(params.location()) { DpOffset(x().dp, y().dp) }
             menuShowed = true

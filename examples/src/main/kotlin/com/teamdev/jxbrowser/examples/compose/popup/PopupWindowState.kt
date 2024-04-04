@@ -46,7 +46,7 @@ import javax.swing.JFrame.DISPOSE_ON_CLOSE
  *
  * @param [params] the parameters of [OpenPopupCallback].
  * @param [scope] the coroutine scope used to update Compose observables.
- * @param [onClose] the callback to be called when the popup is closed.
+ * @param [onClose] the callback to be called when the pop-up is closed.
  */
 class PopupWindowState(
     params: OpenPopupCallback.Params,
@@ -71,11 +71,9 @@ class PopupWindowState(
      * bugs related to dynamic window resizing when using [WindowState].
      */
     val window: ComposeWindow = ComposeWindow().apply {
-        with(params.initialBounds()) {
-            defaultCloseOperation = DISPOSE_ON_CLOSE
-            size = if (size().isEmpty) DEFAULT_POPUP_SIZE else Dimension(width(), height())
-            location = java.awt.Point(0, 0)
-        }
+        defaultCloseOperation = DISPOSE_ON_CLOSE
+        size = popupSize(params)
+        location = java.awt.Point(0, 0)
     }
 
     init {
@@ -139,6 +137,20 @@ class PopupWindowState(
         val (x, y) = window.position
         return !fuzzyEqual(Point.of(x, y), this)
     }
+
+    /**
+     * Returns pop-up size if the one is specified in the given [params].
+     *
+     * Otherwise, returns the [DEFAULT_POPUP_SIZE].
+     */
+    private fun popupSize(params: OpenPopupCallback.Params): Dimension =
+        with(params.initialBounds()) {
+            if (size().isEmpty) {
+                DEFAULT_POPUP_SIZE
+            } else {
+                Dimension(width(), height())
+            }
+        }
 
     override fun close() {
         onClose(this)

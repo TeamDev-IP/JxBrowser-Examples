@@ -29,7 +29,7 @@ import javax.imageio.ImageIO
 
 /**
  * This example demonstrates how to take a bitmap of the loaded web page,
- * convert it to a Java AWT image and save to a PNG file.
+ * convert it to a Java AWT image, and save to a PNG file.
  */
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN)

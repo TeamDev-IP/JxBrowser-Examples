@@ -39,13 +39,6 @@ import kotlinx.coroutines.CoroutineScope
  *
  * It creates and shows a new window with the embedded pop-up browser
  * each time [OpenPopupCallback] is invoked.
- *
- * This implementation matches the one provided in JxBrowser by default.
- * Custom implementation of [OpenPopupCallback] takes precedence
- * over the default one.
- *
- * This example snippet is meant to be used as a prototype for clients
- * custom implementations.
  */
 fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
@@ -64,8 +57,8 @@ fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
     // Add pop-up windows, if any.
     for (popup in popups) {
         // We associate each `PopupWindow` with a unique key. This helps Compose
-        // efficiently manage the lifecycle of popup components when the list
-        // of popups changes.
+        // efficiently manage the lifecycle of pop-up components when the list
+        // of pop-ups changes.
         key(popup) {
             PopupWindow(popup)
         }
@@ -80,7 +73,7 @@ fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
 
         // `OpenPopupCallback` is responsible for the pop-up window creation.
         browser.register(OpenPopupCallback { params ->
-            popups.addNewPopup(params, scope) // Adds a new popup to the observable list.
+            popups.addNewPopup(params, scope) // Adds a new pop-up to the list.
             OpenPopupCallback.Response.proceed()
         })
 
