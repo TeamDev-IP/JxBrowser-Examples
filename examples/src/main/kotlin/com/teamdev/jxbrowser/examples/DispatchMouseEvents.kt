@@ -81,8 +81,8 @@ private fun Browser.dispatchMouseEvent() {
 
 private fun Browser.loadHtmlAndWait() {
     val latch = CountDownLatch(1)
-    mainFrame?.loadHtml(oncontextmenuCallback)
     navigation.subscribe<FrameLoadFinished> { latch.countDown() }
+    mainFrame?.loadHtml(oncontextmenuCallback)
     awaitUninterruptibly(latch)
 }
 

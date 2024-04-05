@@ -20,41 +20,36 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.compose.BrowserView
+import com.teamdev.jxbrowser.dom.Element
+import com.teamdev.jxbrowser.dom.event.Event
+import com.teamdev.jxbrowser.dom.event.EventType
+import com.teamdev.jxbrowser.dom.event.KeyEvent
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.dom.document
+import com.teamdev.jxbrowser.dsl.dom.findFirstById
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
-import com.teamdev.jxbrowser.ui.KeyCode
-import com.teamdev.jxbrowser.ui.event.KeyPressed
-import com.teamdev.jxbrowser.ui.event.KeyReleased
-import com.teamdev.jxbrowser.ui.event.KeyTyped
 import java.util.concurrent.CountDownLatch
 
 /**
- * This example demonstrates how to dispatch the `KeyEvent` to the currently
- * focused element on the loaded web page.
+ * This examples demonstrates how to capture keyboard events from the DOM nodes.
  */
-fun main() = singleWindowApplication(title = "Dispatch Key Event") {
-    val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
+fun main() = singleWindowApplication(title = "DOM Keyboard Event Listener") {
+    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)
-    DisposableEffect(Unit) {
-        with(browser) {
-            loadHtmlAndWait("<input id=\"input\" autofocus>")
-            dispatchKeyEvent('h')
-            dispatchKeyEvent('i')
-        }
-        onDispose {
-            engine.close()
-        }
+    LaunchedEffect(Unit) {
+        browser.loadHtmlAndWait(HTML_FIELD)
+        browser.findField(FIELD_ID)?.subscribeForKeyboardEvents()
     }
 }
 
@@ -65,25 +60,32 @@ private fun Browser.loadHtmlAndWait(html: String) {
     awaitUninterruptibly(latch)
 }
 
-private fun Browser.dispatchKeyEvent(character: Char) {
-    val keyCode = KEY_CODES[character]!!
-    dispatch(
-        KeyPressed.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
-    )
-    dispatch(
-        KeyTyped.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
-    )
-    dispatch(
-        KeyReleased.newBuilder(keyCode)
-            .build()
-    )
+private fun Browser.findField(id: String): Element? =
+    mainFrame?.document?.findFirstById(id)
+
+private fun Element.subscribeForKeyboardEvents() {
+    val useCapture = false
+    addEventListener(EventType.KEY_DOWN, ::printEventDetails, useCapture)
+    addEventListener(EventType.KEY_PRESS, ::printEventDetails, useCapture)
+    addEventListener(EventType.KEY_UP, ::printEventDetails, useCapture)
 }
 
-private val KEY_CODES = mapOf(
-    'h' to KeyCode.KEY_CODE_H,
-    'i' to KeyCode.KEY_CODE_I
-)
+private fun printEventDetails(event: Event) {
+    val keyEvent = event as KeyEvent
+    val message = KEY_EVENT_INFO
+        .format(
+            keyEvent.type().value(),
+            keyEvent.character(),
+            keyEvent.domKeyCode()
+        )
+    println(message)
+    println()
+}
+
+private const val FIELD_ID = "my-field"
+private const val HTML_FIELD = "<input type='text' id='$FIELD_ID' />"
+private val KEY_EVENT_INFO = """
+    Event type: `%s`. 
+    Typed character (if applicable): `%s`. 
+    Key: `%s`.
+""".trimIndent()
