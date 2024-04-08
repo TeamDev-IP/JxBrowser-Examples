@@ -74,9 +74,8 @@ private fun createEngine() = Engine(RenderingMode.HARDWARE_ACCELERATED) {
 private class RespondWithGreetings : InterceptUrlRequestCallback {
 
     override fun on(params: Params): Response {
-        val header = HttpHeader.of("Content-Type", "text/html")
         val options = UrlRequestJob.Options.newBuilder(HttpStatus.OK)
-            .addHttpHeader(header)
+            .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
             .build()
         val job = params.newUrlRequestJob(options).apply {
             write("<html><body><p>Hello there!</p></body></html>".toByteArray())
