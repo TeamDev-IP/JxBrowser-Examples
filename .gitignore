@@ -30,6 +30,9 @@ out/
 *.tar.gz
 *.rar
 
+# Do not ignore a JAR file used by `JarProtocol` example.
+!/examples/src/main/resources/tiny-website.jar
+
 # Do not ignore Gradle Wrapper
 !/gradle/wrapper/gradle-wrapper.jar
 
