@@ -60,6 +60,8 @@ private fun Navigation.fillFormOnLoadFinished() =
     subscribe<FrameLoadFinished> { event ->
         val element = event.frame().document?.documentElement
         element?.let {
+            // TODO:2024-04-08:yevhenii.nadtochii: Why `Element.attributes()`
+            //  is immutable? It could be `element.attributes["value"] = "John"`.
             it.findFirstByName("firstName")?.putAttribute("value", "John")
             it.findFirstByName("lastName")?.putAttribute("value", "Doe")
         }
@@ -74,7 +76,7 @@ private val HTML_FORM = """
     <form name="myForm">
       First name: <input type="text" name="firstName"/><br/>
       Last name: <input type="text" name="lastName"/><br/>
-      <input type="button" value=\"Save\"/>
+      <input type="button" value="Save"/>
     </form>
     </body>
     </html>
