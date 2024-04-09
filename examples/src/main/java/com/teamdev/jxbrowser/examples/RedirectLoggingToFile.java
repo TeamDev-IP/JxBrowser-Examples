@@ -23,6 +23,8 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.logging.Level;
+import com.teamdev.jxbrowser.logging.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +46,7 @@ public final class RedirectLoggingToFile {
         Path loggingFile = loggingDir.resolve("jxbrowser.log");
         System.setProperty("jxbrowser.logging.file",
                 loggingFile.toAbsolutePath().toString());
+        Logger.level(Level.ALL);
 
         System.out.println("Log file path: " + loggingFile.toAbsolutePath());
 
