@@ -37,7 +37,7 @@ import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.*
  * the response data in a separate thread.
  */
 fun main() {
-    // Creates an engine with the custom HTTPS requests interceptor.
+    // Create `Engine` with the custom HTTPS requests interceptor.
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
         options {
             schemes {

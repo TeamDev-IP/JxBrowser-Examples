@@ -22,7 +22,7 @@ package com.teamdev.jxbrowser.examples
 
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
-import com.teamdev.jxbrowser.dsl.dom.document
+import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
 import com.teamdev.jxbrowser.dsl.dom.findFirstById
 import com.teamdev.jxbrowser.engine.RenderingMode
