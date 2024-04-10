@@ -36,7 +36,6 @@ fun main() {
 
     browser.navigation.loadUrlAndWait("https://www.google.com")
 
-
     val html = Path("index.html")
     val resources = Path("resources_dir")
 
