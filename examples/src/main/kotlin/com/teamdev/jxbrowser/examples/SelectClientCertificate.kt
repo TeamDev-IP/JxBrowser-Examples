@@ -90,11 +90,12 @@ fun main() = singleWindowApplication(title = "Select Client SSL Certificate") {
 
                 x509Certificates = emptyList()
 
+                // TODO:2024-04-10:yevhenii.nadtochii: Not working.
+                //   X509 certificates don't contain private keys.
                 val privateKey = SslPrivateKey.of(selectedCertificate.encoded)
                 val clientCertificate = ClientCertificate.of(selectedCertificate, privateKey)
 
                 // Pass the selected certificate to the engine.
-                println("Passing the certificate to the engine.")
                 tell.select(clientCertificate)
             }
         })

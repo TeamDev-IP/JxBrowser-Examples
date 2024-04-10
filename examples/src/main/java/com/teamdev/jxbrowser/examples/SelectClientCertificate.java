@@ -104,6 +104,8 @@ public final class SelectClientCertificate {
                         X509Certificate certificate = (X509Certificate) selectedValue;
                         ClientCertificate clientCertificate = ClientCertificate.of(
                                 certificate, SslPrivateKey.of(certificate.getEncoded()));
+                        // TODO:2024-04-10:yevhenii.nadtochii: Not working.
+                        //  Should be removed?
                         tell.select(clientCertificate);
                         return;
                     } catch (CertificateEncodingException e) {
