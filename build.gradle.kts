@@ -28,10 +28,10 @@ plugins {
     java
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "1.0.1"
+    id("com.teamdev.jxbrowser") version "1.0.2"
 }
 
-val jxBrowserVersion by extra { "7.38.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "7.38.1" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
@@ -91,7 +91,7 @@ subprojects {
         // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt)
 
-        // Dependency on a SWT for the current platform.
+        // Dependency on SWT for the current platform.
         implementation(Swt.toolkitDependency)
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
