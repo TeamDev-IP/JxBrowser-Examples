@@ -94,15 +94,18 @@ public final class SpellCheckSuggestions {
                 popupMenu.addSeparator();
             }
 
-            // Add the "Add to Dictionary" menu item.
-            JMenuItem addToDictionary = new JMenuItem(
-                    spellCheckMenu.addToDictionaryMenuItemText());
-            addToDictionary.addActionListener(e -> {
-                Dictionary dictionary = engine.spellChecker().customDictionary();
-                dictionary.add(spellCheckMenu.misspelledWord());
-                tell.close();
-            });
-            popupMenu.add(addToDictionary);
+            if (!params.spellCheckMenu().misspelledWord().isEmpty()) {
+                // Add the "Add to Dictionary" menu item.
+                JMenuItem addToDictionary = new JMenuItem(
+                        spellCheckMenu.addToDictionaryMenuItemText());
+                addToDictionary.addActionListener(e -> {
+                    Dictionary dictionary = engine.spellChecker().customDictionary();
+                    dictionary.add(spellCheckMenu.misspelledWord());
+                    tell.close();
+                });
+                popupMenu.add(addToDictionary);
+            }
+
 
             // Display context menu at specified location.
             Point location = params.location();
