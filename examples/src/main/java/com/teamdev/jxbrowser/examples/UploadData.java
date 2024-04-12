@@ -48,7 +48,7 @@ public final class UploadData {
             Browser browser = engine.newBrowser();
 
             // Load URL request using POST method and send form data, that
-            // is going to be overriden.
+            // is going to be overridden.
             FormData formData = FormData.newBuilder()
                     .addPair(Pair.of("key", "value"))
                     .build();
