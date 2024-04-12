@@ -20,12 +20,13 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.zoom.defaultLevel
+import com.teamdev.jxbrowser.dsl.zoomLevels
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.zoom.ZoomLevel
 
@@ -33,18 +34,15 @@ import com.teamdev.jxbrowser.zoom.ZoomLevel
  * This example demonstrates how to change the default zoom level
  * for the web pages.
  */
-fun main() = singleWindowApplication(title = "Change Default Zoom Level") {
-    val engine = remember {
-        Engine(RenderingMode.HARDWARE_ACCELERATED).apply {
-            zoomLevels().defaultLevel(ZoomLevel.P_300)
-        }
-    }
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        browser.navigation.loadUrl("https://www.google.com")
-        onDispose {
-            engine.close()
+
+    singleWindowApplication(title = "Change Default Zoom Level") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            engine.zoomLevels.defaultLevel = ZoomLevel.P_300
+            browser.navigation.loadUrl("https://www.google.com")
         }
     }
 }

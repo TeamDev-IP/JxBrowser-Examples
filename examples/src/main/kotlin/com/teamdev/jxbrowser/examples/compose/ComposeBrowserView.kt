@@ -20,7 +20,7 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
@@ -36,10 +36,7 @@ fun main(): Unit = singleWindowApplication(title = "Compose Browser View") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)
-    DisposableEffect(Unit) {
+    LaunchedEffect(Unit) {
         browser.navigation.loadUrl("https://google.com/")
-        onDispose {
-            engine.close()
-        }
     }
 }
