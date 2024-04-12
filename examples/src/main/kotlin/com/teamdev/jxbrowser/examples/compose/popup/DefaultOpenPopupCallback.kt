@@ -24,7 +24,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback
-import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback.Response
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -69,7 +68,9 @@ fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
         // This callback decides whether a pop-up should be created.
         // `OpenPopupCallback` callback will NOT be called if this one returns
         // `suppress` instead of `create`.
-        browser.register(CreatePopupCallback { Response.create() })
+        browser.register(CreatePopupCallback {
+            CreatePopupCallback.Response.create()
+        })
 
         // `OpenPopupCallback` is responsible for the pop-up window creation.
         browser.register(OpenPopupCallback { params ->
