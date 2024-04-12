@@ -59,6 +59,6 @@ public final class WebSocket {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.websocket.org/echo.html");
+        browser.navigation().loadUrl("https://echo.websocket.org");
     }
 }
