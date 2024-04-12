@@ -20,11 +20,10 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.InjectCssCallback
-import com.teamdev.jxbrowser.browser.callback.InjectCssCallback.Response
+import com.teamdev.jxbrowser.browser.callback.InjectCssCallback.Response.inject
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
@@ -35,17 +34,18 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example demonstrates how to inject a custom style sheet
  * into the document.
  */
-fun main() = singleWindowApplication(title = "Custom CSS") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        browser.register(InjectCssCallback {
-            Response.inject("body { background-color: orange; }")
-        })
-        browser.navigation.loadUrl("about:blank")
-        onDispose {
-            engine.close()
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val browser = engine.newBrowser()
+
+    browser.register(InjectCssCallback {
+        inject("body { background-color: orange; }")
+    })
+
+    singleWindowApplication(title = "Custom CSS") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("about:blank")
         }
     }
 }
