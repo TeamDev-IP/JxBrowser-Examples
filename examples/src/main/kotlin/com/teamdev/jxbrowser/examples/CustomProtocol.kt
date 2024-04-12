@@ -20,20 +20,41 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
-import com.teamdev.jxbrowser.net.HttpHeader
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
-import com.teamdev.jxbrowser.net.UrlRequestJob
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Params
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
+
+/**
+ * This example demonstrates how to intercept all URL requests and handle
+ * a custom protocol.
+ */
+fun main() {
+
+    // Create an engine with a custom URL requests interceptor.
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
+        options.schemes {
+            add(PROTOCOL, RespondWithGreetings())
+        }
+    }
+
+    val browser = engine.newBrowser()
+
+    singleWindowApplication(title = "Custom Protocol Handler") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("${PROTOCOL.name()}://hello")
+        }
+    }
+}
 
 /**
  * URL protocol for custom handling.
@@ -41,42 +62,12 @@ import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
 private val PROTOCOL = Scheme.of("jxb")
 
 /**
- * This example demonstrates how to intercept all URL requests and handle
- * a custom protocol.
- */
-fun main() = singleWindowApplication(title = "Custom Protocol Handler") {
-    val engine = remember { createEngine() }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        browser.navigation.loadUrl("${PROTOCOL.name()}://hello")
-        onDispose {
-            engine.close()
-        }
-    }
-}
-
-/**
- * Creates a new [Engine] with the custom requests interceptor for
- * the given [PROTOCOL].
- */
-private fun createEngine() = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-    options {
-        schemes {
-            add(PROTOCOL, RespondWithGreetings())
-        }
-    }
-}
-
-/**
  * An interceptor, which always sends "Hello there!" text in a response.
  */
 private class RespondWithGreetings : InterceptUrlRequestCallback {
 
     override fun on(params: Params): Response {
-        val options = UrlRequestJob.Options.newBuilder(HttpStatus.OK)
-            .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
-            .build()
+        val options = UrlRequestJobOptions(HttpStatus.OK, "text/html")
         val job = params.newUrlRequestJob(options).apply {
             write("<html><body><p>Hello there!</p></body></html>".toByteArray())
             complete()
