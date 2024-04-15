@@ -49,7 +49,7 @@ fun main() {
     // TODO:2024-04-12:yevhenii.nadtochii: Hard to check if it works.
 
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-        options.google {
+        google {
             apiKey = GoogleApiKey("your_api_key")
             defaultClientId = GoogleClientId("your_client_id")
             defaultClientSecret = GoogleClientSecret("your_client_secret")

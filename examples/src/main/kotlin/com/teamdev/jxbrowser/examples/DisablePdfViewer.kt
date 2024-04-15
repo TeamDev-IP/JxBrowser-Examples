@@ -20,30 +20,29 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.plugin.pdfViewerEnabled
+import com.teamdev.jxbrowser.dsl.plugin.settings
+import com.teamdev.jxbrowser.dsl.plugins
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
  * This example demonstrates how to disable the built-in PDF Viewer
  * for the engine and download PDF files instead of displaying them.
  */
-fun main() = singleWindowApplication(title = "Disabling PDF Viewer") {
-    val engine = remember {
-        Engine(RenderingMode.HARDWARE_ACCELERATED).apply {
-            plugins().settings().disablePdfViewer()
-        }
-    }
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        browser.navigation.loadUrl("https://www.orimi.com/pdf-test.pdf")
-        onDispose {
-            engine.close()
+
+    singleWindowApplication(title = "Disabling PDF Viewer") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            engine.plugins.settings.pdfViewerEnabled = false
+            browser.navigation.loadUrl("https://www.orimi.com/pdf-test.pdf")
         }
     }
 }

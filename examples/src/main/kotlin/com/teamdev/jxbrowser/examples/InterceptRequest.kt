@@ -39,11 +39,7 @@ import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.*
 fun main() {
     // Create `Engine` with the custom HTTPS requests interceptor.
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-        options {
-            schemes {
-                add(Scheme.HTTPS, RespondWithSalutation())
-            }
-        }
+        schemes.add(Scheme.HTTPS, RespondWithSalutation())
     }
 
     val browser = engine.newBrowser()

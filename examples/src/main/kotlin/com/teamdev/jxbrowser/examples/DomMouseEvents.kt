@@ -34,7 +34,7 @@ import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.frame.document
-import com.teamdev.jxbrowser.dsl.dom.findFirstById
+import com.teamdev.jxbrowser.dsl.dom.findById
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
@@ -61,7 +61,7 @@ private fun Browser.loadHtmlAndWait(html: String) {
 }
 
 private fun Browser.findButton(id: String): Element? =
-    mainFrame?.document?.findFirstById(id)
+    mainFrame?.document?.findById(id)
 
 private fun Element.subscribeToMouseEvents() {
     val useCapture = false

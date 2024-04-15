@@ -24,7 +24,7 @@ import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
-import com.teamdev.jxbrowser.dsl.dom.findFirstById
+import com.teamdev.jxbrowser.dsl.dom.findById
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
@@ -35,7 +35,7 @@ fun main(): Unit = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val browser = engine.newBrowser()
     val mainFrame = browser.mainFrame?.apply { loadHtml(HTML_LINK) }
     val document = mainFrame?.document?.documentElement
-    val link = document?.findFirstById("link")!!
+    val link = document?.findById("link")!!
     link.attributes().forEach(::println)
 }
 

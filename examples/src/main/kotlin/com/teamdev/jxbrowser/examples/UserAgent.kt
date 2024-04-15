@@ -34,7 +34,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-        options.userAgent = UserAgent("Custom User Agent")
+        userAgent = UserAgent("Custom User Agent")
     }
 
     val browser = engine.newBrowser()

@@ -55,9 +55,7 @@ fun main() {
 
     // Create `Engine` with the custom HTTP requests interceptor.
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-        options.schemes {
-            add(Scheme.HTTP, loadHTML)
-        }
+        schemes.add(Scheme.HTTP, loadHTML)
     }
 
     val browser = engine.newBrowser()

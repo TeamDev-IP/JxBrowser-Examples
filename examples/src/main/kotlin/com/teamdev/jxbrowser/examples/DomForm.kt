@@ -27,9 +27,9 @@ import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
-import com.teamdev.jxbrowser.dsl.dom.findFirstByName
+import com.teamdev.jxbrowser.dsl.dom.findByName
+import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.Navigation
@@ -62,8 +62,8 @@ private fun Navigation.fillFormOnLoadFinished() =
         element?.let {
             // TODO:2024-04-08:yevhenii.nadtochii: Why `Element.attributes()`
             //  is immutable? It could be `element.attributes["value"] = "John"`.
-            it.findFirstByName("firstName")?.putAttribute("value", "John")
-            it.findFirstByName("lastName")?.putAttribute("value", "Doe")
+            it.findByName("firstName")?.putAttribute("value", "John")
+            it.findByName("lastName")?.putAttribute("value", "Doe")
         }
     }
 

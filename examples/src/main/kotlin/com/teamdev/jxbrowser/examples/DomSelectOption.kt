@@ -28,7 +28,7 @@ import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
-import com.teamdev.jxbrowser.dsl.dom.findFirstById
+import com.teamdev.jxbrowser.dsl.dom.findById
 import com.teamdev.jxbrowser.dsl.dom.options
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
@@ -44,7 +44,7 @@ fun main() {
 
     browser.navigation.subscribe<FrameLoadFinished> {
         val document = browser.mainFrame?.document?.documentElement!!
-        val select = document.findFirstById("my-select") as SelectElement
+        val select = document.findById("my-select") as SelectElement
         select.options[2].select() // Selects "Opel".
     }
 

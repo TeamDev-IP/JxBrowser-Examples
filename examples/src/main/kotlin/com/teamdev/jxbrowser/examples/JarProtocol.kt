@@ -44,9 +44,7 @@ import java.net.URLConnection
 fun main() {
     // Create an engine with the custom JAR requests interceptor.
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
-        options.schemes {
-            add(Scheme.JAR, InterceptJarRequestCallback())
-        }
+        schemes.add(Scheme.JAR, InterceptJarRequestCallback())
     }
 
     val browser = engine.newBrowser()
