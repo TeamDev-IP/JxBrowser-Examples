@@ -20,9 +20,11 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.network
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
@@ -38,6 +40,7 @@ import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+
     engine.network.register(BeforeUrlRequestCallback { params ->
         if (params.urlRequest().resourceType() == ResourceType.IMAGE) {
             BeforeUrlRequestCallback.Response.cancel()
@@ -47,9 +50,12 @@ fun main() {
     })
 
     val browser = engine.newBrowser()
-    browser.navigation().loadUrl("https://www.google.com")
 
     singleWindowApplication(title = "Filter Images") {
         BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("https://www.google.com")
+
+        }
     }
 }

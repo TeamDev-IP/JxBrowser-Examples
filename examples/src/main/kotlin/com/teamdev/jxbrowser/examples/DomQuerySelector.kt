@@ -20,13 +20,14 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
+import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
@@ -36,18 +37,21 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
-    val browser = engine.newBrowser().apply {
-        navigation.subscribe<FrameLoadFinished> {
-            val document = mainFrame?.document?.documentElement!!
-            val paragraphs = document.findElementsByCssSelector("p")
-            paragraphs.forEach { paragraph ->
-                println("innerHTML: ${paragraph.innerHtml()}")
-            }
+    val browser = engine.newBrowser()
+
+    browser.navigation.subscribe<FrameLoadFinished> {
+        val document = browser.mainFrame?.document?.documentElement!!
+        val paragraphs = document.findElementsByCssSelector("p")
+        paragraphs.forEach { paragraph ->
+            println("innerHTML: ${paragraph.innerHtml()}")
         }
-        mainFrame?.loadHtml(HTML_PARAGRAPHS)
     }
+
     singleWindowApplication(title = "DOM Query Selector") {
         BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.mainFrame?.loadHtml(HTML_PARAGRAPHS)
+        }
     }
 }
 

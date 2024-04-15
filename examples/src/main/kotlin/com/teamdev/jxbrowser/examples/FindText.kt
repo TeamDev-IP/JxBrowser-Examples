@@ -37,7 +37,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 fun main() = singleWindowApplication(title = "Find Text") {
 
     // TODO:2024-04-05:yevhenii.nadtochii: Fails in HARDWARE_ACCELERATED mode.
-    // See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/150
+    //  See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/150
     val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
     var searchedText by remember { mutableStateOf("") }

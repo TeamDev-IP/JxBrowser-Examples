@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
@@ -33,8 +32,8 @@ import com.teamdev.jxbrowser.dom.event.KeyEvent
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.findById
+import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
@@ -43,13 +42,16 @@ import java.util.concurrent.CountDownLatch
 /**
  * This examples demonstrates how to capture keyboard events from the DOM nodes.
  */
-fun main() = singleWindowApplication(title = "DOM Keyboard Event Listener") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    LaunchedEffect(Unit) {
-        browser.loadHtmlAndWait(HTML_FIELD)
-        browser.findField(FIELD_ID)?.subscribeForKeyboardEvents()
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val browser = engine.newBrowser()
+
+    singleWindowApplication(title = "DOM Keyboard Event Listener") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.loadHtmlAndWait(HTML_FIELD)
+            browser.findField(FIELD_ID)?.subscribeForKeyboardEvents()
+        }
     }
 }
 

@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  */
 fun main(): Unit = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val browser = engine.newBrowser()
-    val mainFrame = browser.mainFrame?.apply { loadHtml(HTML_LINK) }
+    val mainFrame = browser.mainFrame?.also { it.loadHtml(HTML_LINK) }
     val document = mainFrame?.document?.documentElement
     val link = document?.findById("link")!!
     link.attributes().forEach(::println)

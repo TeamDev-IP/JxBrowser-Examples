@@ -20,6 +20,7 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -32,9 +33,11 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
-    browser.navigation.loadUrl(HTML5_VIDEO_TEST)
     singleWindowApplication(title = "HTML5 video") {
         BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl(HTML5_VIDEO_TEST)
+        }
     }
 }
 

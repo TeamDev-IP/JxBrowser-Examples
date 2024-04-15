@@ -20,8 +20,7 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -39,15 +38,15 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
  * This example demonstrates how to fill HTML Form fields using
  * JxBrowser DOM API.
  */
-fun main() = singleWindowApplication(title = "DOM HTML Form") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        browser.navigation.fillFormOnLoadFinished()
-        browser.mainFrame?.loadHtml(HTML_FORM)
-        onDispose {
-            engine.close()
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val browser = engine.newBrowser()
+
+    singleWindowApplication(title = "DOM HTML Form") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.fillFormOnLoadFinished()
+            browser.mainFrame?.loadHtml(HTML_FORM)
         }
     }
 }
@@ -60,10 +59,10 @@ private fun Navigation.fillFormOnLoadFinished() =
     subscribe<FrameLoadFinished> { event ->
         val element = event.frame().document?.documentElement
         element?.let {
-            // TODO:2024-04-08:yevhenii.nadtochii: Why `Element.attributes()`
-            //  is immutable? It could be `element.attributes["value"] = "John"`.
-            it.findByName("firstName")?.putAttribute("value", "John")
-            it.findByName("lastName")?.putAttribute("value", "Doe")
+            // TODO:2024-04-08:yevhenii.nadtochii: Have `element?.attribute["value"] = "John"`.
+            //  See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/152
+            it.findByName("firstName")!!.putAttribute("value", "John")
+            it.findByName("lastName")!!.putAttribute("value", "Doe")
         }
     }
 

@@ -20,8 +20,7 @@
 
 package com.teamdev.jxbrowser.examples
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
@@ -42,18 +41,18 @@ import java.util.concurrent.CountDownLatch
  * This example demonstrates how to dispatch the `KeyEvent` to the currently
  * focused element on the loaded web page.
  */
-fun main() = singleWindowApplication(title = "Dispatch Key Event") {
-    val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    DisposableEffect(Unit) {
-        with(browser) {
-            loadHtmlAndWait("<input id=\"input\" autofocus>")
-            dispatchKeyEvent('h')
-            dispatchKeyEvent('i')
-        }
-        onDispose {
-            engine.close()
+fun main() {
+    val engine = Engine(RenderingMode.OFF_SCREEN)
+    val browser = engine.newBrowser()
+
+    singleWindowApplication(title = "Dispatch Key Event") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            with(browser) {
+                loadHtmlAndWait("<input id=\"input\" autofocus>")
+                dispatchKeyEvent('h')
+                dispatchKeyEvent('i')
+            }
         }
     }
 }

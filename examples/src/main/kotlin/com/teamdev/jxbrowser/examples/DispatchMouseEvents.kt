@@ -23,8 +23,7 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
@@ -46,21 +45,19 @@ import java.util.concurrent.CountDownLatch
  * mouse event to the currently loaded web page and get the event notification
  * on JavaScript.
  */
-fun main() = singleWindowApplication(title = "Dispatch Mouse Events") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val browser = engine.newBrowser()
 
-    Column {
-        Button(onClick = { browser.dispatchMouseEvent() }) {
-            Text("Dispatch Mouse Right Click")
+    singleWindowApplication(title = "Dispatch Mouse Events") {
+        Column {
+            Button(onClick = { browser.dispatchMouseEvent() }) {
+                Text("Dispatch Mouse Right Click")
+            }
+            BrowserView(browser)
         }
-        BrowserView(browser)
-    }
-
-    DisposableEffect(Unit) {
-        browser.loadHtmlAndWait()
-        onDispose {
-            engine.close()
+        LaunchedEffect(Unit) {
+            browser.loadHtmlAndWait()
         }
     }
 }
