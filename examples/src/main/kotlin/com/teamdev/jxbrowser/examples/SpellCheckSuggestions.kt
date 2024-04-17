@@ -60,7 +60,8 @@ fun main() = singleWindowApplication(title = "Spell Check Suggestions") {
             }
         ) {
             val spellMenu = spellCheckMenu!!
-            spellMenu.dictionarySuggestions().forEach {
+            val suggestions = spellMenu.dictionarySuggestions()
+            suggestions.forEach {
                 DropdownMenuItem(onClick = {
                     browser.replaceMisspelledWord(it)
                     spellCheckTell!!.close()
@@ -69,7 +70,7 @@ fun main() = singleWindowApplication(title = "Spell Check Suggestions") {
                     Text(it)
                 }
             }
-            if (spellMenu.dictionarySuggestions().isNotEmpty()) {
+            if (suggestions.isNotEmpty()) {
                 Divider()
             }
             DropdownMenuItem(onClick = {

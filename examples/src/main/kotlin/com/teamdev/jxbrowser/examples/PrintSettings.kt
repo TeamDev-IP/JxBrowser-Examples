@@ -36,8 +36,6 @@ import com.teamdev.jxbrowser.print.Orientation
 import com.teamdev.jxbrowser.print.PaperSize
 import com.teamdev.jxbrowser.print.event.PrintCompleted
 
-// TODO:2024-04-09:yevhenii.nadtochii: How to check this one without a printer?
-
 /**
  * This example demonstrates how to configure print settings programmatically
  * and print the currently loaded web page on the default system printer.
@@ -49,12 +47,9 @@ fun main() {
     browser.register(PrintCallback { _, tell -> tell.print() })
 
     browser.register(PrintHtmlCallback { params, tell ->
+
         val printer = params.printers.default!!
         val job = printer.job
-
-        // TODO:2024-04-09:yevhenii.nadtochii: Do we really need DSL here?
-        //   It looks quite neat, taking into account that each such
-        //   configuration property is a separate class.
 
         job.settings()
             .header(

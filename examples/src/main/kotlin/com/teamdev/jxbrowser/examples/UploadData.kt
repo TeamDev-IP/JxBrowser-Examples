@@ -50,9 +50,6 @@ fun main() = Engine(RenderingMode.OFF_SCREEN).use { engine ->
 
     // Prepare form data, which is going to be overridden.
     val formData = FormData("key" to "value")
-
-    // TODO:2024-04-12:yevhenii.nadtochii: Provide a set of mimic constructors?
-    //  Tests are required for such DSL.
     val localhost = LoadUrlParams.newBuilder("http://localhost/")
         .uploadData(formData)
         .build()
