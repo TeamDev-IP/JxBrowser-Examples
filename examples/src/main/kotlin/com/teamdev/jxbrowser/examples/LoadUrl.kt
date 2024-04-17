@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -33,11 +32,14 @@ import com.teamdev.jxbrowser.view.swing.BrowserView
  * This example demonstrates how to create a browser instance, embed it into
  * Compose [BrowserView], and navigate to `www.google.com`.
  */
-fun main() = singleWindowApplication(title = "Load URL") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
-    val browser = remember { engine.newBrowser() }
-    BrowserView(browser)
-    LaunchedEffect(Unit) {
-        browser.navigation.loadUrl("https://www.google.com")
+fun main() {
+    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val browser = engine.newBrowser()
+
+    singleWindowApplication(title = "Load URL") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("https://www.google.com")
+        }
     }
 }
