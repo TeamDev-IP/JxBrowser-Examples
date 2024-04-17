@@ -28,7 +28,11 @@ import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.engine.GoogleApiKey
 import com.teamdev.jxbrowser.dsl.engine.GoogleClientId
 import com.teamdev.jxbrowser.dsl.engine.GoogleClientSecret
+import com.teamdev.jxbrowser.dsl.permissions
+import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.permission.PermissionType.AUDIO_CAPTURE
+import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
 
 /**
  * This example demonstrates how to enable voice recognition functionality
@@ -40,6 +44,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  *
  * The instruction that describes how to acquire the API keys can be found
  * [here](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md).
+ * In particular, to make voice recognition work, Speech API should be enabled.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
@@ -49,6 +54,16 @@ fun main() {
             defaultClientSecret = GoogleClientSecret("your_client_secret")
         }
     }
+
+    // Grant access to record audio.
+    engine.permissions.register(RequestPermissionCallback { params, tell ->
+        val type = params.permissionType()
+        if (type == AUDIO_CAPTURE) {
+            tell.grant()
+        } else {
+            tell.deny()
+        }
+    })
 
     val browser = engine.newBrowser()
 
