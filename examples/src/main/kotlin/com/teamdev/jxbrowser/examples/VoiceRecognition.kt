@@ -39,15 +39,9 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * in this example.
  *
  * The instruction that describes how to acquire the API keys can be found
- * [here](https://www.chromium.org/developers/how-tos/api-keys).
+ * [here](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md).
  */
 fun main() {
-
-    // TODO:2024-04-12:yevhenii.nadtochii: I'm not sure whether we need
-    //  these tiny types. Probably, a type alias is quite enough.
-
-    // TODO:2024-04-12:yevhenii.nadtochii: Hard to check if it works.
-
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
         google {
             apiKey = GoogleApiKey("your_api_key")
