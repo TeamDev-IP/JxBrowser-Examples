@@ -20,6 +20,7 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
@@ -33,10 +34,12 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
-    browser.mainFrame?.loadHtml(PRINT_BUTTON)
 
     singleWindowApplication(title = "Print From JavaScript") {
         BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.mainFrame?.loadHtml(PRINT_BUTTON)
+        }
     }
 }
 

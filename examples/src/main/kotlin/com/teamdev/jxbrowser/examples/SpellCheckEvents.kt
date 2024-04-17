@@ -20,6 +20,10 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.event.SpellCheckCompleted
 import com.teamdev.jxbrowser.compose.BrowserView
@@ -33,11 +37,13 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * has been completed on a web page.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
+    val focus = FocusRequester()
 
-    // TODO:2024-04-11:yevhenii.nadtochii: Called two items.
-    //  Is it described somewhere why?
+    // TODO:2024-04-11:yevhenii.nadtochii: `SpellCheckCompleted` arrives twice.
+    //  See issue: https://github.com/TeamDev-IP/JxBrowser-Docs/issues/968
+
     browser.subscribe<SpellCheckCompleted> { event ->
         event.results().forEach {
             println("Error start index: " + it.location())
@@ -46,10 +52,12 @@ fun main() {
         }
     }
 
-    browser.mainFrame?.loadHtml(MISSPELLED_TEXT)
-
     singleWindowApplication(title = "Spell Check Events") {
-        BrowserView(browser)
+        BrowserView(browser, Modifier.focusRequester(focus))
+        LaunchedEffect(Unit) {
+            browser.mainFrame?.loadHtml(MISSPELLED_TEXT)
+            focus.requestFocus()
+        }
     }
 }
 

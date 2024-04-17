@@ -40,8 +40,6 @@ fun main() {
     val browser = engine.newBrowser()
     val frame = browser.mainFrame!!
 
-    browser.navigation.loadUrl("https://www.teamdev.com/jxbrowser")
-
     singleWindowApplication(title = "Get Selected HTML") {
         var selectedHtml by remember { mutableStateOf("") }
 
@@ -57,6 +55,10 @@ fun main() {
                 text = selectedHtml,
                 onDismiss = { selectedHtml = "" }
             )
+        }
+
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("https://www.teamdev.com/jxbrowser")
         }
     }
 }

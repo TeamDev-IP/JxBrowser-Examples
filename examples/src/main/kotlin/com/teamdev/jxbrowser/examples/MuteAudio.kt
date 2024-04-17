@@ -39,10 +39,10 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
     val audio = browser.audio
-    browser.navigation.loadUrl("https://www.youtube.com/")
 
-    // TODO:2024-04-09:yevhenii.nadtochii: Flashes with white screen on recomposition.
-    //  But works fine with OFF_SCREEN mode.
+    // TODO:2024-04-09:yevhenii.nadtochii: Blinks white on recomposition.
+    //  https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/57
+
     singleWindowApplication(title = "Mute Audio") {
         var isMuted by remember { mutableStateOf(audio.isMuted) }
         Column {
@@ -50,6 +50,9 @@ fun main() {
                 Text(text = if (isMuted) "Unmute Audio" else "Mute Audio")
             }
             BrowserView(browser)
+        }
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrl("https://www.youtube.com/")
         }
         LaunchedEffect(isMuted) {
             if (isMuted) {
