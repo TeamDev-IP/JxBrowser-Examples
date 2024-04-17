@@ -61,9 +61,7 @@ fun main() = singleWindowApplication(title = "Select Client SSL Certificate") {
     val browser = remember { engine.newBrowser() }
 
     var x509Certificates by remember { mutableStateOf(emptyList<X509Certificate>()) }
-    var onCertificateSelected by remember {
-        mutableStateOf<(X509Certificate) -> Unit>({})
-    }
+    var onCertificateSelected by remember { mutableStateOf<(X509Certificate) -> Unit>({ }) }
 
     BrowserView(browser)
 
@@ -76,22 +74,21 @@ fun main() = singleWindowApplication(title = "Select Client SSL Certificate") {
 
     LaunchedEffect(Unit) {
         browser.register(SelectClientCertificateCallback { params, tell ->
-            params.certificates().forEach {
-                println(it::class)
-            }
-            if (params.certificates().isEmpty()) {
+            val certificates = params.certificates()
+            if (certificates.isEmpty()) {
                 tell.cancel()
             }
 
-            x509Certificates = params.certificates()
-                .mapNotNull { it.toX509Certificate().getOrNull() }
+            x509Certificates = certificates
+                .map { it.toX509Certificate() }
+                .mapNotNull { it.getOrNull() }
 
             onCertificateSelected = { selectedCertificate ->
 
                 x509Certificates = emptyList()
 
                 // TODO:2024-04-10:yevhenii.nadtochii: Not working.
-                //   X509 certificates don't contain private keys.
+                //  See issue: https://github.com/TeamDev-IP/JxBrowser-Docs/issues/932
                 val privateKey = SslPrivateKey.of(selectedCertificate.encoded)
                 val clientCertificate = ClientCertificate.of(selectedCertificate, privateKey)
 

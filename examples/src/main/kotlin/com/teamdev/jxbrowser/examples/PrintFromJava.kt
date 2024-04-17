@@ -41,7 +41,7 @@ fun main() = singleWindowApplication(title = "Print From Java") {
     val browser = remember { engine.newBrowser() }
 
     // TODO:2024-04-09:yevhenii.nadtochii: Throws `ObjectClosedException`
-    //  in both rendering modes. Works OK in Java.
+    //  See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/30
 
     Column {
         Button(onClick = browser.mainFrame!!::print) {
