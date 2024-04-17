@@ -24,8 +24,8 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
-import com.teamdev.jxbrowser.net.HttpHeader
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
 import com.teamdev.jxbrowser.net.UrlRequest
@@ -97,10 +97,7 @@ private class InterceptJarRequestCallback : InterceptUrlRequestCallback {
         entry: JarEntry,
         params: Params
     ): UrlRequestJob {
-        val contentType = HttpHeader.of("Content-Type", entry.mimeType)
-        val options = UrlRequestJob.Options.newBuilder(HttpStatus.OK)
-            .addHttpHeader(contentType)
-            .build()
+        val options = UrlRequestJobOptions(HttpStatus.OK, entry.mimeType)
         val job = params.newUrlRequestJob(options).apply {
             write(entry.data)
             complete()
