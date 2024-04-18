@@ -73,9 +73,6 @@ public final class SpellCheckSuggestions {
             frame.setVisible(true);
         });
 
-        // TODO:2024-04-11:yevhenii.nadtochii: Probably, this snippet
-        //  should be renamed to `DefaultSpellCheckSuggestions`.
-
         browser.set(ShowContextMenuCallback.class, (params, tell) -> {
             JPopupMenu popupMenu = new JPopupMenu();
             popupMenu.addPopupMenuListener(myPopupMenuListener(tell));
