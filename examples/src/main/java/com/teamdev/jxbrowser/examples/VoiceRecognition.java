@@ -26,7 +26,6 @@ import static com.teamdev.jxbrowser.permission.PermissionType.AUDIO_CAPTURE;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.permission.PermissionType;
 import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
