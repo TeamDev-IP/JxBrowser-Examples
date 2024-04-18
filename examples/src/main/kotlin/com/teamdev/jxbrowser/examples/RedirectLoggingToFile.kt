@@ -38,10 +38,10 @@ fun main() {
     val loggingDir = Files.createTempDirectory("jxbrowser-logs")
     val loggingFile = loggingDir.resolve("jxbrowser.log").absolute()
 
-    // To check content of the created file.
-    println("Logging file: `$loggingFile`.")
+    // Print location of the created file to check its content further.
+    println("Log file path: `$loggingFile`.")
 
-    // Use `jxbrowser.logging.file` property to configure the log file.
+    // Use `jxbrowser.logging.file` property to redirect logging to the file.
     System.setProperty("jxbrowser.logging.file", "$loggingFile")
 
     // Set logging level to `ALL` to see some logs upon `Engine` creation.

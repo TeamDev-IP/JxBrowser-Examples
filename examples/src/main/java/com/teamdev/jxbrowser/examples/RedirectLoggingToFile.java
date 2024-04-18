@@ -46,6 +46,8 @@ public final class RedirectLoggingToFile {
         Path loggingFile = loggingDir.resolve("jxbrowser.log");
         System.setProperty("jxbrowser.logging.file",
                 loggingFile.toAbsolutePath().toString());
+
+        // Set logging level to `ALL` to see some logs upon `Engine` creation.
         Logger.level(Level.ALL);
 
         System.out.println("Log file path: " + loggingFile.toAbsolutePath());
