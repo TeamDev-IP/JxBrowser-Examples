@@ -40,9 +40,6 @@ fun main() {
     val browser = engine.newBrowser()
     val audio = browser.audio
 
-    // TODO:2024-04-09:yevhenii.nadtochii: Blinks white on recomposition.
-    //  https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/57
-
     singleWindowApplication(title = "Mute Audio") {
         var isMuted by remember { mutableStateOf(audio.isMuted) }
         Column {
