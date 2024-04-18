@@ -105,7 +105,7 @@ public final class SelectClientCertificate {
                         ClientCertificate clientCertificate = ClientCertificate.of(
                                 certificate, SslPrivateKey.of(certificate.getEncoded()));
                         // TODO:2024-04-10:yevhenii.nadtochii: Not working.
-                        //  Should be removed?
+                        //  See issue: https://github.com/TeamDev-IP/JxBrowser-Docs/issues/932
                         tell.select(clientCertificate);
                         return;
                     } catch (CertificateEncodingException e) {
