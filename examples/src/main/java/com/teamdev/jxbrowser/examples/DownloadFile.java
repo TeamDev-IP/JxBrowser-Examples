@@ -51,7 +51,7 @@ public final class DownloadFile {
 
             download.on(DownloadFinished.class, event -> {
                 System.out.println("File downloaded to " + destFilePath);
-                engine.close();
+                engine.close(); // Exits from `main` as the download completes.
             });
 
             // Allows to download a file to the given file path.

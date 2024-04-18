@@ -44,7 +44,7 @@ fun main() {
 
         download.subscribe<DownloadFinished> {
             println("File downloaded to `${destFilePath}`.")
-            engine.close() // Exits from `main`.
+            engine.close() // Exits from `main` as the download completes.
         }
 
         // Allows to download a file to the given file path.
