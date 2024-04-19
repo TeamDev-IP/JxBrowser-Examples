@@ -42,7 +42,7 @@ fun main() {
                 consoleMessage.message()
             )
         )
-        engine.close()
+        engine.close() // Exits from `main` as the message is printed.
     }
 
     browser.mainFrame?.executeJavaScript<Any>(

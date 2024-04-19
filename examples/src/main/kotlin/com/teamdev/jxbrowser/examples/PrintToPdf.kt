@@ -65,7 +65,7 @@ fun main() {
             } else {
                 println("Printing has failed.")
             }
-            engine.close()
+            engine.close() // Exits from `main` as the printing completes.
         }
 
         tell.proceed(printer)
