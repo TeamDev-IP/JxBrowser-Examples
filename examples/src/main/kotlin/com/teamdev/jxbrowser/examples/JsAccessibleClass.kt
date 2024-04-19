@@ -27,7 +27,7 @@ import com.teamdev.jxbrowser.js.JsAccessible
 import com.teamdev.jxbrowser.js.JsObject
 
 /**
- * This example demonstrates how inject a Java/Kotlin object into JavaScript
+ * This example demonstrates how to inject a Java/Kotlin object into JavaScript,
  * and make its public methods accessible from JavaScript.
  */
 fun main() {
@@ -36,23 +36,28 @@ fun main() {
     val frame = browser.mainFrame!!
 
     // Inject a Java/Kotlin object to JS `window.jvm`.
-    val jvmObject = KotlinObject1()
+    val greetings = GreetingsClass()
     val jsWindow = frame.executeJavaScript<JsObject>("window")!!
-    jsWindow.putProperty("jvm", jvmObject)
+    jsWindow.putProperty("greetings", greetings)
 
     // Call the public method of the injected object from JS.
-    frame.executeJavaScript<Any>("window.jvm.sayHelloTo('John')")
+    frame.executeJavaScript<Any>("window.greetings.sayHelloTo('John')")
 
     engine.close()
 }
 
-// Mark the public class with `@JsAccessible` annotation to tell JavaScript
-// that all public methods of the injected object can be invoked from
-// the JavaScript side.
-//
-// Only public classes and static nested classes can be injected into JS.
-@JsAccessible
-class KotlinObject1 {
+/**
+ * A simple JS-accessible greeting class.
+ *
+ * The class is marked with [JsAccessible] annotation to tell JavaScript
+ * that all public methods of the injected object can be invoked from
+ * the JavaScript side.
+ *
+ * Please note, only public classes and static nested classes can be injected
+ * into JavaScript.
+ */
+@JsAccessible // Makes all public methods of this class accessible from JS.
+class GreetingsClass {
 
     @Suppress("unused") // To be called from JavaScript.
     fun sayHelloTo(firstName: String) = println("Hello $firstName!")

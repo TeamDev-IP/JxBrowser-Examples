@@ -36,18 +36,23 @@ fun main() {
     val frame = browser.mainFrame!!
 
     // Inject a Java/Kotlin object to JS `window.jvm`.
-    val jvmObject = KotlinObject2()
+    val greetings = GreetingsMethod()
     val jsWindow = frame.executeJavaScript<JsObject>("window")!!
-    jsWindow.putProperty("jvm", jvmObject)
+    jsWindow.putProperty("greetings", greetings)
 
     // Call the public method of the injected object from JS.
-    frame.executeJavaScript<Any>("window.jvm.sayHelloTo('John')")
+    frame.executeJavaScript<Any>("window.greetings.sayHelloTo('John')")
 
     engine.close()
 }
 
-// Only public classes and static nested classes can be injected into JS.
-class KotlinObject2 {
+/**
+ * A simple class with a JS-accessible greeting method.
+ *
+ * Please note, only public classes and static nested classes can be injected
+ * into JavaScript.
+ */
+class GreetingsMethod {
 
     @JsAccessible // Makes this public method accessible from JS.
     @Suppress("unused") // To be called from JavaScript.
