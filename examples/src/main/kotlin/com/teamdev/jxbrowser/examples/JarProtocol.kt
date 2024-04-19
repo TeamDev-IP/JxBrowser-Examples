@@ -107,7 +107,7 @@ private class InterceptJarRequestCallback : InterceptUrlRequestCallback {
 }
 
 /**
- * Converts this [UrlRequest] from Chromium notation
+ * Converts this [UrlRequest] for a JAR file from Chromium notation
  * to [Java's one][java.net.JarURLConnection].
  *
  * In particular, `jar://file/path` is converted to `jar:file:/path`.
