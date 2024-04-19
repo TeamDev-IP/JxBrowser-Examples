@@ -24,11 +24,10 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
-import com.teamdev.jxbrowser.net.HttpHeader
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
-import com.teamdev.jxbrowser.net.UrlRequestJob
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.intercept
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.proceed
@@ -43,9 +42,7 @@ fun main() {
             proceed()
         }
         val bytes = "<html><body>Hello!</body></html>".toByteArray()
-        val options = UrlRequestJob.Options.newBuilder(HttpStatus.OK)
-            .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
-            .build()
+        val options = UrlRequestJobOptions(HttpStatus.OK, "text/html")
         val job = params.newUrlRequestJob(options).apply {
             write(bytes)
             complete()
