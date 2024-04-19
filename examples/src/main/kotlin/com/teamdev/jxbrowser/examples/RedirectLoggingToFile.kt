@@ -24,22 +24,14 @@ import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.logging.Level
 import com.teamdev.jxbrowser.logging.Logger
-import java.nio.file.Files
-import kotlin.io.path.absolute
+import kotlin.io.path.Path
 
 /**
  * This example demonstrates how to redirect all JxBrowser log messages
- * to '*.log' file.
- *
- * The "jxbrowser-logs..." directory is created in the user temp directory
- * and is not deleted.
+ * to the '*.log' file.
  */
 fun main() {
-    val loggingDir = Files.createTempDirectory("jxbrowser-logs")
-    val loggingFile = loggingDir.resolve("jxbrowser.log").absolute()
-
-    // Print location of the created file to check its content further.
-    println("Log file path: `$loggingFile`.")
+    val loggingFile = Path("jxbrowser.log")
 
     // Use `jxbrowser.logging.file` property to redirect logging to the file.
     System.setProperty("jxbrowser.logging.file", "$loggingFile")
