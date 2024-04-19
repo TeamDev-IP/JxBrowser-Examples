@@ -49,8 +49,8 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * This example demonstrates how to display "Select Client SSL Certificate"
- * dialog where you must select a required SSL certificate to continue loading
- * web page.
+ * dialog where an end-user must select an SSL certificate to continue loading
+ * the web page.
  *
  * **Important:** before you run this example, please follow the instruction
  * at [badssl.com](https://badssl.com/download/) and install the required

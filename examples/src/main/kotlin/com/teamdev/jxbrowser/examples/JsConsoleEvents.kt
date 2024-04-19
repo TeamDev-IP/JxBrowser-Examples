@@ -27,7 +27,7 @@ import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to listen to the console messages
+ * This example demonstrates how to listen to the browser console messages
  * including JavaScript errors.
  */
 fun main() {

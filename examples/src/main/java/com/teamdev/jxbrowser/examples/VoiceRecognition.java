@@ -36,10 +36,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to enable voice recognition functionality in Chromium engine.
+ * This example demonstrates how to enable voice recognition functionality
+ * in Chromium engine.
  *
- * <p>By default, voice recognition functionality is disabled. To enable it you must
- * provide your Google API Keys to the Chromium engine as shown in this example.
+ * <p>By default, the voice recognition functionality is disabled. To enable it,
+ * you must provide your Google API keys to the Chromium engine as shown
+ * in this example.
  *
  * <p>The instruction that describes how to acquire the API keys can be found
  * <a href="https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md">here</a>.

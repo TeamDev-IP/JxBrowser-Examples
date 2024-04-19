@@ -33,8 +33,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to show the Print Preview dialog for the current web page via the
- * {@code window.print()} JavaScript function.
+ * This example demonstrates how to show the print preview dialog for
+ * the current web page via the {@code window.print()} JavaScript function.
  */
 public final class PrintFromJavaScript {
 

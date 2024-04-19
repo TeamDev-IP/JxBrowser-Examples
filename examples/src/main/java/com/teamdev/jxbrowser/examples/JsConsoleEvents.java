@@ -35,7 +35,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to listen to the console messages including JavaScript errors.
+ * This example demonstrates how to listen to the browser console messages
+ * including JavaScript errors.
  */
 public final class JsConsoleEvents {
 

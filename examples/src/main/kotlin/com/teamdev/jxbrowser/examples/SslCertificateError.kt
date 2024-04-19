@@ -31,7 +31,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
  * This example demonstrates how to ignore SSL certificate errors
- * and continue loading a website with invalid SSL certificate.
+ * and continue loading a website with an invalid SSL certificate.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
@@ -45,7 +45,7 @@ fun main() {
     singleWindowApplication(title = "Ignore SSL certificate errors") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            // Load HTTPS website with invalid SSL certificate.
+            // Load HTTPS website with an invalid SSL certificate.
             browser.navigation.loadUrl("https://self-signed.badssl.com/")
         }
     }

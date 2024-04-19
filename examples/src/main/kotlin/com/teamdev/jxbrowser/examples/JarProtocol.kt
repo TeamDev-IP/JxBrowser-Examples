@@ -62,7 +62,7 @@ fun main() {
 /**
  * Overrides response data for requests that ask for a file from Jar archives.
  *
- * Such interceptor is needed when Chromium requests files from Jar archives.
+ * Such an interceptor is needed when Chromium requests files from Jar archives.
  * Such requests take place when an initially loaded page itself is located
  * in the application resources (and thus, in a Jar archive).
  *

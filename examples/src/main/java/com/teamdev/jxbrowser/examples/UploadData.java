@@ -31,7 +31,8 @@ import com.teamdev.jxbrowser.net.TextData;
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback;
 
 /**
- * This example demonstrates how to override POST upload data before it is sent to the server.
+ * This example demonstrates how to override the POST payload before
+ * it is sent to the server.
  */
 public final class UploadData {
 

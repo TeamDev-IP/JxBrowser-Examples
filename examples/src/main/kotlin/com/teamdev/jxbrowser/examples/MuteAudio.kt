@@ -32,8 +32,8 @@ import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to mute audio sound on the opened web page
- * and check whether audio is muted or not.
+ * This example demonstrates how to mute audio on the opened web page
+ * and check whether audio is muted.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)

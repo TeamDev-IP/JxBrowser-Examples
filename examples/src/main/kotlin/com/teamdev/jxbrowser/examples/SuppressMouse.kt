@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example demonstrates how to suppress `MousePressed` event
  * using [PressMouseCallback].
  *
- * For suppressing other mouse events the following callbacks are used:
+ * For suppressing other mouse events the following callbacks can be used:
  *
  * - `EnterMouseCallback`
  * - `ExitMouseCallback`

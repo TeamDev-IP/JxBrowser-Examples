@@ -28,7 +28,7 @@ import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to show the Print Preview dialog for
+ * This example demonstrates how to show the print preview dialog for
  * the current web page via the `window.print()` JavaScript function.
  */
 fun main() {

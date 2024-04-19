@@ -33,7 +33,8 @@ import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to get selected HTML from the loaded web page.
+ * This example demonstrates how to obtain the HTML content from the selected
+ * part of the loaded web page.
  */
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN)

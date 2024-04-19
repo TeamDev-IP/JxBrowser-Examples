@@ -31,8 +31,8 @@ import com.teamdev.jxbrowser.navigation.LoadUrlParams
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback
 
 /**
- * This example demonstrates how to override POST upload data
- * before it is sent to the server.
+ * This example demonstrates how to override the POST payload before
+ * it is sent to the server.
  */
 fun main() = Engine(RenderingMode.OFF_SCREEN).use { engine ->
 

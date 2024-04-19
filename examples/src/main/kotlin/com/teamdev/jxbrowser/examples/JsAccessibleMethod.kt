@@ -27,7 +27,7 @@ import com.teamdev.jxbrowser.js.JsAccessible
 import com.teamdev.jxbrowser.js.JsObject
 
 /**
- * This example demonstrates how to inject a Java/Kotlin object into JavaScript
+ * This example demonstrates how to inject a Java/Kotlin object into JavaScript,
  * and make some of its public methods accessible from JavaScript.
  */
 fun main() {

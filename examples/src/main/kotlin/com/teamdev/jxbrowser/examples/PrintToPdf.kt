@@ -37,10 +37,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.absolute
 
 /**
- * This example demonstrates how to configure print settings programmatically
- * and print the currently loaded web page using the built-in PDF printer.
- *
- * In general, it shows how to save the currently loaded web page
+ * This example demonstrates how to save the currently loaded web page
  * as a PDF document.
  */
 fun main() {

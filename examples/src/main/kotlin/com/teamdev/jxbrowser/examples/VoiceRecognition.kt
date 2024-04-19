@@ -38,8 +38,8 @@ import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
  * This example demonstrates how to enable voice recognition functionality
  * in Chromium engine.
  *
- * By default, voice recognition functionality is disabled. To enable it,
- * you must provide your Google API Keys to the Chromium engine as shown
+ * By default, the voice recognition functionality is disabled. To enable it,
+ * you must provide your Google API keys to the Chromium engine as shown
  * in this example.
  *
  * The instruction that describes how to acquire the API keys can be found

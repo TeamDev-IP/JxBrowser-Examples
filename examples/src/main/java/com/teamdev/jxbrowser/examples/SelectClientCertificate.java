@@ -46,12 +46,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to display the "Select Client SSL Certificate" dialog where you
- * must select a required SSL certificate to continue loading web page.
+ * This example demonstrates how to display "Select Client SSL Certificate"
+ * dialog where an end-user must select an SSL certificate to continue loading
+ * the web page.
  *
  * <p>Important: before you run this example, please follow the instruction at
- * <a href="https://badssl.com/download/">https://badssl.com/download/</a>
- * and install the required custom SSL certificate.
+ * <a href="https://badssl.com/download/">badssl.com</a> and install
+ * the required custom SSL certificate.
  */
 public final class SelectClientCertificate {
 
