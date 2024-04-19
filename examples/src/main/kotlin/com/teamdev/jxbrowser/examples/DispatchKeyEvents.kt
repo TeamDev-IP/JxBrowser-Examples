@@ -45,7 +45,7 @@ fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Dispatch Key Event") {
+    singleWindowApplication(title = "Dispatch key events") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             with(browser) {

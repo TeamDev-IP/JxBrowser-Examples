@@ -38,7 +38,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Change Default Zoom Level") {
+    singleWindowApplication(title = "Change default zoom level") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             engine.zoomLevels.defaultLevel = ZoomLevel.P_300

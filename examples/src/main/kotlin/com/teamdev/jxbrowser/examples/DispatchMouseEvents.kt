@@ -49,7 +49,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Dispatch Mouse Events") {
+    singleWindowApplication(title = "Dispatch mouse events") {
         Column {
             Button(onClick = { browser.dispatchMouseEvent() }) {
                 Text("Dispatch Mouse Right Click")

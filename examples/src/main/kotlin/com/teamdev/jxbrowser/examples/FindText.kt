@@ -34,7 +34,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 /**
  * This example demonstrates how to find text on the loaded web page.
  */
-fun main() = singleWindowApplication(title = "Find Text") {
+fun main() = singleWindowApplication(title = "Find text") {
     val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
     var searchedText by remember { mutableStateOf("") }

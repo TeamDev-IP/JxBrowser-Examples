@@ -56,7 +56,7 @@ import kotlin.jvm.optionals.getOrNull
  * at [badssl.com](https://badssl.com/download/) and install the required
  * custom SSL certificate.
  */
-fun main() = singleWindowApplication(title = "Select Client SSL Certificate") {
+fun main() = singleWindowApplication(title = "Select client SSL certificate") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 

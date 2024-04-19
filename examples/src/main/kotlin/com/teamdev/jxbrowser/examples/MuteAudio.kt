@@ -40,7 +40,7 @@ fun main() {
     val browser = engine.newBrowser()
     val audio = browser.audio
 
-    singleWindowApplication(title = "Mute Audio") {
+    singleWindowApplication(title = "Mute audio") {
         var isMuted by remember { mutableStateOf(audio.isMuted) }
         Column {
             Button(onClick = { isMuted = !isMuted }) {

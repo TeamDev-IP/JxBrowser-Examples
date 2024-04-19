@@ -53,7 +53,7 @@ fun main() {
         }
     })
 
-    singleWindowApplication(title = "Suppress the Mouse Pressed event") {
+    singleWindowApplication(title = "Suppress `MousePressed` event") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.mainFrame?.loadHtml(HTML_BUTTON)

@@ -39,7 +39,7 @@ fun main() {
 
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "User Agent") {
+    singleWindowApplication(title = "Custom user agent") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://whatsmyuseragent.com/")

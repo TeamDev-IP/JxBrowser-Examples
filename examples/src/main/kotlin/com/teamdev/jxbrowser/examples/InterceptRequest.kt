@@ -45,7 +45,7 @@ fun main() {
 
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Intercept Request") {
+    singleWindowApplication(title = "Intercept request") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://www.google.com")

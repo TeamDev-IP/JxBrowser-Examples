@@ -52,7 +52,7 @@ fun main() {
         }
     }
 
-    singleWindowApplication(title = "Spell Check Events") {
+    singleWindowApplication(title = "Spell check events") {
         BrowserView(browser, Modifier.focusRequester(focus))
         LaunchedEffect(Unit) {
             browser.mainFrame?.loadHtml(MISSPELLED_TEXT)

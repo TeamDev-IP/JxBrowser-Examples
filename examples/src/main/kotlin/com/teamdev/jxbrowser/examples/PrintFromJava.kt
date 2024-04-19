@@ -36,7 +36,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example demonstrates how to show the Print Preview dialog where you can
  * select the required printing options and print the currently loaded web page.
  */
-fun main() = singleWindowApplication(title = "Print From Java") {
+fun main() = singleWindowApplication(title = "Print from Java") {
     val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
     val browser = remember { engine.newBrowser() }
 

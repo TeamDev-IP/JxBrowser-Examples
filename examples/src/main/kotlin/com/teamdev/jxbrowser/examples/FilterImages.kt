@@ -51,7 +51,7 @@ fun main() {
 
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Filter Images") {
+    singleWindowApplication(title = "Filter images") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://www.google.com")

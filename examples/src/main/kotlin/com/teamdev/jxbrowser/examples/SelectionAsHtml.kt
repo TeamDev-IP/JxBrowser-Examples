@@ -40,7 +40,7 @@ fun main() {
     val browser = engine.newBrowser()
     val frame = browser.mainFrame!!
 
-    singleWindowApplication(title = "Get Selected HTML") {
+    singleWindowApplication(title = "Get selected HTML") {
         var selectedHtml by remember { mutableStateOf("") }
 
         Column {

@@ -49,7 +49,7 @@ fun main() {
         """.trimIndent()
     )
 
-    singleWindowApplication(title = "File Upload") {
+    singleWindowApplication(title = "File upload") {
         BrowserView(browser)
     }
 }

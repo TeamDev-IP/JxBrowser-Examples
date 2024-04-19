@@ -35,7 +35,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Print From JavaScript") {
+    singleWindowApplication(title = "Print from JavaScript") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.mainFrame?.loadHtml(PRINT_BUTTON)

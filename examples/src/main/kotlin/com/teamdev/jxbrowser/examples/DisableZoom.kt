@@ -38,7 +38,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Disable Zoom") {
+    singleWindowApplication(title = "Disable zoom") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrlAndWait("https://www.google.com")

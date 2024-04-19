@@ -42,7 +42,7 @@ fun main() {
         tell.allow()
     })
 
-    singleWindowApplication(title = "Ignore SSL Certificate Errors") {
+    singleWindowApplication(title = "Ignore SSL certificate errors") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             // Load HTTPS website with invalid SSL certificate.

@@ -45,7 +45,7 @@ fun main() {
 
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Custom Protocol Handler") {
+    singleWindowApplication(title = "Custom protocol handler") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("${PROTOCOL.name()}://hello")

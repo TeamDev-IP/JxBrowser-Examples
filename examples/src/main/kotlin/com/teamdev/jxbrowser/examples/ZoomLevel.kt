@@ -58,7 +58,7 @@ fun main() {
         }
     }
 
-    singleWindowApplication(title = "Change Zoom Level") {
+    singleWindowApplication(title = "Change zoom level") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://www.google.com")

@@ -38,7 +38,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Disabling PDF Viewer") {
+    singleWindowApplication(title = "Disabling PDF viewer") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             engine.plugins.settings.pdfViewerEnabled = false

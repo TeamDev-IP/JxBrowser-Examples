@@ -27,14 +27,14 @@ import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example loads the web page that uses WebSockets API to demonstrate
+ * This example loads the web page that uses WebSocket API to demonstrate
  * that such web pages are supported in JxBrowser.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Web Socket") {
+    singleWindowApplication(title = "WebSocket API") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://echo.websocket.org")

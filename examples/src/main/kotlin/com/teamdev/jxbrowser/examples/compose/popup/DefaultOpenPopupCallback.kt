@@ -39,7 +39,7 @@ import kotlinx.coroutines.CoroutineScope
  * It creates and shows a new window with the embedded pop-up browser
  * each time [OpenPopupCallback] is invoked.
  */
-fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
+fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 

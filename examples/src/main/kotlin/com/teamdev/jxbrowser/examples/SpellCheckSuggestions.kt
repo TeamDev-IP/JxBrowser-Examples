@@ -41,7 +41,7 @@ import com.teamdev.jxbrowser.menu.SpellCheckMenu
  * with the required language and display the dictionary suggestions in
  * the context menu that is displayed under a misspelled word.
  */
-fun main() = singleWindowApplication(title = "Spell Check Suggestions") {
+fun main() = singleWindowApplication(title = "Spell check suggestions") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 

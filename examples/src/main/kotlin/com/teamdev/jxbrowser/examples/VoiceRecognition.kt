@@ -67,7 +67,7 @@ fun main() {
 
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "Voice Recognition") {
+    singleWindowApplication(title = "Voice recognition") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             // To test the voice recognition click the "Search by voice"

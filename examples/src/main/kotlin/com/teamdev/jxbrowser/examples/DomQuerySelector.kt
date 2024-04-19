@@ -47,7 +47,7 @@ fun main() {
         }
     }
 
-    singleWindowApplication(title = "DOM Query Selector") {
+    singleWindowApplication(title = "DOM query selector") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.mainFrame?.loadHtml(HTML_PARAGRAPHS)

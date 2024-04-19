@@ -42,7 +42,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "DOM HTML Form") {
+    singleWindowApplication(title = "DOM HTML form") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.fillFormOnLoadFinished()

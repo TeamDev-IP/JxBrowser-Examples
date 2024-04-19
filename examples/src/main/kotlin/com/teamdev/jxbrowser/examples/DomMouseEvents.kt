@@ -45,7 +45,7 @@ import java.util.concurrent.CountDownLatch
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
-    singleWindowApplication(title = "DOM Mouse Event Listener") {
+    singleWindowApplication(title = "DOM mouse event listener") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.loadHtmlAndWait(HTML_BUTTON)

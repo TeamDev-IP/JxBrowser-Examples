@@ -46,7 +46,7 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    singleWindowApplication(title = "DOM Keyboard Event Listener") {
+    singleWindowApplication(title = "DOM keyboard event listener") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.loadHtmlAndWait(HTML_FIELD)

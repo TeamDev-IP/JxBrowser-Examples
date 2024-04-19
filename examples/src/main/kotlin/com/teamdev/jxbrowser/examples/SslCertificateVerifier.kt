@@ -53,7 +53,7 @@ fun main() {
         }
     })
 
-    singleWindowApplication(title = "SSL Certificate Verifier") {
+    singleWindowApplication(title = "SSL certificate verifier") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://www.google.com")

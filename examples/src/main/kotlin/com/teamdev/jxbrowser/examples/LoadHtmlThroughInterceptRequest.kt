@@ -58,7 +58,7 @@ fun main() {
     val browser = engine.newBrowser()
     browser.navigation.loadUrl("http://localhost?load-html")
 
-    singleWindowApplication(title = "Load HTML Through Interception") {
+    singleWindowApplication(title = "Load HTML through interception") {
         BrowserView(browser)
     }
 }

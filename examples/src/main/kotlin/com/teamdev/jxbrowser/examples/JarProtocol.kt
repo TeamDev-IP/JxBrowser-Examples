@@ -54,7 +54,7 @@ fun main() {
     val website = object {}.javaClass.getResource("/resources/index.html")!!
     browser.navigation.loadUrl("$website")
 
-    singleWindowApplication(title = "JAR Protocol Handler") {
+    singleWindowApplication(title = "JAR protocol handler") {
         BrowserView(browser)
     }
 }
