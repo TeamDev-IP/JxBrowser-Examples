@@ -33,10 +33,10 @@ import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback
 
 /**
  * This example demonstrates how to handle all resources such as HTML, PNG,
- * JavaScript, CSS files and decide whether web browser engine should load
- * them from a web server or not.
+ * JavaScript, CSS files, and decide whether web browser engine should load
+ * them from a web server.
  *
- * For example, in this snippet we cancel loading of all images.
+ * In this snippet we cancel loading of all images.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
@@ -55,7 +55,6 @@ fun main() {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrl("https://www.google.com")
-
         }
     }
 }

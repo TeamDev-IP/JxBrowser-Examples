@@ -62,7 +62,9 @@ fun main() {
     }
 }
 
-// Dispatch mouse press and then release to simulate click.
+/**
+ * Dispatches [MousePressed] and then [MouseReleased] to simulate a click.
+ */
 private fun Browser.dispatchMouseEvent() {
     dispatch(
         MousePressed.newBuilder(Point.of(50, 50))
@@ -79,11 +81,14 @@ private fun Browser.dispatchMouseEvent() {
 private fun Browser.loadHtmlAndWait() {
     val latch = CountDownLatch(1)
     navigation.subscribe<FrameLoadFinished> { latch.countDown() }
-    mainFrame?.loadHtml(oncontextmenuCallback)
+    mainFrame?.loadHtml(ONCONTEXTMENU_CALLBACK)
     awaitUninterruptibly(latch)
 }
 
-private val oncontextmenuCallback = """
+/**
+ * Assigns `document.oncontextmenu` callback function.
+ */
+private val ONCONTEXTMENU_CALLBACK = """
     <html lang="en">
     <body>
     <script>

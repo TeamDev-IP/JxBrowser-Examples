@@ -42,7 +42,7 @@ fun main() {
 }
 
 /**
- * A web page that tests support of <video> tag.
+ * A web page that tests support of `<video>` tag.
  */
 private const val HTML5_VIDEO_TEST =
     "https://www.quirksmode.org/html5/tests/video.html"

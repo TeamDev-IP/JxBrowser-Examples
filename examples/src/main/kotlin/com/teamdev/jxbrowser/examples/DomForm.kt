@@ -35,7 +35,7 @@ import com.teamdev.jxbrowser.navigation.Navigation
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
 
 /**
- * This example demonstrates how to fill HTML Form fields using
+ * This example demonstrates how to fill HTML form fields using
  * JxBrowser DOM API.
  */
 fun main() {

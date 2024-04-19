@@ -28,7 +28,7 @@ import com.teamdev.jxbrowser.dsl.dom.findById
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
- * This example demonstrates how to get the list of existing attributes
+ * This example demonstrates how to obtain the list of existing attributes
  * of a specified HTML element.
  */
 fun main(): Unit = Engine(RenderingMode.OFF_SCREEN).use { engine ->

@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
 
 /**
- * This example demonstrates how to use querySelector DOM API.
+ * This example demonstrates how to use `querySelector` DOM API.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)

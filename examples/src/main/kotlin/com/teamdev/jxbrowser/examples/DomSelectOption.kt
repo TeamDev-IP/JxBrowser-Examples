@@ -63,7 +63,7 @@ fun main() {
         """.trimIndent()
     )
 
-    singleWindowApplication(title = "Dom Select Option") {
+    singleWindowApplication(title = "DOM Select Option") {
         BrowserView(browser)
     }
 }

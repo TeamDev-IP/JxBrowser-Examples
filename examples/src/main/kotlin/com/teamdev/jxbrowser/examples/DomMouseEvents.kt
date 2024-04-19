@@ -91,4 +91,3 @@ private val MOUSE_EVENT_INFO = """
     Button: `%s`. 
     Page location: `(%d, %d)`.
 """.trimIndent()
-

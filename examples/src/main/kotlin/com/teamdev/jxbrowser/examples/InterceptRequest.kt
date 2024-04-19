@@ -67,9 +67,9 @@ private class RespondWithSalutation : InterceptUrlRequestCallback {
         val options = UrlRequestJobOptions(HttpStatus.OK, headers)
         val job = params.newUrlRequestJob(options)
 
-        // Perform complex calculations and override the response data
-        // in a separate thread.
+        // Override the response data in a separate thread.
         Thread {
+            // Perform here complex calculations, data fetching/mapping, etc.
             job.write("<html><body><h1>Hello there!</h1></body></html>".toByteArray())
             job.complete()
         }.start()
