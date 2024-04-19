@@ -27,21 +27,20 @@ import com.teamdev.jxbrowser.js.JsFunctionCallback
 import com.teamdev.jxbrowser.js.JsObject
 
 /**
- * This example demonstrates how to inject `JsFunctionCallback` into JavaScript
- * and call it from JavaScript code.
+ * This example demonstrates how to inject a Java function into JavaScript.
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
     val frame = browser.mainFrame!!
 
-    // Inject a callback to JS `window.sayHelloTo`.
+    // Inject a Java `sayHello` function to JS `window` object.
     val jsWindow = frame.executeJavaScript<JsObject>("window")!!
-    val callback = JsFunctionCallback { args -> "Hello, ${args[0]}" }
-    jsWindow.putProperty("sayHelloTo", callback)
+    val sayHello = JsFunctionCallback { args -> "Hello, ${args[0]}" }
+    jsWindow.putProperty("sayHello", sayHello)
 
-    // Call the injected callback.
-    val greetings = frame.executeJavaScript<String>("window.sayHelloTo('John')")
+    // Call the injected callback
+    val greetings = frame.executeJavaScript<String>("window.sayHello('John')")
     println(greetings)
 
     engine.close()
