@@ -54,14 +54,14 @@ import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
  *    check is set (you can opt out of emails).
  * 2. Go to [console.cloud.google.com](https://console.cloud.google.com).
  *    Make sure you are logged in with the Google account associated with
- *    the email address that you used to subscribe to `chromium-dev` group.
+ *    the email address that you used to subscribe to "chromium-dev" group.
  * 3. In the top bar, create a new project for your app or select an existing one.
  * 4. Go to APIs & Services > Library.
  * 5. Find and enable "Speech API" (NOT "Cloud Speech-to-Text API").
  *    If there's no such API found, return to the "Library" page and choose
  *    "private" in "Visibility" section on the left. There will be all private
  *    APIs visible to you. Appearance of private APIs after subscribing
- *    to "chromium-dev" group may take some time (up to 15 minutes).
+ *    to the group may take some time (up to 15 minutes).
  *
  * Acquiring Keys:
  *
@@ -71,8 +71,8 @@ import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
  * 3. Click "CREATE CREDENTIALS" button, select "OAuth client ID" item
  *    in the drop-down list. In the “Application type” select the type that
  *    better describes your app and give it a name, then click "Create".
- * 4. In the pop-up window that appears, you'll see a "Client ID"
- *    and a "Client secret" strings. They should be passed to the engine.
+ * 4. In the pop-up window that appears, you'll see "Client ID" and
+ *    "Client secret" strings. Keep them. They should be passed to JxBrowser.
  * 5. Click "CREATE CREDENTIALS" button again on the same page.
  *    Choose "API key". A pop-over should show up giving you the API key string.
  *    It should also be passed to JxBrowser.
