@@ -42,9 +42,42 @@ import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
  * you must provide your Google API keys to the Chromium engine as shown
  * in this example.
  *
- * The instruction that describes how to acquire the API keys can be found
- * [here](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md).
- * In particular, to make voice recognition work, Speech API should be enabled.
+ * The voice recognition functionality is provided by Google Cloud services,
+ * in particular by Speech API. Follow the instruction below to enable it
+ * and generate the required credentials.
+ *
+ * Enabling Speech API in Google Cloud:
+ *
+ * 1. Speech API is private. It is visible only to people subscribed
+ *    to [chromium-dev](https://groups.google.com/a/chromium.org/g/chromium-dev)
+ *    Google Group. Join this group. When joining, make sure `Link to my Google account profile`
+ *    check is set (you can opt out of emails).
+ * 2. Go to [console.cloud.google.com](https://console.cloud.google.com).
+ *    Make sure you are logged in with the Google account associated with
+ *    the email address that you used to subscribe to `chromium-dev` group.
+ * 3. In the top bar, create a new project for your app or select an existing one.
+ * 4. Go to APIs & Services > Library.
+ * 5. Find and enable "Speech API" (NOT "Cloud Speech-to-Text API").
+ *    If there's no such API found, return to the "Library" page and choose
+ *    "private" in "Visibility" section on the left. There will be all private
+ *    APIs visible to you. Appearance of private APIs after subscribing
+ *    to "chromium-dev" group may take some time (up to 15 minutes).
+ *
+ * Acquiring Keys:
+ *
+ * 1. Go to APIs & Services > Credentials.
+ * 2. Configure OAuth consent screen, if you haven't done it before.
+ *    Fill in the product name (anything you choose) and other details, then save.
+ * 3. Click "CREATE CREDENTIALS" button, select "OAuth client ID" item
+ *    in the drop-down list. In the “Application type” select the type that
+ *    better describes your app and give it a name, then click "Create".
+ * 4. In the pop-up window that appears, you'll see a "Client ID"
+ *    and a "Client secret" strings. They should be passed to the engine.
+ * 5. Click "CREATE CREDENTIALS" button again on the same page.
+ *    Choose "API key". A pop-over should show up giving you the API key string.
+ *    It should also be passed to JxBrowser.
+ *
+ * See also: [Chromium Docs | API Keys](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md).
  */
 fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
