@@ -20,7 +20,10 @@
 
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.SavePageType
+import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
@@ -34,20 +37,22 @@ fun main() {
     val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
     val browser = engine.newBrowser()
 
-    browser.navigation.loadUrlAndWait("https://www.google.com")
+    val html = Path("index.html").absolute()
+    val resources = Path("resources_dir").absolute()
 
-    val html = Path("index.html")
-    val resources = Path("resources_dir")
-
-    browser.saveWebPage(html, resources, SavePageType.COMPLETE_HTML)
-        .also { success ->
-            if (success) {
-                println("The web page saved to `${html.absolute()}`.")
-                println("Page resources saved to `${resources.absolute()}`.")
-            } else {
-                println("Failed to save the web page to $html")
-            }
+    singleWindowApplication(title = "Save web page") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrlAndWait("https://www.google.com")
+            browser.saveWebPage(html, resources, SavePageType.COMPLETE_HTML)
+                .also { success ->
+                    if (success) {
+                        println("The web page saved to `$html`.")
+                        println("Page resources saved to `$resources`.")
+                    } else {
+                        println("Failed to save the web page to $html")
+                    }
+                }
         }
-
-    engine.close()
+    }
 }
