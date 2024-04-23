@@ -87,8 +87,6 @@ fun main() = singleWindowApplication(title = "Select client SSL certificate") {
 
                 x509Certificates = emptyList()
 
-                // TODO:2024-04-10:yevhenii.nadtochii: Not working.
-                //  See issue: https://github.com/TeamDev-IP/JxBrowser-Docs/issues/932
                 val privateKey = SslPrivateKey.of(selectedCertificate.encoded)
                 val clientCertificate = ClientCertificate.of(selectedCertificate, privateKey)
 

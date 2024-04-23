@@ -41,9 +41,6 @@ fun main() {
     val browser = engine.newBrowser()
     val focus = FocusRequester()
 
-    // TODO:2024-04-11:yevhenii.nadtochii: `SpellCheckCompleted` arrives twice.
-    //  See issue: https://github.com/TeamDev-IP/JxBrowser-Docs/issues/968
-
     browser.subscribe<SpellCheckCompleted> { event ->
         event.results().forEach {
             println("Error start index: " + it.location())

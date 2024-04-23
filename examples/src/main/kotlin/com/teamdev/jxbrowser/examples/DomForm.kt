@@ -59,8 +59,6 @@ private fun Navigation.fillFormOnLoadFinished() =
     subscribe<FrameLoadFinished> { event ->
         val element = event.frame().document?.documentElement
         element?.let {
-            // TODO:2024-04-08:yevhenii.nadtochii: Have `element?.attribute["value"] = "John"`.
-            //  See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/152
             it.findByName("firstName")!!.putAttribute("value", "John")
             it.findByName("lastName")!!.putAttribute("value", "Doe")
         }

@@ -41,9 +41,6 @@ fun main() = singleWindowApplication(title = "Print from Java") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
-    // TODO:2024-04-09:yevhenii.nadtochii: Throws `ObjectClosedException`
-    //  See issue: https://github.com/TeamDev-IP/JxBrowser-Kotlin/issues/30
-
     Column {
         Button(onClick = browser.mainFrame!!::print) {
             Text("Print")
