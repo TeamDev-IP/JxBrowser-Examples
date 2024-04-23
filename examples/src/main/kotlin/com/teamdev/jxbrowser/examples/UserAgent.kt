@@ -42,7 +42,7 @@ fun main() {
     singleWindowApplication(title = "Custom user agent") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrl("https://whatsmyuseragent.com/")
+            browser.navigation.loadUrl("https://www.whatismybrowser.com/detect/what-is-my-user-agent/")
         }
     }
 }
