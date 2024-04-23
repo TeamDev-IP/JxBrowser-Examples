@@ -46,7 +46,7 @@ import java.util.concurrent.CountDownLatch
  * on JavaScript.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     singleWindowApplication(title = "Dispatch mouse events") {

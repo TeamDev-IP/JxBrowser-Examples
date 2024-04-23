@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.view.swing.BrowserView
  * Compose [BrowserView], and navigate to `www.google.com`.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     singleWindowApplication(title = "Load URL") {

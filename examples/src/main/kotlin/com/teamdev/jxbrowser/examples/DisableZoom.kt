@@ -35,7 +35,7 @@ import com.teamdev.jxbrowser.zoom.ZoomLevel
  * This example demonstrates how to disable zoom on a web page.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     singleWindowApplication(title = "Disable zoom") {

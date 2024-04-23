@@ -43,7 +43,7 @@ import com.teamdev.jxbrowser.zoom.event.ZoomLevelChanged
  * until you modify it.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     // Listen to the zoom changes.

@@ -39,7 +39,7 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
  * JxBrowser DOM API.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     singleWindowApplication(title = "DOM HTML form") {

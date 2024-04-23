@@ -38,7 +38,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * loaded web page.
  */
 fun main() = singleWindowApplication(title = "Print from Java") {
-    val engine = remember { Engine(RenderingMode.HARDWARE_ACCELERATED) }
+    val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
     // TODO:2024-04-09:yevhenii.nadtochii: Throws `ObjectClosedException`

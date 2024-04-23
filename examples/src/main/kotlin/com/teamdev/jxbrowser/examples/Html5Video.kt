@@ -31,7 +31,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example loads the web page with HTML5 video.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     singleWindowApplication(title = "HTML5 video") {
         BrowserView(browser)

@@ -39,6 +39,6 @@ fun main() {
     // Set logging level to `ALL` to see some logs upon `Engine` creation.
     Logger.level(Level.ALL)
 
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     engine.close()
 }

@@ -33,7 +33,7 @@ import kotlin.io.path.createTempDirectory
  * and get a notification when downloading completes.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     browser.register(StartDownloadCallback { params, tell ->

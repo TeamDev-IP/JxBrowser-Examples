@@ -34,7 +34,7 @@ import kotlin.io.path.absolute
  * This example demonstrates how to save the loaded web page.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     val html = Path("index.html").absolute()

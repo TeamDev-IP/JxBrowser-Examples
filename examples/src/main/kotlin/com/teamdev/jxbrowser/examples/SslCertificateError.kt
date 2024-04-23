@@ -34,7 +34,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * and continue loading a website with an invalid SSL certificate.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     browser.register(CertificateErrorCallback { params, tell ->

@@ -31,7 +31,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * including JavaScript errors.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     browser.subscribe<ConsoleMessageReceived> { event ->

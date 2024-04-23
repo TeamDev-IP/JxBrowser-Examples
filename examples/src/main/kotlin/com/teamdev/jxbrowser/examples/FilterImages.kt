@@ -39,7 +39,7 @@ import com.teamdev.jxbrowser.net.callback.BeforeUrlRequestCallback
  * In this snippet we cancel loading of all images.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
 
     engine.network.register(BeforeUrlRequestCallback { params ->
         if (params.urlRequest().resourceType() == ResourceType.IMAGE) {

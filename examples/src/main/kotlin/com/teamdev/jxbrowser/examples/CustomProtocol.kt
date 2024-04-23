@@ -39,7 +39,7 @@ import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
  */
 fun main() {
     // Create an engine with a custom URL requests interceptor.
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
+    val engine = Engine(RenderingMode.OFF_SCREEN) {
         schemes.add(PROTOCOL, RespondWithGreetings())
     }
 

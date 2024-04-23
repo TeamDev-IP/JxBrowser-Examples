@@ -32,7 +32,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * component and display it.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     singleWindowApplication(title = "Load HTML") {
         BrowserView(browser)

@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback
  * and outgoing cookies.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
 
     // Suppress/filter all the incoming and outgoing cookies.
     engine.network.apply {

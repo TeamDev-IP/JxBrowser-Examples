@@ -41,7 +41,7 @@ import com.teamdev.jxbrowser.print.event.PrintCompleted
  * via the default system printer.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     browser.register(PrintCallback { _, tell -> tell.print() })

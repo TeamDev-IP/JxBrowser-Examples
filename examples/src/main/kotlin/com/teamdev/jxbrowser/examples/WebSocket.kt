@@ -31,7 +31,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * that such web pages are supported in JxBrowser.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     singleWindowApplication(title = "WebSocket API") {

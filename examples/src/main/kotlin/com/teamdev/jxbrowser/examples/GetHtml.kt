@@ -30,7 +30,7 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
  * This example demonstrates how to get HTML code of the loaded web page.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     val navigation = browser.navigation
 

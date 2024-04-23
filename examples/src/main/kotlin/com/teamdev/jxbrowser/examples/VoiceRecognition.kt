@@ -80,7 +80,7 @@ import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
  * See also: [Chromium Docs | API Keys](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md).
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
+    val engine = Engine(RenderingMode.OFF_SCREEN) {
         google {
             apiKey = GoogleApiKey("your_api_key")
             defaultClientId = GoogleClientId("your_client_id")

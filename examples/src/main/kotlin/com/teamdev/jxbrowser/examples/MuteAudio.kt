@@ -36,7 +36,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * and check whether audio is muted.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     val audio = browser.audio
 

@@ -30,7 +30,7 @@ import com.teamdev.jxbrowser.js.JsObject
  * This example demonstrates how to inject a Java function into JavaScript.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     val frame = browser.mainFrame!!
 

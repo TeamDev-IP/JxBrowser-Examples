@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  * This example demonstrates how to configure [Engine] with a custom user agent.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED) {
+    val engine = Engine(RenderingMode.OFF_SCREEN) {
         userAgent = UserAgent("Custom User Agent")
     }
 

@@ -43,7 +43,7 @@ import java.util.concurrent.CountDownLatch
  * This examples demonstrates how to capture mouse events from the DOM nodes.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
     singleWindowApplication(title = "DOM mouse event listener") {
         BrowserView(browser)

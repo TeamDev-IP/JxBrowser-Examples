@@ -35,7 +35,7 @@ import kotlin.io.path.Path
  * uploads a file using `INPUT TYPE="file"` HTML element on a web page.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     browser.register(OpenFileCallback { _, tell ->

@@ -38,7 +38,7 @@ import com.teamdev.jxbrowser.net.tls.CertVerificationStatus
  * a custom SSL certificate verifier.
  */
 fun main() {
-    val engine = Engine(RenderingMode.HARDWARE_ACCELERATED)
+    val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
     engine.network.register(VerifyCertificateCallback { params ->
