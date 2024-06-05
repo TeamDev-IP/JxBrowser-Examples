@@ -20,7 +20,7 @@
 
 plugins {
     java
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "1.9.22"
 
     // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.0.2"
@@ -38,6 +38,10 @@ allprojects {
     version = jxBrowserVersion
 }
 
+repositories {
+    mavenCentral()
+}
+
 subprojects {
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -46,6 +50,7 @@ subprojects {
     apply(plugin = "org.jetbrains.compose")
 
     repositories {
+        gradlePluginPortal()
         mavenCentral()
         google()
     }

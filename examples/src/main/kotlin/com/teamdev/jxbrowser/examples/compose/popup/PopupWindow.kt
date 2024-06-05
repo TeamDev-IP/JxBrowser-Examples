@@ -24,7 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.Window
-import com.teamdev.jxbrowser.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * Creates a pop-up window.

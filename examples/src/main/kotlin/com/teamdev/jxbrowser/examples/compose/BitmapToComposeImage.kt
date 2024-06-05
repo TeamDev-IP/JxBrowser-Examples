@@ -20,7 +20,7 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
-import com.teamdev.jxbrowser.compose.graphics.toBufferedImage
+import com.teamdev.jxbrowser.view.compose.graphics.toBufferedImage
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
