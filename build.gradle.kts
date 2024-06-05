@@ -50,7 +50,6 @@ subprojects {
     apply(plugin = "org.jetbrains.compose")
 
     repositories {
-        gradlePluginPortal()
         mavenCentral()
         google()
     }
