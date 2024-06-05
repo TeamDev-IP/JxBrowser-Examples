@@ -30,7 +30,7 @@ plugins {
     id("org.jetbrains.compose") version "1.6.1"
 }
 
-val jxBrowserVersion by extra { "8.0.0-eap.2" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.0.0-eap.3" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
