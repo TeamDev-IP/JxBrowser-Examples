@@ -44,7 +44,7 @@ public final class DomGetAttributes {
                     .flatMap(Document::documentElement)
                     .flatMap(element -> element.findElementById("link"))
                     .ifPresent(
-                            linkElement -> linkElement.attributes().forEach(DomGetAttributes::print));
+                            linkElement -> linkElement.attributes().asMap().forEach(DomGetAttributes::print));
         }
     }
 

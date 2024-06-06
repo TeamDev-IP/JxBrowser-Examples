@@ -20,7 +20,7 @@
 
 plugins {
     java
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "1.9.22"
 
     // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.0.2"
@@ -30,12 +30,16 @@ plugins {
     id("org.jetbrains.compose") version "1.6.1"
 }
 
-val jxBrowserVersion by extra { "8.0.0-eap.2" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.0.0-eap.3" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
     group = "com.teamdev.jxbrowser-examples"
     version = jxBrowserVersion
+}
+
+repositories {
+    mavenCentral()
 }
 
 subprojects {

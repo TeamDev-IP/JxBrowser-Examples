@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback
-import com.teamdev.jxbrowser.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
