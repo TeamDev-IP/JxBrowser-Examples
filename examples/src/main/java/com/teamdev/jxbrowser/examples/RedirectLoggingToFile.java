@@ -23,29 +23,27 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.logging.Level;
+import com.teamdev.jxbrowser.logging.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
- * This example demonstrates how to redirect all JxBrowser log messages to the '*.log' file.
- *
- * <p>The "jxbrowser-logs..." directory is created in the user temp directory and is not deleted.
+ * This example demonstrates how to redirect all JxBrowser log messages
+ * to the '*.log' file.
  */
 public final class RedirectLoggingToFile {
 
     public static void main(String[] args) {
-        Path loggingDir;
-        try {
-            loggingDir = Files.createTempDirectory("jxbrowser-logs");
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to create a temporary directory", e);
-        }
-        Path loggingFile = loggingDir.resolve("jxbrowser.log");
-        System.setProperty("jxbrowser.logging.file",
-                loggingFile.toAbsolutePath().toString());
+        Path loggingFile = Paths.get("jxbrowser.log");
 
-        System.out.println("Log file path: " + loggingFile.toAbsolutePath());
+        // Use `jxbrowser.logging.file` property to redirect logging to the file.
+        System.setProperty("jxbrowser.logging.file", loggingFile.toString());
+
+        // Set logging level to `ALL` to see some logs upon `Engine` creation.
+        Logger.level(Level.ALL);
 
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         engine.close();

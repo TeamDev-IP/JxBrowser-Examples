@@ -34,8 +34,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to ignore SSL certificate errors and continue loading a website
- * with invalid SSL certificate.
+ * This example demonstrates how to ignore SSL certificate errors
+ * and continue loading a website with an invalid SSL certificate.
  */
 public final class SslCertificateError {
 
@@ -71,7 +71,7 @@ public final class SslCertificateError {
             tell.allow();
         });
 
-        // Load HTTPS website with invalid SSL certificate.
+        // Load HTTPS website with an invalid SSL certificate.
         browser.navigation().loadUrl("https://self-signed.badssl.com/");
     }
 }

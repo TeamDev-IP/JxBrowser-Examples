@@ -35,8 +35,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to mute audio sound on the opened web page and check whether audio
- * is muted or not.
+ * This example demonstrates how to mute audio on the opened web page
+ * and check whether audio is muted.
  */
 public final class MuteAudio {
 

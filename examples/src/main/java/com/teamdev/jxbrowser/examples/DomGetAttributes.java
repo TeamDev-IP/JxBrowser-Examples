@@ -28,8 +28,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
 
 /**
- * This example demonstrates how to get the list of existing attributes of a specified HTML
- * element.
+ * This example demonstrates how to obtain the list of existing attributes
+ * of a specified HTML element.
  */
 public final class DomGetAttributes {
 

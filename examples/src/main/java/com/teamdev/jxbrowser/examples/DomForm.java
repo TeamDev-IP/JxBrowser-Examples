@@ -35,7 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to fill HTML Form fields using JxBrowser DOM API.
+ * This example demonstrates how to fill HTML form fields using JxBrowser DOM API.
  */
 public final class DomForm {
 

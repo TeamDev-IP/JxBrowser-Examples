@@ -37,12 +37,14 @@ import javax.swing.WindowConstants;
  * This example demonstrates how to suppress {@code MousePressed} event using
  * {@code PressMouseCallback}.
  *
- * <p>For suppressing other mouse events the following callbacks are used:
+ * <p>For suppressing other mouse events the following callbacks can be used:
+ *
+ * <ul>
  * <li>{@code EnterMouseCallback}</li>
  * <li>{@code ExitMouseCallback}</li>
  * <li>{@code MoveMouseCallback}</li>
  * <li>{@code MoveMouseWheelCallback}</li>
- * <li>{@code ReleaseMouseCallback}event</li>
+ * <li>{@code ReleaseMouseCallback}</li>
  * </ul>
  */
 public final class SuppressMouse {

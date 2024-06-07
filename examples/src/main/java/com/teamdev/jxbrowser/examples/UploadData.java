@@ -31,7 +31,8 @@ import com.teamdev.jxbrowser.net.TextData;
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback;
 
 /**
- * This example demonstrates how to override POST upload data before it is sent to the server.
+ * This example demonstrates how to override the POST payload before
+ * it is sent to the server.
  */
 public final class UploadData {
 
@@ -48,7 +49,7 @@ public final class UploadData {
             Browser browser = engine.newBrowser();
 
             // Load URL request using POST method and send form data, that
-            // is going to be overriden.
+            // is going to be overridden.
             FormData formData = FormData.newBuilder()
                     .addPair(Pair.of("key", "value"))
                     .build();

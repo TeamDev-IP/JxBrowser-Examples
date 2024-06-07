@@ -28,8 +28,8 @@ import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 
 /**
- * This example demonstrates how to inject a Java object into JavaScript and tell JavaScript which
- * public methods of the injected Java object JavaScript can invoke.
+ * This example demonstrates how to inject a Java object into JavaScript,
+ * and make some of its public methods accessible from JavaScript.
  */
 public final class JsAccessibleMethod {
 

@@ -117,6 +117,9 @@ subprojects {
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
+
+        // This file is used by `JarProtocol` example.
+        runtimeOnly(files(rootDir.resolve("examples/src/main/resources/tiny-website.jar")))
     }
 
     tasks.withType<JavaExec> {

@@ -24,22 +24,16 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.StartDownloadCallback;
+import com.teamdev.jxbrowser.download.Download;
 import com.teamdev.jxbrowser.download.event.DownloadFinished;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to allow/disallow downloading a file and get notification when
- * downloading has been completed.
+ * This example demonstrates how to allow/disallow downloading a file and get
+ * notification when downloading has been completed.
  */
 public final class DownloadFile {
 
@@ -50,27 +44,18 @@ public final class DownloadFile {
         Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
         Browser browser = engine.newBrowser();
 
-        SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-
-            JFrame frame = new JFrame("Download File");
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    engine.close();
-                }
-            });
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.add(view, BorderLayout.CENTER);
-            frame.setSize(800, 600);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-
         browser.set(StartDownloadCallback.class, (params, tell) -> {
-            params.download().on(DownloadFinished.class, event ->
-                    System.out.println("File downloaded!"));
-            tell.download(createTempDirectory().toAbsolutePath());
+            Download download = params.download();
+            Path destFilePath = createTempDirectory().toAbsolutePath()
+                    .resolve(download.target().suggestedFileName());
+
+            download.on(DownloadFinished.class, event -> {
+                System.out.println("File downloaded to " + destFilePath);
+                engine.close(); // Exits from `main` as the download completes.
+            });
+
+            // Allows to download a file to the given file path.
+            tell.download(destFilePath);
         });
 
         browser.navigation().loadUrl(URL_TO_DOWNLOAD);
