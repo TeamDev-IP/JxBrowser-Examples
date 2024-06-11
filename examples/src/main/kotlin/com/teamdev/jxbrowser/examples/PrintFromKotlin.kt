@@ -42,7 +42,7 @@ fun main() = singleWindowApplication(title = "Print from Java") {
     val browser = remember { engine.newBrowser() }
 
     Column {
-        Button(onClick = browser.mainFrame!!::print) {
+        Button(onClick = { browser.mainFrame!!.print() }) {
             Text("Print")
         }
         BrowserView(browser)
