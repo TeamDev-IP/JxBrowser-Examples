@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.engine.GoogleApiKey
@@ -33,6 +32,7 @@ import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.permission.PermissionType.AUDIO_CAPTURE
 import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to enable voice recognition functionality

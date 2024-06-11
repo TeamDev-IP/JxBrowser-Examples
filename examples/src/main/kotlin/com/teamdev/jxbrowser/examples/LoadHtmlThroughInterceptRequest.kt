@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples
 
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
@@ -31,6 +30,7 @@ import com.teamdev.jxbrowser.net.Scheme
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.intercept
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.proceed
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to load HTML by intercepting URL requests.

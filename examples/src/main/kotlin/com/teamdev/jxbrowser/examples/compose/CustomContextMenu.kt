@@ -29,13 +29,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to create a custom context menu using

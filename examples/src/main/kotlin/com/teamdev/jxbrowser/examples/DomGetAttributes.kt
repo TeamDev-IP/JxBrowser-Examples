@@ -22,9 +22,9 @@ package com.teamdev.jxbrowser.examples
 
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
-import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.dom.documentElement
 import com.teamdev.jxbrowser.dsl.dom.findById
+import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.engine.RenderingMode
 
 /**
@@ -36,7 +36,7 @@ fun main(): Unit = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val mainFrame = browser.mainFrame?.also { it.loadHtml(HTML_LINK) }
     val document = mainFrame?.document?.documentElement
     val link = document?.findById("link")!!
-    link.attributes().forEach(::println)
+    link.attributes().asMap().forEach(::println)
 }
 
 private val HTML_LINK = """

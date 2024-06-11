@@ -22,12 +22,12 @@ package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.zoom.defaultLevel
 import com.teamdev.jxbrowser.dsl.zoomLevels
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import com.teamdev.jxbrowser.zoom.ZoomLevel
 
 /**

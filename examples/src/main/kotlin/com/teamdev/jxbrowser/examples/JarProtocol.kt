@@ -21,7 +21,6 @@
 package com.teamdev.jxbrowser.examples
 
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
@@ -31,9 +30,11 @@ import com.teamdev.jxbrowser.net.Scheme
 import com.teamdev.jxbrowser.net.UrlRequest
 import com.teamdev.jxbrowser.net.UrlRequestJob
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
-import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.*
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Params
+import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.intercept
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.proceed
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.net.URL
 import java.net.URLConnection
 

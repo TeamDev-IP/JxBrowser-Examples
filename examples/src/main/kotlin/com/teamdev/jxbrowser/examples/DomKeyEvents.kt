@@ -24,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dom.Element
 import com.teamdev.jxbrowser.dom.event.Event
 import com.teamdev.jxbrowser.dom.event.EventType
@@ -37,6 +36,7 @@ import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.util.concurrent.CountDownLatch
 
 /**

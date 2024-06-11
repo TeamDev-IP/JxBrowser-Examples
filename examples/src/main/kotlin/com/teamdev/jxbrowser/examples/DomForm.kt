@@ -22,17 +22,18 @@ package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.dom.documentElement
-import com.teamdev.jxbrowser.dsl.dom.findByName
+import com.teamdev.jxbrowser.dsl.dom.getByName
+import com.teamdev.jxbrowser.dsl.dom.set
 import com.teamdev.jxbrowser.dsl.frame.document
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.Navigation
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to fill HTML form fields using
@@ -59,8 +60,8 @@ private fun Navigation.fillFormOnLoadFinished() =
     subscribe<FrameLoadFinished> { event ->
         val element = event.frame().document?.documentElement
         element?.let {
-            it.findByName("firstName")!!.putAttribute("value", "John")
-            it.findByName("lastName")!!.putAttribute("value", "Doe")
+            it.getByName("firstName").attributes()["value"] = "John"
+            it.getByName("lastName").attributes()["value"] = "Doe"
         }
     }
 

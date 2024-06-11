@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
-import com.teamdev.jxbrowser.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
@@ -38,6 +37,7 @@ import com.teamdev.jxbrowser.ui.MouseButton
 import com.teamdev.jxbrowser.ui.Point
 import com.teamdev.jxbrowser.ui.event.MousePressed
 import com.teamdev.jxbrowser.ui.event.MouseReleased
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.util.concurrent.CountDownLatch
 
 /**
