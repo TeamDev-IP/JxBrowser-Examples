@@ -28,7 +28,7 @@ plugins {
     java
 
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "1.0.2"
+    id("com.teamdev.jxbrowser") version "1.1.0"
 }
 
 val jxBrowserVersion by extra { "7.39.2" } // The version of JxBrowser used in the examples.
