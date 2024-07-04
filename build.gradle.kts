@@ -1,5 +1,5 @@
 /*
- *  Copyright 2023, TeamDev. All rights reserved.
+ *  Copyright 2024, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -23,14 +23,14 @@ plugins {
     kotlin("jvm") version "1.9.22"
 
     // Adds JxBrowser.
-    id("com.teamdev.jxbrowser") version "1.0.2"
+    id("com.teamdev.jxbrowser") version "1.1.0"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.jetbrains.compose") version "1.6.1"
 }
 
-val jxBrowserVersion by extra { "8.0.0-eap.3" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.0.0-eap.4" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
