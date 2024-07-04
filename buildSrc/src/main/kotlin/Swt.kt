@@ -57,7 +57,7 @@ object Swt {
      * Returns the platform bit of the SWT artifact names.
      */
     private fun osgiPlatform(): String {
-        val os = System.getProperty("os.name").toLowerCase()
+        val os = System.getProperty("os.name").lowercase()
         val arch = System.getProperty("os.arch")
         val isArm = "aarch64" == arch || "arm" == arch
         return when {
