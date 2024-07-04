@@ -20,26 +20,23 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.view.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to embed Compose [BrowserView]
  * into a Compose application.
  */
-fun main(): Unit = singleWindowApplication(title = "Compose Browser View") {
+fun main(): Unit = singleWindowApplication(title = "Compose `Browser View`") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)
-    DisposableEffect(Unit) {
+    LaunchedEffect(Unit) {
         browser.navigation.loadUrl("https://google.com/")
-        onDispose {
-            engine.close()
-        }
     }
 }

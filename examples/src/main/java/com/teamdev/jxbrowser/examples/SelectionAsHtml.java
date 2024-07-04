@@ -35,7 +35,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to get selected HTML from the loaded web page.
+ * This example demonstrates how to obtain the HTML content from the selected
+ * part of the loaded web page.
  */
 public final class SelectionAsHtml {
 

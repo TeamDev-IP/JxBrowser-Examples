@@ -20,10 +20,10 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
-import com.teamdev.jxbrowser.view.compose.graphics.toBufferedImage
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.graphics.toBufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 

@@ -20,49 +20,45 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
-import androidx.compose.material.DropdownMenu
+import androidx.compose.material.CursorDropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback
-import com.teamdev.jxbrowser.view.compose.BrowserView
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to create a custom context menu using
  * [ShowContextMenuCallback] and Compose API.
  *
  * [Browser] invokes this callback when a user right-clicks on a web page.
- * We are going to create our own [DropdownMenu] and bind it to the browser
- * with the callback.
+ * We are going to create our own [CursorDropdownMenu] and bind it to
+ * the browser with the callback.
  */
-fun main() = singleWindowApplication(title = "Custom Context Menu") {
+fun main() = singleWindowApplication(title = "Custom context menu") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
     // Store dropdown menu state.
     var menuShowed by remember { mutableStateOf(false) }
-    var menuLocation by remember { mutableStateOf(DpOffset.Zero) }
     val clipboard = LocalClipboardManager.current
 
     // Add browser view.
     BrowserView(browser)
 
     // Add custom context menu.
-    DropdownMenu(
+    CursorDropdownMenu(
         expanded = menuShowed, // Controls menu's visibility.
-        offset = menuLocation,
         onDismissRequest = { menuShowed = false },
     ) {
         DropdownMenuItem(onClick = {
@@ -97,10 +93,9 @@ fun main() = singleWindowApplication(title = "Custom Context Menu") {
 
         // Register a callback to display the menu
         // upon right-clicking on a web page.
-        browser.register(ShowContextMenuCallback { params, action ->
-            menuLocation = with(params.location()) { DpOffset(x().dp, y().dp) }
+        browser.register(ShowContextMenuCallback { _, tell ->
             menuShowed = true
-            action.close()
+            tell.close() // We don't need its actions.
         })
 
         browser.navigation().loadUrl("teamdev.com/jxbrowser")

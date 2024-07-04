@@ -24,13 +24,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback
-import com.teamdev.jxbrowser.browser.callback.CreatePopupCallback.Response
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback
-import com.teamdev.jxbrowser.view.compose.BrowserView
+
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.view.compose.BrowserView
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -40,7 +40,7 @@ import kotlinx.coroutines.CoroutineScope
  * It creates and shows a new window with the embedded pop-up browser
  * each time [OpenPopupCallback] is invoked.
  */
-fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
+fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 
@@ -69,7 +69,9 @@ fun main() = singleWindowApplication(title = "Default Open Pop-Up Callback") {
         // This callback decides whether a pop-up should be created.
         // `OpenPopupCallback` callback will NOT be called if this one returns
         // `suppress` instead of `create`.
-        browser.register(CreatePopupCallback { Response.create() })
+        browser.register(CreatePopupCallback {
+            CreatePopupCallback.Response.create()
+        })
 
         // `OpenPopupCallback` is responsible for the pop-up window creation.
         browser.register(OpenPopupCallback { params ->

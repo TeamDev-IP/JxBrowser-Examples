@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to use querySelector DOM API.
+ * This example demonstrates how to use {@code querySelector} DOM API.
  */
 public final class DomQuerySelector {
 

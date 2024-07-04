@@ -27,8 +27,7 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.js.JsObject;
 
 /**
- * This example demonstrates how to inject {@code JsFunctionCallback} into JavaScript and call it
- * from JavaScript code.
+ * This example demonstrates how to inject a Java function into JavaScript.
  */
 public final class JsFunctionCallback {
 
@@ -41,11 +40,11 @@ public final class JsFunctionCallback {
                 if (jsObject != null) {
                     // Inject JsFunctionCallback into JavaScript and associate it
                     // with the "window.sayHelloTo" JavaScript property.
-                    jsObject.putProperty("sayHelloTo",
+                    jsObject.putProperty("sayHello",
                             (com.teamdev.jxbrowser.js.JsFunctionCallback) arguments ->
                                     "Hello, " + arguments[0]);
                 }
-                String greetings = frame.executeJavaScript("window.sayHelloTo('John')");
+                String greetings = frame.executeJavaScript("window.sayHello('John')");
                 System.out.println(greetings);
             });
         }

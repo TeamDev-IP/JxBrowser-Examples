@@ -58,6 +58,6 @@ public final class Html5Video {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.quirksmode.org/html5/tests/video.html");
+        browser.navigation().loadUrl("https://tekeye.uk/html/html5-video-test-page");
     }
 }

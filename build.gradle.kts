@@ -20,14 +20,15 @@
 
 plugins {
     java
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.0"
 
     // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.1.0"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.jetbrains.compose") version "1.6.1"
+    id("org.jetbrains.compose") version "1.6.11"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
 val jxBrowserVersion by extra { "8.0.0-eap.4" } // The version of JxBrowser used in the examples.
@@ -38,16 +39,13 @@ allprojects {
     version = jxBrowserVersion
 }
 
-repositories {
-    mavenCentral()
-}
-
 subprojects {
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.teamdev.jxbrowser")
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.compose")
+    apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
     repositories {
         mavenCentral()
@@ -117,6 +115,9 @@ subprojects {
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
+
+        // This file is used by `JarProtocol` example.
+        runtimeOnly(files(rootDir.resolve("examples/src/main/resources/tiny-website.jar")))
     }
 
     tasks.withType<JavaExec> {
