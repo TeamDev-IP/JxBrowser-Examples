@@ -20,14 +20,15 @@
 
 plugins {
     java
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.0"
 
     // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.1.0"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.jetbrains.compose") version "1.6.1"
+    id("org.jetbrains.compose") version "1.6.11"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
 val jxBrowserVersion by extra { "8.0.0-eap.4" } // The version of JxBrowser used in the examples.
@@ -44,6 +45,7 @@ subprojects {
     apply(plugin = "com.teamdev.jxbrowser")
     apply(plugin = "org.openjfx.javafxplugin")
     apply(plugin = "org.jetbrains.compose")
+    apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
     repositories {
         mavenCentral()
