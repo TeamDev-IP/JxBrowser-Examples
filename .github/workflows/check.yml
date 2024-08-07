@@ -8,7 +8,9 @@ jobs:
       matrix:
         folder: [ "examples",
                   "tutorials/web-crawler",
-                  "tutorials/serve-from-directory" ]
+                  "tutorials/serve-from-directory",
+                  "tutorials/selenium",
+        ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:

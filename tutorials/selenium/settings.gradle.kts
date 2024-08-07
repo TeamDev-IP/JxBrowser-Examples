@@ -17,13 +17,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-plugins {
-    java
-}
 
-repositories {
-    mavenCentral()
-}
-dependencies {
-    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.23.0")
-}
+rootProject.name = "selenium-tutorial"
+include("launcher")
+include("target-app")

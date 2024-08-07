@@ -24,8 +24,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
- * An application that configures Selenium WebDriver (ChromeDriver) to run on the JxBrowser-based
- * application binaries and get access to HTML content loaded in JxBrowser.
+ * An application that configures Selenium WebDriver (ChromeDriver) to run on
+ * the JxBrowser-based application binaries and get access to HTML content
+ * loaded in JxBrowser.
  */
 public final class SeleniumLauncher {
 
@@ -39,7 +40,8 @@ public final class SeleniumLauncher {
 
         // Set a path to your JxBrowser application executable.
         options.setBinary(
-                new File("tutorials/selenium/target-app/build/executable/TargetApp.exe"));
+                new File(
+                        "tutorials/selenium/target-app/build/executable/TargetApp.exe"));
         // #enddocfragment "path-to-exe"
         // #docfragment "set-remote-debugging-port"
         // Set a port to communicate on.

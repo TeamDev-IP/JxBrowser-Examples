@@ -8,7 +8,7 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/integration/
 
 ## Building and Launching
 
-1. Download [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads). Put it
+1. Download [ChromeDriver](https://googlechromelabs.github.io/chrome-for-testing/#stable). Put it
    into the `launcher/src/main/resources` directory. Use one of the latest versions.
 2. [Insert your license key](https://jxbrowser-support.teamdev.com/docs/guides/licensing.html#adding-the-license-to-a-project)
    into [the test application](https://github.com/TeamDev-IP/JxBrowser-Examples/blob/90fdd92f7c4c8737929f57e0383aad39d4be2aee/tutorials/selenium/target-app/src/main/java/TargetApp.java#L45)
