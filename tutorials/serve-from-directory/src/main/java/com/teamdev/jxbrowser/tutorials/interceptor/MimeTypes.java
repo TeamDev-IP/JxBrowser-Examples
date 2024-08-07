@@ -18,14 +18,12 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.interceptor;
-
-import static com.teamdev.jxbrowser.logging.Logger.warn;
-import static java.lang.String.format;
+package com.teamdev.jxbrowser.tutorials.interceptor;
 
 import com.google.common.collect.ImmutableMap;
 import com.teamdev.jxbrowser.internal.Lazy;
 import com.teamdev.jxbrowser.net.MimeType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -33,6 +31,9 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+
+import static com.teamdev.jxbrowser.logging.Logger.warn;
+import static java.lang.String.format;
 
 /**
  * A utility for working with MIME types.

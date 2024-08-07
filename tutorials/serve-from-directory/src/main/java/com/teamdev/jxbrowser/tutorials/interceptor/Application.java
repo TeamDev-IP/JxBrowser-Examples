@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.interceptor;
+package com.teamdev.jxbrowser.tutorials.interceptor;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
@@ -45,7 +45,7 @@ public final class Application {
                 DomainToFolderInterceptor.create("mydomain.com", contentRoot);
         EngineOptions options =
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
-                        .addScheme(Scheme.HTTP, interceptor)
+                        .addScheme(Scheme.HTTPS, interceptor)
                         .build();
         Engine engine = Engine.newInstance(options);
         Browser browser = engine.newBrowser();
@@ -61,6 +61,6 @@ public final class Application {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("http://mydomain.com/index.html");
+        browser.navigation().loadUrl("https://mydomain.com/index.html");
     }
 }

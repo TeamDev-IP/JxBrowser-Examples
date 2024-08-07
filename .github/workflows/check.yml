@@ -6,7 +6,9 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        folder: [ "examples", "tutorials/web-crawler" ]
+        folder: [ "examples",
+                  "tutorials/web-crawler",
+                  "tutorials/serve-from-directory" ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:

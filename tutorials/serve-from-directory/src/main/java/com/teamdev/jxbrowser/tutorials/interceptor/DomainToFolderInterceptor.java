@@ -18,10 +18,10 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.interceptor;
+package com.teamdev.jxbrowser.tutorials.interceptor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.teamdev.jxbrowser.examples.interceptor.MimeTypes.mimeType;
+import static com.teamdev.jxbrowser.tutorials.interceptor.MimeTypes.mimeType;
 import static com.teamdev.jxbrowser.internal.string.StringPreconditions.checkNotNullEmptyOrBlank;
 import static com.teamdev.jxbrowser.logging.Logger.error;
 import static com.teamdev.jxbrowser.net.HttpStatus.INTERNAL_SERVER_ERROR;
