@@ -10,6 +10,7 @@ jobs:
                   "tutorials/web-crawler",
                   "tutorials/serve-from-directory",
                   "tutorials/selenium",
+                  "tutorials/media-player",
         ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
