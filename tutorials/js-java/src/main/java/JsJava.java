@@ -18,27 +18,28 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static com.teamdev.jxbrowser.deps.com.google.common.io.Resources.getResource;
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static javax.swing.SwingUtilities.invokeLater;
-
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+
+import static com.teamdev.jxbrowser.deps.com.google.common.io.Resources.getResource;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.SwingUtilities.invokeLater;
 
 /**
  * This example demonstrates how to invoke Java from JavaScript.
  */
-public class JsJava {
+public final class JsJava {
 
     /**
      * A Java object to inject into JavaScript.
