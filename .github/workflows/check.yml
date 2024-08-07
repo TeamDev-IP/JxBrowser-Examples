@@ -4,16 +4,6 @@ on: pull_request
 jobs:
   check:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        folder: [ "examples",
-                  "tutorials/web-crawler",
-                  "tutorials/serve-from-directory",
-                  "tutorials/selenium",
-                  "tutorials/media-player",
-                  "tutorials/content-changes",
-                  "tutorials/js-java",
-        ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
