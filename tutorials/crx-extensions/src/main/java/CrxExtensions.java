@@ -58,7 +58,7 @@ import javax.swing.WindowConstants;
  */
 public final class CrxExtensions {
 
-    private static final Path USER_DATA_DIR = Paths.get("/Users/vladyslav.lubenskyi/dev/temp1");
+    private static final Path USER_DATA_DIR = Paths.get("<path to the directory>");
 
     private static final List<String> EXTENSION_FILES = List.of(
             "React Developer Tools.crx"
@@ -137,9 +137,7 @@ public final class CrxExtensions {
         button.setIcon(new ImageIcon(icon));
         button.setEnabled(action.isEnabled());
         if (button.getActionListeners().length == 0) {
-            button.addActionListener(e -> {
-                action.click();
-            });
+            button.addActionListener(e -> action.click());
         }
     }
 
