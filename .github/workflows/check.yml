@@ -12,6 +12,7 @@ jobs:
                   "tutorials/selenium",
                   "tutorials/media-player",
                   "tutorials/content-changes",
+                  "tutorials/js-java",
         ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,5 +25,18 @@ jobs:
           java-version: 17
           distribution: oracle
       - run: |-
-          cd ${{ matrix.folder }}
+          export DIR=$PWD
+          cd $DIR/examples
+          ./gradlew build
+          cd $DIR/tutorials/web-crawler
+          ./gradlew build
+          cd $DIR/tutorials/serve-from-directory
+          ./gradlew build
+          cd $DIR/tutorials/selenium
+          ./gradlew build
+          cd $DIR/tutorials/media-player
+          ./gradlew build
+          cd $DIR/tutorials/content-changes
+          ./gradlew build
+          cd $DIR/tutorials/js-java
           ./gradlew build
