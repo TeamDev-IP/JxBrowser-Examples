@@ -20,10 +20,6 @@
 
 // #docfragment "without-license"
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
-import static java.lang.String.format;
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.google.common.base.Charsets;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
@@ -35,14 +31,20 @@ import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import java.awt.BorderLayout;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Base64;
-import java.util.Scanner;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Scanner;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
  * This example demonstrates how to listen to DOM changes from a Java object.
@@ -91,7 +93,7 @@ public final class ContentListening {
 
         // #docfragment "load-page"
         String html = load("index.html");
-        String base64Html = Base64.getEncoder().encodeToString(html.getBytes(UTF_8));
+        String base64Html = Base64.getEncoder().encodeToString(html.getBytes(StandardCharsets.UTF_8));
         String dataUrl = "data:text/html;base64," + base64Html;
         browser.navigation().loadUrl(dataUrl);
         // #enddocfragment "load-page"
@@ -103,8 +105,7 @@ public final class ContentListening {
     // #docfragment "load-method"
     private static String load(String resourceFile) {
         URL url = ContentListening.class.getResource(resourceFile);
-        try (Scanner scanner = new Scanner(url.openStream(),
-                Charsets.UTF_8.toString())) {
+        try (Scanner scanner = new Scanner(requireNonNull(url).openStream(), Charsets.UTF_8)) {
             scanner.useDelimiter("\\A");
             return scanner.hasNext() ? scanner.next() : "";
         } catch (IOException e) {

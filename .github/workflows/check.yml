@@ -11,6 +11,7 @@ jobs:
                   "tutorials/serve-from-directory",
                   "tutorials/selenium",
                   "tutorials/media-player",
+                  "tutorials/content-changes",
         ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
