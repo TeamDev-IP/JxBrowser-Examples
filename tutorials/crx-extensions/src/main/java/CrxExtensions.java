@@ -76,6 +76,7 @@ public final class CrxExtensions {
 
         var extensions = profile.extensions();
         for (var crx : EXTENSION_FILES) {
+            // If extension already exists, we will update it.
             extensions.install(getResourcePath(crx));
         }
 
