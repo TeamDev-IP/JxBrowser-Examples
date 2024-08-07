@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.webcrawler;
+package com.teamdev.jxbrowser.tutorials.webcrawler;
 
 /**
  * The listener interface for receiving notifications about discovered and

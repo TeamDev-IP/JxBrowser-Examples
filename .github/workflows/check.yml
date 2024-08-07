@@ -4,6 +4,9 @@ on: pull_request
 jobs:
   check:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        folder: [ "examples", "tutorials/web-crawler" ]
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -15,5 +18,5 @@ jobs:
           java-version: 17
           distribution: oracle
       - run: |-
-          cd examples
+          cd ${{ matrix.folder }}
           ./gradlew build

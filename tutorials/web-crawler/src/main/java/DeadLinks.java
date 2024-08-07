@@ -18,9 +18,9 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.teamdev.jxbrowser.examples.webcrawler.WebCrawler;
-import com.teamdev.jxbrowser.examples.webcrawler.WebPage;
-import com.teamdev.jxbrowser.examples.webcrawler.WebPageFactory;
+import com.teamdev.jxbrowser.tutorials.webcrawler.WebCrawler;
+import com.teamdev.jxbrowser.tutorials.webcrawler.WebPage;
+import com.teamdev.jxbrowser.tutorials.webcrawler.WebPageFactory;
 import com.teamdev.jxbrowser.net.NetError;
 import java.util.HashMap;
 import java.util.HashSet;

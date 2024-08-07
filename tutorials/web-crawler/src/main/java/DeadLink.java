@@ -20,7 +20,7 @@
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.teamdev.jxbrowser.examples.webcrawler.Link;
+import com.teamdev.jxbrowser.tutorials.webcrawler.Link;
 import com.teamdev.jxbrowser.net.NetError;
 import java.util.Objects;
 
