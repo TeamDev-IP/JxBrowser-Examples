@@ -15,4 +15,5 @@ jobs:
           java-version: 17
           distribution: oracle
       - run: |-
+          cd examples
           ./gradlew build
