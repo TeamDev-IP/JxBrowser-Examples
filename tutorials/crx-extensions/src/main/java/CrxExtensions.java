@@ -148,7 +148,7 @@ public final class CrxExtensions {
             if (resource != null) {
                 return Paths.get(resource.toURI());
             } else {
-                throw new IllegalStateException("Couldn't find the bundled extension");
+                throw new IllegalStateException("Couldn't find the bundled extension.");
             }
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
