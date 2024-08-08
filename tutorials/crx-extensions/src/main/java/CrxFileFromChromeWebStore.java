@@ -36,7 +36,7 @@ import javax.swing.JFrame;
 /**
  * Use this application to get a CRX file of an extension installed via Chrome Web Store.
  *
- * <p>To download a CRX file, launch the application, then find and install the
+ * <p>To get a CRX file, launch the application, then find and install the
  * extension. Once the CRX files is obtained, the application will open the folder with the file.
  */
 public final class CrxFileFromChromeWebStore {
