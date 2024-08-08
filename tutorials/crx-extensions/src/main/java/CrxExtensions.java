@@ -131,12 +131,12 @@ public final class CrxExtensions {
     }
 
     private static void configureActionButton(JButton button, ExtensionAction action) {
-        var tooltip = action.tooltip();
         var icon = BitmapImage.toToolkit(action.icon());
-        button.setPreferredSize(BUTTON_SIZE);
-        button.setText(tooltip);
+        var tooltip = action.tooltip();
         button.setIcon(new ImageIcon(icon));
+        button.setText(tooltip);
         button.setEnabled(action.isEnabled());
+        button.setPreferredSize(BUTTON_SIZE);
         if (button.getActionListeners().length == 0) {
             button.addActionListener(e -> action.click());
         }
