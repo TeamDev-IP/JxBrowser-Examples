@@ -19,9 +19,13 @@
  */
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.NORTH;
 import static javax.swing.BoxLayout.X_AXIS;
 import static javax.swing.SwingUtilities.invokeLater;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.extensions.ExtensionAction;
@@ -30,7 +34,6 @@ import com.teamdev.jxbrowser.extensions.event.ExtensionActionUpdated;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import com.teamdev.jxbrowser.view.swing.callback.DefaultOpenExtensionPopupCallback;
 import com.teamdev.jxbrowser.view.swing.graphics.BitmapImage;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -43,7 +46,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to install Chrome extensions from CRX files and configure them.
@@ -58,19 +60,19 @@ import javax.swing.WindowConstants;
  */
 public final class CrxExtensions {
 
-    private static final Path USER_DATA_DIR = Paths.get("<path to the directory>");
-
     private static final List<String> EXTENSION_FILES = List.of(
-            "React Developer Tools.crx"
+            "react_dev_tools.crx"
     );
 
     private static final Dimension BUTTON_SIZE = new Dimension(32, 32);
 
-    @SuppressWarnings("resource")
-    // The engine and browser will be closed when the Swing window is closed.
+    @SuppressWarnings("resource") // The engine is closed when the Swing window is closed.
     public static void main(String[] args) {
-        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).userDataDir(USER_DATA_DIR);
-        var engine = Engine.newInstance(options.build());
+        var options = EngineOptions
+                .newBuilder(HARDWARE_ACCELERATED)
+                .userDataDir(Paths.get("<path to the directory>"))
+                .build();
+        var engine = Engine.newInstance(options);
         var profile = engine.profiles().defaultProfile();
         var browser = profile.newBrowser();
 
@@ -80,47 +82,18 @@ public final class CrxExtensions {
             extensions.install(getResourcePath(crx));
         }
 
-        // By default, JxBrowser shows the extension action pop-up. To modify
-        // the appearance of the pop-up or interact with it automatically,
-        // create your own implementation of `OpenExtensionActionPopupCallback`
-        // and register it like this:
-        //
-        // browser.set(OpenExtensionActionPopupCallback.class,
-        //          new MyExtensionActionPopup());
-
         invokeLater(() -> {
-            var extensionBar = new JPanel();
-            for (var extension : extensions.list()) {
-                extension.action(browser).ifPresent(action -> {
-                    var button = new JButton();
-                    updateButton(button, action);
-                    extensionBar.add(button);
-                    // When the information about the action changes, we update the button.
-                    action.on(ExtensionActionUpdated.class,
-                            params -> invokeLater(() -> updateButton(button, action)));
-                });
-                // This line enables extension pop-ups, which are disabled by default. To modify
-                // the appearance of the pop-up or interact with it automatically, create your own
-                // implementation of `OpenExtensionPopupCallback`.
-                extension.set(OpenExtensionPopupCallback.class,
-                        new DefaultOpenExtensionPopupCallback());
-            }
-
-            var devToolsButton = new JButton("Open DevTools");
-            devToolsButton.addActionListener(e -> browser.devTools().show());
-            extensionBar.add(devToolsButton);
-
-            var frame = new JFrame("CRX extension in JxBrowser");
+            var frame = new JFrame("CRX Chrome extension in JxBrowser");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     engine.close();
                 }
             });
-            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.add(BrowserView.newInstance(browser), BorderLayout.CENTER);
-            frame.add(extensionBar, BorderLayout.NORTH);
-            extensionBar.setLayout(new BoxLayout(extensionBar, X_AXIS));
+            frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            frame.add(BrowserView.newInstance(browser), CENTER);
+            frame.add(createExtensionBar(browser), NORTH);
+
             frame.setSize(1280, 900);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
@@ -129,7 +102,35 @@ public final class CrxExtensions {
         });
     }
 
-    private static void updateButton(JButton button, ExtensionAction action) {
+    private static JPanel createExtensionBar(Browser browser) {
+        var extensionBar = new JPanel();
+        extensionBar.setLayout(new BoxLayout(extensionBar, X_AXIS));
+
+        var openDevTools = new JButton("Open DevTools");
+        openDevTools.addActionListener(e -> browser.devTools().show());
+        extensionBar.add(openDevTools);
+
+        var extensions = browser.profile().extensions();
+        for (var extension : extensions.list()) {
+            extension.action(browser).ifPresent(action -> {
+                var button = new JButton();
+                extensionBar.add(button);
+
+                configureActionButton(button, action);
+                action.on(ExtensionActionUpdated.class, params -> invokeLater(() -> {
+                    configureActionButton(button, action);
+                }));
+            });
+            // This line enables extension pop-ups, which are disabled by default. To modify
+            // the appearance of the pop-up or interact with it automatically, create your own
+            // implementation of `OpenExtensionPopupCallback`.
+            extension.set(OpenExtensionPopupCallback.class,
+                    new DefaultOpenExtensionPopupCallback());
+        }
+        return extensionBar;
+    }
+
+    private static void configureActionButton(JButton button, ExtensionAction action) {
         var tooltip = action.tooltip();
         var icon = BitmapImage.toToolkit(action.icon());
         button.setPreferredSize(BUTTON_SIZE);

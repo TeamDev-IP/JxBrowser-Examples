@@ -19,6 +19,7 @@
  */
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 import com.teamdev.jxbrowser.engine.Engine;
@@ -30,7 +31,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 /**
  * Use this application to download a CRX file from Chrome Web Store.
@@ -38,17 +38,37 @@ import javax.swing.SwingUtilities;
  * <p>To download a CRX file, launch the application, then find and install the
  * extension. Once the CRX files is downloaded, the application will close.
  */
-public final class WebStoreDownload {
+public final class CrxFileFromChromeWebStore {
 
-    @SuppressWarnings("resource")
-    // The engine and browser will be closed when the Swing window is closed.
+    private static final String EXTENSION_URL =
+            "https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi";
+
+    @SuppressWarnings("resource") // The engine is closed when the Swing window is closed.
     public static void main(String[] args) {
         var engine = Engine.newInstance(HARDWARE_ACCELERATED);
         var browser = engine.newBrowser();
-        browser.navigation().loadUrl(
-                "https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi");
 
-        SwingUtilities.invokeLater(() -> {
+        var extensions = browser.profile().extensions();
+        extensions.set(InstallExtensionCallback.class, (params, tell) -> {
+            var name = params.extensionName();
+            var source = Paths.get(params.extensionCrxFile());
+            var target = Paths.get(name + ".crx");
+            try {
+                Files.copy(source, target);
+                browser.mainFrame().ifPresent(frame -> {
+                    var message = "Find downloaded CRX file at %s. You can close this window now."
+                            .formatted(target.toAbsolutePath());
+                    frame.loadHtml(message);
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            tell.cancel();
+        });
+
+        browser.navigation().loadUrl(EXTENSION_URL);
+
+        invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
             var frame = new JFrame("Chrome Web Store");
             frame.add(view);
@@ -62,21 +82,6 @@ public final class WebStoreDownload {
             });
             frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             frame.setVisible(true);
-
-            var extensions = browser.profile().extensions();
-            extensions.set(InstallExtensionCallback.class, (params, tell) -> {
-                var name = params.extensionName();
-                var sourceCrxFilePath = Paths.get(params.extensionCrxFile());
-                var targetCrxFilePath = Paths.get(name + ".crx");
-                try {
-                    Files.copy(sourceCrxFilePath, targetCrxFilePath);
-                    engine.close();
-                    frame.dispose();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                tell.cancel();
-            });
         });
     }
 }
