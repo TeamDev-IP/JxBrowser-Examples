@@ -19,6 +19,7 @@
  */
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static java.awt.Desktop.getDesktop;
 import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
@@ -60,6 +61,7 @@ public final class CrxFileFromChromeWebStore {
                             .formatted(target.toAbsolutePath());
                     frame.loadHtml(message);
                 });
+                getDesktop().open(target.toAbsolutePath().getParent().toFile());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
