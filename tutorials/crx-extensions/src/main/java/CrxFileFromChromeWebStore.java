@@ -34,10 +34,10 @@ import java.nio.file.Paths;
 import javax.swing.JFrame;
 
 /**
- * Use this application to download a CRX file from Chrome Web Store.
+ * Use this application to get a CRX file of an extension installed via Chrome Web Store.
  *
  * <p>To download a CRX file, launch the application, then find and install the
- * extension. Once the CRX files is downloaded, the application will close.
+ * extension. Once the CRX files is obtained, the application will open the folder with the file.
  */
 public final class CrxFileFromChromeWebStore {
 
@@ -57,7 +57,7 @@ public final class CrxFileFromChromeWebStore {
             try {
                 Files.copy(source, target);
                 browser.mainFrame().ifPresent(frame -> {
-                    var message = "Find downloaded CRX file at %s. You can close this window now."
+                    var message = "Find the CRX file at %s. You can close this window now."
                             .formatted(target.toAbsolutePath());
                     frame.loadHtml(message);
                 });
