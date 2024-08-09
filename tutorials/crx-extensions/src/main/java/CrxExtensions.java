@@ -79,7 +79,13 @@ public final class CrxExtensions {
         var extensions = profile.extensions();
         for (var crx : EXTENSION_FILES) {
             // If extension already exists, we will update it.
-            extensions.install(getResourcePath(crx));
+            var extension = extensions.install(getResourcePath(crx));
+
+            // This line enables extension pop-ups, which are disabled by default. To modify
+            // the appearance of the pop-up or interact with it automatically, create your own
+            // implementation of `OpenExtensionPopupCallback`.
+            extension.set(OpenExtensionPopupCallback.class,
+                    new DefaultOpenExtensionPopupCallback());
         }
 
         invokeLater(() -> {
@@ -121,11 +127,6 @@ public final class CrxExtensions {
                     configureActionButton(button, action);
                 }));
             });
-            // This line enables extension pop-ups, which are disabled by default. To modify
-            // the appearance of the pop-up or interact with it automatically, create your own
-            // implementation of `OpenExtensionPopupCallback`.
-            extension.set(OpenExtensionPopupCallback.class,
-                    new DefaultOpenExtensionPopupCallback());
         }
         return extensionBar;
     }
