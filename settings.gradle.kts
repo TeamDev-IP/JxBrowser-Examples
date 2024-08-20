@@ -46,3 +46,9 @@ module("jul-logs-redirect", "./tutorials/jul-logs-redirect")
 module("serve-from-directory", "./tutorials/serve-from-directory")
 module("js-java", "./tutorials/js-java")
 module("crx-extensions", "./tutorials/crx-extensions")
+
+includeBuild("../JxBrowser-2") {
+    dependencySubstitution {
+        substitute(module("com.teamdev.jxbrowser:jxbrowser-kotlin")).using(project(":kotlin"))
+    }
+}
