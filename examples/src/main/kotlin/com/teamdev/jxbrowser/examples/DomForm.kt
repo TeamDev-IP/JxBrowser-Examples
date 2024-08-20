@@ -25,6 +25,7 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.dom.attributes
 import com.teamdev.jxbrowser.dsl.dom.documentElement
 import com.teamdev.jxbrowser.dsl.dom.getByName
 import com.teamdev.jxbrowser.dsl.dom.set
@@ -60,8 +61,8 @@ private fun Navigation.fillFormOnLoadFinished() =
     subscribe<FrameLoadFinished> { event ->
         val element = event.frame().document?.documentElement
         element?.let {
-            it.getByName("firstName").attributes()["value"] = "John"
-            it.getByName("lastName").attributes()["value"] = "Doe"
+            it.getByName("firstName").attributes["value"] = "John"
+            it.getByName("lastName").attributes["value"] = "Doe"
         }
     }
 

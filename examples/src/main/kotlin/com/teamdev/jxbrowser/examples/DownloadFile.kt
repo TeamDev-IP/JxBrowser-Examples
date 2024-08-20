@@ -47,7 +47,7 @@ fun main() {
             engine.close() // Exits from `main` as the download completes.
         }
 
-        // Allows to download a file to the given file path.
+        // Allows downloading a file to the given file path.
         tell.download(destFilePath)
     })
 
