@@ -31,9 +31,10 @@ import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
 import com.teamdev.jxbrowser.ui.KeyCode
-import com.teamdev.jxbrowser.ui.event.KeyPressed
-import com.teamdev.jxbrowser.ui.event.KeyReleased
-import com.teamdev.jxbrowser.ui.event.KeyTyped
+import com.teamdev.jxbrowser.ui.KeyLocation
+import com.teamdev.jxbrowser.ui.event.internal.rpc.keyPressed
+import com.teamdev.jxbrowser.ui.event.internal.rpc.keyReleased
+import com.teamdev.jxbrowser.ui.event.internal.rpc.keyTyped
 import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.util.concurrent.CountDownLatch
 
@@ -65,20 +66,21 @@ private fun Browser.loadHtmlAndWait(html: String) {
 }
 
 private fun Browser.dispatchKeyEvent(character: Char) {
-    val keyCode = KEY_CODES[character]!!
     dispatch(
-        KeyPressed.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
+        keyPressed {
+            keyChar = "$character"
+        }
     )
     dispatch(
-        KeyTyped.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
+        keyTyped {
+            keyChar = "$character"
+        }
     )
     dispatch(
-        KeyReleased.newBuilder(keyCode)
-            .build()
+        keyReleased {
+            keyCode = KEY_CODES[character]!!
+            keyLocation = KeyLocation.STANDARD
+        }
     )
 }
 

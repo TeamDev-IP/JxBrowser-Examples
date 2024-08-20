@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
@@ -34,6 +33,9 @@ import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Params
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.intercept
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response.proceed
+import com.teamdev.jxbrowser.net.internal.rpc.httpHeader
+import com.teamdev.jxbrowser.net.internal.rpc.netString
+import com.teamdev.jxbrowser.net.internal.rpc.urlRequestJobOptions
 import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.net.URL
 import java.net.URLConnection
@@ -98,7 +100,17 @@ private class InterceptJarRequestCallback : InterceptUrlRequestCallback {
         entry: JarEntry,
         params: Params
     ): UrlRequestJob {
-        val options = UrlRequestJobOptions(HttpStatus.OK, entry.mimeType)
+        val options = urlRequestJobOptions {
+            httpStatus = HttpStatus.OK.value()
+            httpHeader.add(
+                httpHeader {
+                    name = "content-type"
+                    value = netString {
+                        utf8String = entry.mimeType
+                    }
+                }
+            )
+        }
         val job = params.newUrlRequestJob(options).apply {
             write(entry.data)
             complete()

@@ -24,13 +24,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
-import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.net.HttpStatus
 import com.teamdev.jxbrowser.net.Scheme
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Params
 import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback.Response
+import com.teamdev.jxbrowser.net.internal.rpc.httpHeader
+import com.teamdev.jxbrowser.net.internal.rpc.netString
+import com.teamdev.jxbrowser.net.internal.rpc.urlRequestJobOptions
 import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
@@ -59,12 +61,23 @@ fun main() {
 private class RespondWithSalutation : InterceptUrlRequestCallback {
 
     override fun on(params: Params): Response {
-        val headers = setOf(
-            "Content-Type" to "text/html",
-            "Content-Type" to "charset=utf-8"
-        )
-
-        val options = UrlRequestJobOptions(HttpStatus.OK, headers)
+        val options = urlRequestJobOptions {
+            httpStatus = HttpStatus.OK.value()
+            httpHeader += listOf(
+                httpHeader {
+                    name = "Content-Type"
+                    value = netString {
+                        utf8String = "text/html"
+                    }
+                },
+                httpHeader {
+                    name = "Content-Type"
+                    value = netString {
+                        utf8String = "charset=utf-8"
+                    }
+                }
+            )
+        }
         val job = params.newUrlRequestJob(options)
 
         // Override the response data in a separate thread.

@@ -34,9 +34,11 @@ import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
 import com.teamdev.jxbrowser.ui.MouseButton
-import com.teamdev.jxbrowser.ui.Point
 import com.teamdev.jxbrowser.ui.event.MousePressed
 import com.teamdev.jxbrowser.ui.event.MouseReleased
+import com.teamdev.jxbrowser.ui.event.internal.rpc.mousePressed
+import com.teamdev.jxbrowser.ui.event.internal.rpc.mouseReleased
+import com.teamdev.jxbrowser.ui.internal.rpc.point
 import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.util.concurrent.CountDownLatch
 
@@ -67,14 +69,24 @@ fun main() {
  */
 private fun Browser.dispatchMouseEvent() {
     dispatch(
-        MousePressed.newBuilder(Point.of(50, 50))
-            .button(MouseButton.SECONDARY).clickCount(1)
-            .build()
+        mousePressed {
+            location = point {
+                x = 50
+                y = 50
+            }
+            button = MouseButton.SECONDARY
+            clickCount = 1
+        }
     )
     dispatch(
-        MouseReleased.newBuilder(Point.of(50, 50))
-            .button(MouseButton.SECONDARY).clickCount(1)
-            .build()
+        mouseReleased {
+            location = point {
+                x = 50
+                y = 50
+            }
+            button = MouseButton.SECONDARY
+            clickCount = 1
+        }
     )
 }
 
