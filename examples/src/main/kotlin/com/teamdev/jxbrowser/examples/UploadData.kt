@@ -61,8 +61,8 @@ fun main() = Engine(RenderingMode.OFF_SCREEN).use { engine ->
         this.formData = formData
     }
     val localhost = loadRequest {
-        this.url = "http://localhost/"
-        this.postData = uploadData
+        url = "http://localhost/"
+        postData = uploadData
     }
 
     // Load URL request using POST method and send form data
