@@ -68,7 +68,7 @@ private class RespondWithGreetings : InterceptUrlRequestCallback {
     override fun on(params: Params): Response {
         val options = urlRequestJobOptions {
             httpStatus = HttpStatus.OK.value()
-            httpHeader {
+            httpHeader += httpHeader {
                 name = "Content-Type"
                 value = netString {
                     utf8String = "text/html"
