@@ -51,8 +51,8 @@ fun main() {
         LaunchedEffect(Unit) {
             with(browser) {
                 loadHtmlAndWait("<input id=\"input\" autofocus>")
-                dispatchKeyEvent('h')
-                dispatchKeyEvent('i')
+                dispatchKeyEvent("h")
+                dispatchKeyEvent("i")
             }
         }
     }
@@ -65,15 +65,17 @@ private fun Browser.loadHtmlAndWait(html: String) {
     awaitUninterruptibly(latch)
 }
 
-private fun Browser.dispatchKeyEvent(character: Char) {
+private fun Browser.dispatchKeyEvent(character: String) {
     dispatch(
         keyPressed {
-            keyChar = "$character"
+            keyChar = character
+            keyLocation = KeyLocation.STANDARD
         }
     )
     dispatch(
         keyTyped {
-            keyChar = "$character"
+            keyChar = character
+            keyLocation = KeyLocation.STANDARD
         }
     )
     dispatch(
@@ -85,6 +87,6 @@ private fun Browser.dispatchKeyEvent(character: Char) {
 }
 
 private val KEY_CODES = mapOf(
-    'h' to KeyCode.KEY_CODE_H,
-    'i' to KeyCode.KEY_CODE_I
+    "h" to KeyCode.KEY_CODE_H,
+    "i" to KeyCode.KEY_CODE_I
 )
