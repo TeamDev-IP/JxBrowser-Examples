@@ -102,14 +102,12 @@ private class InterceptJarRequestCallback : InterceptUrlRequestCallback {
     ): UrlRequestJob {
         val options = urlRequestJobOptions {
             httpStatus = HttpStatus.OK.value()
-            httpHeader.add(
-                httpHeader {
-                    name = "content-type"
-                    value = netString {
-                        utf8String = entry.mimeType
-                    }
+            httpHeader += httpHeader {
+                name = "content-type"
+                value = netString {
+                    utf8String = entry.mimeType
                 }
-            )
+            }
         }
         val job = params.newUrlRequestJob(options).apply {
             write(entry.data)

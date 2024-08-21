@@ -46,14 +46,12 @@ fun main() {
         val bytes = "<html><body>Hello!</body></html>".toByteArray()
         val options = urlRequestJobOptions {
             httpStatus = HttpStatus.OK.value()
-            httpHeader.add(
-                httpHeader {
-                    name = "content-type"
-                    value = netString {
-                        utf8String = "text/html"
-                    }
+            httpHeader += httpHeader {
+                name = "content-type"
+                value = netString {
+                    utf8String = "text/html"
                 }
-            )
+            }
         }
         val job = params.newUrlRequestJob(options).apply {
             write(bytes)
