@@ -48,8 +48,8 @@ import kotlinx.coroutines.launch
  * This example demonstrates the default [OpenExtensionPopupCallback]
  * implementation for Compose UI toolkit.
  *
- * It creates and shows a new window with the embedded pop-up browser
- * each time [OpenExtensionPopupCallback] is invoked.
+ * It creates and shows a new window with the embedded pop-up browser when
+ * the extension wants to show a popup.
  */
 fun main() = singleWindowApplication(
     title = "Default `OpenExtensionPopupCallback`",
@@ -101,10 +101,7 @@ fun main() = singleWindowApplication(
             // When the extension is installed, allow it to open pop-ups.
             it.extension().register(OpenExtensionPopupCallback { params, tell ->
                 scope.launch {
-                    popups.addNewPopup(
-                        params,
-                        scope
-                    ) // Adds a new pop-up to the list.
+                    popups.addNewPopup(params, scope) // Adds a new pop-up to the list.
                 }
                 tell.proceed()
             })
