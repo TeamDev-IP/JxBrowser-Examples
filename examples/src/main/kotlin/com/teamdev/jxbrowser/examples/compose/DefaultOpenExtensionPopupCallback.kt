@@ -92,7 +92,7 @@ fun main() = singleWindowApplication(
 
     DisposableEffect(Unit) {
 
-        // Allow installing extensions from Chrome Web Store.
+        // Allow installing extensions from the Chrome Web Store.
         extensions.register(InstallExtensionCallback { _, tell ->
             tell.install()
         })
