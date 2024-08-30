@@ -20,24 +20,44 @@
 
 package com.teamdev.jxbrowser.examples.compose
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
+import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.extensions.ExtensionAction
 import com.teamdev.jxbrowser.extensions.callback.InstallExtensionCallback
 import com.teamdev.jxbrowser.extensions.callback.OpenExtensionPopupCallback
+import com.teamdev.jxbrowser.extensions.event.ExtensionInstalled
 import com.teamdev.jxbrowser.view.compose.BrowserView
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindow
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindowState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun main() = singleWindowApplication(title = "Default `OpenExtensionPopupCallback`") {
+/**
+ * This example demonstrates the default [OpenExtensionPopupCallback]
+ * implementation for Compose UI toolkit.
+ *
+ * It creates and shows a new window with the embedded pop-up browser
+ * each time [OpenExtensionPopupCallback] is invoked.
+ */
+fun main() = singleWindowApplication(
+    title = "Default `OpenExtensionPopupCallback`",
+    state = WindowState(size = DpSize(1280.dp, 900.dp))
+) {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
+    val extensions = remember { browser.profile().extensions() }
 
     // Store pop-up windows in Compose observable list.
     val popups = remember { mutableStateListOf<PopupWindowState>() }
@@ -45,8 +65,20 @@ fun main() = singleWindowApplication(title = "Default `OpenExtensionPopupCallbac
     // Remember the coroutine scope to update the pop-up window after creation.
     val scope = rememberCoroutineScope()
 
-    // Add browser view.
-    BrowserView(browser)
+    Column {
+        // Add a button to open the extension action popup.
+        Button(onClick = {
+            extensions.list()
+                .firstOrNull()
+                ?.action(browser)
+                ?.ifPresent(ExtensionAction::click)
+        }) {
+            Text("Extension")
+        }
+
+        // Add browser view.
+        BrowserView(browser)
+    }
 
     // Add pop-up windows, if any.
     for (popup in popups) {
@@ -60,19 +92,19 @@ fun main() = singleWindowApplication(title = "Default `OpenExtensionPopupCallbac
 
     DisposableEffect(Unit) {
 
-        // Access the extensions.
-        val extensions = browser.profile().extensions()
-
         // Allow installing extensions from Chrome Web Store.
         extensions.register(InstallExtensionCallback { _, tell ->
             tell.install()
         })
 
-        extensions.list().forEach {
-            // Allow the extension to show popups.
-            it.register(OpenExtensionPopupCallback { params, tell ->
+        val subscription = extensions.subscribe<ExtensionInstalled> {
+            // When the extension is installed, allow it to open pop-ups.
+            it.extension().register(OpenExtensionPopupCallback { params, tell ->
                 scope.launch {
-                    popups.addNewPopup(params, scope) // Adds a new pop-up to the list.
+                    popups.addNewPopup(
+                        params,
+                        scope
+                    ) // Adds a new pop-up to the list.
                 }
                 tell.proceed()
             })
@@ -81,13 +113,8 @@ fun main() = singleWindowApplication(title = "Default `OpenExtensionPopupCallbac
         browser.navigation().loadUrl("https://chromewebstore.google.com/")
 
         onDispose {
-
-            // Remove the callbacks when they are no longer needed.
             extensions.removeCallback<InstallExtensionCallback>()
-            extensions.list().forEach {
-                it.removeCallback<OpenExtensionPopupCallback>()
-            }
-
+            subscription.unsubscribe()
             engine.close()
         }
     }
