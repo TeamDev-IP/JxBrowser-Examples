@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.compose.popup
+package com.teamdev.jxbrowser.examples.compose
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -31,7 +31,10 @@ import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.popup.PopupWindow
+import com.teamdev.jxbrowser.view.compose.popup.PopupWindowState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * This example demonstrates the default [OpenPopupCallback] implementation
@@ -75,7 +78,9 @@ fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
 
         // `OpenPopupCallback` is responsible for the pop-up window creation.
         browser.register(OpenPopupCallback { params ->
-            popups.addNewPopup(params, scope) // Adds a new pop-up to the list.
+            scope.launch {
+                popups.addNewPopup(params, scope) // Adds a new pop-up to the list.
+            }
             OpenPopupCallback.Response.proceed()
         })
 
@@ -102,4 +107,11 @@ fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
 fun SnapshotStateList<PopupWindowState>.addNewPopup(
     params: OpenPopupCallback.Params,
     scope: CoroutineScope,
-) = add(PopupWindowState(params, scope, onClose = { remove(it) }))
+) = add(
+    PopupWindowState(
+        browser = params.popupBrowser(),
+        bounds = params.initialBounds(),
+        scope = scope,
+        onClose = { remove(it) }
+    )
+)
