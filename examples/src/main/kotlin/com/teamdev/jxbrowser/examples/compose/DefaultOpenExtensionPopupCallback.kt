@@ -45,11 +45,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * This example demonstrates the default [OpenExtensionPopupCallback]
- * implementation for Compose UI toolkit.
+ * This example demonstrates how to implement [OpenExtensionPopupCallback]
+ * in Compose using [PopupWindow].
  *
  * It creates and shows a new window with the embedded pop-up browser when
  * the extension wants to show a popup.
+ *
+ * Note that the default implementation of [OpenExtensionPopupCallback] cannot
+ * be provided for Compose, so this example guides you through the necessary
+ * steps to achieve this functionality.
  */
 fun main() = singleWindowApplication(
     title = "Default `OpenExtensionPopupCallback`",
@@ -62,7 +66,7 @@ fun main() = singleWindowApplication(
     // Store pop-up windows in Compose observable list.
     val popups = remember { mutableStateListOf<PopupWindowState>() }
 
-    // Remember the coroutine scope to update the pop-up window after creation.
+    // Remember the coroutine scope to update the list of pop-up windows.
     val scope = rememberCoroutineScope()
 
     Column {
