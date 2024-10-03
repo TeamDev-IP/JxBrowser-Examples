@@ -28,12 +28,12 @@ import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.subscribe
+import com.teamdev.jxbrowser.dsl.ui.event.KeyPressed
+import com.teamdev.jxbrowser.dsl.ui.event.KeyReleased
+import com.teamdev.jxbrowser.dsl.ui.event.KeyTyped
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
 import com.teamdev.jxbrowser.ui.KeyCode
-import com.teamdev.jxbrowser.ui.event.KeyPressed
-import com.teamdev.jxbrowser.ui.event.KeyReleased
-import com.teamdev.jxbrowser.ui.event.KeyTyped
 import com.teamdev.jxbrowser.view.compose.BrowserView
 import java.util.concurrent.CountDownLatch
 
@@ -66,20 +66,9 @@ private fun Browser.loadHtmlAndWait(html: String) {
 
 private fun Browser.dispatchKeyEvent(character: Char) {
     val keyCode = KEY_CODES[character]!!
-    dispatch(
-        KeyPressed.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
-    )
-    dispatch(
-        KeyTyped.newBuilder(keyCode)
-            .keyChar(character)
-            .build()
-    )
-    dispatch(
-        KeyReleased.newBuilder(keyCode)
-            .build()
-    )
+    dispatch(KeyPressed(keyCode, char = character))
+    dispatch(KeyTyped(keyCode, char = character))
+    dispatch(KeyReleased(keyCode))
 }
 
 private val KEY_CODES = mapOf(

@@ -22,12 +22,13 @@ package com.teamdev.jxbrowser.examples
 
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.navigation.LoadUrlParams
 import com.teamdev.jxbrowser.dsl.net.FormData
+import com.teamdev.jxbrowser.dsl.net.StringEntry
 import com.teamdev.jxbrowser.dsl.net.TextData
 import com.teamdev.jxbrowser.dsl.network
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
-import com.teamdev.jxbrowser.navigation.LoadUrlParams
 import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback
 
 /**
@@ -49,10 +50,8 @@ fun main() = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val browser = engine.newBrowser()
 
     // Prepare form data, which is going to be overridden.
-    val formData = FormData("key" to "value")
-    val localhost = LoadUrlParams.newBuilder("http://localhost/")
-        .uploadData(formData)
-        .build()
+    val formData = FormData(StringEntry("key", "value"))
+    val localhost = LoadUrlParams("http://localhost/", formData)
 
     // Load URL request using POST method and send form data
     browser.navigation.loadUrlAndWait(localhost)
