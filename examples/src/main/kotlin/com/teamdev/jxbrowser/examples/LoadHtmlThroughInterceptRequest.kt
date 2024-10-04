@@ -23,6 +23,7 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.net.HttpHeader
 import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.net.HttpStatus
@@ -42,7 +43,8 @@ fun main() {
             proceed()
         }
         val bytes = "<html><body>Hello!</body></html>".toByteArray()
-        val options = UrlRequestJobOptions(HttpStatus.OK, "text/html")
+        val contentType = HttpHeader("Content-Type", "text/html")
+        val options = UrlRequestJobOptions(HttpStatus.OK, listOf(contentType))
         val job = params.newUrlRequestJob(options).apply {
             write(bytes)
             complete()

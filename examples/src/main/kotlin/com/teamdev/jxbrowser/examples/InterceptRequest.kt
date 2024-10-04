@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
+import com.teamdev.jxbrowser.dsl.net.HttpHeader
 import com.teamdev.jxbrowser.dsl.net.UrlRequestJobOptions
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.net.HttpStatus
@@ -59,11 +60,10 @@ fun main() {
 private class RespondWithSalutation : InterceptUrlRequestCallback {
 
     override fun on(params: Params): Response {
-        val headers = setOf(
-            "Content-Type" to "text/html",
-            "Content-Type" to "charset=utf-8"
+        val headers = listOf(
+            HttpHeader("Content-Type", "text/html"),
+            HttpHeader("Content-Type", "charset=utf-8")
         )
-
         val options = UrlRequestJobOptions(HttpStatus.OK, headers)
         val job = params.newUrlRequestJob(options)
 
