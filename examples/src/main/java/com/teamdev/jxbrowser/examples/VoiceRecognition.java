@@ -21,10 +21,12 @@
 package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.permission.PermissionType.AUDIO_CAPTURE;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -34,13 +36,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to enable voice recognition functionality in Chromium engine.
+ * This example demonstrates how to enable voice recognition functionality
+ * in Chromium engine.
  *
- * <p>By default, voice recognition functionality is disabled. To enable it you must
- * provide your Google API Keys to the Chromium engine as shown in this example.
+ * <p>By default, the voice recognition functionality is disabled. To enable it,
+ * you must provide your Google API keys to the Chromium engine as shown
+ * in this example.
  *
  * <p>The instruction that describes how to acquire the API keys can be found
- * <a href="https://www.chromium.org/developers/how-tos/api-keys">here</a>.
+ * <a href="https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/api_keys.md">here</a>.
+ * In particular, to make voice recognition work, Speech API should be enabled.
  */
 public final class VoiceRecognition {
 
@@ -51,6 +56,19 @@ public final class VoiceRecognition {
                         .googleDefaultClientId("your_client_id")
                         .googleDefaultClientSecret("your_client_secret")
                         .build());
+
+        // Grant access to record audio.
+        engine.permissions().set(
+                RequestPermissionCallback.class,
+                (params, tell) -> {
+                    if (params.permissionType() == AUDIO_CAPTURE) {
+                        tell.grant();
+                    } else {
+                        tell.deny();
+                    }
+                }
+        );
+
         Browser browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {

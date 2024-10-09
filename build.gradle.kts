@@ -18,20 +18,20 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     java
+    kotlin("jvm") version "2.0.0"
 
-    // Provides convenience methods for adding JxBrowser dependencies into a project.
+    // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.1.0"
+
+    // Adds UI toolkits.
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.jetbrains.compose") version "1.7.0-rc01"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
-val jxBrowserVersion by extra { "7.41.3" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.0.0" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
@@ -41,17 +41,29 @@ allprojects {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.teamdev.jxbrowser")
-
-    java.sourceCompatibility = JavaVersion.VERSION_1_8
-    java.targetCompatibility = JavaVersion.VERSION_1_8
+    apply(plugin = "org.openjfx.javafxplugin")
+    apply(plugin = "org.jetbrains.compose")
+    apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
     repositories {
         mavenCentral()
+        google()
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     jxbrowser {
         version = jxBrowserVersion
+    }
+
+    javafx {
+        version = "17"
+        modules = listOf("javafx.controls", "javafx.swing", "javafx.fxml")
     }
 
     dependencies {
@@ -88,16 +100,23 @@ subprojects {
         // JxBrowser for Swing dependency.
         implementation(jxbrowser.swing)
 
+        // JxBrowser for Compose dependency.
+        implementation(jxbrowser.compose)
+
+        // Dependency on Compose for the current platform.
+        implementation(compose.desktop.currentOs)
+
         // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt)
 
-        // Dependency on SWT for the current platform.
+        // Dependency on an SWT for the current platform.
         implementation(Swt.toolkitDependency)
 
         // Depend on Guava for the Resources utility class used for loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
 
-        implementation(files("$rootDir/examples/src/main/resources/resource.jar"))
+        // This file is used by `JarProtocol` example.
+        runtimeOnly(files(rootDir.resolve("examples/src/main/resources/tiny-website.jar")))
     }
 
     tasks.withType<JavaExec> {

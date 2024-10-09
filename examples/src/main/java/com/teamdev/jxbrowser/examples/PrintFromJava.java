@@ -35,8 +35,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to show the Print Preview dialog where you can select the required
- * printing options and print the currently loaded web page.
+ * This example demonstrates how to show the print preview dialog where
+ * an end-user can select the required printing options and print the currently
+ * loaded web page.
  */
 public final class PrintFromJava {
 

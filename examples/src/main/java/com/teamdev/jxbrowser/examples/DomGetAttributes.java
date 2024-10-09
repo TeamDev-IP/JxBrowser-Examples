@@ -28,8 +28,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
 
 /**
- * This example demonstrates how to get the list of existing attributes of a specified HTML
- * element.
+ * This example demonstrates how to obtain the list of existing attributes of
+ * a specified HTML element.
  */
 public final class DomGetAttributes {
 
@@ -44,7 +44,7 @@ public final class DomGetAttributes {
                     .flatMap(Document::documentElement)
                     .flatMap(element -> element.findElementById("link"))
                     .ifPresent(
-                            linkElement -> linkElement.attributes().forEach(DomGetAttributes::print));
+                            linkElement -> linkElement.attributes().asMap().forEach(DomGetAttributes::print));
         }
     }
 

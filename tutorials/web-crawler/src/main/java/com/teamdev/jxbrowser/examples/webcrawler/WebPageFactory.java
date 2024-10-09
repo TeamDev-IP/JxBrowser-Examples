@@ -150,7 +150,7 @@ public final class WebPageFactory {
                 // the Anchor HTML elements.
                 document.findElementsByTagName("a").forEach(element -> {
                     try {
-                        String href = element.attributeValue("href");
+                        String href = element.attributes().get("href");
                         toUrl(href, browser.url()).ifPresent(
                                 url -> result.add(Link.of(url)));
                     } catch (IllegalStateException ignore) {
