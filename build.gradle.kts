@@ -23,7 +23,7 @@ plugins {
     kotlin("jvm") version "2.0.0"
 
     // Adds JxBrowser.
-    id("com.teamdev.jxbrowser") version "1.1.0"
+    id("com.teamdev.jxbrowser") version "1.2.1"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
@@ -67,20 +67,21 @@ subprojects {
     }
 
     dependencies {
-        // Cross-platform dependency
+        // Cross-platform dependency.
         implementation(jxbrowser.crossPlatform)
 
-        /*
-           For having only platform-dependent dependency:
-           1. Comment out the cross-platform dependency above.
-           2. Uncomment the dependency for your platform.
-        */
+        // For having only platform-dependent dependency:
+        //  1. Comment out the cross-platform dependency above.
+        //  2. Uncomment the dependency for your platform.
 
         // Windows 32-bit
         // implementation(jxbrowser.win32)
 
         // Windows 64-bit
         // implementation(jxbrowser.win64)
+
+        // Windows 64-bit ARM
+        // implementation(jxbrowser.winArm)
 
         // macOS 64-bit
         // implementation(jxbrowser.mac)
@@ -112,7 +113,8 @@ subprojects {
         // Dependency on an SWT for the current platform.
         implementation(Swt.toolkitDependency)
 
-        // Depend on Guava for the Resources utility class used for loading resource files into strings.
+        // Depend on Guava for the Resources utility class used for
+        // loading resource files into strings.
         implementation("com.google.guava:guava:$guavaVersion")
 
         // This file is used by `JarProtocol` example.
@@ -125,5 +127,6 @@ subprojects {
         systemProperties(System.getProperties().mapKeys { it.key as String })
     }
 
+    // Configures the platform-dependent SWT dependencies.
     Swt.configurePlatformDependency(project)
 }
