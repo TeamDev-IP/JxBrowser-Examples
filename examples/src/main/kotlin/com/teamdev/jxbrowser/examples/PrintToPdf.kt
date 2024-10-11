@@ -68,6 +68,7 @@ fun main() {
         tell.proceed(printer)
     })
 
-    browser.navigation.loadUrlAndWait("https://google.com")
+    browser.navigation
+           .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html")
     browser.mainFrame?.print()
 }

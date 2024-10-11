@@ -46,7 +46,7 @@ fun main() {
         println("Verifying certificate for `$host`.")
 
         // Reject SSL certificate for all "google.com" hosts.
-        if (host.contains("google.com")) {
+        if (host.contains("teamdev.com")) {
             invalid(CertVerificationStatus.AUTHORITY_INVALID)
         } else {
             valid()
@@ -56,7 +56,7 @@ fun main() {
     singleWindowApplication(title = "SSL certificate verifier") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrl("https://www.google.com")
+            browser.navigation.loadUrl("https://html5test.teamdev.com/")
         }
     }
 }

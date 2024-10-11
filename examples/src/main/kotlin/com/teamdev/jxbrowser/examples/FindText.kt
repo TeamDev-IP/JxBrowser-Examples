@@ -48,7 +48,7 @@ fun main() = singleWindowApplication(title = "Find text") {
     }
 
     LaunchedEffect(Unit) {
-        browser.navigation.loadUrl("https://www.google.com")
+        browser.navigation.loadUrl("https://html5test.teamdev.com/")
     }
 }
 

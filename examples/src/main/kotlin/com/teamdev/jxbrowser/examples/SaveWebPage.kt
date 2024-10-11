@@ -43,7 +43,8 @@ fun main() {
     singleWindowApplication(title = "Save web page") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrlAndWait("https://www.google.com")
+            browser.navigation
+                   .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html")
             browser.saveWebPage(html, resources, SavePageType.COMPLETE_HTML)
                 .also { success ->
                     if (success) {
