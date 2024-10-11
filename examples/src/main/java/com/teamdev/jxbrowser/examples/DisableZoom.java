@@ -60,7 +60,7 @@ public final class DisableZoom {
         });
 
         browser.mainFrame()
-                .ifPresent(mainFrame -> mainFrame.loadHtml("https://html5test.teamdev.com"));
+               .ifPresent(mainFrame -> mainFrame.loadHtml("https://html5test.teamdev.com"));
 
         // Disabling zoom.
         browser.zoom().disable();

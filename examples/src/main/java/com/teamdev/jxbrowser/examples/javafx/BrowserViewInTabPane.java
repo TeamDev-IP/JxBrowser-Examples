@@ -48,7 +48,7 @@ public final class BrowserViewInTabPane extends Application {
 
         Browser browserOne = engine.newBrowser();
         browserOne.navigation()
-                .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+                  .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         BrowserView viewOne = BrowserView.newInstance(browserOne);
 
         Tab tabOne = new Tab("Browser One");

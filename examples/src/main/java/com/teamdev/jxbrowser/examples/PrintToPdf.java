@@ -65,7 +65,7 @@ public final class PrintToPdf {
             tell.proceed(pdfPrinter);
         });
         browser.navigation()
-                .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+               .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         browser.mainFrame().ifPresent(Frame::print);
     }
 }

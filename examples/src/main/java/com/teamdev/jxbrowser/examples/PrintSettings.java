@@ -78,7 +78,7 @@ public final class PrintSettings {
         });
         // #enddocfragment "Callback"
         browser.navigation()
-                .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+               .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         browser.mainFrame().ifPresent(Frame::print);
     }
 }

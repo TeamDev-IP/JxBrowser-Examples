@@ -65,7 +65,7 @@ public final class PrintFromJava {
             frame.setVisible(true);
 
             browser.navigation()
-                    .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+                   .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         });
     }
 }

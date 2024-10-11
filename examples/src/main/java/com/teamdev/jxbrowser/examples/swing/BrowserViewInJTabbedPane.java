@@ -63,9 +63,9 @@ public final class BrowserViewInJTabbedPane {
         });
 
         browserOne.mainFrame()
-                .ifPresent(mainFrame -> mainFrame.loadHtml("https://html5test.teamdev.com/"));
+                  .ifPresent(mainFrame -> mainFrame.loadHtml("https://html5test.teamdev.com/"));
         browserTwo.mainFrame()
-                .ifPresent(mainFrame -> mainFrame.loadHtml(
-                        "https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html"));
+                  .ifPresent(mainFrame -> mainFrame.loadHtml(
+                          "https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html"));
     }
 }
