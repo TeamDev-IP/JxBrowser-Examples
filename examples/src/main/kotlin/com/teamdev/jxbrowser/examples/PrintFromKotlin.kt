@@ -49,6 +49,6 @@ fun main() = singleWindowApplication(title = "Print from Java") {
     }
 
     LaunchedEffect(Unit) {
-        browser.navigation.loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html")
+        browser.navigation.loadUrl("https://en.wikipedia.org/wiki/Printing")
     }
 }

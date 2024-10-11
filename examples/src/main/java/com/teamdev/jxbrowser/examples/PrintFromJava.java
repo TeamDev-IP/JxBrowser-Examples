@@ -64,8 +64,7 @@ public final class PrintFromJava {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            browser.navigation()
-                   .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+            browser.navigation().loadUrl("https://en.wikipedia.org/wiki/Printing");
         });
     }
 }
