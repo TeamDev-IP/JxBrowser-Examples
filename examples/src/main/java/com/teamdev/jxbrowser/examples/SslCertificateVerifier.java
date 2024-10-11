@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static com.teamdev.jxbrowser.net.tls.CertVerificationStatus.AUTHORITY_INVALID;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.net.callback.VerifyCertificateCallback;
 import com.teamdev.jxbrowser.net.callback.VerifyCertificateCallback.Response;
@@ -42,13 +41,13 @@ import javax.swing.WindowConstants;
 public final class SslCertificateVerifier {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("SSL Certificate Verifier");
+            var frame = new JFrame("SSL Certificate Verifier");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -63,7 +62,7 @@ public final class SslCertificateVerifier {
         });
 
         engine.network().set(VerifyCertificateCallback.class, params -> {
-            String host = params.host().value();
+            var host = params.host().value();
             System.out.println("Verifying certificate for " + host + "...");
             // Reject SSL certificate for all "google.com" hosts.
             if (host.contains("google.com")) {

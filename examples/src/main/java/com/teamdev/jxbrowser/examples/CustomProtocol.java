@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.HttpHeader;
@@ -48,16 +47,16 @@ public final class CustomProtocol {
     private static final String CONTENT_TYPE_HEADER_VALUE = "text/html";
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
                         .addScheme(Scheme.of(PROTOCOL), new InterceptCustomSchemeCallback())
                         .build());
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Custom Protocol Handler");
+            var frame = new JFrame("Custom Protocol Handler");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -79,7 +78,7 @@ public final class CustomProtocol {
 
         @Override
         public Response on(Params params) {
-            UrlRequestJob job = params.newUrlRequestJob(
+            var job = params.newUrlRequestJob(
                     UrlRequestJob.Options.newBuilder(HttpStatus.OK)
                             .addHttpHeader(HttpHeader.of(
                                     CONTENT_TYPE_HEADER_NAME,

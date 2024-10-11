@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.LoadUrlParams;
 import com.teamdev.jxbrowser.net.FormData;
@@ -37,7 +36,7 @@ import com.teamdev.jxbrowser.net.callback.BeforeSendUploadDataCallback;
 public final class UploadData {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
             engine.network().set(BeforeSendUploadDataCallback.class, params -> {
                 if ("POST".equals(params.urlRequest().method())) {
                     // Override the original POST data with a text data.
@@ -46,11 +45,11 @@ public final class UploadData {
                 }
                 return BeforeSendUploadDataCallback.Response.proceed();
             });
-            Browser browser = engine.newBrowser();
+            var browser = engine.newBrowser();
 
             // Load URL request using POST method and send form data, that
             // is going to be overridden.
-            FormData formData = FormData.newBuilder()
+            var formData = FormData.newBuilder()
                     .addPair(Pair.of("key", "value"))
                     .build();
             browser.navigation().loadUrlAndWait(

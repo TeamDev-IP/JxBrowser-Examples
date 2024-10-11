@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static com.teamdev.jxbrowser.permission.PermissionType.AUDIO_CAPTURE;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback;
@@ -50,7 +49,7 @@ import javax.swing.WindowConstants;
 public final class VoiceRecognition {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
                         .googleApiKey("your_api_key")
                         .googleDefaultClientId("your_client_id")
@@ -69,12 +68,12 @@ public final class VoiceRecognition {
                 }
         );
 
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Voice Recognition");
+            var frame = new JFrame("Voice Recognition");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

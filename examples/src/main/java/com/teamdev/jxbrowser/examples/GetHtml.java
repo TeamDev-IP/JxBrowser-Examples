@@ -22,9 +22,7 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.navigation.Navigation;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -40,13 +38,13 @@ import javax.swing.WindowConstants;
 public final class GetHtml {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Get HTML");
+            var frame = new JFrame("Get HTML");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -60,7 +58,7 @@ public final class GetHtml {
             frame.setLocationRelativeTo(null);
         });
 
-        Navigation navigation = browser.navigation();
+        var navigation = browser.navigation();
         // Add the callback for waiting till the page is loaded.
         navigation.on(FrameLoadFinished.class, event -> {
             if (event.frame().isMain()) {

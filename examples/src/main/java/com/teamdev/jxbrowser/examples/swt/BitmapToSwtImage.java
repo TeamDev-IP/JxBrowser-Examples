@@ -22,12 +22,9 @@ package com.teamdev.jxbrowser.examples.swt;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.swt.graphics.BitmapImage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Display;
@@ -39,9 +36,9 @@ import org.eclipse.swt.widgets.Display;
 public final class BitmapToSwtImage {
 
     public static void main(String[] args) {
-        Display display = new Display();
+        var display = new Display();
         try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+            var browser = engine.newBrowser();
 
             // Resize browser to the required dimension
             browser.resize(1024, 768);
@@ -49,13 +46,13 @@ public final class BitmapToSwtImage {
             // Load the required web page and wait until it is loaded completely
             browser.navigation().loadUrlAndWait("https://www.google.com");
 
-            Bitmap bitmap = browser.bitmap();
+            var bitmap = browser.bitmap();
 
             // Convert the bitmap to org.eclipse.swt.graphics.Image
-            Image image = BitmapImage.toToolkit(display, bitmap);
+            var image = BitmapImage.toToolkit(display, bitmap);
 
             // Save the image to a PNG file
-            ImageLoader loader = new ImageLoader();
+            var loader = new ImageLoader();
             loader.data = new ImageData[]{image.getImageData()};
             loader.save("bitmap.png", SWT.IMAGE_PNG);
         }

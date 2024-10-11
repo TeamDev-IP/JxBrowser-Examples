@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.swing;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -39,16 +38,16 @@ import javax.swing.WindowConstants;
 public final class BrowserViewInJTabbedPane {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browserOne = engine.newBrowser();
-        Browser browserTwo = engine.newBrowser();
+        var engine = Engine.newInstance(OFF_SCREEN);
+        var browserOne = engine.newBrowser();
+        var browserTwo = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            JTabbedPane pane = new JTabbedPane();
+            var pane = new JTabbedPane();
             pane.addTab("Google", BrowserView.newInstance(browserOne));
             pane.addTab("TeamDev", BrowserView.newInstance(browserTwo));
 
-            JFrame frame = new JFrame("Browser View In JTabbed Pane");
+            var frame = new JFrame("Browser View In JTabbed Pane");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

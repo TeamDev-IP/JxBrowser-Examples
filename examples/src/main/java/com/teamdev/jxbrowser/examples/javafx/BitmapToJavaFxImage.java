@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.javafx.graphics.BitmapImage;
@@ -40,8 +39,8 @@ import javax.imageio.ImageIO;
 public final class BitmapToJavaFxImage {
 
     public static void main(String[] args) throws IOException {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
+            var browser = engine.newBrowser();
 
             // Resize browser to the required dimension
             browser.resize(1024, 768);

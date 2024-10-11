@@ -41,11 +41,11 @@ public final class BrowserViewInJInternalFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JDesktopPane pane = new JDesktopPane();
+            var pane = new JDesktopPane();
             pane.add(createInternalFrame("TeamDev", "https://www.teamdev.com", 0));
             pane.add(createInternalFrame("Google", "https://www.google.com", 100));
 
-            JFrame frame = new JFrame("BrowserView In JInternalFrame");
+            var frame = new JFrame("BrowserView In JInternalFrame");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(pane, BorderLayout.CENTER);
             frame.setSize(800, 800);

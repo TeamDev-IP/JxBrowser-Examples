@@ -25,9 +25,6 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.logging.Level;
 import com.teamdev.jxbrowser.logging.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -37,7 +34,7 @@ import java.nio.file.Paths;
 public final class RedirectLoggingToFile {
 
     public static void main(String[] args) {
-        Path loggingFile = Paths.get("jxbrowser.log");
+        var loggingFile = Paths.get("jxbrowser.log");
 
         // Use `jxbrowser.logging.file` property to redirect logging to the file.
         System.setProperty("jxbrowser.logging.file", loggingFile.toString());
@@ -45,7 +42,7 @@ public final class RedirectLoggingToFile {
         // Set logging level to `ALL` to see some logs upon `Engine` creation.
         Logger.level(Level.ALL);
 
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
         engine.close();
     }
 }

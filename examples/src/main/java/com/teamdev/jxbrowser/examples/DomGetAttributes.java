@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Document;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
@@ -34,8 +33,8 @@ import com.teamdev.jxbrowser.frame.Frame;
 public final class DomGetAttributes {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
+            var browser = engine.newBrowser();
 
             browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(
                     "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>"));

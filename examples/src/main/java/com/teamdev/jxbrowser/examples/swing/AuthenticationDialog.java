@@ -24,7 +24,6 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.net.callback.AuthenticateCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -49,13 +48,13 @@ import javax.swing.SwingUtilities;
 public final class AuthenticationDialog {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Hello World");
+            var frame = new JFrame("Hello World");
             engine.network().set(AuthenticateCallback.class, createAuthenticationPopup(frame));
             frame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -73,12 +72,12 @@ public final class AuthenticationDialog {
 
     private static AuthenticateCallback createAuthenticationPopup(Frame frame) {
         return (params, tell) -> SwingUtilities.invokeLater(() -> {
-            JPanel userPanel = new JPanel();
+            var userPanel = new JPanel();
             userPanel.setLayout(new GridLayout(2, 2));
-            JLabel usernameLabel = new JLabel("Username:");
-            JLabel passwordLabel = new JLabel("Password:");
-            JTextField username = new JTextField();
-            JPasswordField password = new JPasswordField();
+            var usernameLabel = new JLabel("Username:");
+            var passwordLabel = new JLabel("Password:");
+            var username = new JTextField();
+            var password = new JPasswordField();
             userPanel.add(usernameLabel);
             userPanel.add(username);
             userPanel.add(passwordLabel);

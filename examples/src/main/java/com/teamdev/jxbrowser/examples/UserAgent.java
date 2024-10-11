@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -39,16 +38,16 @@ import javax.swing.WindowConstants;
 public final class UserAgent {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
                         .userAgent("My User Agent String")
                         .build());
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("User Agent");
+            var frame = new JFrame("User Agent");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

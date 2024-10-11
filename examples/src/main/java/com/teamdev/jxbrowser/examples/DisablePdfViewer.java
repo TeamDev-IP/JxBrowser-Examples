@@ -25,7 +25,6 @@ import static javax.swing.SwingUtilities.invokeLater;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.plugin.Plugins;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -40,14 +39,14 @@ import javax.swing.WindowConstants;
 public final class DisablePdfViewer {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Plugins plugins = engine.plugins();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var plugins = engine.plugins();
 
         // #docfragment "disabling-pdf-viewer"
         plugins.settings().disablePdfViewer();
         // #enddocfragment "disabling-pdf-viewer"
 
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
             // Display a Swing frame with embedded BrowserView.
@@ -60,9 +59,9 @@ public final class DisablePdfViewer {
     }
 
     private static void showGui(Browser browser) {
-        BrowserView view = BrowserView.newInstance(browser);
+        var view = BrowserView.newInstance(browser);
 
-        JFrame frame = new JFrame("Disabling PDF Viewer");
+        var frame = new JFrame("Disabling PDF Viewer");
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

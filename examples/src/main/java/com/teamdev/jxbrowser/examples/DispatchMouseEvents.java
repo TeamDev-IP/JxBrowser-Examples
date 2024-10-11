@@ -56,8 +56,8 @@ public final class DispatchMouseEvents {
             + "</body></html>";
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         displayBrowserView(browser);
         loadHtmlAndWait(browser, HTML);
@@ -65,7 +65,7 @@ public final class DispatchMouseEvents {
 
     private static void displayBrowserView(Browser browser) {
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
             JButton dispatchMouseEventBtn = new JButton("Dispatch Mouse Right Click");
             dispatchMouseEventBtn.addActionListener(e -> {
@@ -78,7 +78,7 @@ public final class DispatchMouseEvents {
                         .build());
             });
 
-            JFrame frame = new JFrame("Dispatch mouse events");
+            var frame = new JFrame("Dispatch mouse events");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -95,7 +95,7 @@ public final class DispatchMouseEvents {
     }
 
     private static void loadHtmlAndWait(Browser browser, String html) {
-        CountDownLatch latch = new CountDownLatch(1);
+        var latch = new CountDownLatch(1);
         browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(html));
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
         awaitUninterruptibly(latch);

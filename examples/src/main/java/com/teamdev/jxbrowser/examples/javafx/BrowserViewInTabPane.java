@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
@@ -44,30 +43,30 @@ public final class BrowserViewInTabPane extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
+        var engine = Engine.newInstance(OFF_SCREEN);
 
-        Browser browserOne = engine.newBrowser();
+        var browserOne = engine.newBrowser();
         browserOne.navigation().loadUrl("https://www.google.com");
-        BrowserView viewOne = BrowserView.newInstance(browserOne);
+        var viewOne = BrowserView.newInstance(browserOne);
 
-        Tab tabOne = new Tab("Browser One");
+        var tabOne = new Tab("Browser One");
         tabOne.setContent(viewOne);
 
-        Browser browserTwo = engine.newBrowser();
+        var browserTwo = engine.newBrowser();
         browserTwo.navigation().loadUrl("https://www.teamdev.com");
-        BrowserView viewTwo = BrowserView.newInstance(browserTwo);
+        var viewTwo = BrowserView.newInstance(browserTwo);
 
-        Tab tabTwo = new Tab("Browser Two");
+        var tabTwo = new Tab("Browser Two");
         tabTwo.setContent(viewTwo);
 
-        TabPane tabPane = new TabPane();
+        var tabPane = new TabPane();
         tabPane.getTabs().add(tabOne);
         tabPane.getTabs().add(tabTwo);
 
-        Group root = new Group();
+        var root = new Group();
         Scene scene = new Scene(root, 700, 500);
 
-        BorderPane pane = new BorderPane();
+        var pane = new BorderPane();
         pane.prefHeightProperty().bind(scene.heightProperty());
         pane.prefWidthProperty().bind(scene.widthProperty());
         pane.setCenter(tabPane);

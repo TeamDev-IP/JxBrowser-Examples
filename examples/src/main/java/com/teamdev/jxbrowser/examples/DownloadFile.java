@@ -22,9 +22,7 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.StartDownloadCallback;
-import com.teamdev.jxbrowser.download.Download;
 import com.teamdev.jxbrowser.download.event.DownloadFinished;
 import com.teamdev.jxbrowser.engine.Engine;
 import java.io.IOException;
@@ -41,12 +39,12 @@ public final class DownloadFile {
             "https://storage.googleapis.com/cloud.teamdev.com/downloads/jxbrowser/7.0/jxbrowser-7.0-cross-desktop-win_mac_linux.zip";
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         browser.set(StartDownloadCallback.class, (params, tell) -> {
-            Download download = params.download();
-            Path destFilePath = createTempDirectory().toAbsolutePath()
+            var download = params.download();
+            var destFilePath = createTempDirectory().toAbsolutePath()
                     .resolve(download.target().suggestedFileName());
 
             download.on(DownloadFinished.class, event -> {

@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.menu.SpellCheckMenu;
@@ -53,13 +52,13 @@ public final class SpellCheckSuggestions {
         // (default) BrowserView component. Otherwise – the popup
         // menu will be displayed under the BrowserView component.
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Spell Check Suggestions");
+            var frame = new JFrame("Spell Check Suggestions");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.js.JsObject;
 
@@ -32,9 +31,9 @@ import com.teamdev.jxbrowser.js.JsObject;
 public final class JsFunctionCallback {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
 
-            Browser browser = engine.newBrowser();
+            var browser = engine.newBrowser();
             browser.mainFrame().ifPresent(frame -> {
                 JsObject jsObject = frame.executeJavaScript("window");
                 if (jsObject != null) {
@@ -44,7 +43,7 @@ public final class JsFunctionCallback {
                             (com.teamdev.jxbrowser.js.JsFunctionCallback) arguments ->
                                     "Hello, " + arguments[0]);
                 }
-                String greetings = frame.executeJavaScript("window.sayHello('John')");
+                var greetings = frame.executeJavaScript("window.sayHello('John')");
                 System.out.println(greetings);
             });
         }

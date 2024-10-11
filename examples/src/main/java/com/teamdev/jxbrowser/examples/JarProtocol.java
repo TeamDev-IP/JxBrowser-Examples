@@ -24,7 +24,6 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static com.teamdev.jxbrowser.net.Scheme.JAR;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.HttpHeader;
@@ -53,16 +52,16 @@ public final class JarProtocol {
     private static final Map<String, String> MIME_TYPE_MAP = new HashMap<>();
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
                         .addScheme(Scheme.JAR, new InterceptJarRequestCallback())
                         .build());
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("JAR Protocol Handler");
+            var frame = new JFrame("JAR Protocol Handler");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -77,7 +76,7 @@ public final class JarProtocol {
         });
 
         // Load the index.html file located inside a JAR archive added to this Java app classpath.
-        URL resource = JarProtocol.class.getResource("/resources/index.html");
+        var resource = JarProtocol.class.getResource("/resources/index.html");
         if (resource != null) {
             browser.navigation().loadUrl(resource.toString());
         }
@@ -93,7 +92,7 @@ public final class JarProtocol {
      * Converts the "jar://file/path" URL into the "jar:file:/path" URL.
      */
     private static String toJarUrl(String url) {
-        String result = url.replace("jar://file", "jar:file:");
+        var result = url.replace("jar://file", "jar:file:");
         // Remove the query part.
         int index = result.indexOf("?");
         if (index > 0) {
@@ -103,7 +102,7 @@ public final class JarProtocol {
     }
 
     private static String getMimeType(String path) {
-        String extension = path.substring(path.lastIndexOf("."));
+        var extension = path.substring(path.lastIndexOf("."));
         if (MIME_TYPE_MAP.containsKey(extension)) {
             return MIME_TYPE_MAP.get(extension);
         }
@@ -114,23 +113,23 @@ public final class JarProtocol {
 
         @Override
         public Response on(Params params) {
-            String url = params.urlRequest().url();
+            var url = params.urlRequest().url();
             if (!url.startsWith(JAR.name() + ":")) {
                 return Response.proceed();
             }
             try {
-                DataInputStream inputStream = new DataInputStream(
+                var inputStream = new DataInputStream(
                         new URL(toJarUrl(url)).openStream());
-                byte[] data = new byte[inputStream.available()];
+                var data = new byte[inputStream.available()];
                 inputStream.readFully(data);
                 inputStream.close();
 
-                String mimeType = getMimeType(params.urlRequest().url());
-                UrlRequestJob.Options options = UrlRequestJob.Options
+                var mimeType = getMimeType(params.urlRequest().url());
+                var options = UrlRequestJob.Options
                         .newBuilder(HttpStatus.OK)
                         .addHttpHeader(HttpHeader.of("Content-Type", mimeType))
                         .build();
-                UrlRequestJob job = params.newUrlRequestJob(options);
+                var job = params.newUrlRequestJob(options);
                 job.write(data);
                 job.complete();
                 return Response.intercept(job);

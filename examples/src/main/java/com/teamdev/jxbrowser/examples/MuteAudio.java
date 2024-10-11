@@ -24,7 +24,6 @@ import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.media.Audio;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -41,15 +40,15 @@ import javax.swing.WindowConstants;
 public final class MuteAudio {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JButton muteAudioButton = new JButton("Mute Audio");
+            var muteAudioButton = new JButton("Mute Audio");
             muteAudioButton.addActionListener(e -> {
-                Audio audio = browser.audio();
+                var audio = browser.audio();
                 if (audio.isMuted()) {
                     audio.unmute();
                 } else {
@@ -58,7 +57,7 @@ public final class MuteAudio {
                 updateButtonText(muteAudioButton, browser);
             });
 
-            JFrame frame = new JFrame("Mute Audio");
+            var frame = new JFrame("Mute Audio");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

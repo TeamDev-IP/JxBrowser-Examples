@@ -25,7 +25,6 @@ import static com.teamdev.jxbrowser.print.ColorModel.COLOR;
 import static com.teamdev.jxbrowser.print.Orientation.PORTRAIT;
 import static com.teamdev.jxbrowser.print.PaperSize.ISO_A4;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.PrintCallback;
 import com.teamdev.jxbrowser.browser.callback.PrintHtmlCallback;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -42,8 +41,8 @@ import com.teamdev.jxbrowser.print.event.PrintCompleted;
 public final class PrintSettings {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
         browser.set(PrintCallback.class, (params, tell) -> tell.print());
         // #docfragment "Callback"
         browser.set(PrintHtmlCallback.class, (params, tell) -> {

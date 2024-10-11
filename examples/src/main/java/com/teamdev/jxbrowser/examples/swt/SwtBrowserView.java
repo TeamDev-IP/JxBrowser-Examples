@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.swt;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,15 +34,15 @@ import org.eclipse.swt.widgets.Shell;
 public final class SwtBrowserView {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
-        Display display = new Display();
-        Shell shell = new Shell(display);
+        var display = new Display();
+        var shell = new Shell(display);
         shell.setText("SWT BrowserView");
         shell.setLayout(new GridLayout());
 
-        com.teamdev.jxbrowser.view.swt.BrowserView view = BrowserView.newInstance(shell, browser);
+        var view = BrowserView.newInstance(shell, browser);
         view.setSize(700, 500);
 
         shell.pack();

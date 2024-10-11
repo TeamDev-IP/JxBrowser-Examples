@@ -23,14 +23,10 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 import static com.teamdev.jxbrowser.print.Orientation.PORTRAIT;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.PrintCallback;
 import com.teamdev.jxbrowser.browser.callback.PrintHtmlCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
-import com.teamdev.jxbrowser.print.PdfPrinter;
-import com.teamdev.jxbrowser.print.PdfPrinter.HtmlSettings;
-import com.teamdev.jxbrowser.print.PrintJob;
 import com.teamdev.jxbrowser.print.event.PrintCompleted;
 import java.nio.file.Paths;
 
@@ -41,13 +37,12 @@ import java.nio.file.Paths;
 public final class PrintToPdf {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(OFF_SCREEN);
+        var browser = engine.newBrowser();
         browser.set(PrintCallback.class, (params, tell) -> tell.print());
         browser.set(PrintHtmlCallback.class, (params, tell) -> {
-            PdfPrinter<PdfPrinter.HtmlSettings> pdfPrinter =
-                    params.printers().pdfPrinter();
-            PrintJob<HtmlSettings> printJob = pdfPrinter.printJob();
+            var pdfPrinter = params.printers().pdfPrinter();
+            var printJob = pdfPrinter.printJob();
             printJob.settings()
                     .pdfFilePath(Paths.get("google.pdf").toAbsolutePath())
                     .enablePrintingBackgrounds()

@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import java.awt.BorderLayout;
@@ -42,17 +41,17 @@ import javax.swing.WindowConstants;
 public final class BrowserViewInJFxPanel {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(OFF_SCREEN);
+        var browser = engine.newBrowser();
 
-        JFXPanel panel = new JFXPanel();
+        var panel = new JFXPanel();
         Platform.runLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
             panel.setScene(new Scene(view));
         });
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("JavaFX BrowserView in Swing app");
+            var frame = new JFrame("JavaFX BrowserView in Swing app");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
