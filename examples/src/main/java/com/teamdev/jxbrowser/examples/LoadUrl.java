@@ -59,7 +59,6 @@ public final class LoadUrl {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
     }
 }
-

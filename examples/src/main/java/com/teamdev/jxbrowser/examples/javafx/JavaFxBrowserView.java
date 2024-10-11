@@ -51,7 +51,7 @@ public final class JavaFxBrowserView extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
         primaryStage.setOnCloseRequest(event -> engine.close());
     }
 }

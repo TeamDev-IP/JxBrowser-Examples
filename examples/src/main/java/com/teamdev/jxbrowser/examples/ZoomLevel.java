@@ -80,6 +80,6 @@ public final class ZoomLevel {
             }
         });
 
-        navigation.loadUrl("https://www.google.com");
+        navigation.loadUrl("https://html5test.teamdev.com/");
     }
 }

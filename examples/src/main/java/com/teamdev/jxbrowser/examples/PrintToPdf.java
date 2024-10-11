@@ -35,8 +35,9 @@ import com.teamdev.jxbrowser.print.event.PrintCompleted;
 import java.nio.file.Paths;
 
 /**
- * This example demonstrates how to save the currently loaded web page
- * as a PDF document.
+ * This example demonstrates how to configure print settings programmatically and print the
+ * currently loaded web page using the built-in PDF printer. In general, it shows how to save the
+ * currently loaded web page as a PDF document.
  */
 public final class PrintToPdf {
 
@@ -49,7 +50,7 @@ public final class PrintToPdf {
                     params.printers().pdfPrinter();
             PrintJob<HtmlSettings> printJob = pdfPrinter.printJob();
             printJob.settings()
-                    .pdfFilePath(Paths.get("google.pdf").toAbsolutePath())
+                    .pdfFilePath(Paths.get("dynamic-cubemap.pdf").toAbsolutePath())
                     .enablePrintingBackgrounds()
                     .orientation(PORTRAIT)
                     .apply();
@@ -63,7 +64,8 @@ public final class PrintToPdf {
             });
             tell.proceed(pdfPrinter);
         });
-        browser.navigation().loadUrlAndWait("https://google.com");
+        browser.navigation()
+                .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         browser.mainFrame().ifPresent(Frame::print);
     }
 }

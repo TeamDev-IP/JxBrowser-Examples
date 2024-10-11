@@ -47,14 +47,15 @@ public final class BrowserViewInTabPane extends Application {
         Engine engine = Engine.newInstance(OFF_SCREEN);
 
         Browser browserOne = engine.newBrowser();
-        browserOne.navigation().loadUrl("https://www.google.com");
+        browserOne.navigation()
+                .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         BrowserView viewOne = BrowserView.newInstance(browserOne);
 
         Tab tabOne = new Tab("Browser One");
         tabOne.setContent(viewOne);
 
         Browser browserTwo = engine.newBrowser();
-        browserTwo.navigation().loadUrl("https://www.teamdev.com");
+        browserTwo.navigation().loadUrl("https://html5test.teamdev.com/");
         BrowserView viewTwo = BrowserView.newInstance(browserTwo);
 
         Tab tabTwo = new Tab("Browser Two");

@@ -39,7 +39,7 @@ public final class LocalWebStorage {
     public static void main(String[] args) {
         try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
             Browser browser = engine.newBrowser();
-            browser.navigation().loadUrlAndWait("https://www.google.com");
+            browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
             browser.mainFrame().ifPresent(frame -> {
                 frame.localStorage().putItem(KEY, "Tom");
                 System.out.println((String) frame.executeJavaScript(

@@ -20,12 +20,15 @@
 
 package com.teamdev.jxbrowser.examples.swt;
 
+import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.swt.graphics.BitmapImage;
+import java.util.concurrent.CountDownLatch;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -47,7 +50,8 @@ public final class BitmapToSwtImage {
             browser.resize(1024, 768);
 
             // Load the required web page and wait until it is loaded completely
-            browser.navigation().loadUrlAndWait("https://www.google.com");
+            browser.navigation()
+                    .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
 
             Bitmap bitmap = browser.bitmap();
 

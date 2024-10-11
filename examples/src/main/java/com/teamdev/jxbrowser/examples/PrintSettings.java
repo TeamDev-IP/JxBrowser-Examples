@@ -36,8 +36,8 @@ import com.teamdev.jxbrowser.print.SystemPrinter.HtmlSettings;
 import com.teamdev.jxbrowser.print.event.PrintCompleted;
 
 /**
- * This example demonstrates how to print the currently loaded web page
- * via the default system printer.
+ * This example demonstrates how to configure print settings programmatically and print the
+ * currently loaded web page on the default system printer.
  */
 public final class PrintSettings {
 
@@ -77,7 +77,8 @@ public final class PrintSettings {
             // #enddocfragment "Proceed"
         });
         // #enddocfragment "Callback"
-        browser.navigation().loadUrlAndWait("https://google.com");
+        browser.navigation()
+                .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
         browser.mainFrame().ifPresent(Frame::print);
     }
 }

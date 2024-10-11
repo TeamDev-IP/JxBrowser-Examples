@@ -65,14 +65,14 @@ public final class SslCertificateVerifier {
         engine.network().set(VerifyCertificateCallback.class, params -> {
             String host = params.host().value();
             System.out.println("Verifying certificate for " + host + "...");
-            // Reject SSL certificate for all "google.com" hosts.
-            if (host.contains("google.com")) {
+            // Reject SSL certificate for all "teamdev.com" hosts.
+            if (host.contains("teamdev.com")) {
                 return Response.invalid(AUTHORITY_INVALID);
             } else {
                 return Response.valid();
             }
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
     }
 }

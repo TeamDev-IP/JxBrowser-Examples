@@ -49,7 +49,7 @@ public final class SwtBrowserView {
         shell.pack();
         shell.open();
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
 
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
