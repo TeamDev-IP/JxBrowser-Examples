@@ -34,11 +34,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to handle all resources such as HTML, PNG,
- * JavaScript, CSS files, and decide whether web browser engine should load
- * them from web server.
+ * This example demonstrates how to handle all resources such as HTML, PNG, JavaScript, CSS files
+ * and decide whether web browser engine should load them from web server or not.
  *
- * <p>In this example we cancel loading of all images.
+ * <p>For example, in this example we cancel loading of all images.
  */
 public final class FilterImages {
 
@@ -70,6 +69,6 @@ public final class FilterImages {
             return BeforeUrlRequestCallback.Response.proceed();
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://webglsamples.org/");
     }
 }

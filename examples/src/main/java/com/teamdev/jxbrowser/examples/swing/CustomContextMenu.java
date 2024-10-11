@@ -69,7 +69,7 @@ public final class CustomContextMenu {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://google.com/");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
     }
 
     private static class ShowCustomContextMenu implements ShowContextMenuCallback {

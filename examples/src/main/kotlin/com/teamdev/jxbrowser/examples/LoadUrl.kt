@@ -39,7 +39,7 @@ fun main() {
     singleWindowApplication(title = "Load URL") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrl("https://www.google.com")
+            browser.navigation.loadUrl("https://html5test.teamdev.com/")
         }
     }
 }

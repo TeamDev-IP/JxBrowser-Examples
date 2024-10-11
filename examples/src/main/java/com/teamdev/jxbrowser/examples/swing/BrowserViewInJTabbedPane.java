@@ -61,7 +61,8 @@ public final class BrowserViewInJTabbedPane {
             frame.setVisible(true);
         });
 
-        browserOne.navigation().loadUrl("https://www.google.com");
-        browserTwo.navigation().loadUrl("https://www.teamdev.com");
+        browserOne.navigation().loadUrl("https://html5test.teamdev.com");
+        browserTwo.navigation()
+                  .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
     }
 }

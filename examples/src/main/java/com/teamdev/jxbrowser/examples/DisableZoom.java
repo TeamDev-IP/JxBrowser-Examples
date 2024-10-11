@@ -58,7 +58,7 @@ public final class DisableZoom {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrlAndWait("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com");
 
         // Disabling zoom.
         browser.zoom().disable();

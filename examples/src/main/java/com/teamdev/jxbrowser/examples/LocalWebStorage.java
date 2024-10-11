@@ -23,6 +23,7 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 import static java.lang.String.format;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 
 /**
@@ -36,9 +37,9 @@ public final class LocalWebStorage {
     private static final String KEY = "Name";
 
     public static void main(String[] args) {
-        try (var engine = Engine.newInstance(OFF_SCREEN)) {
-            var browser = engine.newBrowser();
-            browser.navigation().loadUrlAndWait("https://www.google.com");
+        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
+            Browser browser = engine.newBrowser();
+            browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
             browser.mainFrame().ifPresent(frame -> {
                 frame.localStorage().putItem(KEY, "Tom");
                 System.out.println((String) frame.executeJavaScript(

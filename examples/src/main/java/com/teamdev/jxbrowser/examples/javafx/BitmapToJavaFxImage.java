@@ -46,7 +46,7 @@ public final class BitmapToJavaFxImage {
             browser.resize(1024, 768);
 
             // Load the required web page and wait until it is loaded completely
-            browser.navigation().loadUrlAndWait("https://www.google.com");
+            browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
             Bitmap bitmap = browser.bitmap();
 

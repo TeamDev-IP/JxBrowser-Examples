@@ -59,7 +59,7 @@ public final class SaveWebPage {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrlAndWait("https://www.google.com");
+        browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
         var file = Paths.get("index.html");
         var dir = Paths.get("resources_dir");

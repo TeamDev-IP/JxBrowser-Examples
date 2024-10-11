@@ -57,6 +57,6 @@ public final class SwingBrowserView {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://google.com/");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
     }
 }

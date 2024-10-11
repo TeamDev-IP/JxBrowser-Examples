@@ -49,7 +49,7 @@ fun main() {
     singleWindowApplication(title = "Intercept request") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrl("https://www.google.com")
+            browser.navigation.loadUrl("https://html5test.teamdev.com/")
         }
     }
 }

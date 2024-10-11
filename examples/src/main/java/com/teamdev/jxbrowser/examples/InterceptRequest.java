@@ -67,7 +67,7 @@ public final class InterceptRequest {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com/");
     }
 
     private static final class InterceptHttpsCallback implements InterceptUrlRequestCallback {

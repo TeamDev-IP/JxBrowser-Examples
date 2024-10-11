@@ -37,6 +37,6 @@ fun main(): Unit = singleWindowApplication(title = "Compose `Browser View`") {
     val browser = remember { engine.newBrowser() }
     BrowserView(browser)
     LaunchedEffect(Unit) {
-        browser.navigation.loadUrl("https://google.com/")
+        browser.navigation.loadUrl("https://html5test.teamdev.com/")
     }
 }

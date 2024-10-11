@@ -70,6 +70,6 @@ public final class FilterCookies {
             return CanGetCookiesCallback.Response.cannot();
         });
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com");
     }
 }

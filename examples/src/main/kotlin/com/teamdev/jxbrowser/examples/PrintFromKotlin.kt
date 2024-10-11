@@ -49,6 +49,6 @@ fun main() = singleWindowApplication(title = "Print from Java") {
     }
 
     LaunchedEffect(Unit) {
-        browser.navigation.loadUrl("https://www.google.com")
+        browser.navigation.loadUrl("https://en.wikipedia.org/wiki/Printing")
     }
 }

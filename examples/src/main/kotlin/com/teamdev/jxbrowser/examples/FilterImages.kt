@@ -54,7 +54,7 @@ fun main() {
     singleWindowApplication(title = "Filter images") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrl("https://www.google.com")
+            browser.navigation.loadUrl("https://webglsamples.org/")
         }
     }
 }

@@ -98,7 +98,7 @@ fun main() = singleWindowApplication(title = "Custom context menu") {
             tell.close() // We don't need its actions.
         })
 
-        browser.navigation().loadUrl("teamdev.com/jxbrowser")
+        browser.navigation().loadUrl("https://html5test.teamdev.com/")
 
         onDispose {
 

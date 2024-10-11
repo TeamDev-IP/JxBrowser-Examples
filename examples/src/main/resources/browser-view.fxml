@@ -29,6 +29,6 @@
     <FxmlBrowserView fx:id="browserView"/>
   </center>
   <top>
-    <TextField onAction="#loadUrl" text="https://www.google.com" fx:id="textField"/>
+    <TextField onAction="#loadUrl" text="https://html5test.teamdev.com/" fx:id="textField"/>
   </top>
 </BorderPane>

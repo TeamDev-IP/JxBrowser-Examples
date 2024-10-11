@@ -37,7 +37,7 @@ import com.teamdev.jxbrowser.frame.Frame
  */
 fun main() = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val browser = engine.newBrowser()
-    browser.navigation.loadUrlAndWait("https://www.google.com")
+    browser.navigation.loadUrlAndWait("https://html5test.teamdev.com/")
 
     val frame = browser.mainFrame!!
     frame.localStorage[KEY] = "Tom"

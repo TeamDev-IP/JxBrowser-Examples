@@ -84,7 +84,7 @@ fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
             OpenPopupCallback.Response.proceed()
         })
 
-        browser.navigation().loadUrl("teamdev.com/jxbrowser")
+        browser.navigation().loadUrl("https://html5test.teamdev.com/")
 
         onDispose {
 

@@ -79,6 +79,6 @@ fun main() {
         tell.proceed(printer)
     })
 
-    browser.navigation.loadUrlAndWait("https://google.com")
+    browser.navigation.loadUrlAndWait("https://en.wikipedia.org/wiki/Printing")
     browser.mainFrame?.print()
 }

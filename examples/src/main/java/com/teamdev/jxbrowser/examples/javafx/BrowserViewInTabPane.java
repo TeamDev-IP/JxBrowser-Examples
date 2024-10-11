@@ -22,6 +22,7 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
@@ -43,30 +44,31 @@ public final class BrowserViewInTabPane extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        var engine = Engine.newInstance(OFF_SCREEN);
+        Engine engine = Engine.newInstance(OFF_SCREEN);
 
-        var browserOne = engine.newBrowser();
-        browserOne.navigation().loadUrl("https://www.google.com");
-        var viewOne = BrowserView.newInstance(browserOne);
+        Browser browserOne = engine.newBrowser();
+        browserOne.navigation()
+                  .loadUrl("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+        BrowserView viewOne = BrowserView.newInstance(browserOne);
 
-        var tabOne = new Tab("Browser One");
+        Tab tabOne = new Tab("Browser One");
         tabOne.setContent(viewOne);
 
-        var browserTwo = engine.newBrowser();
-        browserTwo.navigation().loadUrl("https://www.teamdev.com");
-        var viewTwo = BrowserView.newInstance(browserTwo);
+        Browser browserTwo = engine.newBrowser();
+        browserTwo.navigation().loadUrl("https://html5test.teamdev.com/");
+        BrowserView viewTwo = BrowserView.newInstance(browserTwo);
 
-        var tabTwo = new Tab("Browser Two");
+        Tab tabTwo = new Tab("Browser Two");
         tabTwo.setContent(viewTwo);
 
-        var tabPane = new TabPane();
+        TabPane tabPane = new TabPane();
         tabPane.getTabs().add(tabOne);
         tabPane.getTabs().add(tabTwo);
 
-        var root = new Group();
+        Group root = new Group();
         Scene scene = new Scene(root, 700, 500);
 
-        var pane = new BorderPane();
+        BorderPane pane = new BorderPane();
         pane.prefHeightProperty().bind(scene.heightProperty());
         pane.prefWidthProperty().bind(scene.widthProperty());
         pane.setCenter(tabPane);
