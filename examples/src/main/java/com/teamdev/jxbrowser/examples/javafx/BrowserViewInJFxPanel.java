@@ -20,17 +20,14 @@
 
 package com.teamdev.jxbrowser.examples.javafx;
 
-import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.concurrent.CountDownLatch;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
