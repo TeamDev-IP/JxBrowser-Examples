@@ -22,15 +22,11 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.javafx.graphics.BitmapImage;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 /**
@@ -40,8 +36,8 @@ import javax.imageio.ImageIO;
 public final class BitmapToJavaFxImage {
 
     public static void main(String[] args) throws IOException {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
+            var browser = engine.newBrowser();
 
             // Resize browser to the required dimension
             browser.resize(1024, 768);
@@ -49,13 +45,13 @@ public final class BitmapToJavaFxImage {
             // Load the required web page and wait until it is loaded completely
             browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
-            Bitmap bitmap = browser.bitmap();
+            var bitmap = browser.bitmap();
 
             // Convert the bitmap to javafx.scene.image.Image
-            Image image = BitmapImage.toToolkit(bitmap);
+            var image = BitmapImage.toToolkit(bitmap);
 
             // Convert javafx.scene.image.Image to java.awt.image.BufferedImage
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            var bufferedImage = SwingFXUtils.fromFXImage(image, null);
 
             // Save the image to a PNG file
             ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));

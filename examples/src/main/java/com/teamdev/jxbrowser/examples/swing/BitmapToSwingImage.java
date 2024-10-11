@@ -22,11 +22,8 @@ package com.teamdev.jxbrowser.examples.swing;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.ui.Bitmap;
 import com.teamdev.jxbrowser.view.swing.graphics.BitmapImage;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -38,8 +35,8 @@ import javax.imageio.ImageIO;
 public final class BitmapToSwingImage {
 
     public static void main(String[] args) throws IOException {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
+            var browser = engine.newBrowser();
 
             // Resize browser to the required dimension
             browser.resize(1024, 768);
@@ -47,10 +44,10 @@ public final class BitmapToSwingImage {
             // Load the required web page and wait until it is loaded completely
             browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
-            Bitmap bitmap = browser.bitmap();
+            var bitmap = browser.bitmap();
 
             // Convert the bitmap to java.awt.image.BufferedImage
-            BufferedImage bufferedImage = BitmapImage.toToolkit(bitmap);
+            var bufferedImage = BitmapImage.toToolkit(bitmap);
 
             // Save the image to a PNG file
             ImageIO.write(bufferedImage, "PNG", new File("bitmap.png"));

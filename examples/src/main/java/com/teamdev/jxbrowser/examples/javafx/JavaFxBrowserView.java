@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.javafx;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
@@ -41,12 +40,12 @@ public final class JavaFxBrowserView extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        Engine engine = Engine.newInstance(OFF_SCREEN);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(OFF_SCREEN);
+        var browser = engine.newBrowser();
 
-        BrowserView view = BrowserView.newInstance(browser);
+        var view = BrowserView.newInstance(browser);
 
-        Scene scene = new Scene(new BorderPane(view), 700, 500);
+        var scene = new Scene(new BorderPane(view), 700, 500);
         primaryStage.setTitle("JavaFx BrowserView");
         primaryStage.setScene(scene);
         primaryStage.show();

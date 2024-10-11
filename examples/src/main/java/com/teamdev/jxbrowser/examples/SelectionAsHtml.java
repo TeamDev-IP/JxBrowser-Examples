@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -41,19 +40,19 @@ import javax.swing.WindowConstants;
 public final class SelectionAsHtml {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JButton button = new JButton("Get Selected HTML");
+            var button = new JButton("Get Selected HTML");
             button.addActionListener(e -> browser.mainFrame().ifPresent(frame ->
                     SwingUtilities.invokeLater(() ->
                             JOptionPane.showMessageDialog(view, frame.selectionAsHtml(),
                                     "Selected HTML", JOptionPane.PLAIN_MESSAGE))));
 
-            JFrame frame = new JFrame("Get Selected HTML");
+            var frame = new JFrame("Get Selected HTML");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

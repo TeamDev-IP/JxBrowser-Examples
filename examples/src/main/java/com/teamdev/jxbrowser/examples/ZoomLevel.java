@@ -22,12 +22,9 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.navigation.Navigation;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import com.teamdev.jxbrowser.zoom.ZoomLevels;
 import com.teamdev.jxbrowser.zoom.event.ZoomLevelChanged;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -47,13 +44,13 @@ import javax.swing.WindowConstants;
 public final class ZoomLevel {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Change Zoom Level");
+            var frame = new JFrame("Change Zoom Level");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -68,12 +65,12 @@ public final class ZoomLevel {
         });
 
         // Listen to the zoom changed events.
-        ZoomLevels levels = engine.zoomLevels();
+        var levels = engine.zoomLevels();
         levels.on(ZoomLevelChanged.class, event ->
                 System.out.println("Url: " + event.host() + "\n"
                         + "Zoom level: " + event.level()));
 
-        Navigation navigation = browser.navigation();
+        var navigation = browser.navigation();
         navigation.on(FrameLoadFinished.class, event -> {
             if (event.frame().isMain()) {
                 browser.zoom().level(com.teamdev.jxbrowser.zoom.ZoomLevel.P_200);

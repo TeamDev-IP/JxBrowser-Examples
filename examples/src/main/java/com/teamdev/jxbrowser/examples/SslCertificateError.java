@@ -20,7 +20,6 @@
 
 package com.teamdev.jxbrowser.examples;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.CertificateErrorCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
@@ -40,14 +39,14 @@ import javax.swing.WindowConstants;
 public final class SslCertificateError {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED).build());
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Ignore SSL Certificate Errors");
+            var frame = new JFrame("Ignore SSL Certificate Errors");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -75,4 +74,3 @@ public final class SslCertificateError {
         browser.navigation().loadUrl("https://self-signed.badssl.com/");
     }
 }
-

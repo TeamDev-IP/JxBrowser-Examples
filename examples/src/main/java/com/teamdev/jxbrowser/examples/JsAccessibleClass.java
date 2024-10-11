@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
@@ -34,8 +33,8 @@ import com.teamdev.jxbrowser.js.JsObject;
 public final class JsAccessibleClass {
 
     public static void main(String[] args) {
-        try (Engine engine = Engine.newInstance(OFF_SCREEN)) {
-            Browser browser = engine.newBrowser();
+        try (var engine = Engine.newInstance(OFF_SCREEN)) {
+            var browser = engine.newBrowser();
             browser.mainFrame().ifPresent(frame -> {
                 JsObject jsObject = frame.executeJavaScript("window");
                 if (jsObject != null) {

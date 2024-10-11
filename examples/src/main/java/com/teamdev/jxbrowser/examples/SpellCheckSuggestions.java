@@ -22,17 +22,12 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.menu.SpellCheckMenu;
-import com.teamdev.jxbrowser.spellcheck.Dictionary;
-import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -53,13 +48,13 @@ public final class SpellCheckSuggestions {
         // (default) BrowserView component. Otherwise – the popup
         // menu will be displayed under the BrowserView component.
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Spell Check Suggestions");
+            var frame = new JFrame("Spell Check Suggestions");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -74,14 +69,14 @@ public final class SpellCheckSuggestions {
         });
 
         browser.set(ShowContextMenuCallback.class, (params, tell) -> {
-            JPopupMenu popupMenu = new JPopupMenu();
+            var popupMenu = new JPopupMenu();
             popupMenu.addPopupMenuListener(myPopupMenuListener(tell));
 
             // Add the suggestions menu items.
-            SpellCheckMenu spellCheckMenu = params.spellCheckMenu();
-            List<String> suggestions = spellCheckMenu.dictionarySuggestions();
+            var spellCheckMenu = params.spellCheckMenu();
+            var suggestions = spellCheckMenu.dictionarySuggestions();
             suggestions.forEach(suggestion -> {
-                JMenuItem menuItem = new JMenuItem(suggestion);
+                var menuItem = new JMenuItem(suggestion);
                 menuItem.addActionListener(e -> {
                     browser.replaceMisspelledWord(suggestion);
                     tell.close();
@@ -96,10 +91,10 @@ public final class SpellCheckSuggestions {
 
             if (!params.spellCheckMenu().misspelledWord().isEmpty()) {
                 // Add the "Add to Dictionary" menu item.
-                JMenuItem addToDictionary = new JMenuItem(
+                var addToDictionary = new JMenuItem(
                         spellCheckMenu.addToDictionaryMenuItemText());
                 addToDictionary.addActionListener(e -> {
-                    Dictionary dictionary = engine.spellChecker().customDictionary();
+                    var dictionary = engine.spellChecker().customDictionary();
                     dictionary.add(spellCheckMenu.misspelledWord());
                     tell.close();
                 });
@@ -108,7 +103,7 @@ public final class SpellCheckSuggestions {
 
 
             // Display context menu at specified location.
-            Point location = params.location();
+            var location = params.location();
             popupMenu.show(view, location.x(), location.y());
         });
         browser.mainFrame().ifPresent(mainFrame ->

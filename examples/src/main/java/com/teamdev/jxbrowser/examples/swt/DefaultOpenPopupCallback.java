@@ -20,7 +20,6 @@
 
 package com.teamdev.jxbrowser.examples.swt;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.browser.event.TitleChanged;
@@ -44,12 +43,12 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
     @Override
     public Response on(Params params) {
-        try (Browser browser = params.popupBrowser()) {
-            Display display = Display.getDefault();
+        try (var browser = params.popupBrowser()) {
+            var display = Display.getDefault();
             display.asyncExec(() -> {
-                Shell shell = new Shell(display);
+                var shell = new Shell(display);
                 shell.setLayout(new FillLayout());
-                BrowserView view = BrowserView.newInstance(shell, browser);
+                var view = BrowserView.newInstance(shell, browser);
                 updateBounds(shell, view, params.initialBounds());
 
                 shell.addDisposeListener(event -> {

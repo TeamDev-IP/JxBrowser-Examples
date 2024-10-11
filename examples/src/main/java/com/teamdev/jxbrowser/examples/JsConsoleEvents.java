@@ -22,10 +22,8 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.event.ConsoleMessageReceived;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.js.ConsoleMessage;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -41,13 +39,13 @@ import javax.swing.WindowConstants;
 public final class JsConsoleEvents {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("JS Console Listener");
+            var frame = new JFrame("JS Console Listener");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -62,7 +60,7 @@ public final class JsConsoleEvents {
         });
 
         browser.on(ConsoleMessageReceived.class, event -> {
-            ConsoleMessage consoleMessage = event.consoleMessage();
+            var consoleMessage = event.consoleMessage();
             System.out.printf("Level: %s\nMessage: %s%n",
                     consoleMessage.level().name(),
                     consoleMessage.message());

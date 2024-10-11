@@ -22,14 +22,12 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.SavePageType;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -41,13 +39,13 @@ import javax.swing.WindowConstants;
 public final class SaveWebPage {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Save Web Page");
+            var frame = new JFrame("Save Web Page");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -63,8 +61,8 @@ public final class SaveWebPage {
 
         browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
-        Path file = Paths.get("index.html");
-        Path dir = Paths.get("resources_dir");
+        var file = Paths.get("index.html");
+        var dir = Paths.get("resources_dir");
         if (browser.saveWebPage(file, dir, SavePageType.COMPLETE_HTML)) {
             System.out.println("The web page has been saved to " + file.toAbsolutePath() + "\n"
                     + "The resources has been saved to " + dir.toAbsolutePath() + " directory");

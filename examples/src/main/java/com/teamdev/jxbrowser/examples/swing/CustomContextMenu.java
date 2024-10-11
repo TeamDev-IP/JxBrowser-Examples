@@ -23,14 +23,12 @@ package com.teamdev.jxbrowser.examples.swing;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.ShowContextMenuCallback;
 import com.teamdev.jxbrowser.browser.internal.BrowserImpl;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.internal.rpc.stream.Interceptor.Action;
-import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.ui.event.internal.rpc.MoveMouseWheel;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -50,14 +48,14 @@ import javax.swing.event.PopupMenuListener;
 public final class CustomContextMenu {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
             browser.set(ShowContextMenuCallback.class, new ShowCustomContextMenu(view));
 
-            JFrame frame = new JFrame("JxBrowser: Swing Context Menu");
+            var frame = new JFrame("JxBrowser: Swing Context Menu");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -87,21 +85,21 @@ public final class CustomContextMenu {
             new SwingContextMenu(parent, params, action) {
                 @Override
                 protected void initialize(JPopupMenu contextMenu) {
-                    Browser browser = parent.getBrowser();
+                    var browser = parent.getBrowser();
 
-                    JMenuItem goBackMenuItem = new JMenuItem("Back");
+                    var goBackMenuItem = new JMenuItem("Back");
                     goBackMenuItem.addActionListener(
                             e -> browser.navigation().goBack());
 
-                    JMenuItem goForwardMenuItem = new JMenuItem("Forward");
+                    var goForwardMenuItem = new JMenuItem("Forward");
                     goForwardMenuItem.addActionListener(
                             e -> browser.navigation().goForward());
 
-                    JMenuItem reloadMenuItem = new JMenuItem("Reload");
+                    var reloadMenuItem = new JMenuItem("Reload");
                     reloadMenuItem.addActionListener(
                             e -> browser.navigation().reload());
 
-                    JMenuItem printMenuItem = new JMenuItem("Print...");
+                    var printMenuItem = new JMenuItem("Print...");
                     printMenuItem.addActionListener(
                             e -> browser.mainFrame().ifPresent(Frame::print));
 
@@ -133,13 +131,13 @@ public final class CustomContextMenu {
         protected abstract void initialize(JPopupMenu contextMenu);
 
         public final void show() {
-            JPopupMenu popupMenu = new JPopupMenu();
+            var popupMenu = new JPopupMenu();
             popupMenu.setLightWeightPopupEnabled(false);
             popupMenu.addPopupMenuListener(
                     new SwingContextMenu.PopupMenuListenerImpl());
             initialize(popupMenu);
             registerMouseCallbackInterceptors(popupMenu);
-            Point location = params.location();
+            var location = params.location();
             int x = location.x();
             int y = location.y();
             invokeLater(() -> popupMenu.show(parent, x, y));

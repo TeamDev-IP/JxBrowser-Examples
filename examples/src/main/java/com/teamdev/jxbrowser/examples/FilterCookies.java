@@ -22,9 +22,7 @@ package com.teamdev.jxbrowser.examples;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.net.Network;
 import com.teamdev.jxbrowser.net.callback.CanGetCookiesCallback;
 import com.teamdev.jxbrowser.net.callback.CanSetCookieCallback;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -41,13 +39,13 @@ import javax.swing.WindowConstants;
 public final class FilterCookies {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Filter Cookies");
+            var frame = new JFrame("Filter Cookies");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -62,7 +60,7 @@ public final class FilterCookies {
         });
 
         // Suppress/filter all the incoming and outgoing cookies.
-        Network networkService = engine.network();
+        var networkService = engine.network();
         networkService.set(CanSetCookieCallback.class, params -> {
             System.out.println("Disallow accepting cookies for: " + params.url());
             return CanSetCookieCallback.Response.cannot();

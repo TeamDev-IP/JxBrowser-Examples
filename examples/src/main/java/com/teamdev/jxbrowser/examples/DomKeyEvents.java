@@ -54,14 +54,14 @@ public class DomKeyEvents {
     private static final String HTML = "<input type='text' id='" + INPUT_FIELD_ID + "' />";
 
     public static void main(String[] args) {
-        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
-        Engine engine = Engine.newInstance(options);
-        Browser browser = engine.newBrowser();
+        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
+        var engine = Engine.newInstance(options);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("DOM Keyboard Event Listener ");
+            var frame = new JFrame("DOM Keyboard Event Listener ");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -84,14 +84,14 @@ public class DomKeyEvents {
     }
 
     private static void printEventDetails(Event event) {
-        KeyEvent keyEvent = (KeyEvent) event;
+        var keyEvent = (KeyEvent) event;
         String message = format("Event type: %s. Typed character (if applicable): %s. Key: %s",
                 keyEvent.type().value(), keyEvent.character(), keyEvent.domKeyCode());
         System.out.println(message);
     }
 
     private static void loadHtmlAndWait(Browser browser) {
-        CountDownLatch latch = new CountDownLatch(1);
+        var latch = new CountDownLatch(1);
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
         browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(HTML));
         awaitUninterruptibly(latch);

@@ -20,7 +20,6 @@
 
 package com.teamdev.jxbrowser.examples.javafx;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.browser.event.TitleChanged;
@@ -43,12 +42,12 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
     @Override
     public Response on(Params params) {
-        Browser browser = params.popupBrowser();
+        var browser = params.popupBrowser();
         Platform.runLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-            Stage stage = new Stage();
-            StackPane root = new StackPane();
-            Scene scene = new Scene(root);
+            var view = BrowserView.newInstance(browser);
+            var stage = new Stage();
+            var root = new StackPane();
+            var scene = new Scene(root);
             root.getChildren().add(view);
             stage.setScene(scene);
 

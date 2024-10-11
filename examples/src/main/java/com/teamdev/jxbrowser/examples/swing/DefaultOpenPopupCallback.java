@@ -22,7 +22,6 @@ package com.teamdev.jxbrowser.examples.swing;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.OpenPopupCallback;
 import com.teamdev.jxbrowser.browser.event.BrowserClosed;
 import com.teamdev.jxbrowser.browser.event.TitleChanged;
@@ -48,9 +47,9 @@ public final class DefaultOpenPopupCallback implements OpenPopupCallback {
 
     @Override
     public Response on(Params params) {
-        Browser browser = params.popupBrowser();
+        var browser = params.popupBrowser();
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
             JFrame frame = new JFrame();
             frame.add(view, BorderLayout.CENTER);
             frame.addWindowListener(new WindowAdapter() {

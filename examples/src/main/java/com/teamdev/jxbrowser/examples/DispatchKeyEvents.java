@@ -50,12 +50,12 @@ public final class DispatchKeyEvents {
     private static final Map<Character, KeyCode> charToKeyCode;
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
-            JFrame frame = new JFrame("Dispatch key events");
+            var view = BrowserView.newInstance(browser);
+            var frame = new JFrame("Dispatch key events");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -82,7 +82,7 @@ public final class DispatchKeyEvents {
     }
 
     private static void loadHtmlAndWait(Browser browser, String html) {
-        CountDownLatch latch = new CountDownLatch(1);
+        var latch = new CountDownLatch(1);
         browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(html));
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
         awaitUninterruptibly(latch);
@@ -93,13 +93,13 @@ public final class DispatchKeyEvents {
     }
 
     private static void dispatchKeyEvent(Browser browser, char character, KeyCode keyCode) {
-        KeyPressed keyPressed = KeyPressed.newBuilder(keyCode)
+        var keyPressed = KeyPressed.newBuilder(keyCode)
                 .keyChar(character)
                 .build();
-        KeyTyped keyTyped = KeyTyped.newBuilder(keyCode)
+        var keyTyped = KeyTyped.newBuilder(keyCode)
                 .keyChar(character)
                 .build();
-        KeyReleased keyReleased = KeyReleased.newBuilder(keyCode)
+        var keyReleased = KeyReleased.newBuilder(keyCode)
                 .build();
 
         browser.dispatch(keyPressed);

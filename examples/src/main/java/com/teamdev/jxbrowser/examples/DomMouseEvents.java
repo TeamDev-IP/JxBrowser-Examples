@@ -35,7 +35,6 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.frame.Frame;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
-import com.teamdev.jxbrowser.ui.Point;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -55,14 +54,14 @@ public class DomMouseEvents {
     private static final String HTML = "<button id='" + BUTTON_ID + "'>Click me</button>";
 
     public static void main(String[] args) {
-        EngineOptions options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
-        Engine engine = Engine.newInstance(options);
-        Browser browser = engine.newBrowser();
+        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED).build();
+        var engine = Engine.newInstance(options);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("DOM Mouse Event Listener");
+            var frame = new JFrame("DOM Mouse Event Listener");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -85,15 +84,15 @@ public class DomMouseEvents {
     }
 
     private static void printEventDetails(Event event) {
-        MouseEvent mouseEvent = (MouseEvent) event;
-        Point location = mouseEvent.pageLocation();
-        String message = format("Event type: %s. Button: %s. Page location: (%d, %d)",
+        var mouseEvent = (MouseEvent) event;
+        var location = mouseEvent.pageLocation();
+        var message = format("Event type: %s. Button: %s. Page location: (%d, %d)",
                 mouseEvent.type().value(), mouseEvent.button(), location.x(), location.y());
         System.out.println(message);
     }
 
     private static void loadHtmlAndWait(Browser browser) {
-        CountDownLatch latch = new CountDownLatch(1);
+        var latch = new CountDownLatch(1);
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
         browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(HTML));
         awaitUninterruptibly(latch);

@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.dom.Document;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
@@ -40,13 +39,13 @@ import javax.swing.WindowConstants;
 public final class DomForm {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("DOM HTML Form");
+            var frame = new JFrame("DOM HTML Form");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -75,4 +74,3 @@ public final class DomForm {
                         "</form></body></html>"));
     }
 }
-

@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.browser.callback.SelectClientCertificateCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -31,7 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.security.cert.X509Certificate;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.JFrame;
@@ -53,13 +51,13 @@ public final class SelectClientCertificate {
     private static BrowserView view;
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Select Client SSL Certificate");
+            var frame = new JFrame("Select Client SSL Certificate");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -74,7 +72,7 @@ public final class SelectClientCertificate {
         });
 
         browser.set(SelectClientCertificateCallback.class, (params, tell) -> {
-            List<X509Certificate> certificates = params.certificates().stream()
+            var certificates = params.certificates().stream()
                     .map(cerf -> cerf.toX509Certificate().orElse(null))
                     .filter(Objects::nonNull)
                     .toList();
@@ -83,11 +81,11 @@ public final class SelectClientCertificate {
                 tell.cancel();
             }
 
-            Object[] selectionValues = IntStream.range(0, certificates.size())
+            var selectionValues = IntStream.range(0, certificates.size())
                     .mapToObj(i -> new SelectionValue(i, certificates.get(i)))
                     .toArray();
 
-            Object selectedValue = JOptionPane.showInputDialog(
+            var selectedValue = JOptionPane.showInputDialog(
                     view,
                     params.message(), params.title(),
                     PLAIN_MESSAGE, null,

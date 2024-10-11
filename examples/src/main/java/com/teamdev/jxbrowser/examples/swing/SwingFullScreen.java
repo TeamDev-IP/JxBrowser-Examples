@@ -22,9 +22,7 @@ package com.teamdev.jxbrowser.examples.swing;
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.fullscreen.FullScreen;
 import com.teamdev.jxbrowser.fullscreen.event.FullScreenEntered;
 import com.teamdev.jxbrowser.fullscreen.event.FullScreenExited;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -42,13 +40,13 @@ import javax.swing.WindowConstants;
 public final class SwingFullScreen {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Swing Full Screen Mode");
+            var frame = new JFrame("Swing Full Screen Mode");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -61,8 +59,8 @@ public final class SwingFullScreen {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            FullScreenHandler fullScreenHandler = new FullScreenHandler(frame, view);
-            FullScreen fullScreen = browser.fullScreen();
+            var fullScreenHandler = new FullScreenHandler(frame, view);
+            var fullScreen = browser.fullScreen();
             fullScreen.on(FullScreenEntered.class, event -> fullScreenHandler.onFullScreenEnter());
             fullScreen.on(FullScreenExited.class, event -> fullScreenHandler.onFullScreenExit());
         });
@@ -83,7 +81,7 @@ public final class SwingFullScreen {
         }
 
         private static JFrame createFrame() {
-            JFrame frame = new JFrame();
+            var frame = new JFrame();
             frame.setUndecorated(true);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);
             return frame;

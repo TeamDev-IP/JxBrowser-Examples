@@ -23,7 +23,6 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 import static javax.swing.SwingUtilities.invokeLater;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.HttpHeader;
@@ -45,16 +44,16 @@ import javax.swing.WindowConstants;
 public final class InterceptRequest {
 
     public static void main(String[] args) {
-        Engine engine = Engine.newInstance(
+        var engine = Engine.newInstance(
                 EngineOptions.newBuilder(OFF_SCREEN)
                         .addScheme(Scheme.HTTPS, new InterceptHttpsCallback())
                         .build());
-        Browser browser = engine.newBrowser();
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Intercept Request");
+            var frame = new JFrame("Intercept Request");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -75,7 +74,7 @@ public final class InterceptRequest {
 
         @Override
         public Response on(Params params) {
-            UrlRequestJob job = params.newUrlRequestJob(
+            var job = params.newUrlRequestJob(
                     UrlRequestJob.Options
                             .newBuilder(HttpStatus.OK)
                             .addHttpHeader(HttpHeader.of("Content-Type", "text/html"))
