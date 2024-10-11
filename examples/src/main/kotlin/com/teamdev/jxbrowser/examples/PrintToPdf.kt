@@ -51,7 +51,7 @@ fun main() {
         val job = printer.job
 
         job.settings()
-            .pdfFilePath(Path("google.pdf").absolute())
+            .pdfFilePath(Path("wikipedia-printing.pdf").absolute())
             .enablePrintingBackgrounds()
             .orientation(Orientation.PORTRAIT)
             .apply()
@@ -68,6 +68,6 @@ fun main() {
         tell.proceed(printer)
     })
 
-    browser.navigation.loadUrlAndWait("https://google.com")
+    browser.navigation.loadUrlAndWait("https://en.wikipedia.org/wiki/Printing")
     browser.mainFrame?.print()
 }

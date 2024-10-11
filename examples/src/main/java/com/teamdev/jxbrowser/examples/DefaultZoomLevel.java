@@ -61,6 +61,6 @@ public final class DefaultZoomLevel {
 
         engine.zoomLevels().defaultLevel(ZoomLevel.P_300);
 
-        browser.navigation().loadUrl("https://www.google.com");
+        browser.navigation().loadUrl("https://html5test.teamdev.com");
     }
 }

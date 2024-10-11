@@ -48,7 +48,7 @@ fun main() {
     }
 
     val browser = engine.newBrowser()
-    browser.navigation.loadUrlAndWait("https://google.com")
+    browser.navigation.loadUrlAndWait("https://html5test.teamdev.com/")
 
     // The suppressed cookies have been printed to the console.
     engine.close()

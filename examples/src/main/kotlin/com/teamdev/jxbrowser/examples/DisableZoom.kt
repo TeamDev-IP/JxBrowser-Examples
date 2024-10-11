@@ -41,7 +41,7 @@ fun main() {
     singleWindowApplication(title = "Disable zoom") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.navigation.loadUrlAndWait("https://www.google.com")
+            browser.navigation.loadUrlAndWait("https://html5test.teamdev.com/")
             browser.zoom.enabled = false // Disables zoom.
             browser.zoom.level = ZoomLevel.P_300 // Set zoom to 300% that will NOT be applied.
         }
