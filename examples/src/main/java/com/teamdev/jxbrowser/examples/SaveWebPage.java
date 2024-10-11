@@ -45,7 +45,7 @@ public final class SaveWebPage {
         SwingUtilities.invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Save Web Page");
+            var frame = new JFrame("Save Web Page");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {

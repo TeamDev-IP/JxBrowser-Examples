@@ -29,9 +29,6 @@ import com.teamdev.jxbrowser.browser.callback.PrintCallback;
 import com.teamdev.jxbrowser.browser.callback.PrintHtmlCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.frame.Frame;
-import com.teamdev.jxbrowser.print.PrintJob;
-import com.teamdev.jxbrowser.print.SystemPrinter;
-import com.teamdev.jxbrowser.print.SystemPrinter.HtmlSettings;
 import com.teamdev.jxbrowser.print.event.PrintCompleted;
 
 /**
@@ -47,10 +44,10 @@ public final class PrintSettings {
         // #docfragment "Callback"
         browser.set(PrintHtmlCallback.class, (params, tell) -> {
             // #docfragment "Configure settings"
-            SystemPrinter<HtmlSettings> printer = params.printers()
+            var printer = params.printers()
                     .defaultPrinter()
                     .orElseThrow(IllegalStateException::new);
-            PrintJob<HtmlSettings> printJob = printer.printJob();
+            var printJob = printer.printJob();
             printJob.settings()
                     .header("<span style='font-size: 12px;'>Page header:</span>"
                             + "<span class='title'></span>")
