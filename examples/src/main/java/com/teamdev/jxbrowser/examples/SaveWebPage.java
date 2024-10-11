@@ -61,8 +61,7 @@ public final class SaveWebPage {
             frame.setVisible(true);
         });
 
-        browser.navigation()
-               .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+        browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
         Path file = Paths.get("index.html");
         Path dir = Paths.get("resources_dir");
