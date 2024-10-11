@@ -34,8 +34,7 @@ import javax.imageio.ImageIO
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser().apply { resize(1024, 768) }
-    browser.navigation
-           .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html")
+    browser.navigation.loadUrlAndWait("https://html5test.teamdev.com/")
 
     // Get `Bitmap` with the image of the currently loaded web page.
     val bitmap = browser.bitmap()

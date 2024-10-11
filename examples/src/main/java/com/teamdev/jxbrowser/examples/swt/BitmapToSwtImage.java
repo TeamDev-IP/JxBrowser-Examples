@@ -47,8 +47,7 @@ public final class BitmapToSwtImage {
             browser.resize(1024, 768);
 
             // Load the required web page and wait until it is loaded completely
-            browser.navigation()
-                   .loadUrlAndWait("https://webglsamples.org/dynamic-cubemap/dynamic-cubemap.html");
+            browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
             Bitmap bitmap = browser.bitmap();
 
