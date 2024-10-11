@@ -51,7 +51,7 @@ fun main() {
         val job = printer.job
 
         job.settings()
-            .pdfFilePath(Path("google.pdf").absolute())
+            .pdfFilePath(Path("wikipedia-printing.pdf").absolute())
             .enablePrintingBackgrounds()
             .orientation(Orientation.PORTRAIT)
             .apply()

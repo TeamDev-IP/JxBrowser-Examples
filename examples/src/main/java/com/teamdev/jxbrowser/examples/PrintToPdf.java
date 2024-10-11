@@ -50,7 +50,7 @@ public final class PrintToPdf {
                     params.printers().pdfPrinter();
             PrintJob<HtmlSettings> printJob = pdfPrinter.printJob();
             printJob.settings()
-                    .pdfFilePath(Paths.get("dynamic-cubemap.pdf").toAbsolutePath())
+                    .pdfFilePath(Paths.get("wikipedia-printing.pdf").toAbsolutePath())
                     .enablePrintingBackgrounds()
                     .orientation(PORTRAIT)
                     .apply();
