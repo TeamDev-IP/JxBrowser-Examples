@@ -32,7 +32,7 @@ object Swt {
         "3.107.0"
     } else {
         // This version also supports Apple Silicon.
-        "3.124.0" // Eclipse 4.28.0
+        "3.126.0" // Eclipse 4.28.0
     }
     private val platformDependency = "$groupdId:org.eclipse.swt.${osgiPlatform()}:$version"
 
@@ -61,7 +61,13 @@ object Swt {
         val arch = System.getProperty("os.arch")
         val isArm = "aarch64" == arch || "arm" == arch
         return when {
-            os.contains("win") -> "win32.win32.x86_64"
+            os.contains("win") ->  {
+                if (isArm) {
+                    "win32.win32.aarch64"
+                } else {
+                    "win32.win32.x86_64"
+                }
+            }
             os.contains("linux") -> {
                 if (isArm) {
                     "gtk.linux.aarch64"
