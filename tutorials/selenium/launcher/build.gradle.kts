@@ -1,7 +1,6 @@
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.nio.file.attribute.PosixFilePermission
 import java.nio.file.attribute.PosixFilePermission.*
 import java.util.*
 import java.util.zip.ZipFile
@@ -63,23 +62,23 @@ fun chromedriverPlatform(): String {
     }
 }
 
-tasks.register("downloadChromedriver") {
+tasks.register("downloadChromeDriver") {
     val chromeDriverPlatform = chromedriverPlatform()
     val downloadUrl =
         "https://storage.googleapis.com/chrome-for-testing-public/$chromiumVersion/$chromeDriverPlatform/chromedriver-$chromeDriverPlatform.zip"
     val resourcesDir = sourceSets["main"].resources.srcDirs.first()
-    val chromedriverZip = resourcesDir.resolve("chromedriver.zip")
-    val chromedriver = resourcesDir.resolve("chromedriver")
+    val chromeDriverZip = resourcesDir.resolve("chromedriver.zip")
+    val chromeDriver = resourcesDir.resolve("chromedriver")
 
     doLast {
         URL(downloadUrl).openStream().use { inputStream ->
             Files.copy(
                 inputStream,
-                chromedriverZip.toPath(),
+                chromeDriverZip.toPath(),
                 StandardCopyOption.REPLACE_EXISTING
             )
-            println("Chromedriver downloaded to ${chromedriverZip.absolutePath}")
-            ZipFile(chromedriverZip).use { zip ->
+            println("ChromeDriver downloaded to ${chromeDriverZip.absolutePath}")
+            ZipFile(chromeDriverZip).use { zip ->
                 zip.entries().asSequence().forEach { entry ->
                     if (!entry.isDirectory) {
                         val outputFile =
@@ -104,9 +103,9 @@ tasks.register("downloadChromedriver") {
                         }
                     }
                 }
-                println("Chromedriver extracted to ${chromedriver.absolutePath}")
+                println("ChromeDriver extracted to ${chromeDriver.absolutePath}")
             }
-            delete(chromedriverZip)
+            delete(chromeDriverZip)
         }
     }
 }
