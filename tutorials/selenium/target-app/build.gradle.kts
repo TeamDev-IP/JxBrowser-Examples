@@ -34,7 +34,7 @@ tasks.jar {
     exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
 }
 
-tasks.register<Exec>("buildExecutable") {
+tasks.register<Exec>("buildApplication") {
     dependsOn(tasks.build)
 
     commandLine(

@@ -19,7 +19,7 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/integration/
    to create an executable file for the current platform that later will be
    run by Selenium WebDriver.
    ```bash
-   gradlew buildApplication
+   gradlew clean buildApplication
    ```
 4. Run [Selenium](launcher/src/main/java/SeleniumLauncher.java).
 5. If everything configured properly, you will see the launched test
