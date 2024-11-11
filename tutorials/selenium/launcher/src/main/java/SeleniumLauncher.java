@@ -18,28 +18,32 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.os.Environment.isMac;
+import static com.teamdev.jxbrowser.os.Environment.isWindows;
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
- * An application that configures Selenium WebDriver (ChromeDriver) to run on the JxBrowser-based
- * application binaries and get access to HTML content loaded in JxBrowser.
+ * An application that configures Selenium WebDriver (ChromeDriver) to run on
+ * the JxBrowser-based application binaries and get access to HTML content
+ * loaded in JxBrowser.
  */
 public final class SeleniumLauncher {
 
     public static void main(String[] args) {
         // Set a path to the ChromeDriver executable.
-        System.setProperty("webdriver.chrome.driver",
-                "tutorials/selenium/launcher/src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", requireNonNull(
+                SeleniumLauncher.class.getResource(chromeDriverFile())).getPath());
 
         // #docfragment "path-to-exe"
         ChromeOptions options = new ChromeOptions();
 
         // Set a path to your JxBrowser application executable.
-        options.setBinary(
-                new File("tutorials/selenium/target-app/build/executable/TargetApp.exe"));
+        options.setBinary(new File(binaryPath()));
         // #enddocfragment "path-to-exe"
         // #docfragment "set-remote-debugging-port"
         // Set a port to communicate on.
@@ -52,5 +56,25 @@ public final class SeleniumLauncher {
         System.out.printf("Current URL: %s\n", driver.getCurrentUrl());
 
         driver.quit();
+    }
+
+    private static String binaryPath() {
+        var applicationDirectory =
+                "tutorials/selenium/target-app/build/application/";
+        if (isMac()) {
+            return applicationDirectory
+                    + "TargetApp.app/Contents/MacOS/TargetApp";
+        } else if (isWindows()) {
+            return applicationDirectory + "TargetApp.exe";
+        }
+
+        throw new IllegalStateException("The platform is unsupported.");
+    }
+
+    private static String chromeDriverFile() {
+        if (isWindows()) {
+            return "chromedriver.exe";
+        }
+        return "chromedriver";
     }
 }
