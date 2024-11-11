@@ -1,3 +1,11 @@
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermission.*
+import java.util.*
+import java.util.zip.ZipFile
+
 /*
  *  Copyright 2024, TeamDev. All rights reserved.
  *
@@ -19,5 +27,86 @@
  */
 
 dependencies {
-    implementation(group = "org.seleniumhq.selenium", name = "selenium-chrome-driver", version = "3.141.59")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.26.0")
+}
+
+// The Chromium version used in JxBrowser.
+val chromiumVersion = "130.0.6723.70"
+
+fun chromedriverPlatform(): String {
+    fun isArm(): Boolean {
+        val arch = System.getProperty("os.arch")
+        return "aarch64" == arch || "arm" == arch
+    }
+
+    val os = System.getProperty("os.name")
+    return when {
+        os.startsWith("Windows") -> {
+            "win64"
+        }
+
+        os.startsWith("Linux") -> {
+            "linux64"
+        }
+
+        os.startsWith("Mac") -> {
+            if (isArm()) {
+                "mac-arm64"
+            } else {
+                "mac-x64"
+            }
+        }
+
+        else -> {
+            throw IllegalStateException("Unsupported operating system.")
+        }
+    }
+}
+
+tasks.register("downloadChromedriver") {
+    val chromeDriverPlatform = chromedriverPlatform()
+    val downloadUrl =
+        "https://storage.googleapis.com/chrome-for-testing-public/$chromiumVersion/$chromeDriverPlatform/chromedriver-$chromeDriverPlatform.zip"
+    val resourcesDir = sourceSets["main"].resources.srcDirs.first()
+    val chromedriverZip = resourcesDir.resolve("chromedriver.zip")
+    val chromedriver = resourcesDir.resolve("chromedriver")
+
+    doLast {
+        URL(downloadUrl).openStream().use { inputStream ->
+            Files.copy(
+                inputStream,
+                chromedriverZip.toPath(),
+                StandardCopyOption.REPLACE_EXISTING
+            )
+            println("Chromedriver downloaded to ${chromedriverZip.absolutePath}")
+            ZipFile(chromedriverZip).use { zip ->
+                zip.entries().asSequence().forEach { entry ->
+                    if (!entry.isDirectory) {
+                        val outputFile =
+                            File(resourcesDir, File(entry.name).name)
+                        zip.getInputStream(entry).use { input ->
+                            outputFile.outputStream().use { output ->
+                                input.copyTo(output)
+                            }
+                        }
+                        val extension = outputFile.extension
+                        if (extension.endsWith("exe") ||
+                            extension.isEmpty()) {
+                            Files.setPosixFilePermissions(
+                                outputFile.toPath(),
+                                EnumSet.of(
+                                    OWNER_EXECUTE,
+                                    OWNER_READ,
+                                    GROUP_EXECUTE,
+                                    GROUP_READ
+                                )
+                            )
+                        }
+                    }
+                }
+                println("Chromedriver extracted to ${chromedriver.absolutePath}")
+            }
+            delete(chromedriverZip)
+        }
+    }
 }
