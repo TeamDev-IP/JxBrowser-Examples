@@ -67,6 +67,9 @@ tasks.register("downloadChromeDriver") {
     val downloadUrl =
         "https://storage.googleapis.com/chrome-for-testing-public/$chromiumVersion/$chromeDriverPlatform/chromedriver-$chromeDriverPlatform.zip"
     val resourcesDir = sourceSets["main"].resources.srcDirs.first()
+    if (!resourcesDir.exists()) {
+        mkdir(resourcesDir)
+    }
     val chromeDriverZip = resourcesDir.resolve("chromedriver.zip")
     val chromeDriver = resourcesDir.resolve("chromedriver")
 
@@ -89,8 +92,9 @@ tasks.register("downloadChromeDriver") {
                             }
                         }
                         val extension = outputFile.extension
-                        if (extension.endsWith("exe") ||
-                            extension.isEmpty()) {
+                        if (extension.isEmpty() &&
+                            !System.getProperty("os.name").startsWith("Windows")
+                        ) {
                             Files.setPosixFilePermissions(
                                 outputFile.toPath(),
                                 EnumSet.of(
