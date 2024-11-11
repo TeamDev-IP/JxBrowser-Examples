@@ -18,12 +18,33 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-plugins {
-    id("edu.sc.seis.launch4j") version "3.0.4"
+val mainJar = "targetApp.jar"
+
+tasks.jar {
+    archiveFileName.set(mainJar)
+    manifest {
+        attributes["Main-Class"] = "TargetApp"
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from({
+        configurations.runtimeClasspath.get().map {
+            if (it.isDirectory) it else zipTree(it)
+        }
+    })
+    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
 }
 
-launch4j {
-    outfile = "TargetApp.exe"
-    mainClassName = "TargetApp"
-    outputDir = "executable"
+tasks.register<Exec>("buildExecutable") {
+    dependsOn(tasks.build)
+
+    commandLine(
+        "jpackage",
+        "--input", "./build/libs",
+        "--main-jar", mainJar,
+        "--name", "TargetApp",
+        "--app-version", version,
+        "--type", "app-image",
+        "--main-class", "TargetApp",
+        "--dest", "./build/application",
+    )
 }
