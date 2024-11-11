@@ -23,7 +23,9 @@ import static com.teamdev.jxbrowser.os.Environment.isWindows;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
-import org.openqa.selenium.WebDriver;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -34,13 +36,15 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 public final class SeleniumLauncher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
+        URL chromeDriverUrl = requireNonNull(
+                SeleniumLauncher.class.getResource(chromeDriverFile()));
         // Set a path to the ChromeDriver executable.
-        System.setProperty("webdriver.chrome.driver", requireNonNull(
-                SeleniumLauncher.class.getResource(chromeDriverFile())).getPath());
+        System.setProperty("webdriver.chrome.driver",
+                Paths.get(chromeDriverUrl.toURI()).toString());
 
         // #docfragment "path-to-exe"
-        ChromeOptions options = new ChromeOptions();
+        var options = new ChromeOptions();
 
         // Set a path to your JxBrowser application executable.
         options.setBinary(new File(binaryPath()));
@@ -50,7 +54,7 @@ public final class SeleniumLauncher {
         options.addArguments("--remote-debugging-port=9222");
         // #enddocfragment "set-remote-debugging-port"
 
-        WebDriver driver = new ChromeDriver(options);
+        var driver = new ChromeDriver(options);
 
         // Now you can use WebDriver.
         System.out.printf("Current URL: %s\n", driver.getCurrentUrl());
@@ -65,7 +69,7 @@ public final class SeleniumLauncher {
             return applicationDirectory
                     + "TargetApp.app/Contents/MacOS/TargetApp";
         } else if (isWindows()) {
-            return applicationDirectory + "TargetApp.exe";
+            return applicationDirectory + "TargetApp/TargetApp.exe";
         }
 
         throw new IllegalStateException("The platform is unsupported.");
