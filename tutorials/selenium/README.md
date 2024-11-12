@@ -57,7 +57,7 @@ the environment variable contains the `%JAVA_HOME%/bin` directory.
    
 4. Run [Selenium](launcher/src/main/java/SeleniumLauncher.java).
 5. If everything configured properly, you will see the launched test
-   application, and the following in the console output:
+   application, and the following console output:
    ```
    Current URL: about:blank
    // or
