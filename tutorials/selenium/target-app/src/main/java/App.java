@@ -20,7 +20,6 @@
 
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
@@ -33,11 +32,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to create a simple Swing application with a web page loaded in
- * BrowserView, and connect JxBrowser's Chromium engine with Selenium via the remote debugging port
- * obtained from the command line.
+ * A simple Swing application with a web page loaded in {@code BrowserView} that
+ * will be run by Selenium WebDriver later on and debugged via the remote
+ * debugging port obtained from the command line.
  */
-public final class TargetApp {
+public final class App {
 
     private static final String REMOTE_DEBUGGING_PORT_ARG = "--remote-debugging-port=";
 
@@ -47,23 +46,24 @@ public final class TargetApp {
 
         // #docfragment "forward-remote-debugging-port"
         // Create a builder for EngineOptions.
-        EngineOptions.Builder builder = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
+        var builder = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
         // Configure Engine with the remote debugging port obtained from the command line args.
-        remoteDebuggingPortFromCommandLine(args).ifPresent(builder::remoteDebuggingPort);
+        remoteDebuggingPortFromCommandLine(args).ifPresent(
+                builder::remoteDebuggingPort);
         // #enddocfragment "forward-remote-debugging-port"
 
         // Creating Chromium engine.
-        Engine engine = Engine.newInstance(builder.build());
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(builder.build());
+        var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             // Creating Swing component for rendering web content
             // loaded in the given Browser instance.
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
             // Creating and displaying Swing app frame.
-            JFrame frame = new JFrame();
+            var frame = new JFrame();
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -81,11 +81,13 @@ public final class TargetApp {
     }
 
     // #docfragment "get-remote-debugging-port"
-    private static Optional<Integer> remoteDebuggingPortFromCommandLine(String[] args) {
+    private static Optional<Integer> remoteDebuggingPortFromCommandLine(
+            String[] args) {
         if (args.length > 0) {
-            for (String arg : args) {
+            for (var arg : args) {
                 if (arg.startsWith(REMOTE_DEBUGGING_PORT_ARG)) {
-                    String port = arg.substring(REMOTE_DEBUGGING_PORT_ARG.length());
+                    var port = arg.substring(
+                            REMOTE_DEBUGGING_PORT_ARG.length());
                     return Optional.of(Integer.parseInt(port));
                 }
             }

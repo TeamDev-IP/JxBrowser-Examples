@@ -18,39 +18,69 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.os.Environment.isLinux;
+import static com.teamdev.jxbrowser.os.Environment.isMac;
+import static com.teamdev.jxbrowser.os.Environment.isWindows;
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
-import org.openqa.selenium.WebDriver;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
- * An application that configures Selenium WebDriver (ChromeDriver) to run on the JxBrowser-based
- * application binaries and get access to HTML content loaded in JxBrowser.
+ * Configures Selenium WebDriver (ChromeDriver) to run the JxBrowser-based
+ * application and get access to the loaded web page.
  */
 public final class SeleniumLauncher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
+        URL chromeDriverUrl = requireNonNull(
+                SeleniumLauncher.class.getResource(chromeDriverFile()));
         // Set a path to the ChromeDriver executable.
         System.setProperty("webdriver.chrome.driver",
-                "tutorials/selenium/launcher/src/main/resources/chromedriver.exe");
+                Paths.get(chromeDriverUrl.toURI()).toString());
 
         // #docfragment "path-to-exe"
-        ChromeOptions options = new ChromeOptions();
+        var options = new ChromeOptions();
 
         // Set a path to your JxBrowser application executable.
-        options.setBinary(
-                new File("tutorials/selenium/target-app/build/executable/TargetApp.exe"));
+        options.setBinary(new File(binaryPath()));
         // #enddocfragment "path-to-exe"
         // #docfragment "set-remote-debugging-port"
         // Set a port to communicate on.
         options.addArguments("--remote-debugging-port=9222");
         // #enddocfragment "set-remote-debugging-port"
 
-        WebDriver driver = new ChromeDriver(options);
+        var driver = new ChromeDriver(options);
 
         // Now you can use WebDriver.
         System.out.printf("Current URL: %s\n", driver.getCurrentUrl());
 
         driver.quit();
+    }
+
+    private static String binaryPath() {
+        var applicationDirectory =
+                "tutorials/selenium/target-app/build/application/";
+        if (isMac()) {
+            return applicationDirectory
+                    + "App.app/Contents/MacOS/App";
+        } else if (isWindows()) {
+            return applicationDirectory + "App/App.exe";
+        } else if (isLinux()) {
+            return applicationDirectory + "App/bin/App";
+        }
+
+        throw new IllegalStateException("The platform is unsupported.");
+    }
+
+    private static String chromeDriverFile() {
+        if (isWindows()) {
+            return "chromedriver.exe";
+        }
+        return "chromedriver";
     }
 }
