@@ -100,8 +100,10 @@ tasks.register("downloadChromeDriver") {
                                 EnumSet.of(
                                     OWNER_EXECUTE,
                                     OWNER_READ,
+                                    OWNER_WRITE,
                                     GROUP_EXECUTE,
-                                    GROUP_READ
+                                    GROUP_READ,
+                                    GROUP_WRITE
                                 )
                             )
                         }
