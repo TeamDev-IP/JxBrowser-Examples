@@ -29,7 +29,7 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.26.0")
 }
 
-// The Chromium version used in JxBrowser.
+// The Chromium version used in JxBrowser 8.1.0.
 val chromiumVersion = "130.0.6723.70"
 
 fun chromeDriverPlatform(): String {
