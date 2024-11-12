@@ -36,7 +36,7 @@ import javax.swing.WindowConstants;
  * BrowserView, and connect JxBrowser's Chromium engine with Selenium via the remote debugging port
  * obtained from the command line.
  */
-public final class TargetApp {
+public final class App {
 
     private static final String REMOTE_DEBUGGING_PORT_ARG = "--remote-debugging-port=";
 

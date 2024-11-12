@@ -18,12 +18,12 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-val mainJar = "targetApp.jar"
+val mainJar = "app.jar"
 
 tasks.jar {
     archiveFileName.set(mainJar)
     manifest {
-        attributes["Main-Class"] = "TargetApp"
+        attributes["Main-Class"] = "App"
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from({
@@ -41,10 +41,10 @@ tasks.register<Exec>("buildApplication") {
         "jpackage",
         "--input", "./build/libs",
         "--main-jar", mainJar,
-        "--name", "TargetApp",
+        "--name", "App",
         "--app-version", version,
         "--type", "app-image",
-        "--main-class", "TargetApp",
+        "--main-class", "App",
         "--dest", "./build/application",
     )
 }

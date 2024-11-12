@@ -7,8 +7,6 @@ JxBrowser.
 Creating of these example projects is described in
 the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/integration/selenium.html).
 
-The tutorial is available on all supported platforms.
-
 ## Prerequisites
 
 The tutorial requires the `jpackage` tool available in `PATH`, so make sure that
@@ -30,17 +28,16 @@ the environment variable contains the `%JAVA_HOME%/bin` directory.
    ./gradlew launcher:downloadChromeDriver
    ```
 
-   > **_NOTE:_** Each version of ChromeDriver corresponds to the same version of
-   Chromium used in JxBrowser. So if you change the JxBrowser version in the
-   root [build.gradle.kts](../../build.gradle.kts) you need to update the
+   Each version of ChromeDriver corresponds to the Chromium version used in
+   JxBrowser. If you change the JxBrowser version
+   in [build.gradle.kts](../../build.gradle.kts) you need to update the
    `chromiumVersion` property [here](launcher/build.gradle.kts)
    before running the `downloadChromeDriver` task. Otherwise, Selenium WebDriver
-   will not be able to connect to Chromium. You can find the Chromium version of
-   the specific JxBrowser version in
-   the [release notes](https://teamdev.com/jxbrowser/release-notes/) of the
-   last, or in one of the previous version where Chromium has been updated.
+   will not be able to connect to Chromium. You can find which Chromium version
+   is used in the specific JxBrowser version in
+   the [release notes](https://teamdev.com/jxbrowser/release-notes/).
 2. [Insert your license key](https://teamdev.com/jxbrowser/docs/guides/introduction/licensing/#adding-the-license-to-a-project)
-   into [the test application](./target-app/src/main/java/TargetApp.java).
+   into [the test application](./target-app/src/main/java/App.java).
 3. In the [root](../..) directory, run the `buildApplication` task
    of the [target-app](target-app) module to create an executable file for the
    current platform that later will be run by Selenium WebDriver.

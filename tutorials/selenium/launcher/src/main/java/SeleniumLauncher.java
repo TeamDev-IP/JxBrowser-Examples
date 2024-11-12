@@ -31,9 +31,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
- * An application that configures Selenium WebDriver (ChromeDriver) to run on
- * the JxBrowser-based application binaries and get access to HTML content
- * loaded in JxBrowser.
+ * Configures Selenium WebDriver (ChromeDriver) to run the JxBrowser-based
+ * application and get access to the loaded web page.
  */
 public final class SeleniumLauncher {
 
@@ -68,11 +67,11 @@ public final class SeleniumLauncher {
                 "tutorials/selenium/target-app/build/application/";
         if (isMac()) {
             return applicationDirectory
-                    + "TargetApp.app/Contents/MacOS/TargetApp";
+                    + "App.app/Contents/MacOS/App";
         } else if (isWindows()) {
-            return applicationDirectory + "TargetApp/TargetApp.exe";
+            return applicationDirectory + "App/App.exe";
         } else if (isLinux()) {
-            return applicationDirectory + "TargetApp/bin/TargetApp";
+            return applicationDirectory + "App/bin/App";
         }
 
         throw new IllegalStateException("The platform is unsupported.");
