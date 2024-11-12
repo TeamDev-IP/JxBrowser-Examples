@@ -32,7 +32,7 @@ dependencies {
 // The Chromium version used in JxBrowser.
 val chromiumVersion = "130.0.6723.70"
 
-fun chromedriverPlatform(): String {
+fun chromeDriverPlatform(): String {
     fun isArm(): Boolean {
         val arch = System.getProperty("os.arch")
         return "aarch64" == arch || "arm" == arch
@@ -63,7 +63,7 @@ fun chromedriverPlatform(): String {
 }
 
 tasks.register("downloadChromeDriver") {
-    val chromeDriverPlatform = chromedriverPlatform()
+    val chromeDriverPlatform = chromeDriverPlatform()
     val downloadUrl =
         "https://storage.googleapis.com/chrome-for-testing-public/$chromiumVersion/$chromeDriverPlatform/chromedriver-$chromeDriverPlatform.zip"
     val resourcesDir = sourceSets["main"].resources.srcDirs.first()
