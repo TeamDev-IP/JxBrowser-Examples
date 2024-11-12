@@ -32,9 +32,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to create a simple Swing application with a web page loaded in
- * BrowserView, and connect JxBrowser's Chromium engine with Selenium via the remote debugging port
- * obtained from the command line.
+ * A simple Swing application with a web page loaded in {@code BrowserView} that
+ * will be run by Selenium WebDriver later on and debugged via the remote
+ * debugging port obtained from the command line.
  */
 public final class App {
 
@@ -49,7 +49,8 @@ public final class App {
         var builder = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
         // Configure Engine with the remote debugging port obtained from the command line args.
-        remoteDebuggingPortFromCommandLine(args).ifPresent(builder::remoteDebuggingPort);
+        remoteDebuggingPortFromCommandLine(args).ifPresent(
+                builder::remoteDebuggingPort);
         // #enddocfragment "forward-remote-debugging-port"
 
         // Creating Chromium engine.
@@ -80,11 +81,13 @@ public final class App {
     }
 
     // #docfragment "get-remote-debugging-port"
-    private static Optional<Integer> remoteDebuggingPortFromCommandLine(String[] args) {
+    private static Optional<Integer> remoteDebuggingPortFromCommandLine(
+            String[] args) {
         if (args.length > 0) {
             for (var arg : args) {
                 if (arg.startsWith(REMOTE_DEBUGGING_PORT_ARG)) {
-                    var port = arg.substring(REMOTE_DEBUGGING_PORT_ARG.length());
+                    var port = arg.substring(
+                            REMOTE_DEBUGGING_PORT_ARG.length());
                     return Optional.of(Integer.parseInt(port));
                 }
             }
