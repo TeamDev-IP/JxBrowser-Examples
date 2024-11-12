@@ -35,9 +35,10 @@ the environment variable contains the `%JAVA_HOME%/bin` directory.
    root [build.gradle.kts](../../build.gradle.kts) you need to update the
    `chromiumVersion` property [here](launcher/build.gradle.kts)
    before running the `downloadChromeDriver` task. Otherwise, Selenium WebDriver
-   will not be able to connect to Chromium. You can find a list of
-   Chromium-to-JxBrowser versions
-   [here](https://teamdev.com/jxbrowser/docs/guides/introduction/licensing/#chromium-open-source-components%E2%80%99-licenses)
+   will not be able to connect to Chromium. You can find the Chromium version of
+   the specific JxBrowser version in
+   the [release notes](https://teamdev.com/jxbrowser/release-notes/) of the
+   last, or in one of the previous version where Chromium has been updated.
 2. [Insert your license key](https://teamdev.com/jxbrowser/docs/guides/introduction/licensing/#adding-the-license-to-a-project)
    into [the test application](./target-app/src/main/java/TargetApp.java).
 3. In the [root](../..) directory, run the `buildApplication` task
@@ -48,6 +49,7 @@ the environment variable contains the `%JAVA_HOME%/bin` directory.
    ```bash
    gradlew target-app:clean target-app:buildApplication
    ```
+   
    **macOS/Linux:**
    ```bash
    ./gradlew target-app:clean target-app:buildApplication

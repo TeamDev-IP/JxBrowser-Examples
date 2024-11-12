@@ -74,44 +74,50 @@ tasks.register("downloadChromeDriver") {
     val chromeDriver = resourcesDir.resolve("chromedriver")
 
     doLast {
-        URL(downloadUrl).openStream().use { inputStream ->
-            Files.copy(
-                inputStream,
-                chromeDriverZip.toPath(),
-                StandardCopyOption.REPLACE_EXISTING
-            )
-            println("ChromeDriver downloaded to ${chromeDriverZip.absolutePath}")
-            ZipFile(chromeDriverZip).use { zip ->
-                zip.entries().asSequence().forEach { entry ->
-                    if (!entry.isDirectory) {
-                        val outputFile =
-                            File(resourcesDir, File(entry.name).name)
-                        zip.getInputStream(entry).use { input ->
-                            outputFile.outputStream().use { output ->
-                                input.copyTo(output)
+        try {
+            URL(downloadUrl).openStream().use { inputStream ->
+                Files.copy(
+                    inputStream,
+                    chromeDriverZip.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                )
+                println("ChromeDriver downloaded to ${chromeDriverZip.absolutePath}")
+                ZipFile(chromeDriverZip).use { zip ->
+                    zip.entries().asSequence().forEach { entry ->
+                        if (!entry.isDirectory) {
+                            val outputFile =
+                                File(resourcesDir, File(entry.name).name)
+                            zip.getInputStream(entry).use { input ->
+                                outputFile.outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
+                            val extension = outputFile.extension
+                            if (extension.isEmpty() &&
+                                !System.getProperty("os.name")
+                                    .startsWith("Windows")
+                            ) {
+                                Files.setPosixFilePermissions(
+                                    outputFile.toPath(),
+                                    EnumSet.of(
+                                        OWNER_EXECUTE,
+                                        OWNER_READ,
+                                        OWNER_WRITE,
+                                        GROUP_EXECUTE,
+                                        GROUP_READ,
+                                        GROUP_WRITE
+                                    )
+                                )
                             }
                         }
-                        val extension = outputFile.extension
-                        if (extension.isEmpty() &&
-                            !System.getProperty("os.name").startsWith("Windows")
-                        ) {
-                            Files.setPosixFilePermissions(
-                                outputFile.toPath(),
-                                EnumSet.of(
-                                    OWNER_EXECUTE,
-                                    OWNER_READ,
-                                    OWNER_WRITE,
-                                    GROUP_EXECUTE,
-                                    GROUP_READ,
-                                    GROUP_WRITE
-                                )
-                            )
-                        }
                     }
+                    println("ChromeDriver extracted to ${chromeDriver.absolutePath}")
                 }
-                println("ChromeDriver extracted to ${chromeDriver.absolutePath}")
             }
-            delete(chromeDriverZip)
+        } finally {
+            if (chromeDriverZip.exists()) {
+                delete(chromeDriverZip)
+            }
         }
     }
 }
