@@ -18,6 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.teamdev.jxbrowser.os.Environment.isLinux;
 import static com.teamdev.jxbrowser.os.Environment.isMac;
 import static com.teamdev.jxbrowser.os.Environment.isWindows;
 import static java.util.Objects.requireNonNull;
@@ -70,6 +71,8 @@ public final class SeleniumLauncher {
                     + "TargetApp.app/Contents/MacOS/TargetApp";
         } else if (isWindows()) {
             return applicationDirectory + "TargetApp/TargetApp.exe";
+        } else if (isLinux()) {
+            return applicationDirectory + "TargetApp/bin/TargetApp";
         }
 
         throw new IllegalStateException("The platform is unsupported.");
