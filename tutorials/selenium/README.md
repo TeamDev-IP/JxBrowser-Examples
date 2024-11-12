@@ -11,7 +11,7 @@ The tutorial is available on all supported platforms.
 
 ## Prerequisites
 
-The tutorial requires the `jpackage` tool available in `PATH` so make sure that
+The tutorial requires the `jpackage` tool available in `PATH`, so make sure that
 the environment variable contains the `%JAVA_HOME%/bin` directory.
 
 ## Building and Launching
