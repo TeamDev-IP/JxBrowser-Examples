@@ -2,7 +2,7 @@
 
 ## Workflow
 
-1. Once the change is assumed ready-to-merge, a pull request from the feature branch to the current stable branch is created.
+1. Once the change is assumed ready-to-merge, a pull request from the feature branch to the `master` branch is created.
 2. One of the team members is set to be a **reviewer**; the author of the pull request is set to the **assignee**.
 3. There can be several reviewers for a particular pull request. However, the assignee remains responsible for the changes made.
 4. During the review process, there may be several iterations of the author's changes and the reviewer's comments. Use GitHub "Request review" button to notify the reviewer. If the process lasts longer than one round, use "Re-request review" button.
