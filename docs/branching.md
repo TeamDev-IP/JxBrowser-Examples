@@ -2,10 +2,10 @@
 
 Here are our branching requirements:
 
-- `main` is always a production-ready branch;
+- `master` is always a production-ready branch;
 - every change to the codebase is made through a separate feature branch.
 
-Each feature branch should be based on `main` to make the merge commits clear.
+Each feature branch should be based on `master` to make the merge commits clear.
 
 Creation of a feature branch on top of another feature branch should be avoided.
 
