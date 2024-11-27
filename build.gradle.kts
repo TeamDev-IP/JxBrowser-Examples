@@ -31,7 +31,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
-val jxBrowserVersion by extra { "8.1.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.2.0" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 repositories {
@@ -72,33 +72,8 @@ subprojects {
     }
 
     dependencies {
-        // Cross-platform dependency.
-        implementation(jxbrowser.crossPlatform)
-
-        // For having only platform-dependent dependency:
-        //  1. Comment out the cross-platform dependency above.
-        //  2. Uncomment the dependency for your platform.
-
-        // Windows 32-bit
-        // implementation(jxbrowser.win32)
-
-        // Windows 64-bit
-        // implementation(jxbrowser.win64)
-
-        // Windows 64-bit ARM
-        // implementation(jxbrowser.winArm)
-
-        // macOS 64-bit
-        // implementation(jxbrowser.mac)
-
-        // macOS 64-bit ARM
-        // implementation(jxbrowser.macArm)
-
-        // Linux 64-bit
-        // implementation(jxbrowser.linux64)
-
-        // Linux 64-bit ARM
-        // implementation(jxbrowser.linuxArm)
+        // JxBrowser dependencies for the current platform.
+        implementation(jxbrowser.currentPlatform)
 
         // JxBrowser for JavaFX dependency.
         implementation(jxbrowser.javafx)
@@ -109,11 +84,11 @@ subprojects {
         // JxBrowser for Compose dependency.
         implementation(jxbrowser.compose)
 
-        // Dependency on Compose for the current platform.
-        implementation(compose.desktop.currentOs)
-
         // JxBrowser for SWT dependency.
         implementation(jxbrowser.swt)
+
+        // Dependency on Compose for the current platform.
+        implementation(compose.desktop.currentOs)
 
         // Dependency on an SWT for the current platform.
         implementation(Swt.toolkitDependency)
