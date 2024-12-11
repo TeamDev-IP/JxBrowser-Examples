@@ -60,7 +60,7 @@ public final class WebPageScreenshot {
                             "document.documentElement.offsetWidth, document.body.clientWidth, " +
                             "document.documentElement.clientWidth);");
 
-            // Resize browser to the obtained dimensions.
+            // Resize the browser to the obtained dimensions.
             browser.resize(pageWidth.intValue(), pageHeight.intValue());
 
             var bitmap = browser.bitmap();
