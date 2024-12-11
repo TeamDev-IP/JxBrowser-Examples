@@ -42,10 +42,10 @@ public final class WebPageScreenshot {
             // Load the required web page.
             browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
-            var frame = browser.mainFrame().orElseThrow();
-
             // Wait until the web page has been rendered completely.
             Thread.sleep(PAGE_RENDER_TIMEOUT_MS);
+
+            var frame = browser.mainFrame().orElseThrow();
 
             // Get the height of the whole web page,
             // including the invisible part.
