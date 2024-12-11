@@ -29,7 +29,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * This example demonstrates how to take a screenshot of the whole web page including the part that is not visible on the screen.
+ * This example demonstrates how to take a screenshot of the whole web page,
+ * including the part that is not visible on the screen.
  */
 public final class WebPageScreenshot {
 
