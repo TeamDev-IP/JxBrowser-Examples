@@ -69,7 +69,7 @@ public final class WebPageScreenshot {
             var image = BitmapImage.toToolkit(bitmap);
 
             // Save the image to a PNG file.
-            ImageIO.write(image, "PNG", new File("bitmap.png"));
+            ImageIO.write(image, "PNG", new File("html5test.teamdev.com.png"));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
