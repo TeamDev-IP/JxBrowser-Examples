@@ -38,15 +38,17 @@ public final class WebPageScreenshot {
     public static void main(String[] args) throws IOException {
         try (var engine = Engine.newInstance(OFF_SCREEN)) {
             var browser = engine.newBrowser();
-            var frame = browser.mainFrame().orElseThrow();
 
             // Load the required web page.
             browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
-            // Wait until the web page has been rendered completely.
-            Thread.sleep(PAGE_RENDER_TIMEOUT);
+            var frame = browser.mainFrame().orElseThrow();
 
-            // Get the height of the loaded page.
+            // Wait until the web page has been rendered completely.
+            Thread.sleep(PAGE_RENDER_TIMEOUT_MS);
+
+            // Get the height of the whole web page,
+            // including the invisible part.
             Double pageHeight = frame.executeJavaScript(
                     "Math.max(document.body.scrollHeight, " +
                             "document.documentElement.scrollHeight, document.body.offsetHeight, " +
@@ -63,6 +65,8 @@ public final class WebPageScreenshot {
             // Resize the browser to the obtained dimensions.
             browser.resize(pageWidth.intValue(), pageHeight.intValue());
 
+            // Obtain the bitmap of the currently loaded web page,
+            // including the invisible part.
             var bitmap = browser.bitmap();
 
             // Convert the bitmap to image.
