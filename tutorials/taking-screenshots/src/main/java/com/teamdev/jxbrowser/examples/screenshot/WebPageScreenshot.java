@@ -33,7 +33,7 @@ import javax.imageio.ImageIO;
  */
 public final class WebPageScreenshot {
 
-    private static final int PAGE_RENDER_TIMEOUT_MS = 200;
+    private static final int PAGE_RENDER_TIMEOUT_MS = 500;
 
     public static void main(String[] args) throws IOException {
         try (var engine = Engine.newInstance(OFF_SCREEN)) {
