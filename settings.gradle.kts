@@ -43,6 +43,7 @@ module("web-crawler", "./tutorials/web-crawler")
 module("media-player", "./tutorials/media-player")
 // JxBrowser logs redirection
 module("jul-logs-redirect", "./tutorials/jul-logs-redirect")
+module("html2png", "./tutorials/html2png")
 module("serve-from-directory", "./tutorials/serve-from-directory")
 module("js-java", "./tutorials/js-java")
 module("crx-extensions", "./tutorials/crx-extensions")
