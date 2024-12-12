@@ -18,9 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.teamdev.jxbrowser.examples.screenshot;
-
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+package com.teamdev.jxbrowser.examples.html2png;import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.graphics.BitmapImage;
@@ -32,7 +30,7 @@ import javax.imageio.ImageIO;
  * This example demonstrates how to take a screenshot of the whole web page,
  * including the part that is not visible on the screen.
  */
-public final class WebPageScreenshot {
+public final class Html2Png {
 
     private static final int PAGE_RENDER_TIMEOUT_MS = 500;
 
