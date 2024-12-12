@@ -41,8 +41,7 @@ public final class Html2Png {
             var browser = engine.newBrowser();
 
             // Load the required web page.
-            browser.navigation()
-                    .loadUrlAndWait("https://html5test.teamdev.com/");
+            browser.navigation().loadUrlAndWait("https://html5test.teamdev.com/");
 
             // Wait until the web page has been rendered completely.
             Thread.sleep(PAGE_RENDER_TIMEOUT_MS);
@@ -53,19 +52,15 @@ public final class Html2Png {
             // including the invisible part.
             Double pageHeight = frame.executeJavaScript(
                     "Math.max(document.body.scrollHeight, " +
-                            "document.documentElement.scrollHeight, document.body.offsetHeight, "
-                            +
-                            "document.documentElement.offsetHeight, document.body.clientHeight, "
-                            +
+                            "document.documentElement.scrollHeight, document.body.offsetHeight, " +
+                            "document.documentElement.offsetHeight, document.body.clientHeight, " +
                             "document.documentElement.clientHeight);");
 
             // Get the width of the loaded page.
             Double pageWidth = frame.executeJavaScript(
                     "Math.max(document.body.scrollWidth, " +
-                            "document.documentElement.scrollWidth, document.body.offsetWidth, "
-                            +
-                            "document.documentElement.offsetWidth, document.body.clientWidth, "
-                            +
+                            "document.documentElement.scrollWidth, document.body.offsetWidth, " +
+                            "document.documentElement.offsetWidth, document.body.clientWidth, " +
                             "document.documentElement.clientWidth);");
 
             // Resize the browser to the obtained dimensions.
