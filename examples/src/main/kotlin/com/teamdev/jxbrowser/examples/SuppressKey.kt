@@ -22,7 +22,7 @@ package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
-import com.teamdev.jxbrowser.browser.callback.input.PressKeyCallback
+import com.teamdev.jxbrowser.browser.callback.input.TypeKeyCallback
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.register
@@ -31,26 +31,26 @@ import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to suppress numbers typing
- * using [PressKeyCallback].
+ * using [TypeKeyCallback].
  *
  * For suppressing other keyboard events the following callbacks are used:
  *
+ * - `PressKeyCallback`
  * - `ReleaseKeyCallback`
- * - `TypeKeyCallback`
  */
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN)
     val browser = engine.newBrowser()
 
-    browser.register(PressKeyCallback { params ->
+    browser.register(TypeKeyCallback { params ->
         if (params.event().keyChar().isDigit()) {
-            PressKeyCallback.Response.suppress()
+            TypeKeyCallback.Response.suppress()
         } else {
-            PressKeyCallback.Response.proceed()
+            TypeKeyCallback.Response.proceed()
         }
     })
 
-    singleWindowApplication(title = "Suppress `KeyPressed` event") {
+    singleWindowApplication(title = "Suppress `KeyPress` event") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.mainFrame?.loadHtml("<textarea></textarea>")
