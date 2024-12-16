@@ -23,7 +23,7 @@ package com.teamdev.jxbrowser.examples;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static java.lang.Character.isDigit;
 
-import com.teamdev.jxbrowser.browser.callback.input.PressKeyCallback;
+import com.teamdev.jxbrowser.browser.callback.input.TypeKeyCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
@@ -34,12 +34,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to suppress numbers typing using {@code PressKeyCallback}.
+ * This example demonstrates how to suppress numbers typing using {@code TypeKeyCallback}.
  *
  * <p>For suppressing other keyboard events the following callbacks are used:
  * <ul>
+ * <li>{@code PressKeyCallback}</li>
  * <li>{@code ReleaseKeyCallback}</li>
- * <li>{@code TypeKeyCallback}</li>
  * </ul>
  */
 public final class SuppressKey {
@@ -48,11 +48,11 @@ public final class SuppressKey {
         var engine = Engine.newInstance(HARDWARE_ACCELERATED);
         var browser = engine.newBrowser();
 
-        browser.set(PressKeyCallback.class, params -> {
+        browser.set(TypeKeyCallback.class, params -> {
             if (isDigit(params.event().keyChar())) {
-                return PressKeyCallback.Response.suppress();
+                return TypeKeyCallback.Response.suppress();
             }
-            return PressKeyCallback.Response.proceed();
+            return TypeKeyCallback.Response.proceed();
         });
 
         SwingUtilities.invokeLater(() -> {
