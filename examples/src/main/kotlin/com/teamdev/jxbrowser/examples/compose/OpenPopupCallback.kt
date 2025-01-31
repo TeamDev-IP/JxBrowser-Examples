@@ -37,13 +37,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * This example demonstrates the default [OpenPopupCallback] implementation
+ * This example demonstrates the [OpenPopupCallback] implementation
  * for Compose UI toolkit.
  *
  * It creates and shows a new window with the embedded pop-up browser
  * each time [OpenPopupCallback] is invoked.
  */
-fun main() = singleWindowApplication(title = "Default `OpenPopupCallback`") {
+fun main() = singleWindowApplication(title = "OpenPopupCallback") {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
     val browser = remember { engine.newBrowser() }
 

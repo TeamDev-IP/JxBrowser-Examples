@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
  * steps to achieve this functionality.
  */
 fun main() = singleWindowApplication(
-    title = "Default `OpenExtensionPopupCallback`",
+    title = "OpenExtensionPopupCallback",
     state = WindowState(size = DpSize(1280.dp, 900.dp))
 ) {
     val engine = remember { Engine(RenderingMode.OFF_SCREEN) }
