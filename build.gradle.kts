@@ -23,7 +23,7 @@ plugins {
     kotlin("jvm") version "2.0.0"
 
     // Adds JxBrowser.
-    id("com.teamdev.jxbrowser") version "1.2.1"
+    id("com.teamdev.jxbrowser") version "2.0.0"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
