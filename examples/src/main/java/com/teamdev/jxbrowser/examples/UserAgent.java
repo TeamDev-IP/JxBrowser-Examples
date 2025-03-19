@@ -69,7 +69,7 @@ public final class UserAgent {
         browser.navigation().loadUrl("https://www.whatismybrowser.com/detect/what-is-my-user-agent/");
     }
 
-    private static void setUserAgentHints(Browser browser) {
+    private static void setUserAgentClientHints(Browser browser) {
         var data = UserAgentData.newBuilder()
                 .addBrand(UserAgentBrand.create("MyBrand", "1"))
                 .addBrand(UserAgentBrand.create("MyBrand2", "2"))
