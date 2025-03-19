@@ -33,7 +33,7 @@ import com.teamdev.jxbrowser.net.UserAgentData
 import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
- * This example demonstrates how to configure the [Engine] with a custom User-Agent string
+ * This example demonstrates how to configure the [Browser] with a custom User-Agent string
  * and override the User-Agent Client Hints.
  */
 fun main() {
