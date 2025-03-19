@@ -42,7 +42,7 @@ fun main() {
     }
 
     val browser = engine.newBrowser()
-    setUserAgentHints(browser)
+    setUserAgentClientHints(browser)
 
     singleWindowApplication(title = "Custom user agent") {
         BrowserView(browser)

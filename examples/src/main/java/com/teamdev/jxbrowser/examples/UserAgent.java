@@ -47,7 +47,7 @@ public final class UserAgent {
                         .userAgent("My User Agent String")
                         .build());
         var browser = engine.newBrowser();
-        setUserAgentHints(browser);
+        setUserAgentClientHints(browser);
 
         SwingUtilities.invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
