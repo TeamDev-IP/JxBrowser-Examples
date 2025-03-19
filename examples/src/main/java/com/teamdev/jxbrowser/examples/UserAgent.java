@@ -20,10 +20,13 @@
 
 package com.teamdev.jxbrowser.examples;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.net.UserAgentBrand;
+import com.teamdev.jxbrowser.net.UserAgentData;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -33,7 +36,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to configure the Engine with a custom user agent string.
+ * This example demonstrates how to configure the {@code Browser} with a custom User-Agent string
+ * and override the User-Agent Client Hints.
  */
 public final class UserAgent {
 
@@ -43,6 +47,7 @@ public final class UserAgent {
                         .userAgent("My User Agent String")
                         .build());
         var browser = engine.newBrowser();
+        setUserAgentClientHints(browser);
 
         SwingUtilities.invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
@@ -62,5 +67,22 @@ public final class UserAgent {
         });
 
         browser.navigation().loadUrl("https://www.whatismybrowser.com/detect/what-is-my-user-agent/");
+    }
+
+    private static void setUserAgentClientHints(Browser browser) {
+        var data = UserAgentData.newBuilder()
+                .addBrand(UserAgentBrand.create("MyBrand", "1"))
+                .addBrand(UserAgentBrand.create("MyBrand2", "2"))
+                .addFormFactor("MyFormFactor")
+                .fullVersion("1.0")
+                .platform("MyOS")
+                .platformVersion("1.0")
+                .architecture("x86")
+                .bitness("32")
+                .model("MyModel")
+                .mobile(true)
+                .wow64(true)
+                .build();
+        browser.userAgentData(data);
     }
 }
