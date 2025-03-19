@@ -33,8 +33,8 @@ import com.teamdev.jxbrowser.net.UserAgentData
 import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
- * This example demonstrates how to configure the [Engine] with a custom user agent string
- * and override the user agent hints.
+ * This example demonstrates how to configure the [Engine] with a custom User-Agent string
+ * and override the User-Agent Client Hints.
  */
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN) {
