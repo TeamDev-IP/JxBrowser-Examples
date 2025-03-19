@@ -52,7 +52,7 @@ fun main() {
     }
 }
 
-private fun setUserAgentHints(browser: Browser) {
+private fun setUserAgentClientHints(browser: Browser) {
     val data = UserAgentData.newBuilder()
         .addBrand(UserAgentBrand.create("MyBrand", "1"))
         .addBrand(UserAgentBrand.create("MyBrand2", "2"))
