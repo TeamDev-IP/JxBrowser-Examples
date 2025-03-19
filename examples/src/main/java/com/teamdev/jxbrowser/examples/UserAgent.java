@@ -36,8 +36,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to configure the {@code Engine} with a custom user agent string
- * and override the user agent hints.
+ * This example demonstrates how to configure the {@code Engine} with a custom User-Agent string
+ * and override the User-Agent Client Hints.
  */
 public final class UserAgent {
 
