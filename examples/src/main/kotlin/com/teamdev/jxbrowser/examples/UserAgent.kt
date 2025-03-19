@@ -22,15 +22,19 @@ package com.teamdev.jxbrowser.examples
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
+import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.engine.UserAgent
 import com.teamdev.jxbrowser.engine.Engine
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.net.UserAgentBrand
+import com.teamdev.jxbrowser.net.UserAgentData
 import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
- * This example demonstrates how to configure [Engine] with a custom user agent.
+ * This example demonstrates how to configure the [Engine] with a custom user agent string
+ * and override the user agent hints.
  */
 fun main() {
     val engine = Engine(RenderingMode.OFF_SCREEN) {
@@ -38,6 +42,7 @@ fun main() {
     }
 
     val browser = engine.newBrowser()
+    setUserAgentHints(browser)
 
     singleWindowApplication(title = "Custom user agent") {
         BrowserView(browser)
@@ -45,4 +50,21 @@ fun main() {
             browser.navigation.loadUrl("https://www.whatismybrowser.com/detect/what-is-my-user-agent/")
         }
     }
+}
+
+private fun setUserAgentHints(browser: Browser) {
+    val data = UserAgentData.newBuilder()
+        .addBrand(UserAgentBrand.create("MyBrand", "1"))
+        .addBrand(UserAgentBrand.create("MyBrand2", "2"))
+        .addFormFactor("MyFormFactor")
+        .fullVersion("1.0")
+        .platform("MyOS")
+        .platformVersion("1.0")
+        .architecture("x86")
+        .bitness("32")
+        .model("MyModel")
+        .mobile(true)
+        .wow64(true)
+        .build()
+    browser.userAgentData(data)
 }
