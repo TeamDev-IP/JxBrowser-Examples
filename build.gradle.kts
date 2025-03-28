@@ -31,7 +31,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
-val jxBrowserVersion by extra { "8.5.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.5.1" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 repositories {
