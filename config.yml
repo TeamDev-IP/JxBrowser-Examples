@@ -4,7 +4,8 @@
 # The GitHub usernames of the developers who will be requested to review the PR with the config changes.
 # The first developer in the list will also be assigned to the PR and responsible for merging it.
 reviewers:
-  - Dmytro-Fedoryshyn
+  - vladimir-ikryanov
+  - artem-trofimov
 
 # The list of configs, applied to this project.
 # The configs will be applied one-by-one in the specified order,
