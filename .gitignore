@@ -2,7 +2,6 @@
 *.iml
 .idea/libraries
 .idea/shelf
-.idea/*.*
 
 # Do not ignore code style settings.
 !/.idea/codeStyleSettings.xml
