@@ -1,15 +1,11 @@
 # This is a config file for automatically updating the project configuration
-# based on changes made in the https://github.com/TeamDev-IP/Configs.
+# based on changes made in the https://github.com/TeamDev-IP/Configs repository.
 
-# The GitHub usernames of the developers who will be requested to review the PR with the config changes.
-# The first developer in the list will also be assigned to the PR and responsible for merging it.
-reviewers:
-  - vladimir-ikryanov
-  - artem-trofimov
-
-# The list of configs, applied to this project.
-# The configs will be applied one-by-one in the specified order,
-# resulting in conflicting changes being overwritten by subsequent configs.
+# The list of configs applied to this project.
+# Order matters: later configs will overwrite conflicting changes made by earlier ones.
 configs:
-  - java-gradle
-  - java-open-source
+  - name: java
+  - name: open-source-copyright
+
+# The GitHub username of the developer who will be assigned to the PR and responsible for merging it.
+assignee: vladimir-ikryanov
