@@ -31,7 +31,7 @@ plugins {
     id("com.teamdev.jxbrowser") version "1.2.1"
 }
 
-val jxBrowserVersion by extra { "7.43.4" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "7.43.5" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 allprojects {
