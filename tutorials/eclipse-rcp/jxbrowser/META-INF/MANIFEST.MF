@@ -26,7 +26,6 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.cookie.internal.rpc,
  com.teamdev.jxbrowser.deps.com.google.protobuf,
  com.teamdev.jxbrowser.deps.com.google.protobuf.compiler,
- com.teamdev.jxbrowser.deps.io.spine.option,
  com.teamdev.jxbrowser.devtools,
  com.teamdev.jxbrowser.devtools.internal,
  com.teamdev.jxbrowser.dom,
@@ -54,7 +53,6 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.internal,
  com.teamdev.jxbrowser.internal.event,
  com.teamdev.jxbrowser.internal.licensing,
- com.teamdev.jxbrowser.internal.platform,
  com.teamdev.jxbrowser.internal.rpc,
  com.teamdev.jxbrowser.internal.rpc.event,
  com.teamdev.jxbrowser.internal.rpc.stream,
@@ -118,8 +116,7 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.zoom,
  com.teamdev.jxbrowser.zoom.event,
  com.teamdev.jxbrowser.zoom.internal,
- com.teamdev.jxbrowser.zoom.internal.rpc,
- com.teamdev.protobuf.option
+ com.teamdev.jxbrowser.zoom.internal.rpc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: jxbrowser
 Require-Bundle: org.eclipse.swt
