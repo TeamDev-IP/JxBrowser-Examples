@@ -97,7 +97,7 @@ public final class WebSocketDataInterceptor {
         SwingUtilities.invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
 
-            var frame = new JFrame("File Upload");
+            var frame = new JFrame("Web socket data interceptor");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
