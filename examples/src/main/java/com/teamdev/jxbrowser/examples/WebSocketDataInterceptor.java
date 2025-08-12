@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2025, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -31,10 +31,10 @@ import com.teamdev.jxbrowser.js.JsObject;
  * This example demonstrates how to intercept web socket data by using JS-Java
  * bridget capabilities.
  */
-public class WebSocketDataInterceptor {
+public final class WebSocketDataInterceptor {
     private static final String JAVA_SCRIPT = """
             var oldSocket = window.WebSocket;
-                window.WebSocket = function (url){
+            window.WebSocket = function (url) {
                     var socket = new oldSocket(url);
                     socket.onopen = () => {
                         window.websocketCallback.socketOpened(socket);
@@ -64,7 +64,7 @@ public class WebSocketDataInterceptor {
                 var frame = params.frame();
                 JsObject jsObject = frame.executeJavaScript("window");
                 if (jsObject != null) {
-                    jsObject.putProperty("websocketCallback", new WebSocketCallback());
+                    jsObject.putProperty("webSocketCallback", new WebSocketCallback());
                 }
                 frame.executeJavaScript(JAVA_SCRIPT);
                 return InjectJsCallback.Response.proceed();
@@ -75,9 +75,9 @@ public class WebSocketDataInterceptor {
     }
 
     /**
-     * A JS-accessible class used as web socket events listener in JS.
+     * A JS-accessible class used as a web socket event listener in JS.
      *
-     * <p>The class is marked with [JsAccessible] annotation to tell JavaScript
+     * <p>The class is marked with the {@code @JsAccessible} annotation to tell JavaScript
      * that all public methods of the injected object can be invoked from
      * the JavaScript side.
      *
