@@ -74,8 +74,8 @@ class WebSocketCallback {
     }
 
     @Suppress("unused") // To be called from JavaScript.
-    fun dataSend(socket: JsObject?, data: Any) {
-        println("WebSocketCallback.dataSend: $socket $data")
+    fun beforeSendData(socket: JsObject?, data: Any) {
+        println("WebSocketCallback.beforeSendData: $socket $data")
     }
 }
 
@@ -98,7 +98,7 @@ private const val JAVA_SCRIPT = ("var oldSocket = window.WebSocket;\n"
         + "        };\n"
         + "        this.close = (event)=> {socket.close();};\n"
         + "        this.send = (data) => {\n"
-        + "            window.websocketCallback.dataSend(socket,data);\n"
+        + "            window.websocketCallback.beforeSendData(socket,data);\n"
         + "            socket.send(data);\n"
         + "        };\n"
         + "    };")

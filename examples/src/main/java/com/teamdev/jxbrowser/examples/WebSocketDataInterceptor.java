@@ -52,7 +52,7 @@ public class WebSocketDataInterceptor {
                     };
                     this.close = (event)=> {socket.close();};
                     this.send = (data) => {
-                        window.websocketCallback.dataSend(socket,data);
+                        window.websocketCallback.beforeSendData(socket,data);
                         socket.send(data);
                     };
                 };""";
@@ -105,8 +105,8 @@ public class WebSocketDataInterceptor {
         }
 
         @SuppressWarnings("unused") // To be called from JavaScript.
-        public void dataSend(JsObject socket, Object data) {
-            System.out.println("WebSocketCallback.dataSend: " + data);
+        public void beforeSendData(JsObject socket, Object data) {
+            System.out.println("WebSocketCallback.beforeSendData: " + data);
         }
     }
 }
