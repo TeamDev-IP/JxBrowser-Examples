@@ -20,12 +20,20 @@
 
 package com.teamdev.jxbrowser.examples;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.js.JsAccessible;
 import com.teamdev.jxbrowser.js.JsObject;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.URL;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 /**
  * This example demonstrates how to intercept web socket data by using JS-Java
@@ -38,43 +46,72 @@ public final class WebSocketDataInterceptor {
             window.WebSocket = function (url) {
                     var socket = new oldSocket(url);
                     socket.onopen = () => {
-                        window.websocketCallback.socketOpened(socket);
+                        window.webSocketCallback.socketOpened(socket);
                         this.onopen();
                     };
                     socket.onmessage = (message) => {
-                        window.websocketCallback.messageReceived(socket,message.data);
+                        window.webSocketCallback.messageReceived(socket,message.data);
                         this.onmessage(message);
                     };
                     var onclose = socket.onclose;
                     socket.onclose = (closeEvent) => {
                         this.onclose();
-                        window.websocketCallback.socketClosed(closeEvent);
+                        window.webSocketCallback.socketClosed(closeEvent);
                         this.close(closeEvent);
                     };
-                    this.close = (event)=> {socket.close();};
+                    this.close = (event) => {
+                        window.webSocketCallback.socketClosed(event);
+                        socket.close();
+                    };
                     this.send = (data) => {
-                        window.websocketCallback.beforeSendData(socket,data);
+                        window.webSocketCallback.beforeSendData(socket,data);
                         socket.send(data);
                     };
                 };""";
 
-    public static void main(String[] args) {
-        try (var engine = Engine.newInstance(OFF_SCREEN)) {
-            var browser = engine.newBrowser();
-            browser.set(InjectJsCallback.class, params -> {
-                var frame = params.frame();
-                JsObject jsObject = frame.executeJavaScript("window");
-                if (jsObject != null) {
-                    jsObject.putProperty("webSocketCallback",
-                            new WebSocketCallback());
-                }
-                frame.executeJavaScript(JAVA_SCRIPT);
-                return InjectJsCallback.Response.proceed();
-            });
-
-            browser.navigation().loadUrlAndWait(
-                    "https://www.teamdev.com/jxbrowser#features");
+    private static String getUrl() {
+        ClassLoader classLoader = WebSocketDataInterceptor.class.getClassLoader();
+        if (classLoader != null) {
+            URL resource = classLoader.getResource("echo.html");
+            if (resource != null) {
+                return resource.toString();
+            }
         }
+        throw new IllegalArgumentException("Resource not found: echo.html");
+    }
+
+    public static void main(String[] args) {
+        var engine = Engine.newInstance(HARDWARE_ACCELERATED);
+        var browser = engine.newBrowser();
+        browser.set(InjectJsCallback.class, params -> {
+            var frame = params.frame();
+            JsObject jsObject = frame.executeJavaScript("window");
+            if (jsObject != null) {
+                jsObject.putProperty("webSocketCallback",
+                        new WebSocketCallback());
+            }
+            frame.executeJavaScript(JAVA_SCRIPT);
+            return InjectJsCallback.Response.proceed();
+        });
+
+        SwingUtilities.invokeLater(() -> {
+            var view = BrowserView.newInstance(browser);
+
+            var frame = new JFrame("File Upload");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    engine.close();
+                }
+            });
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.add(view, BorderLayout.CENTER);
+            frame.setSize(700, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+
+        browser.navigation().loadUrlAndWait(getUrl());
     }
 
     /**
@@ -88,7 +125,7 @@ public final class WebSocketDataInterceptor {
      * injected into JavaScript.
      */
     @JsAccessible
-    private static class WebSocketCallback {
+    public final static class WebSocketCallback {
 
         @SuppressWarnings("unused") // To be called from JavaScript.
         public void socketClosed(JsObject closeEvent) {

@@ -19,12 +19,16 @@
  */
 package com.teamdev.jxbrowser.examples
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.InjectJsCallback
 import com.teamdev.jxbrowser.dsl.Engine
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.js.JsAccessible
 import com.teamdev.jxbrowser.js.JsObject
+import com.teamdev.jxbrowser.view.compose.BrowserView
 
 /**
  * This example demonstrates how to intercept web socket data by using JS-Kotlin
@@ -36,13 +40,25 @@ fun main() {
     browser.register(InjectJsCallback { params ->
         val frame = params.frame()
         val jsWindow = frame.executeJavaScript<JsObject>("window")!!
-        jsWindow.putProperty("websocketCallback", WebSocketCallback())
+        jsWindow.putProperty("webSocketCallback", WebSocketCallback())
         frame.executeJavaScript<Any>(JAVA_SCRIPT)
         InjectJsCallback.Response.proceed()
     })
-    browser.navigation()
-        .loadUrlAndWait("https://www.teamdev.com/jxbrowser#features")
-    engine.close()
+    singleWindowApplication(title = "Print from JavaScript") {
+        BrowserView(browser)
+        LaunchedEffect(Unit) {
+            browser.navigation.loadUrlAndWait(getUrl())
+        }
+    }
+}
+
+private fun getUrl(): String {
+    val classLoader = WebSocketDataInterceptor::class.java.classLoader
+    val resource = classLoader.getResource("echo.html")
+    if (resource != null) {
+        return resource.toString()
+    }
+    throw IllegalArgumentException("Resource not found: echo.html")
 }
 
 /**
@@ -79,26 +95,31 @@ class WebSocketCallback {
     }
 }
 
-private const val JAVA_SCRIPT = ("var oldSocket = window.WebSocket;\n"
-        + "    window.WebSocket = function (url){\n"
-        + "        var socket = new oldSocket(url);\n"
-        + "        socket.onopen = () => {\n"
-        + "            window.websocketCallback.socketOpened(socket);\n"
-        + "            this.onopen();\n"
-        + "        };\n"
-        + "        socket.onmessage = (message) => {\n"
-        + "            window.websocketCallback.messageReceived(socket,message.data);\n"
-        + "            this.onmessage(message);\n"
-        + "        };\n"
-        + "        var onclose = socket.onclose;\n"
-        + "        socket.onclose = (closeEvent) => {\n"
-        + "            this.onclose();\n"
-        + "            window.websocketCallback.socketClosed(closeEvent);\n"
-        + "            this.close(closeEvent);\n"
-        + "        };\n"
-        + "        this.close = (event)=> {socket.close();};\n"
-        + "        this.send = (data) => {\n"
-        + "            window.websocketCallback.beforeSendData(socket,data);\n"
-        + "            socket.send(data);\n"
-        + "        };\n"
-        + "    };")
+private val JAVA_SCRIPT = """
+    var oldSocket = window.WebSocket;
+    window.WebSocket = function (url) {
+            var socket = new oldSocket(url);
+            socket.onopen = () => {
+                window.webSocketCallback.socketOpened(socket);
+                this.onopen();
+            };
+            socket.onmessage = (message) => {
+                window.webSocketCallback.messageReceived(socket,message.data);
+                this.onmessage(message);
+            };
+            var onclose = socket.onclose;
+            socket.onclose = (closeEvent) => {
+                this.onclose();
+                window.webSocketCallback.socketClosed(closeEvent);
+                this.close(closeEvent);
+            };
+            this.close = (event) => {
+                window.webSocketCallback.socketClosed(event);
+                socket.close();
+            };
+            this.send = (data) => {
+                window.webSocketCallback.beforeSendData(socket,data);
+                socket.send(data);
+            };
+        };
+""".trimIndent()
