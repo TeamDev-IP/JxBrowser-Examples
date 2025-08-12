@@ -26,30 +26,6 @@ import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.js.JsAccessible
 import com.teamdev.jxbrowser.js.JsObject
 
-private const val JAVA_SCRIPT = ("var oldSocket = window.WebSocket;\n"
-            + "    window.WebSocket = function (url){\n"
-            + "        var socket = new oldSocket(url);\n"
-            + "        socket.onopen = () => {\n"
-            + "            window.websocketCallback.socketOpened(socket);\n"
-            + "            this.onopen();\n"
-            + "        };\n"
-            + "        socket.onmessage = (message) => {\n"
-            + "            window.websocketCallback.messageReceived(socket,message.data);\n"
-            + "            this.onmessage(message);\n"
-            + "        };\n"
-            + "        var onclose = socket.onclose;\n"
-            + "        socket.onclose = (closeEvent) => {\n"
-            + "            this.onclose();\n"
-            + "            window.websocketCallback.socketClosed(closeEvent);\n"
-            + "            this.close(closeEvent);\n"
-            + "        };\n"
-            + "        this.close = (event)=> {socket.close();};\n"
-            + "        this.send = (data) => {\n"
-            + "            window.websocketCallback.dataSend(socket,data);\n"
-            + "            socket.send(data);\n"
-            + "        };\n"
-            + "    };")
-
 /**
  * This example demonstrates how to intercept web socket data by using JS-Java
  * bridget capabilities.
@@ -102,3 +78,27 @@ class WebSocketCallback {
         println("WebSocketCallback.dataSend: $socket $data")
     }
 }
+
+private const val JAVA_SCRIPT = ("var oldSocket = window.WebSocket;\n"
+        + "    window.WebSocket = function (url){\n"
+        + "        var socket = new oldSocket(url);\n"
+        + "        socket.onopen = () => {\n"
+        + "            window.websocketCallback.socketOpened(socket);\n"
+        + "            this.onopen();\n"
+        + "        };\n"
+        + "        socket.onmessage = (message) => {\n"
+        + "            window.websocketCallback.messageReceived(socket,message.data);\n"
+        + "            this.onmessage(message);\n"
+        + "        };\n"
+        + "        var onclose = socket.onclose;\n"
+        + "        socket.onclose = (closeEvent) => {\n"
+        + "            this.onclose();\n"
+        + "            window.websocketCallback.socketClosed(closeEvent);\n"
+        + "            this.close(closeEvent);\n"
+        + "        };\n"
+        + "        this.close = (event)=> {socket.close();};\n"
+        + "        this.send = (data) => {\n"
+        + "            window.websocketCallback.dataSend(socket,data);\n"
+        + "            socket.send(data);\n"
+        + "        };\n"
+        + "    };")
