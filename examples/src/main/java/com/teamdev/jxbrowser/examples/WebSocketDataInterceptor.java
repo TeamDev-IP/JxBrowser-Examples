@@ -64,11 +64,8 @@ public class WebSocketDataInterceptor {
                 var frame = params.frame();
                 JsObject jsObject = frame.executeJavaScript("window");
                 if (jsObject != null) {
-                    // Inject Java object into JavaScript and associate it
-                    // with the "window.java" JavaScript property.
                     jsObject.putProperty("websocketCallback", new WebSocketCallback());
                 }
-                // Call the public method of the injected Java object from JS.
                 frame.executeJavaScript(JAVA_SCRIPT);
                 return InjectJsCallback.Response.proceed();
             });
