@@ -33,17 +33,15 @@ To run the examples please follow the instruction below:
  
 ## What's Next
 
-- Learn about JxBrowser [architecture](https://jxbrowser-support.teamdev.com/docs/guides/introduction/architecture.html).
-- Take a look at JxBrowser [features](https://jxbrowser-support.teamdev.com/docs/guides/engine.html).
-- Explore the JxBrowser [API](https://jxbrowser-support.teamdev.com/docs/reference/).
-
+- Learn about JxBrowser [architecture](https://teamdev.com/jxbrowser/docs/guides/introduction/architecture.html).
+- Take a look at JxBrowser [features](https://teamdev.com/jxbrowser/docs/guides/engine.html).
+- Explore the JxBrowser [API](https://teamdev.com/jxbrowser/docs/reference/).
 
 ## Terms and Privacy
 
 The information in this repository is provided on the following terms: https://www.teamdev.com/terms-and-privacy
 
-
-[requirements]: https://jxbrowser-support.teamdev.com/docs/guides/introduction/requirements.html
+[requirements]: https://teamdev.com/jxbrowser/docs/guides/introduction/requirements.html
 [idea]: https://www.jetbrains.com/help/idea/gradle.html#gradle_import
 [eclipse]: https://marketplace.eclipse.org/content/buildship-gradle-integration#group-details
 [netbeans]: https://netbeans.org/features/java/build-tools.html
