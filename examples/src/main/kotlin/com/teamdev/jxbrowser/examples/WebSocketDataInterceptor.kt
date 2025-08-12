@@ -44,7 +44,7 @@ fun main() {
         frame.executeJavaScript<Any>(JAVA_SCRIPT)
         InjectJsCallback.Response.proceed()
     })
-    singleWindowApplication(title = "Print from JavaScript") {
+    singleWindowApplication(title = "Web socket data interceptor") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
             browser.navigation.loadUrlAndWait(getUrl())
