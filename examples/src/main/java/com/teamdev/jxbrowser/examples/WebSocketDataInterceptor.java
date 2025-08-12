@@ -32,6 +32,7 @@ import com.teamdev.jxbrowser.js.JsObject;
  * bridget capabilities.
  */
 public final class WebSocketDataInterceptor {
+
     private static final String JAVA_SCRIPT = """
             var oldSocket = window.WebSocket;
             window.WebSocket = function (url) {
@@ -64,28 +65,31 @@ public final class WebSocketDataInterceptor {
                 var frame = params.frame();
                 JsObject jsObject = frame.executeJavaScript("window");
                 if (jsObject != null) {
-                    jsObject.putProperty("webSocketCallback", new WebSocketCallback());
+                    jsObject.putProperty("webSocketCallback",
+                            new WebSocketCallback());
                 }
                 frame.executeJavaScript(JAVA_SCRIPT);
                 return InjectJsCallback.Response.proceed();
             });
 
-            browser.navigation().loadUrlAndWait("https://www.teamdev.com/jxbrowser#features");
+            browser.navigation().loadUrlAndWait(
+                    "https://www.teamdev.com/jxbrowser#features");
         }
     }
 
     /**
      * A JS-accessible class used as a web socket event listener in JS.
      *
-     * <p>The class is marked with the {@code @JsAccessible} annotation to tell JavaScript
-     * that all public methods of the injected object can be invoked from
-     * the JavaScript side.
+     * <p>The class is marked with the {@code @JsAccessible} annotation to tell
+     * JavaScript that all public methods of the injected object can be invoked
+     * from the JavaScript side.
      *
-     * <p>Please note, only public classes and static nested classes can be injected
-     * into JavaScript.
+     * <p>Please note, only public classes and static nested classes can be
+     * injected into JavaScript.
      */
     @JsAccessible
     private static class WebSocketCallback {
+
         @SuppressWarnings("unused") // To be called from JavaScript.
         public void socketClosed(JsObject closeEvent) {
             System.out.println("WebSocketCallback.socketClosed");
