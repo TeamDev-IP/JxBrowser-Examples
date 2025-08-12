@@ -27,7 +27,7 @@ import com.teamdev.jxbrowser.js.JsAccessible
 import com.teamdev.jxbrowser.js.JsObject
 
 /**
- * This example demonstrates how to intercept web socket data by using JS-Java
+ * This example demonstrates how to intercept web socket data by using JS-Kotlin
  * bridget capabilities.
  */
 fun main() {
