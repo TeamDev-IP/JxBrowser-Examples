@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright 2025, TeamDev. All rights reserved.
+  ~  
+  ~  Redistribution and use in source and/or binary forms, with or without
+  ~  modification, must retain the above copyright notice and the following
+  ~  disclaimer.
+  ~  
+  ~  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  ~  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  ~  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  ~  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  ~  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  ~  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  ~  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  ~  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  ~  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  ~  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  ~  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+</head>
+<body>
+<script>
+  var exampleSocket;
+
+  const showElement = (e, ok) => e.style.display = 'block';
+  const hideElement = (e, ok) => e.style.display = 'none';
+  function connectSocket() {
+      var wsurl = document.getElementById("wsurl").value;
+      exampleSocket = new WebSocket(
+          wsurl
+      );
+      exampleSocket.onmessage = (event) => {
+          document.getElementById("consoleLog").innerText = event.data;
+      };
+      hideElement(document.getElementById("not-connected"));
+      showElement(document.getElementById("connected"));
+  }
+
+  function sendMessage() {
+      exampleSocket.send(document.getElementById("message").value);
+  }
+
+  function disconnectSocket() {
+      exampleSocket.close();
+      showElement(document.getElementById("not-connected"));
+      hideElement(document.getElementById("connected"));
+  }
+
+</script>
+<div class="px-4 py-5 sm:p-6">
+  <h3>Enter WebSocket URL and click "Connect"</h3>
+  <form>
+    <div id="not-connected">
+      <label for="wsurl"></label><input name="wsurl" id="wsurl" placeholder="wss://" value="wss://ws.postman-echo.com/raw">
+      <button type="button" id="connect" onclick="connectSocket()">Connect</button>
+    </div>
+    <div id="connected">
+      <label for="message"></label><input name="message" id="message" value="Hello world!">
+      <button type="button" id="send" onclick="sendMessage()">Send</button>
+      <button type="button" id="disconnect" onclick="disconnectSocket()">Disconnect</button>
+    </div>
+  </form>
+  <div>
+    <pre id="consoleLog" style="height: 350px; overflow-y: scroll;">- Connection log will appear here</pre>
+  </div>
+</div>
+<script>
+  hideElement(document.getElementById("connected"));
+</script>
+</body>
+</html>
