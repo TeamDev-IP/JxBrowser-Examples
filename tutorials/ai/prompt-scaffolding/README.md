@@ -1,20 +1,22 @@
-This setup allows you to scaffold your own Java desktop app with a React-based
-UI. 
+This setup allows you to scaffold a Java desktop app with JxBrowser for the
+webview, a React UI (with shadcn/ui), and Protobuf/gRPC for communication
+between Java and JavaScript.
 
 ## Prerequisites
 
 - Java 17 or higher
 - [Node.js](https://nodejs.org/en/download) 20.11.0 or higher
-- [Cursor](https://cursor.com/) 
-- Claude 4 Sonnet 
+- [Cursor](https://cursor.com/)
+- Claude 4 Sonnet
 
 ## How to use
 
-To try it yourself, download the [`docs`](docs) directory and put it into an
-empty project.
+To try it yourself, download the [`docs`](docs) and [`template`](template)
+directories and put them into an empty project.
 
-Then add the `architecture-overview.md` document to the context for a new
-project in Cursor, and ask the LLM to generate the app.
+Then add the [`architecture-overview.md`](docs/architecture-overview.md)
+document to the context for a new project in Cursor, and ask the LLM to
+generate the app.
 
 ![Paste the prompt in Cursor](img/paste-prompt-in-cursor.png)
 
@@ -46,7 +48,10 @@ Then, in another terminal, launch the application itself:
 ./gradlew run
 ```
 
-You should see the desktop app window with Shadcn (React) UI that allows viewing
+You should see the desktop app window with shadcn/ui (React) that allows viewing
 local files/folders and navigating through them:
 
 ![FileViewer](img/file-viewer.png)
+
+After the application successfully started, you can remove the [`docs`](docs)
+and [`template`](template) directories.
