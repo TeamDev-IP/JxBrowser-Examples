@@ -20,8 +20,6 @@ generate the app using the prompt below:
 
 ![Paste the prompt in Cursor](img/paste-prompt-in-cursor.png)
 
-Here’s the prompt to use:
-
 ```markdown
 Please read and analyse the architecture in architecture-overview.md we've used
 in our previous project, and let's create a new demo project from it.
