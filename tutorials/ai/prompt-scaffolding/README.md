@@ -14,9 +14,9 @@ between Java and JavaScript.
 To try it yourself, download the [`docs`](docs) and [`template`](template)
 directories and put them into an empty project.
 
-Then add the [`architecture-overview.md`](docs/architecture-overview.md)
+Add the [`architecture-overview.md`](docs/architecture-overview.md)
 document to the context for a new project in Cursor, and ask the LLM to
-generate the app.
+generate the app using the prompt below:
 
 ![Paste the prompt in Cursor](img/paste-prompt-in-cursor.png)
 
