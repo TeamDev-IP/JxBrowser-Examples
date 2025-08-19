@@ -1,7 +1,14 @@
 This setup allows you to scaffold your own Java desktop app with a React-based
 UI. 
 
-**Important:** it requires the Cursor and Claude 4 Sonnet to work. 
+## Prerequisites
+
+- Java 17 or higher
+- [Node.js](https://nodejs.org/en/download) 20.11.0 or higher
+- [Cursor](https://cursor.com/) 
+- Claude 4 Sonnet 
+
+## How to use
 
 To try it yourself, download the [`docs`](docs) directory and put it into an
 empty project.
@@ -22,6 +29,8 @@ filesystem viewer. The front-end part will be responsible for displaying the
 file system structure, like folders and files. The backend part will access the
 Java filesystem API and provide the data to the front-end.
 ```
+
+## How to run
 
 When all the project files are generated, you can start the app by first running
 the Vite dev server:

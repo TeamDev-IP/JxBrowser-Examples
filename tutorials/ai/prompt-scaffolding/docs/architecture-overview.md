@@ -1112,10 +1112,11 @@ implementation("javax.annotation:javax.annotation-api:1.3.2")
     "@bufbuild/protoc-gen-es": "2.2.1"
   }
 }
+```
 
 ## Gradle Build Configuration
 
-The `docs/demo-sketch` directory contains a minimal Gradle setup that serves as a 
+The [template](../template) directory contains a minimal Gradle setup that serves as a 
 foundation for creating demos and examples. This directory is specifically designed to 
 help LLMs (Language Learning Models) and developers quickly bootstrap new Gradle 
 projects.
@@ -1127,7 +1128,7 @@ projects.
 
 **Structure:**
 ```
-docs/demo-sketch/
+../template/
 ├── gradlew                           # Gradle wrapper script (Unix/macOS)
 ├── gradlew.bat                       # Gradle wrapper script (Windows)
 ├── settings.gradle.kts               # Basic Gradle settings
@@ -1138,7 +1139,7 @@ docs/demo-sketch/
 
 **Usage:**
 ```bash
-cd docs/demo-sketch
+cd ../template
 ./gradlew --version  # Verify Gradle installation
 ./gradlew tasks      # List available tasks (when build.gradle.kts is added)
 ```
