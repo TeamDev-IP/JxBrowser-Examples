@@ -11,7 +11,7 @@ between Java and JavaScript.
 
 ## How to use
 
-To try it yourself, download the [`docs`](docs) and [`template`](template)
+Download the [`docs`](docs) and [`template`](template)
 directories and put them into an empty project.
 
 Add the [`architecture-overview.md`](docs/architecture-overview.md)
