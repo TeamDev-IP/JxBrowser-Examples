@@ -42,7 +42,8 @@ public class SamplePart {
 
     @PostConstruct
     public void createComposite(Composite parent) {
-        Logger.level(Level.DEBUG);
+        // Uncomment to enable debug logging:
+        // Logger.level(Level.DEBUG);
         parent.setLayout(new GridLayout(1, false));
         System.setProperty("jxbrowser.license.key", "<the license key>");
         Engine engine = Engine.newInstance(
