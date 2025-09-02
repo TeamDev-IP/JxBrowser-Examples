@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: jxbrowser.linux.gtk.x86_64
+Bundle-SymbolicName: jxbrowser.linux.gtk.x86_64;singleton:=true
+Bundle-Version: 8.11.0.qualifier
+Fragment-Host: jxbrowser;bundle-version="8.11.0"
+Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))
+Automatic-Module-Name: jxbrowser.linux.gtk.x86_64
+Bundle-ClassPath: jxbrowser-linux64.jar,
+ .
+Bundle-RequiredExecutionEnvironment: JavaSE-17

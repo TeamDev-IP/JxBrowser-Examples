@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: jxbrowser.macosx.cocoa.aarch64
+Bundle-SymbolicName: jxbrowser.macosx.cocoa.aarch64;singleton:=true
+Bundle-Version: 8.11.0.qualifier
+Fragment-Host: jxbrowser;bundle-version="8.11.0"
+Eclipse-PlatformFilter: (& (osgi.os=macosx) (osgi.arch=aarch64))
+Automatic-Module-Name: jxbrowser.macosx.cocoa.aarch64
+Bundle-ClassPath: jxbrowser-mac-arm.jar,
+ .
+Bundle-RequiredExecutionEnvironment: JavaSE-17

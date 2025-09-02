@@ -11,7 +11,7 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-
 1. Build the project using Maven and Apache Tycho:
    
    ```bash
-   $ ./mvn clean verify
+   $ mvn clean verify
    ```
    
 2. Navigate to the `com.teamdev.jxbrowser.demo.product/target/products` directory:
