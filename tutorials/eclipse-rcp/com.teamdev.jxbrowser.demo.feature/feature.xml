@@ -1,112 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-  id="com.teamdev.jxbrowser.demo.feature"
-  label="com.teamdev.jxbrowser.demo.feature"
-  version="1.0.0.qualifier">
+      id="com.teamdev.jxbrowser.demo.feature"
+      label="com.teamdev.jxbrowser.demo.feature"
+      version="1.0.0.qualifier">
 
-  <includes
-    id="org.eclipse.e4.rcp"
-    version="0.0.0"/>
+   <includes
+         id="org.eclipse.e4.rcp"
+         version="0.0.0"/>
 
-  <includes
-    id="org.eclipse.emf.common"
-    version="0.0.0"/>
+   <includes
+         id="org.eclipse.emf.common"
+         version="0.0.0"/>
 
-  <includes
-    id="org.eclipse.emf.ecore"
-    version="0.0.0"/>
+   <includes
+         id="org.eclipse.emf.ecore"
+         version="0.0.0"/>
 
-  <includes
-    id="org.eclipse.equinox.executable"
-    version="0.0.0"/>
+   <includes
+         id="org.eclipse.equinox.executable"
+         version="0.0.0"/>
 
-  <includes
-    id="org.eclipse.rcp"
-    version="0.0.0"/>
+   <includes
+         id="org.eclipse.rcp"
+         version="0.0.0"/>
 
-  <plugin
-    id="com.google.gson"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    unpack="false"/>
+   <plugin
+         id="org.osgi.service.prefs"
+         version="0.0.0"/>
 
-  <plugin
-    id="org.osgi.service.prefs"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    unpack="false"/>
+   <plugin
+         id="jxbrowser"
+         version="0.0.0"/>
 
-  <!-- JxBrowser plug-ins -->
-  <plugin
-    id="jxbrowser"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    unpack="false"/>
-  <plugin
-    id="jxbrowser.linux.gtk.aarch64"
-    os="linux"
-    ws="gtk"
-    arch="aarch64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
-  <plugin
-    id="jxbrowser.linux.gtk.x86_64"
-    os="linux"
-    ws="gtk"
-    arch="x86_64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
-  <plugin
-    id="jxbrowser.macosx.cocoa.aarch64"
-    os="macosx"
-    ws="cocoa"
-    arch="aarch64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
+   <plugin
+         id="jxbrowser.linux.gtk.aarch64"
+         os="linux"
+         ws="gtk"
+         arch="aarch64"
+         version="0.0.0"/>
 
-  <plugin
-    id="jxbrowser.macosx.cocoa.x86_64"
-    os="macosx"
-    ws="cocoa"
-    arch="x86_64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
+   <plugin
+         id="jxbrowser.linux.gtk.x86_64"
+         os="linux"
+         ws="gtk"
+         arch="x86_64"
+         version="0.0.0"/>
 
-  <plugin
-    id="jxbrowser.win32.win32.aarch64"
-    os="win32"
-    ws="win32"
-    arch="aarch64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
+   <plugin
+         id="jxbrowser.macosx.cocoa.aarch64"
+         os="macosx"
+         ws="cocoa"
+         arch="aarch64"
+         version="0.0.0"/>
 
-  <plugin
-    id="jxbrowser.win32.win32.x86_64"
-    os="win32"
-    ws="win32"
-    arch="x86_64"
-    download-size="0"
-    install-size="0"
-    version="0.0.0"
-    fragment="true"
-    unpack="false"/>
+   <plugin
+         id="jxbrowser.macosx.cocoa.x86_64"
+         os="macosx"
+         ws="cocoa"
+         arch="x86_64"
+         version="0.0.0"/>
+
+   <plugin
+         id="jxbrowser.win32.win32.aarch64"
+         os="win32"
+         ws="win32"
+         arch="aarch64"
+         version="0.0.0"/>
+
+   <plugin
+         id="jxbrowser.win32.win32.x86_64"
+         os="win32"
+         ws="win32"
+         arch="x86_64"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.teamdev.jxbrowser.demo"
+         version="0.0.0"/>
 
 </feature>
