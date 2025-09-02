@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="com.teamdev.jxbrowser.demo.product" uid="com.teamdev.jxbrowser.demo.product" id="com.teamdev.jxbrowser.demo.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0" useFeatures="true" includeLaunchers="true" autoIncludeRequirements="true">
-
+<product name="com.teamdev.jxbrowser.demo.product" uid="com.teamdev.jxbrowser.demo.product" id="com.teamdev.jxbrowser.demo.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <configIni use="default">
    </configIni>
@@ -24,10 +23,12 @@
       </win>
    </launcher>
 
-
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1</windows>
    </vm>
+
+   <plugins>
+   </plugins>
 
    <features>
       <feature id="com.teamdev.jxbrowser.demo.feature" version="1.0.0.qualifier" installMode="root"/>
@@ -35,7 +36,6 @@
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
-      <feature id="org.eclipse.equinox.executable" installMode="root"/>
    </features>
 
    <configurations>
