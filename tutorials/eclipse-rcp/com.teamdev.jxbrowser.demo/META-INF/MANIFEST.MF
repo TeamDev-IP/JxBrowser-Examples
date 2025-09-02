@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: RCP Application
 Bundle-SymbolicName: com.teamdev.jxbrowser.demo;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: com.teamdev.jxbrowser.demo.Activator
 Require-Bundle: org.eclipse.swt,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.jface,
