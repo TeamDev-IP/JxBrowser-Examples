@@ -8,6 +8,8 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-
 
 ## Build and launch
 
+### Using Maven
+
 1. Build the project using Maven and Apache Tycho:
    
    ```bash
@@ -29,4 +31,11 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-
    ```
 3. Unpack the archive for your platform.
 4. Double-click the `eclipse[.exe]` file in the unpacked archive.
+
+### Using Eclipse IDE
+
+1. Download Eclipse IDE for RCP developers.
+2. Open this folder as a workspace.
+3. Import existing projects from the folder to the workspace.
+4. Run the `com.teamdev.jxbrowser.demo.product` run configuration.
 
