@@ -7,18 +7,26 @@ Creating of this example project is described in
 the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-application.html).
 
 ## Build and launch
-1. Copy necessary JxBrowser JAR files to the workspace:
+
+1. Build the project using Maven and Apache Tycho:
    
    ```bash
-   ./gradlew prepareEclipseExample
+   $ ./mvn clean verify
    ```
    
-2. Open this workspace in Eclipse.
-3. In **File -> Import** menu, choose **General -> Existing Projects Into Workspace**.
-4. In **Select root directory**, select this directory and import all found projects.
-5. Insert your license key into [com.example.e4.rcp/src/com/example/e4/rcp/parts/SamplePart.java]().
-6. In **Run** menu, choose **Run Configurations**.
-7. Open `com.example.e4.rcp.product` run configuration from **Eclipse Applications** group.
-8. In **Plug-ins** tab, click **Add Required Plug-ins** to make sure that all platform-specific SWT components
-are present in a classpath.
-9. Click **Run**.
+2. Navigate to the `com.teamdev.jxbrowser.demo.product/target/products` directory:
+
+   ```bash
+   $ cd com.teamdev.jxbrowser.demo.product/target/products
+   $ ls      
+   com.teamdev.jxbrowser.demo.product-win32.win32.x86_64.zip
+   com.teamdev.jxbrowser.demo.product-win32.win32.aarch64.zip
+   com.teamdev.jxbrowser.demo.product-linux.gtk.aarch64.tar.gz     
+   com.teamdev.jxbrowser.demo.product-linux.gtk.x86_64.tar.gz      
+   com.teamdev.jxbrowser.demo.product-macosx.cocoa.aarch64.tar.gz
+   com.teamdev.jxbrowser.demo.product-macosx.cocoa.x86_64.tar.gz
+
+   ```
+3. Unpack the archive for your platform.
+4. Double-click the `eclipse[.exe]` file in the unpacked archive.
+
