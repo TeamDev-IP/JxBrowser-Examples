@@ -57,7 +57,7 @@ fun main() {
 private fun Browser.loadHtmlAndWait(html: String) {
     val latch = CountDownLatch(1)
     navigation.subscribe<FrameLoadFinished> { latch.countDown() }
-    mainFrame?.loadHtml(html)
+    navigation.loadHtml(html)
     awaitUninterruptibly(latch)
 }
 
