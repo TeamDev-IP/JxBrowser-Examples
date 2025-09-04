@@ -64,10 +64,14 @@ public final class SpellCheckEvents {
                     System.out.println("Error start index: " + checkResult.location());
                     System.out.println("Error length: " + checkResult.length());
                 }));
-        browser.mainFrame().ifPresent(mainFrame -> {
-            mainFrame.loadHtml("<html><body>" +
-                    "<textarea autofocus rows='20' cols='30'>Smple text with mitake.</textarea>" +
-                    "</body></html>");
-        });
+        browser.navigation().loadHtml("""
+            <html>
+                <body>
+                    <textarea autofocus rows='20' cols='30'>
+                        Smple text with mitake.
+                    </textarea>
+                </body>
+            </html>
+        """);
     }
 }

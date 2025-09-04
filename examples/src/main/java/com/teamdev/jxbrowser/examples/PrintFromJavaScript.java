@@ -57,9 +57,13 @@ public final class PrintFromJavaScript {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            browser.mainFrame().ifPresent(mainFrame ->
-                    mainFrame.loadHtml("<html><body><a href='#' onclick='window.print();'>" +
-                            "Print</a></body></html>"));
+            browser.navigation().loadHtml("""
+                <html>
+                    <body>
+                        <a href="#" onclick="window.print();">Print</a>
+                    </body>
+                </html>
+            """);
         });
     }
 }

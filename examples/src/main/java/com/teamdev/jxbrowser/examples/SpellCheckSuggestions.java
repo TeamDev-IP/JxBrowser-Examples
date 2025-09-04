@@ -106,10 +106,15 @@ public final class SpellCheckSuggestions {
             var location = params.location();
             popupMenu.show(view, location.x(), location.y());
         });
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><textarea rows='20' cols='30'>" +
-                        "Smple text with mitake.</textarea></body></html>"));
-
+        browser.navigation().loadHtml("""
+            <html>
+                <body>
+                    <textarea rows='20' cols='30'>
+                        Smple text with mitake.
+                    </textarea>
+                </body>
+            </html>
+        """);
     }
 
     private static BrowserView view;
