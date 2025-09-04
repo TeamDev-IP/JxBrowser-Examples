@@ -57,7 +57,12 @@ public final class LoadHtml {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><h1>Hello there!</h1></body></html>"));
+        browser.navigation().loadHtml("""
+            <html>
+                <body>
+                    <h1>Hello there!</h1>
+                </body>
+            </html>
+        """);
     }
 }

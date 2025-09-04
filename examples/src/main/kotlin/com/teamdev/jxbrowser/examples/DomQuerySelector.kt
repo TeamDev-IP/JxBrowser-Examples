@@ -50,7 +50,7 @@ fun main() {
     singleWindowApplication(title = "DOM query selector") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.mainFrame?.loadHtml(HTML_PARAGRAPHS)
+            browser.navigation.loadHtml(HTML_PARAGRAPHS)
         }
     }
 }

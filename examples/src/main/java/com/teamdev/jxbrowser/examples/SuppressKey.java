@@ -72,6 +72,6 @@ public final class SuppressKey {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml("<textarea></textarea>"));
+        browser.navigation().loadHtml("<textarea></textarea>");
     }
 }

@@ -28,7 +28,6 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.dsl.ui.Point
@@ -87,7 +86,7 @@ private fun Browser.dispatchMouseEvent() {
 private fun Browser.loadHtmlAndWait() {
     val latch = CountDownLatch(1)
     navigation.subscribe<FrameLoadFinished> { latch.countDown() }
-    mainFrame?.loadHtml(ONCONTEXTMENU_CALLBACK)
+    navigation.loadHtml(ONCONTEXTMENU_CALLBACK)
     awaitUninterruptibly(latch)
 }
 

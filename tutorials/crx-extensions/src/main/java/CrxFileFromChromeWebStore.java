@@ -56,11 +56,9 @@ public final class CrxFileFromChromeWebStore {
             var target = Paths.get(name + ".crx");
             try {
                 Files.copy(source, target);
-                browser.mainFrame().ifPresent(frame -> {
-                    var message = "Find the CRX file at %s. You can close this window now."
-                            .formatted(target.toAbsolutePath());
-                    frame.loadHtml(message);
-                });
+                var message = "Find the CRX file at %s. You can close this window now."
+                        .formatted(target.toAbsolutePath());
+                browser.navigation().loadHtml(message);
                 getDesktop().open(target.toAbsolutePath().getParent().toFile());
             } catch (IOException e) {
                 throw new RuntimeException(e);

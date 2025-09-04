@@ -48,7 +48,7 @@ fun main() {
         select.options[2].select() // Selects "Opel".
     }
 
-    browser.mainFrame?.loadHtml(
+    browser.navigation.loadHtml(
         """
             <html lang="en">
             <body>
