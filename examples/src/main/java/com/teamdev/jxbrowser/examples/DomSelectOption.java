@@ -71,12 +71,11 @@ public final class DomSelectOption {
                             ((OptionElement) options[2]).select();
                             System.out.println(selectElement.innerHtml());
                         }));
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
+        browser.navigation().loadHtml("<html><body><select id='select-tag'>\n" +
                         "  <option value=\"volvo\">Volvo</option>\n" +
                         "  <option value=\"saab\">Saab</option>\n" +
                         "  <option value=\"opel\">Opel</option>\n" +
                         "  <option value=\"audi\">Audi</option>\n" +
-                        "</select></body></html>"));
+                        "</select></body></html>");
     }
 }

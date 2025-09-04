@@ -67,11 +67,10 @@ public final class DomForm {
                     element.findElementByName("lastName").ifPresent(lastName ->
                             lastName.putAttribute("value", "Doe"));
                 }));
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><form name=\"myForm\">" +
+        browser.navigation().loadHtml("<html><body><form name=\"myForm\">" +
                         "First name: <input type=\"text\" name=\"firstName\"/><br/>" +
                         "Last name: <input type=\"text\" name=\"lastName\"/><br/>" +
                         "<input type=\"button\" value=\"Save\"/>" +
-                        "</form></body></html>"));
+                        "</form></body></html>");
     }
 }
