@@ -83,8 +83,8 @@ public final class DispatchKeyEvents {
 
     private static void loadHtmlAndWait(Browser browser, String html) {
         CountDownLatch latch = new CountDownLatch(1);
-        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(html));
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
+        browser.navigation().loadHtml(html);
         awaitUninterruptibly(latch);
     }
 

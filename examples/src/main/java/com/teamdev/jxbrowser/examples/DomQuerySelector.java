@@ -64,11 +64,10 @@ public final class DomQuerySelector {
                 event.frame().document().flatMap(Document::documentElement).ifPresent(element ->
                         element.findElementsByCssSelector("p").forEach(paragraph ->
                                 System.out.println("innerHTML " + paragraph.innerHtml()))));
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><div id='root'>" +
+        browser.navigation().loadHtml("<html><body><div id='root'>" +
                         "<p>paragraph1</p>" +
                         "<p>paragraph2</p>" +
                         "<p>paragraph3</p>" +
-                        "</div></body></html>"));
+                        "</div></body></html>");
     }
 }

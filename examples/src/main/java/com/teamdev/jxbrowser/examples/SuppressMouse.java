@@ -75,8 +75,7 @@ public final class SuppressMouse {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<button onclick=\"clicked()\">click holding shift</button>" +
-                        "<script>function clicked() {alert('clicked');}</script>"));
+        browser.navigation().loadHtml("<button onclick=\"clicked()\">click holding shift</button>" +
+                        "<script>function clicked() {alert('clicked');}</script>");
     }
 }

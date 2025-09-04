@@ -93,7 +93,7 @@ public class DomKeyEvents {
     private static void loadHtmlAndWait(Browser browser) {
         CountDownLatch latch = new CountDownLatch(1);
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
-        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(HTML));
+        browser.navigation().loadHtml(HTML);
         awaitUninterruptibly(latch);
     }
 

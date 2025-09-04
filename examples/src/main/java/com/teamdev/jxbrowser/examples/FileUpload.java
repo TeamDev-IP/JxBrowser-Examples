@@ -65,8 +65,7 @@ public final class FileUpload {
         browser.set(OpenFileCallback.class, (params, tell) ->
                 tell.open(Paths.get("file.txt")));
 
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("Please specify a file, or a set of files:<br>\n" +
-                        "<input type='file' name='datafile' size='40'>"));
+        browser.navigation().loadHtml("Please specify a file, or a set of files:<br>\n" +
+                        "<input type='file' name='datafile' size='40'>");
     }
 }
