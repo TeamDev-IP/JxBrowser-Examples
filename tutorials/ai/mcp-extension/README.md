@@ -1,6 +1,7 @@
-# Chrome Extension ↔ MCP ↔ LLM
+# Chrome Extension ↔ Browser MCP ↔ LLM
 
-Automates JxBrowser using the [Browser MCP][browsermcp] Chrome extension and [Cursor][cursor].
+Automates JxBrowser using the [Browser MCP][browsermcp] Chrome extension
+and [Cursor][cursor].
 
 ## Prerequisites
 
@@ -21,14 +22,15 @@ Automates JxBrowser using the [Browser MCP][browsermcp] Chrome extension and [Cu
   "mcpServers": {
     "browsermcp": {
       "command": "npx",
-      "args": ["@browsermcp/mcp"]
+      "args": [
+        "@browsermcp/mcp"
+      ]
     }
   }
 }
 ```
 
-5. Save the config and ensure the **browsermcp** MCP server is enabled and running. You should see a green dot next to the MCP server name
-   in the **MCP Tools** section.
+5. Save the config and ensure the **browsermcp** MCP server is enabled.
 
 ## Run the application
 
@@ -44,15 +46,16 @@ From the project root, run the app with your license key:
 ./gradlew :mcp-extension:run -Djxbrowser.license.key="<your-license-key>"
 ```
 
-This launches a Java window with JxBrowser and loads the Browser MCP Chrome extension.
+This launches a Java window with JxBrowser and loads the Browser MCP Chrome
+extension.
 
 ## Start automating
 
 Open the AI chat in Cursor and try commands like:
 > "Open Google and search for TeamDev. Return the company’s phone number."
 
-Cursor will send structured requests to the MCP server, which controls JxBrowser via the installed Browser
-MCP Chrome extension.
+Cursor will send requests to the Browser MCP server, which controls JxBrowser
+via the installed Browser MCP Chrome extension.
 
 [browsermcp]: https://browsermcp.io/
 [cursor]: https://cursor.com/

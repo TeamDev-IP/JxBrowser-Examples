@@ -1,7 +1,8 @@
-# DevTools Protocol ↔ Playwright ↔ MCP ↔ LLM
+# DevTools Protocol ↔ Playwright MCP ↔ LLM
 
-Automates JxBrowser using the [Playwright MCP server][playwright-mcp], the Chrome DevTools Protocol,
-and an MCP host like [Cursor][cursor] or [Claude Desktop][claude].
+Automates JxBrowser using the [Playwright MCP server][playwright-mcp],
+the Chrome DevTools Protocol, and an MCP host like [Cursor][cursor] or
+[Claude Desktop][claude].
 
 ## Prerequisites
 
@@ -36,8 +37,7 @@ and an MCP host like [Cursor][cursor] or [Claude Desktop][claude].
 
 http://localhost:9222 must match the debugging URL used by JxBrowser.
 
-5. Save the config and ensure the **playwright** MCP server is enabled and running. You should see a green dot next to
-   the MCP server name in the **MCP Tools** section.
+5. Save the config and ensure the **playwright** MCP server is enabled.
 
 ### Claude Desktop
 
@@ -63,8 +63,7 @@ http://localhost:9222 must match the debugging URL used by JxBrowser.
 
 http://localhost:9222 must match the debugging URL used by JxBrowser.
 
-5. Save the configuration file and restart Claude Desktop. After restart, you’ll see the MCP server indicator in the
-   tools dropdown at the bottom-left of the conversation input box.
+5. Save the configuration file and restart Claude Desktop.
 
 ## Run the application
 
@@ -80,7 +79,8 @@ From the project root, run the app with your license key:
 ./gradlew :mcp-devtools:run -Djxbrowser.license.key="<your-license-key>" -Ddebugging.url=http://localhost:9222
 ```
 
-`-Ddebugging.url` must match the value in the MCP config. If omitted, it defaults to http://localhost:9222.
+`-Ddebugging.url` must match the value in the MCP config. If omitted, it
+defaults to http://localhost:9222.
 
 This launches a Java window with JxBrowser and enables remote debugging.
 
@@ -89,8 +89,8 @@ This launches a Java window with JxBrowser and enables remote debugging.
 Open the AI chat in Cursor or Claude Desktop and try commands like:
 > "Open Google and search for TeamDev. Return the company’s phone number."
 
-The MCP host will send structured requests to the Playwright MCP server, which controls JxBrowser via the DevTools
-Protocol.
+The MCP host will send requests to the Playwright MCP server, which controls
+JxBrowser via the DevTools Protocol.
 
 [playwright-mcp]: https://github.com/microsoft/playwright-mcp
 [cursor]: https://cursor.com/
