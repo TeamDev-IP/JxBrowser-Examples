@@ -39,6 +39,7 @@ import com.teamdev.jxbrowser.extensions.callback.InstallExtensionCallback
 import com.teamdev.jxbrowser.extensions.callback.OpenExtensionPopupCallback
 import com.teamdev.jxbrowser.extensions.event.ExtensionInstalled
 import com.teamdev.jxbrowser.view.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.dnd.DragAndDropOptions
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindow
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindowState
 import kotlinx.coroutines.CoroutineScope
@@ -134,6 +135,7 @@ fun SnapshotStateList<PopupWindowState>.addNewPopup(
 ) = add(
     PopupWindowState(
         browser = params.popupBrowser(),
+        dragAndDropOptions = mutableStateOf(DragAndDropOptions()),
         scope = scope,
         onClose = { remove(it) }
     )
