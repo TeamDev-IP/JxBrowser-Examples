@@ -31,6 +31,7 @@ import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.dnd.DragAndDropOptions
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindow
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindowState
 import kotlinx.coroutines.CoroutineScope
@@ -111,6 +112,7 @@ fun SnapshotStateList<PopupWindowState>.addNewPopup(
     PopupWindowState(
         browser = params.popupBrowser(),
         bounds = params.initialBounds(),
+        dragAndDropOptions = mutableStateOf(DragAndDropOptions()),
         scope = scope,
         onClose = { remove(it) }
     )
