@@ -34,7 +34,7 @@ import java.net.URI;
 
 /**
  * A base URL interceptor that serves content for a specific domain by
- * delegating  the actual content lookup to subclasses.
+ * delegating the actual content lookup to subclasses.
  *
  * <p>This interceptor:
  * <ul>

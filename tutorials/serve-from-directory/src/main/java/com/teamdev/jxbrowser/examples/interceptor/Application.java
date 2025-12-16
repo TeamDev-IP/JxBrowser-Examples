@@ -34,8 +34,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to serve files from the folder for a certain
- * domain.
+ * This example demonstrates how to serve files from the folder for
+ * a certain domain.
  */
 public final class Application {
 
