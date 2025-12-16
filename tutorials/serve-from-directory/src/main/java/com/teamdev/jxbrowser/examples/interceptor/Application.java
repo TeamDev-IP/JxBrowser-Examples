@@ -48,7 +48,6 @@ public final class Application {
                         .build();
         var engine = Engine.newInstance(options);
         var browser = engine.newBrowser();
-        browser.devTools().show();
 
         invokeLater(() -> {
             var view = BrowserView.newInstance(browser);
