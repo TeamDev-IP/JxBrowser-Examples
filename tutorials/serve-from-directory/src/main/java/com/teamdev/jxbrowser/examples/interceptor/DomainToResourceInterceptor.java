@@ -20,23 +20,17 @@
 
 package com.teamdev.jxbrowser.examples.interceptor;
 
-import static java.nio.file.Files.exists;
-import static java.nio.file.Files.isDirectory;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 /**
  * An interceptor that treats every URL under the given domain as a path to a
- * file on disk and loads it.
+ * resources in the classpath and loads it.
  *
  * <p>The interceptor is configured with the domain name and the content
- * directory. For every request, it takes the path component of the URL and
- * looks for it in the content directory. That means a request to
+ * root path. For every request, it takes the path component of the URL and
+ * looks for it in the classpath. That means a request to
  * {@code example.com/docs/index.html} will load {@code docs/index.html} file
- * from the content directory. The MIME type of the file is derived
+ * from the resources. The MIME type of the file is derived
  * automatically.
  *
  * <p>This interceptor responds with the following status codes:
@@ -51,31 +45,38 @@ import java.nio.file.Path;
  * <p>This interceptor considers only the path component of the URL request.
  * It ignores request parameters and headers.
  */
-public final class DomainToFolderInterceptor extends DomainContentInterceptor {
 
-    private final Path contentRoot;
+public final class DomainToResourceInterceptor extends
+        DomainContentInterceptor {
+
+    private final String resourceRoot;
 
     /**
      * Creates a URL interceptor for the given domain to load files from the
-     * given directory.
+     * given classpath root.
      *
-     * @param domain      a domain name to intercept
-     * @param contentRoot a path to the directory with files to load
+     * @param domain       a domain name to intercept
+     * @param resourceRoot a root path on the classpath to look up resources
+     *                     under
      */
-    public DomainToFolderInterceptor(String domain, Path contentRoot) {
+    public DomainToResourceInterceptor(String domain, String resourceRoot) {
         super(domain);
-        this.contentRoot = contentRoot.toAbsolutePath();
+        this.resourceRoot = resourceRoot;
     }
 
-    /**
-     * Resolves the requested path to a file and opens it.
-     */
-    @Override
-    protected InputStream openContent(String path) throws IOException {
-        var filePath = contentRoot.resolve(path);
-        if (exists(filePath) && !isDirectory(filePath)) {
-            return new FileInputStream(filePath.toFile());
+    protected InputStream openContent(String path) {
+        var resourcePath = toResourcePath(path);
+        return getClass().getClassLoader().getResourceAsStream(resourcePath);
+    }
+
+    private String toResourcePath(String uriPath) {
+        var path = uriPath.startsWith("/") ? uriPath.substring(1) : uriPath;
+        if (resourceRoot.isEmpty()) {
+            return path;
         }
-        return null;
+        if (resourceRoot.endsWith("/")) {
+            return resourceRoot + path;
+        }
+        return resourceRoot + "/" + path;
     }
 }
