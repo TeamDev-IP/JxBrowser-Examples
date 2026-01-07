@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -31,6 +31,7 @@ import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.dsl.removeCallback
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
+import com.teamdev.jxbrowser.view.compose.dnd.DragAndDropOptions
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindow
 import com.teamdev.jxbrowser.view.compose.popup.PopupWindowState
 import kotlinx.coroutines.CoroutineScope
@@ -111,6 +112,7 @@ fun SnapshotStateList<PopupWindowState>.addNewPopup(
     PopupWindowState(
         browser = params.popupBrowser(),
         bounds = params.initialBounds(),
+        dragAndDropOptions = mutableStateOf(DragAndDropOptions()),
         scope = scope,
         onClose = { remove(it) }
     )

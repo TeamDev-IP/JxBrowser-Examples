@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -94,7 +94,7 @@ public class DomMouseEvents {
     private static void loadHtmlAndWait(Browser browser) {
         var latch = new CountDownLatch(1);
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
-        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(HTML));
+        browser.navigation().loadHtml(HTML);
         awaitUninterruptibly(latch);
     }
 

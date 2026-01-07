@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -24,7 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.input.TypeKeyCallback
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
@@ -53,7 +53,7 @@ fun main() {
     singleWindowApplication(title = "Suppress `KeyPress` event") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.mainFrame?.loadHtml("<textarea></textarea>")
+            browser.navigation.loadHtml("<textarea></textarea>")
         }
     }
 }

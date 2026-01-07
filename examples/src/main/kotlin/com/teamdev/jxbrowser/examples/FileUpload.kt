@@ -1,5 +1,5 @@
 /*
- *  Copyright 2023, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -23,7 +23,7 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.callback.OpenFileCallback
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.register
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
@@ -42,7 +42,7 @@ fun main() {
         tell.open(Path("file.txt"))
     })
 
-    browser.mainFrame?.loadHtml(
+    browser.navigation.loadHtml(
         """
             Please specify a file, or a set of files:<br>
             <input type='file' name='datafile' size='40'>

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -21,26 +21,19 @@
 package com.teamdev.jxbrowser.examples.interceptor;
 
 import static com.teamdev.jxbrowser.logging.Logger.warn;
-import static java.lang.String.format;
+import static java.util.Locale.ROOT;
 
-import com.google.common.collect.ImmutableMap;
-import com.teamdev.jxbrowser.internal.Lazy;
-import com.teamdev.jxbrowser.net.MimeType;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 
 /**
  * A utility for working with MIME types.
  */
-public final class MimeTypes {
+final class MimeTypes {
 
-    private static final MimeType OCTET_STREAM = MimeType.of("application/octet-stream");
-    private static final Lazy<Map<String, MimeType>> extToMime = new Lazy<>(MimeTypes::createMap);
+    private static final String OCTET_STREAM = "application/octet-stream";
+    private static final String MIME_TYPES_FILE = "ext-to-mime.properties";
+    private static final Properties MIME_TYPES = MimeTypes.createMap();
 
     /**
      * Prevents instantiation of this utility class.
@@ -49,31 +42,30 @@ public final class MimeTypes {
     }
 
     /**
-     * Derives {@code MimeType} from the extension of the {@code file}.
+     * Derives {@code MimeType} from the extension of the {@code fileName}.
      *
-     * <p>If the file extension is not recognized, {@link #OCTET_STREAM} is returned.
+     * <p>If the file extension is not recognized, {@link #OCTET_STREAM} is
+     * returned.
      *
-     * @param file the path to the file
+     * @param fileName the file name
      */
-    public static MimeType mimeType(Path file) {
-        String fileName = file.getFileName().toString();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-        return extToMime.get().getOrDefault(extension.toLowerCase(Locale.ENGLISH), OCTET_STREAM);
+    static String mimeType(String fileName) {
+        var extension = fileName.substring(fileName.lastIndexOf(".") + 1)
+                .toLowerCase(ROOT);
+        var type = MIME_TYPES.getOrDefault(extension, OCTET_STREAM);
+        return type.toString();
     }
 
-    private static Map<String, MimeType> createMap() {
-        ImmutableMap.Builder<String, MimeType> mapBuilder = ImmutableMap.builder();
-        Properties properties = new Properties();
-        URL propertiesUrl = MimeTypes.class.getClassLoader().getResource("ext-to-mime.properties");
-        if (propertiesUrl != null) {
-            try (InputStream inputStream = propertiesUrl.openStream()) {
+    private static Properties createMap() {
+        var properties = new Properties();
+        var url = MimeTypes.class.getClassLoader().getResource(MIME_TYPES_FILE);
+        if (url != null) {
+            try (var inputStream = url.openStream()) {
                 properties.load(inputStream);
-                properties.forEach((key, value) -> mapBuilder.put(key.toString(),
-                        MimeType.of(value.toString())));
             } catch (IOException ignore) {
-                warn(format("Couldn't read the list of mime-types from: %s", propertiesUrl));
+                warn("Couldn't read the list of mime-types");
             }
         }
-        return mapBuilder.build();
+        return properties;
     }
 }

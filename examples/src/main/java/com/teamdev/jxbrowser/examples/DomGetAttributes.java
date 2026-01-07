@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -36,8 +36,14 @@ public final class DomGetAttributes {
         try (var engine = Engine.newInstance(OFF_SCREEN)) {
             var browser = engine.newBrowser();
 
-            browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(
-                    "<html><body><a href='#' id='link' title='link title'>Link</a></body></html>"));
+            browser.navigation().loadHtml("""
+                <html>
+                    <body>
+                        <a href='#' id='link' title='link title'>Link</a>
+                    </body>
+                </html>
+            """);
+
             browser.mainFrame()
                     .flatMap(Frame::document)
                     .flatMap(Document::documentElement)

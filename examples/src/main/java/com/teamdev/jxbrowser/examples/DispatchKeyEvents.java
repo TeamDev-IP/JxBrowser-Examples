@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -83,8 +83,8 @@ public final class DispatchKeyEvents {
 
     private static void loadHtmlAndWait(Browser browser, String html) {
         var latch = new CountDownLatch(1);
-        browser.mainFrame().ifPresent(mainFrame -> mainFrame.loadHtml(html));
         browser.navigation().on(FrameLoadFinished.class, event -> latch.countDown());
+        browser.navigation().loadHtml(html);
         awaitUninterruptibly(latch);
     }
 

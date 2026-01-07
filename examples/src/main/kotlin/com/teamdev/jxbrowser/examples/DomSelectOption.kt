@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -48,7 +48,7 @@ fun main() {
         select.options[2].select() // Selects "Opel".
     }
 
-    browser.mainFrame?.loadHtml(
+    browser.navigation.loadHtml(
         """
             <html lang="en">
             <body>

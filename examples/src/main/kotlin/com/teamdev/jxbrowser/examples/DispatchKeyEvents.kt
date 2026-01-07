@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -25,7 +25,6 @@ import androidx.compose.ui.window.singleWindowApplication
 import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
 import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
 import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.dsl.ui.event.KeyPressed
@@ -60,7 +59,7 @@ fun main() {
 private fun Browser.loadHtmlAndWait(html: String) {
     val latch = CountDownLatch(1)
     navigation.subscribe<FrameLoadFinished> { latch.countDown() }
-    mainFrame?.loadHtml(html)
+    navigation.loadHtml(html)
     awaitUninterruptibly(latch)
 }
 

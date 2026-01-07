@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -20,139 +20,62 @@
 
 package com.teamdev.jxbrowser.examples.interceptor;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.teamdev.jxbrowser.examples.interceptor.MimeTypes.mimeType;
-import static com.teamdev.jxbrowser.internal.string.StringPreconditions.checkNotNullEmptyOrBlank;
-import static com.teamdev.jxbrowser.logging.Logger.error;
-import static com.teamdev.jxbrowser.net.HttpStatus.INTERNAL_SERVER_ERROR;
-import static com.teamdev.jxbrowser.net.HttpStatus.NOT_FOUND;
-import static com.teamdev.jxbrowser.net.HttpStatus.OK;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.isDirectory;
 
-import com.teamdev.jxbrowser.net.HttpHeader;
-import com.teamdev.jxbrowser.net.HttpStatus;
-import com.teamdev.jxbrowser.net.UrlRequestJob;
-import com.teamdev.jxbrowser.net.callback.InterceptUrlRequestCallback;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 
 /**
- * An interceptor that treats every URL under the given domain as a path to the file on disk and
- * loads it.
+ * An interceptor that treats every URL under the given domain as a path to a
+ * file on disk and loads it.
  *
- * <p>The interceptor is configured with the domain name and the content directory. For every
- * request, it takes the path component of the URL and looks for it in the content directory. That
- * means a request to {@code example.com/docs/index.html} will load {@code docs/index.html} file
- * from the content directory. The mime type of the file is derived automatically.
+ * <p>The interceptor is configured with the domain name and the content
+ * directory. For every request, it takes the path component of the URL and
+ * looks for it in the content directory. That means a request to
+ * {@code example.com/docs/index.html} will load {@code docs/index.html} file
+ * from the content directory. The MIME type of the file is derived
+ * automatically.
  *
  * <p>This interceptor responds with the following status codes:
  *
  * <ul>
  *     <li><b>200 OK</b> - the file was found and read properly.
  *         In this case, the {@code Content-Type} header is sent.</li>
- *     <li><b>404 Not Found</b> - the file could not be found due to an invalid path.</li>
+ *     <li><b>404 Not Found</b> - the file could not be found.</li>
  *     <li><b>500 Internal Server Error</b> - couldn't read the file.</li>
  * </ul>
  *
- * <p>This interceptor considers only the path component of the URL request. It ignores request
- * parameters and headers.
- *
- * <p>Note: using this interceptor can reduce performance since it processes all incoming
- * traffic under the scheme.
+ * <p>This interceptor considers only the path component of the URL request.
+ * It ignores request parameters and headers.
  */
-public final class DomainToFolderInterceptor implements InterceptUrlRequestCallback {
+public final class DomainToFolderInterceptor extends DomainContentInterceptor {
 
-    private static final String CONTENT_TYPE = "Content-Type";
-
-    private final String domain;
     private final Path contentRoot;
 
-    private DomainToFolderInterceptor(String domain, Path contentRoot) {
-        this.domain = domain;
-        this.contentRoot = contentRoot;
-    }
-
     /**
-     * Creates a URL interceptor for the given domain to load files from the given directory.
+     * Creates a URL interceptor for the given domain to load files from the
+     * given directory.
      *
      * @param domain      a domain name to intercept
      * @param contentRoot a path to the directory with files to load
      */
-    public static DomainToFolderInterceptor create(String domain, Path contentRoot) {
-        checkNotNull(contentRoot);
-        checkNotNullEmptyOrBlank(domain);
-        return new DomainToFolderInterceptor(domain, contentRoot.toAbsolutePath());
+    public DomainToFolderInterceptor(String domain, Path contentRoot) {
+        super(domain);
+        this.contentRoot = contentRoot.toAbsolutePath();
     }
 
+    /**
+     * Resolves the requested path to a file and opens it.
+     */
     @Override
-    public Response on(Params params) {
-        URI uri = URI.create(params.urlRequest().url());
-        if (shouldNotBeIntercepted(uri)) {
-            return Response.proceed();
+    protected InputStream openContent(String path) throws IOException {
+        var filePath = contentRoot.resolve(path);
+        if (exists(filePath) && !isDirectory(filePath)) {
+            return new FileInputStream(filePath.toFile());
         }
-        Path filePath = getPathOnDisk(uri);
-        UrlRequestJob job;
-        if (fileExists(filePath)) {
-            HttpHeader contentType = getContentType(filePath);
-            job = createJob(params, OK, singletonList(contentType));
-            try {
-                readFile(filePath, job);
-            } catch (IOException e) {
-                error("Failed to read file {0}", e, filePath);
-                job = createJob(params, INTERNAL_SERVER_ERROR);
-            }
-        } else {
-            job = createJob(params, NOT_FOUND);
-        }
-        job.complete();
-        return Response.intercept(job);
-    }
-
-    private boolean shouldNotBeIntercepted(URI uri) {
-        return !uri.getHost().equals(domain);
-    }
-
-    private Path getPathOnDisk(URI uri) {
-        return Paths.get(contentRoot.toString(), uri.getPath());
-    }
-
-    private boolean fileExists(Path filePath) {
-        return Files.exists(filePath) && !Files.isDirectory(filePath);
-    }
-
-    private HttpHeader getContentType(Path file) {
-        return HttpHeader.of(CONTENT_TYPE, mimeType(file).value());
-    }
-
-    private UrlRequestJob createJob(Params params,
-            HttpStatus httpStatus,
-            List<HttpHeader> httpHeaders) {
-        UrlRequestJob.Options.Builder builder = UrlRequestJob.Options.newBuilder(httpStatus);
-        httpHeaders.forEach(builder::addHttpHeader);
-        return params.newUrlRequestJob(builder.build());
-    }
-
-    private UrlRequestJob createJob(Params params, HttpStatus httpStatus) {
-        return createJob(params, httpStatus, emptyList());
-    }
-
-    private void readFile(Path filePath, UrlRequestJob job) throws IOException {
-        try (FileInputStream stream = new FileInputStream(filePath.toFile())) {
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = stream.read(buffer)) > 0) {
-                if (bytesRead != buffer.length) {
-                    buffer = Arrays.copyOf(buffer, bytesRead);
-                }
-                job.write(buffer);
-            }
-        }
+        return null;
     }
 }

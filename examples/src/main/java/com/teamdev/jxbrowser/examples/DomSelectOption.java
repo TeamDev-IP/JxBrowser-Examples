@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -70,12 +70,17 @@ public final class DomSelectOption {
                             ((OptionElement) options[2]).select();
                             System.out.println(selectElement.innerHtml());
                         }));
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><select id='select-tag'>\n" +
-                        "  <option value=\"volvo\">Volvo</option>\n" +
-                        "  <option value=\"saab\">Saab</option>\n" +
-                        "  <option value=\"opel\">Opel</option>\n" +
-                        "  <option value=\"audi\">Audi</option>\n" +
-                        "</select></body></html>"));
+        browser.navigation().loadHtml("""
+            <html>
+                <body>
+                    <select id="select-tag">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="opel">Opel</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                </body>
+            </html>
+        """);
     }
 }

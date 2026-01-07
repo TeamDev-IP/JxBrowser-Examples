@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -63,11 +63,16 @@ public final class DomQuerySelector {
                 event.frame().document().flatMap(Document::documentElement).ifPresent(element ->
                         element.findElementsByCssSelector("p").forEach(paragraph ->
                                 System.out.println("innerHTML " + paragraph.innerHtml()))));
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<html><body><div id='root'>" +
-                        "<p>paragraph1</p>" +
-                        "<p>paragraph2</p>" +
-                        "<p>paragraph3</p>" +
-                        "</div></body></html>"));
+        browser.navigation().loadHtml("""
+            <html>
+                <body>
+                    <div id='root'>
+                        <p>paragraph1</p>
+                        <p>paragraph2</p>
+                        <p>paragraph3</p>
+                    </div>
+                </body>
+            </html>
+        """);
     }
 }

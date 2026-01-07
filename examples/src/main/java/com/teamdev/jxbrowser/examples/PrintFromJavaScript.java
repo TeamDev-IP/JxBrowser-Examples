@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -57,9 +57,13 @@ public final class PrintFromJavaScript {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            browser.mainFrame().ifPresent(mainFrame ->
-                    mainFrame.loadHtml("<html><body><a href='#' onclick='window.print();'>" +
-                            "Print</a></body></html>"));
+            browser.navigation().loadHtml("""
+                <html>
+                    <body>
+                        <a href="#" onclick="window.print();">Print</a>
+                    </body>
+                </html>
+            """);
         });
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -31,7 +31,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
 }
 
-val jxBrowserVersion by extra { "8.11.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "8.15.0" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 repositories {

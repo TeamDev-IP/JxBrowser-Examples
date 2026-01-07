@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -64,8 +64,9 @@ public final class FileUpload {
         browser.set(OpenFileCallback.class, (params, tell) ->
                 tell.open(Paths.get("file.txt")));
 
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("Please specify a file, or a set of files:<br>\n" +
-                        "<input type='file' name='datafile' size='40'>"));
+        browser.navigation().loadHtml("""
+            Please specify a file, or a set of files:<br/>
+            <input type='file' name='datafile' size='40' />
+        """);
     }
 }

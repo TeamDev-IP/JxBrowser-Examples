@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -23,7 +23,7 @@ package com.teamdev.jxbrowser.examples
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
 
@@ -37,7 +37,9 @@ fun main() {
     singleWindowApplication(title = "Load HTML") {
         BrowserView(browser)
         LaunchedEffect(Unit) {
-            browser.mainFrame?.loadHtml("<html><body><h1>Hello there!</h1></body></html>")
+            browser.navigation.loadHtml("""
+                <html><body><h1>Hello there!</h1></body></html>
+            """)
         }
     }
 }

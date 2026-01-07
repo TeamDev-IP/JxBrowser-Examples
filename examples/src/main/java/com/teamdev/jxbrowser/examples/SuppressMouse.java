@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -76,8 +76,15 @@ public final class SuppressMouse {
             frame.setVisible(true);
         });
 
-        browser.mainFrame().ifPresent(mainFrame ->
-                mainFrame.loadHtml("<button onclick=\"clicked()\">click holding shift</button>" +
-                        "<script>function clicked() {alert('clicked');}</script>"));
+        browser.navigation().loadHtml("""
+            <button onclick="clicked()">
+                Click holding shift
+            </button>
+            <script>
+                function clicked() {
+                    alert('clicked');
+                }
+            </script>
+        """);
     }
 }

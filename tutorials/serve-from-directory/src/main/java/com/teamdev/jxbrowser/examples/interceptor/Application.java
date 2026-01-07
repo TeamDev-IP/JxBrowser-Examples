@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -29,31 +29,30 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.net.Scheme;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to serve files from the folder for a certain domain.
+ * This example demonstrates how to serve files from the folder for
+ * a certain domain.
  */
 public final class Application {
 
     public static void main(String[] args) {
-        Path contentRoot = Paths.get("content-root").toAbsolutePath();
-        DomainToFolderInterceptor interceptor =
-                DomainToFolderInterceptor.create("mydomain.com", contentRoot);
-        EngineOptions options =
+        var interceptor = new DomainToFolderInterceptor("mydomain.com",
+                Paths.get("content-root"));
+        var options =
                 EngineOptions.newBuilder(HARDWARE_ACCELERATED)
-                        .addScheme(Scheme.HTTP, interceptor)
+                        .addScheme(Scheme.HTTPS, interceptor)
                         .build();
-        Engine engine = Engine.newInstance(options);
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(options);
+        var browser = engine.newBrowser();
 
         invokeLater(() -> {
-            BrowserView view = BrowserView.newInstance(browser);
+            var view = BrowserView.newInstance(browser);
 
-            JFrame frame = new JFrame("Serve Files from Folder");
+            var frame = new JFrame("Serve Files from Folder");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.add(view, BorderLayout.CENTER);
             frame.setSize(1280, 720);
@@ -61,6 +60,6 @@ public final class Application {
             frame.setVisible(true);
         });
 
-        browser.navigation().loadUrl("http://mydomain.com/index.html");
+        browser.navigation().loadUrl("https://mydomain.com/index.html");
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -27,7 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.window.singleWindowApplication
 import com.teamdev.jxbrowser.browser.event.SpellCheckCompleted
 import com.teamdev.jxbrowser.dsl.Engine
-import com.teamdev.jxbrowser.dsl.browser.mainFrame
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
 import com.teamdev.jxbrowser.view.compose.BrowserView
@@ -52,7 +52,7 @@ fun main() {
     singleWindowApplication(title = "Spell check events") {
         BrowserView(browser, Modifier.focusRequester(focus))
         LaunchedEffect(Unit) {
-            browser.mainFrame?.loadHtml(MISSPELLED_TEXT)
+            browser.navigation.loadHtml(MISSPELLED_TEXT)
             focus.requestFocus()
         }
     }

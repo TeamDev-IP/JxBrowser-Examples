@@ -1,5 +1,5 @@
 /*
- *  Copyright 2025, TeamDev. All rights reserved.
+ *  Copyright 2026, TeamDev. All rights reserved.
  *
  *  Redistribution and use in source and/or binary forms, with or without
  *  modification, must retain the above copyright notice and the following
@@ -20,12 +20,18 @@
 
 package com.teamdev.jxbrowser.examples
 
+import com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly
+import com.teamdev.jxbrowser.browser.Browser
 import com.teamdev.jxbrowser.dsl.Engine
 import com.teamdev.jxbrowser.dsl.browser.mainFrame
+import com.teamdev.jxbrowser.dsl.browser.navigation
 import com.teamdev.jxbrowser.dsl.dom.documentElement
 import com.teamdev.jxbrowser.dsl.dom.findById
 import com.teamdev.jxbrowser.dsl.frame.document
+import com.teamdev.jxbrowser.dsl.subscribe
 import com.teamdev.jxbrowser.engine.RenderingMode
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished
+import java.util.concurrent.CountDownLatch
 
 /**
  * This example demonstrates how to obtain the list of existing attributes
@@ -33,10 +39,17 @@ import com.teamdev.jxbrowser.engine.RenderingMode
  */
 fun main(): Unit = Engine(RenderingMode.OFF_SCREEN).use { engine ->
     val browser = engine.newBrowser()
-    val mainFrame = browser.mainFrame?.also { it.loadHtml(HTML_LINK) }
-    val document = mainFrame?.document?.documentElement
+    browser.loadHtmlAndWait(HTML_LINK)
+    val document = browser.mainFrame?.document?.documentElement
     val link = document?.findById("link")!!
     link.attributes().asMap().forEach(::println)
+}
+
+private fun Browser.loadHtmlAndWait(html: String) {
+    val latch = CountDownLatch(1)
+    navigation.subscribe<FrameLoadFinished> { latch.countDown() }
+    navigation.loadHtml(html)
+    awaitUninterruptibly(latch)
 }
 
 private val HTML_LINK = """
