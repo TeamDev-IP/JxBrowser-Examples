@@ -38,4 +38,3 @@ the [tutorial](https://jxbrowser-support.teamdev.com/docs/tutorials/eclipse/rcp-
 2. Open this folder as a workspace.
 3. Import existing projects from the folder to the workspace.
 4. Run the `com.teamdev.jxbrowser.demo.product` run configuration.
-
