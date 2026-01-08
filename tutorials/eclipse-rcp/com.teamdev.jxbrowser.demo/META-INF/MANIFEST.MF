@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RCP Application
+Bundle-SymbolicName: com.teamdev.jxbrowser.demo;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.jface,
+ org.eclipse.e4.ui.services,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.core.di,
+ org.eclipse.e4.ui.di,
+ org.eclipse.e4.core.contexts,
+ org.eclipse.core.runtime,
+ org.eclipse.e4.core.commands,
+ com.google.gson,
+ org.eclipse.core.databinding,
+ org.eclipse.jface.databinding,
+ org.eclipse.core.databinding.property,
+ jxbrowser
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: com.teamdev.jxbrowser.demo
+Import-Package: jakarta.annotation,
+ jakarta.inject
+Bundle-ActivationPolicy: lazy

@@ -33,7 +33,6 @@ include("examples")
 // DOM changes
 module("content-changes", "./tutorials/content-changes")
 module("docker", "./tutorials/docker")
-module("eclipse-rcp", "./tutorials/eclipse-rcp")
 // Selenium integration
 module("launcher", "./tutorials/selenium/launcher")
 module("target-app", "./tutorials/selenium/target-app")

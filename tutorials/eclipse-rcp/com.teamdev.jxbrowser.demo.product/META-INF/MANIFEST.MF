@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Product Plug-In
+Bundle-SymbolicName: com.teamdev.jxbrowser.demo.product
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: com.teamdev.jxbrowser.demo.product
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-17
