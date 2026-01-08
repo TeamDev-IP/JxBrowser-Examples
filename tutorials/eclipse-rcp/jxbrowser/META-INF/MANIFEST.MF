@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jxbrowser
 Bundle-SymbolicName: jxbrowser
-Bundle-Version: 8.11.0.qualifier
+Bundle-Version: 8.15.0.qualifier
 Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.annotation,
  com.teamdev.jxbrowser.browser,
