@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
@@ -6,29 +6,31 @@ ENV TZ=UTC
 RUN apt update
 
 # Install JDK.
-RUN apt install -y openjdk-8-jdk
+RUN apt install -y openjdk-17-jdk
 
 # Install Chromium's runtime dependencies.
 RUN apt install -y \
-    libasound2 \
+    ca-certificates \
+    fonts-liberation \
+    libasound2t64 \
     libatk-bridge2.0-0 \
     libatk1.0-0 \
     libatspi2.0-0 \
     libc6 \
-    libcairo2  \
+    libcairo2 \
     libcups2 \
+    libcurl4 \
     libdbus-1-3 \
     libdrm2 \
     libexpat1 \
-    libfontconfig1 \
     libgbm1 \
-    libgcc-s1 \
     libglib2.0-0 \
     libgtk-3-0 \
     libnspr4 \
     libnss3 \
     libpango-1.0-0 \
-    libpulse0 \
+    libu2f-udev \
+    libvulkan1 \
     libx11-6 \
     libxcb1 \
     libxcomposite1 \
@@ -37,8 +39,7 @@ RUN apt install -y \
     libxfixes3 \
     libxkbcommon0 \
     libxrandr2 \
-    libxshmfence1 \
-    libxtst6 \
+    wget \
     xdg-utils
 
 # Install a virtual X11 server that is required for Chromium to work.

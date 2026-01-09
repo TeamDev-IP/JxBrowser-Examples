@@ -20,10 +20,16 @@
 #
 
 # Launch a virtual X11 server for Chromium.
-Xvfb :0 -screen 0 800x600x24+32 &
+#
+# If you pass `DISPLAY` (and mount the host X11 socket), the application will
+# use the host X server. Otherwise, it will run on a virtual X server.
+if [ -z "${DISPLAY:-}" ]; then
+  Xvfb :0 -screen 0 800x600x24+32 &
+  export DISPLAY=:0
+fi
 
 # Switch to the project directory.
 cd project
 
 # Start the Java application.
-DISPLAY=:0 ./gradlew run
+./gradlew run

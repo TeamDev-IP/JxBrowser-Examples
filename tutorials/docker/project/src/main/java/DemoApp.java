@@ -42,18 +42,19 @@ public final class DemoApp {
 
     public static void main(String[] args) {
         // Set your JxBrowser license key.
-        System.setProperty("jxbrowser.license.key", "ENTER YOUR LICENSE KEY HERE");
+        System.setProperty("jxbrowser.license.key", "YOUR_LICENSE_KEY");
 
-        EngineOptions.Builder options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
+        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
         // #docfragment "enable-remote-debugging-port"
         // Enable the remote debugging port.
+        options.addSwitch("--remote-allow-origins=http://localhost:9222");
         options.remoteDebuggingPort(9222);
         // #enddocfragment "enable-remote-debugging-port"
 
         // Creating Chromium engine.
-        Engine engine = Engine.newInstance(options.build());
-        Browser browser = engine.newBrowser();
+        var engine = Engine.newInstance(options.build());
+        var browser = engine.newBrowser();
 
         // Print the web page's title once the page is loaded.
         browser.navigation().on(LoadFinished.class, event -> {
@@ -61,8 +62,8 @@ public final class DemoApp {
         });
 
         SwingUtilities.invokeLater(() -> {
-            final BrowserView view = BrowserView.newInstance(browser);
-            JFrame frame = new JFrame("Demo App");
+            var view = BrowserView.newInstance(browser);
+            var frame = new JFrame("Demo App");
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
