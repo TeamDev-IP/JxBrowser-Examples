@@ -21,10 +21,10 @@
 
 # Launch a virtual X11 server for Chromium.
 #
-# If you pass `DISPLAY` (and mount the host X11 socket), the application will
-# use the host X server. Otherwise, it will run on a virtual X server.
+# If DISPLAY is not set, start a virtual X server (headless mode).
+# If DISPLAY is set, connect to the host X server (desktop mode).
 if [ -z "${DISPLAY:-}" ]; then
-  Xvfb :0 -screen 0 800x600x24+32 &
+  Xvfb :0 -screen 0 1920x1080x24+32 &
   export DISPLAY=:0
 fi
 
