@@ -57,5 +57,6 @@ COPY project/ project
 # Build the Java project.
 RUN cd project && ./gradlew build
 
+# Set the working directory and the entrypoint.
 WORKDIR /
 ENTRYPOINT ["sh", "-c", "/startup.sh"]

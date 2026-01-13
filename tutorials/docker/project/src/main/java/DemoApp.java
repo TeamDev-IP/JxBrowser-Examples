@@ -45,6 +45,7 @@ public final class DemoApp {
         System.setProperty("jxbrowser.license.key", "YOUR_LICENSE_KEY");
 
         var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
+        options.disableSandbox();
 
         // #docfragment "enable-remote-debugging-port"
         // Enable the remote debugging port.

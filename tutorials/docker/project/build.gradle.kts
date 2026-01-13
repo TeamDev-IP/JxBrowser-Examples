@@ -45,5 +45,5 @@ jxbrowser {
 
 dependencies {
     implementation(jxbrowser.swing)
-    implementation(jxbrowser.linux64)
+    implementation(jxbrowser.currentPlatform)
 }
