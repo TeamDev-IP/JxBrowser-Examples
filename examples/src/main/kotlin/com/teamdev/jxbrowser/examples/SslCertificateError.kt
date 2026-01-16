@@ -54,7 +54,7 @@ fun main() {
 private fun CertificateErrorCallback.Params.print() = println(
     """
         Request URL: ${url()}
-        Reason of the certificate error: ${error().valueDescriptor}(${error().number})
+        Reason of the certificate error: ${error()})
         Invalid SSL certificate.: ${certificate()}
     """.trimIndent()
 )
