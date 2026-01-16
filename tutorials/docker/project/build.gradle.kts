@@ -22,7 +22,7 @@ plugins {
     java
     application
     // Provides convenience methods for adding JxBrowser dependencies into a project.
-    id("com.teamdev.jxbrowser") version "1.1.0"
+    id("com.teamdev.jxbrowser") version "2.0.0"
 }
 
 application {
@@ -33,11 +33,17 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 jxbrowser {
-    version = "7.41.0"
+    version = "8.15.0"
 }
 
 dependencies {
     implementation(jxbrowser.swing)
-    implementation(jxbrowser.linux64)
+    implementation(jxbrowser.currentPlatform)
 }
