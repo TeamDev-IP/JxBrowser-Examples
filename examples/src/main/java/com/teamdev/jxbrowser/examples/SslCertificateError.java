@@ -28,19 +28,21 @@ import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.MessageFormat;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
- * This example demonstrates how to ignore SSL certificate errors
- * and continue loading a website with an invalid SSL certificate.
+ * This example demonstrates how to ignore SSL certificate errors and continue
+ * loading a website with an invalid SSL certificate.
  */
 public final class SslCertificateError {
 
     public static void main(String[] args) {
         var engine = Engine.newInstance(
-                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED).build());
+                EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
+                        .build());
         var browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
@@ -62,11 +64,10 @@ public final class SslCertificateError {
 
         browser.set(CertificateErrorCallback.class, (params, tell) -> {
             System.out.println(
-                    "Request URL: " + params.url() + "\n"
-                            + "Reason of the certificate error: "
-                            + params.error().getValueDescriptor() + "(" + params.error().getNumber()
-                            + ")" + "\n"
-                            + "Invalid SSL certificate.: " + params.certificate() + "\n");
+                    MessageFormat.format(
+                            "Request URL: {0}\nReason of the certificate error: {1}\nInvalid SSL certificate.: {2}\n",
+                            params.url(), params.error(),
+                            params.certificate()));
             tell.allow();
         });
 
