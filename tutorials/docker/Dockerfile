@@ -1,7 +1,6 @@
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
 
 RUN apt update
 
@@ -19,7 +18,6 @@ RUN apt install -y \
     libc6 \
     libcairo2 \
     libcups2 \
-    libcurl4 \
     libdbus-1-3 \
     libdrm2 \
     libexpat1 \
@@ -38,9 +36,7 @@ RUN apt install -y \
     libxext6 \
     libxfixes3 \
     libxkbcommon0 \
-    libxrandr2 \
-    wget \
-    xdg-utils
+    libxrandr2
 
 # Install a virtual X11 server that is required for Chromium to work.
 RUN apt install -y xvfb
