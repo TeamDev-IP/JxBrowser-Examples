@@ -49,3 +49,4 @@ module("crx-extensions", "./tutorials/crx-extensions")
 // Automation with MCP
 module("mcp-devtools", "./tutorials/ai/mcp-devtools")
 module("mcp-extension", "./tutorials/ai/mcp-extension")
+module("intercepting-web-sockets", "./tutorials/intercepting-web-sockets")
