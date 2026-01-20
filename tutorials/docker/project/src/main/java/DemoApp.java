@@ -44,17 +44,15 @@ public final class DemoApp {
         // Set your JxBrowser license key.
         System.setProperty("jxbrowser.license.key", "YOUR_LICENSE_KEY");
 
-        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
-        options.disableSandbox();
-
         // #docfragment "enable-remote-debugging-port"
+        var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
         // Enable the remote debugging port.
         options.addSwitch("--remote-allow-origins=http://localhost:9222");
         options.remoteDebuggingPort(9222);
-        // #enddocfragment "enable-remote-debugging-port"
-
         // Creating Chromium engine.
         var engine = Engine.newInstance(options.build());
+        // #enddocfragment "enable-remote-debugging-port"
+
         var browser = engine.newBrowser();
 
         // Print the web page's title once the page is loaded.
