@@ -40,7 +40,7 @@ java {
 }
 
 jxbrowser {
-    version = "8.15.0"
+    version = "8.16.1"
 }
 
 dependencies {
