@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Interception Demo</title>
+</head>
+<body>
+    <h1>WebSocket Interception Demo</h1>
+    <button id="connect">Connect</button>
+    <button id="send" disabled>Send Message</button>
+    <button id="disconnect" disabled>Disconnect</button>
+    <div id="status">Not connected</div>
+
+    <script>
+        let socket = null;
+
+        document.getElementById('connect').addEventListener('click', () => {
+            socket = new WebSocket('wss://echo.websocket.org/');
+
+            socket.addEventListener('open', () => {
+                document.getElementById('status').textContent = 'Connected';
+                document.getElementById('connect').disabled = true;
+                document.getElementById('send').disabled = false;
+                document.getElementById('disconnect').disabled = false;
+            });
+
+            socket.addEventListener('close', () => {
+                document.getElementById('status').textContent = 'Disconnected';
+                document.getElementById('connect').disabled = false;
+                document.getElementById('send').disabled = true;
+                document.getElementById('disconnect').disabled = true;
+            });
+        });
+
+        document.getElementById('send').addEventListener('click', () => {
+            socket.send('Hello from browser at ' + new Date().toISOString());
+        });
+
+        document.getElementById('disconnect').addEventListener('click', () => {
+            socket.close();
+        });
+    </script>
+</body>
+</html>
