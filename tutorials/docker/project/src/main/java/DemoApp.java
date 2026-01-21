@@ -44,11 +44,11 @@ public final class DemoApp {
         // Set your JxBrowser license key.
         System.setProperty("jxbrowser.license.key", "YOUR_LICENSE_KEY");
 
-        // #docfragment "enable-remote-debugging-port"
         var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
+
+        // Configure remote debugging port.
         options.addSwitch("--remote-allow-origins=http://localhost:9222");
         options.remoteDebuggingPort(9222);
-        // #enddocfragment "enable-remote-debugging-port"
 
         // Disable Chromium sandbox for Docker.
         options.disableSandbox();
