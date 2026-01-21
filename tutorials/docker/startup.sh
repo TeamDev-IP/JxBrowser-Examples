@@ -20,10 +20,16 @@
 #
 
 # Launch a virtual X11 server for Chromium.
-Xvfb :0 -screen 0 800x600x24+32 &
+#
+# If DISPLAY is not set, start a virtual X server (headless mode).
+# If DISPLAY is set, connect to the host X server (desktop mode).
+if [ -z "${DISPLAY:-}" ]; then
+  Xvfb :0 -screen 0 1920x1080x24+32 &
+  export DISPLAY=:0
+fi
 
 # Switch to the project directory.
 cd project
 
 # Start the Java application.
-DISPLAY=:0 ./gradlew run
+./gradlew run
