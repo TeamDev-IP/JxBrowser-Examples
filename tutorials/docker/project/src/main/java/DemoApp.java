@@ -46,7 +46,7 @@ public final class DemoApp {
 
         var options = EngineOptions.newBuilder(HARDWARE_ACCELERATED);
 
-        // Configure remote debugging port.
+        // Enable the remote debugging port.
         options.addSwitch("--remote-allow-origins=http://localhost:9222");
         options.remoteDebuggingPort(9222);
 
