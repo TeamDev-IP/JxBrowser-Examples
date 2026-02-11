@@ -18,7 +18,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static com.teamdev.jxbrowser.deps.com.google.common.io.Resources.getResource;
+import static com.google.common.io.Resources.getResource;
 import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javax.swing.SwingUtilities.invokeLater;
 
