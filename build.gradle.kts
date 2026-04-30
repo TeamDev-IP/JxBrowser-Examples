@@ -20,18 +20,18 @@
 
 plugins {
     java
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm") version "2.3.0"
 
     // Adds JxBrowser.
     id("com.teamdev.jxbrowser") version "1.2.1"
 
     // Adds UI toolkits.
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.jetbrains.compose") version "1.7.0-rc01"
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("org.jetbrains.compose") version "1.10.3"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.0"
 }
 
-val jxBrowserVersion by extra { "9.0.0" } // The version of JxBrowser used in the examples.
+val jxBrowserVersion by extra { "9.0.1" } // The version of JxBrowser used in the examples.
 val guavaVersion by extra { "29.0-jre" } // Some of the examples use Guava.
 
 repositories {
