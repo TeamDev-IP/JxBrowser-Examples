@@ -257,8 +257,8 @@ private static void setupBrowserCallbacks(Browser browser) {
 {
   "dependencies": {
     // Core React ecosystem
-    "react": "^19.1.2",
-    "react-dom": "^19.1.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-router-dom": "^6.22.1",
 
     // gRPC communication (ConnectRPC codegen v2)
@@ -1090,8 +1090,8 @@ implementation("javax.annotation:javax.annotation-api:1.3.2")
 ```json
 {
   "dependencies": {
-    "react": "^19.1.2",
-    "react-dom": "^19.1.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-router-dom": "^6.22.1",
     "@connectrpc/connect": "2.0.0-rc.2",
     "@connectrpc/connect-web": "2.0.0-rc.2",
